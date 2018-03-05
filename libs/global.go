@@ -14,12 +14,6 @@ const (
 	YB                             // 1 << (10*8)
 )
 
-// Config
-var config = make(map[string]map[string]configValue)
-type configValue struct {
-	ValueS string
-	ValueN int
-}
 
 // Multi-language
 type langType struct {
@@ -28,3 +22,10 @@ type langType struct {
 var langTypes []*langType // Languages are supported.
 
 
+
+// System configuration
+type SysConfigValue struct {
+	ValueS string
+	ValueN int
+}
+var SysConfig map[string]map[string]SysConfigValue
