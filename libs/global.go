@@ -1,18 +1,5 @@
-package controllers
+package libs
 
-const (
-	User = 1 << iota
-	UnknownLeve2
-	UnknownLeve3
-	UnknownLeve4
-	UnknownLeve5
-	UnknownLeve6
-	UnknownLeve7
-	UnknownLeve8
-	UnknownLeve9
-	Administrator // 512
-	Superman      // 1024
-)
 
 type ByteSize float64
 const (
@@ -39,3 +26,5 @@ type langType struct {
 	Lang, Name string
 }
 var langTypes []*langType // Languages are supported.
+
+

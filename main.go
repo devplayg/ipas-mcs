@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/devplayg/golibs/secureconfig"
-	"github.com/devplayg/ipasm/controllers"
-	_ "github.com/devplayg/ipasm/routers"
+	_ "github.com/devplayg/ipas-mcs/routers"
 	"os"
 	"path/filepath"
 	"strings"
+	"github.com/devplayg/ipas-mcs/libs"
 )
 
 var (
@@ -47,7 +47,7 @@ func main() {
 	}
 
 	// 초기화
-	controllers.Initialize(processName, encKey, *debug, *verbose)
+	libs.Initialize(processName, encKey, *debug, *verbose)
 
 	// 시작
 	beego.Run()
@@ -66,3 +66,5 @@ func getEncryptionKey() []byte {
 	key := sha256.Sum256([]byte("Charlie Hunter - No Woman No Cry"))
 	return key[:]
 }
+
+

@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"github.com/devplayg/ipasm/controllers"
+	"github.com/devplayg/ipas-mcs/controllers"
 	"github.com/astaxie/beego"
 )
 
