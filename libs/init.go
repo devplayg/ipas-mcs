@@ -24,6 +24,11 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 		os.Exit(1)
 	}
 
+	if err := loadSystemConfig(); err != nil {
+		log.Error(err)
+		os.Exit(1)
+	}
+
 	if err := addExtraFunctions(); err != nil {
 		log.Error(err)
 		os.Exit(1)
@@ -33,6 +38,26 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 		log.Error(err)
 		os.Exit(1)
 	}
+}
+
+
+func loadSystemConfig() error {
+	//rows, err := models.GetSystemConfig()
+	//if err == nil {
+	//	for _, r := range rows {
+	//		m, ok := GlobalConfig[r.Section]
+	//		if !ok {
+	//			m = make(map[string]ConfigValue)
+	//			GlobalConfig[r.Section] = m
+	//		}
+	//		m[r.Keyword] = ConfigValue{
+	//			ValueS: r.ValueS,
+	//			ValueN: r.ValueN,
+	//		}
+	//	}
+	//}
+
+	return nil
 }
 
 // 템플릿 변수 추가
