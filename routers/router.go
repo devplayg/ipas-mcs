@@ -6,5 +6,14 @@ import (
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	// 로그인
+    beego.Router("/", &controllers.LoginController{})
+
+    // 대시보드
+
+    // 로그
+
+    // 제어어
+
+    // 환경설정
 }
