@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	_ "github.com/devplayg/ipasm/routers"
+	"github.com/astaxie/beego"
 )
 
 func main() {
-	fmt.Println("Hello monitor")
+	beego.Run()
 }
+
