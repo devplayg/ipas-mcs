@@ -8,6 +8,9 @@ import (
 func init() {
 	// 로그인
     beego.Router("/", &controllers.LoginController{})
+	beego.Router(`/signin`, &controllers.LoginController{})
+	beego.Router(`/signin/:username([\w]+)/salt`, &controllers.LoginController{}, "Get:GetPasswordSalt")
+    ///login/member/salt
 
     // 대시보드
 

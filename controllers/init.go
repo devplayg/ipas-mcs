@@ -6,7 +6,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/beego/i18n"
 	"github.com/devplayg/golibs/secureconfig"
-	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
@@ -14,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"github.com/devplayg/ipas-mcs/objs"
 )
 
 // Multi-language
@@ -57,12 +57,12 @@ func loadSystemConfig() error {
 	rows, err := models.GetSystemConfig()
 	if err == nil {
 		for _, r := range rows {
-			m, ok := libs.SysConfigMap[r.Section]
+			m, ok := objs.SysConfigMap[r.Section]
 			if !ok {
-				m = make(map[string]libs.MultiValue)
-				libs.SysConfigMap[r.Section] = m
+				m = make(map[string]objs.MultiValue)
+				objs.SysConfigMap[r.Section] = m
 			}
-			m[r.Keyword] = libs.MultiValue{
+			m[r.Keyword] = objs.MultiValue{
 				ValueS: r.ValueS,
 				ValueN: r.ValueN,
 			}
