@@ -27,6 +27,7 @@ var langTypes []*langType // Languages are supported.
 func Initialize(processName string, encKey []byte, debug, verbose bool) {
 	log.Debug("Initializing..")
 	initLogger(processName, debug, verbose)
+	initFramework()
 
 	// 데이터베이스 초기화
 	if err := initDatabase(processName, encKey); err != nil {
@@ -52,6 +53,13 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 		os.Exit(1)
 	}
 }
+
+
+func initFramework() {
+	beego.BConfig.WebConfig.Session.SessionOn = true
+	beego.BConfig.WebConfig.Session.SessionName = "ipas-mcs"
+}
+
 
 func loadSystemConfig() error {
 	rows, err := models.GetSystemConfig()
@@ -174,6 +182,7 @@ func initLogger(processName string, debug, verbose bool) {
 		} else {
 			log.SetOutput(os.Stdout)
 			orm.DebugLog = orm.NewLog(os.Stdout)
+			checkErr(err)
 		}
 	}
 
@@ -185,4 +194,11 @@ func initLogger(processName string, debug, verbose bool) {
 //
 func literal(text string) template.HTML {
 	return template.HTML(text)
+}
+
+
+func checkErr(err error) {
+	if err != nil {
+		log.Error(err)
+	}
 }

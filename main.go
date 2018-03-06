@@ -24,8 +24,8 @@ func main() {
 	var (
 		version   = flags.Bool("version", false, "Version")            // 버전
 		setConfig = flags.Bool("config", false, "Edit configurations") // 환경설정
-		debug     = flags.Bool("debug", false, "Debug")                // 디버그
-		verbose   = flags.Bool("v", false, "Verbose")
+		debug     = flags.Bool("debug", true, "Debug")                // 디버그
+		verbose   = flags.Bool("v", true, "Verbose")
 	)
 	flags.Usage = printHelp // 도움말
 	flags.Parse(os.Args[1:])
@@ -48,6 +48,9 @@ func main() {
 
 	// 초기화
 	controllers.Initialize(processName, encKey, *debug, *verbose)
+
+	// Error controller 로딩
+	beego.ErrorController(&controllers.ErrorController{})
 
 	// 시작
 	beego.Run()
