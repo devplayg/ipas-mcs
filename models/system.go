@@ -1,19 +1,22 @@
 package models
 
-//import (
-//	"github.com/astaxie/beego/orm"
-//)
-//
-//
-//func GetSystemConfig() ([]SysConfig, error) {
-//	query := "select section, keyword, value_s, value_n from sys_config"
-//	rows := []SysConfig{}
-//	o := orm.NewOrm()
-//	_, err := o.Raw(query).QueryRows(&rows)
-//
-//	return rows, err
-//}
-//
+import (
+	//"github.com/astaxie/beego/orm"
+	"github.com/devplayg/ipas-mcs/libs"
+	"github.com/astaxie/beego/orm"
+)
+
+
+func GetSystemConfig() ([]libs.SysConfig, error) {
+	query := "select section, keyword, value_s, value_n from sys_config"
+	rows := []libs.SysConfig{}
+
+	o := orm.NewOrm()
+	_, err := o.Raw(query).QueryRows(&rows)
+
+	return rows, err
+}
+
 //func UpdateSystemConfig(configs []SysConfig) {
 //	o := orm.NewOrm()
 //	query := `

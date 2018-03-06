@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"github.com/devplayg/ipas-mcs/libs"
+	"github.com/devplayg/ipas-mcs/controllers"
 )
 
 var (
@@ -47,7 +47,7 @@ func main() {
 	}
 
 	// 초기화
-	libs.Initialize(processName, encKey, *debug, *verbose)
+	controllers.Initialize(processName, encKey, *debug, *verbose)
 
 	// 시작
 	beego.Run()
@@ -63,7 +63,7 @@ func getProcessName() string {
 }
 
 func getEncryptionKey() []byte {
-	key := sha256.Sum256([]byte("Charlie Hunter - No Woman No Cry"))
+	key := sha256.Sum256([]byte("CharlieHunter-NoWomanNoCry"))
 	return key[:]
 }
 
