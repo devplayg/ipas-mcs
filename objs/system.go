@@ -1,4 +1,4 @@
-package libs
+package objs
 
 type ByteSize float64
 
@@ -26,3 +26,4 @@ type MultiValue struct {
 	ValueS string
 	ValueN int
 }
+

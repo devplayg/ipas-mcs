@@ -1,4 +1,4 @@
-{{template "base/base_blank.html" .}}
+{{template "base-blank.tpl" .}}
 
 {{define "css"}}
 
@@ -19,13 +19,13 @@
 <div class="content">
 
     <!-- BEGIN LOGIN FORM -->
-    <form id="form-signin" class="login-form" method="post" role="form" data-async autocomplete="off" >
+    <form id="form-login" class="login-form" method="post" role="form" data-async autocomplete="off" >
         {{ .xsrfdata }}
         <input type="hidden" name="EncPassword" />
         <input type="hidden" name="Salt" />
         <input type="hidden" name="RedirectUri" value="{{.redirectUri}}" />
 
-            <h3 class="form-title font-green hidden">Sign In</h3>
+        <h3 class="form-title font-green hidden">Sign In</h3>
         <div class="form-group">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
             <label class="control-label visible-ie8 visible-ie9">Username</label>
@@ -75,6 +75,6 @@
 <!-- CryptoJS -->
 <script src="/static/plugins/crypto/rollups/sha256.js"></script>
 <!-- Module -->
-<script src="/static/modules/{{.ctrlName}}/{{.ctrlName}}.js"></script>
+<script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 {{end}}
 

@@ -1,15 +1,14 @@
 package models
 
 import (
-	//"github.com/astaxie/beego/orm"
-	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/astaxie/beego/orm"
+	"github.com/devplayg/ipas-mcs/objs"
 )
 
 
-func GetSystemConfig() ([]libs.SysConfig, error) {
+func GetSystemConfig() ([]objs.SysConfig, error) {
 	query := "select section, keyword, value_s, value_n from sys_config"
-	rows := []libs.SysConfig{}
+	rows := []objs.SysConfig{}
 
 	o := orm.NewOrm()
 	_, err := o.Raw(query).QueryRows(&rows)
