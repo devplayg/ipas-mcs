@@ -1,4 +1,4 @@
-package libs
+package controllers
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/beego/i18n"
 	"github.com/devplayg/golibs/secureconfig"
+	"github.com/devplayg/ipas-mcs/libs"
+	"github.com/devplayg/ipas-mcs/models"
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 	"html/template"
@@ -14,59 +16,70 @@ import (
 	"strings"
 )
 
+// Multi-language
+type langType struct {
+	Lang, Name string
+}
+
+var langTypes []*langType // Languages are supported.
+
 // 초기화
 func Initialize(processName string, encKey []byte, debug, verbose bool) {
 	log.Debug("Initializing..")
 	initLogger(processName, debug, verbose)
 
+	// 데이터베이스 초기화
 	if err := initDatabase(processName, encKey); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
 
+	// 시스템 환경변수 초기화
 	if err := loadSystemConfig(); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
 
+	// 템블린 함수 추가
 	if err := addExtraFunctions(); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
 
+	// 다국어 기능 초기화
 	if err := initLocale(); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
 }
 
-
 func loadSystemConfig() error {
-	//rows, err := models.GetSystemConfig()
-	//if err == nil {
-	//	for _, r := range rows {
-	//		m, ok := GlobalConfig[r.Section]
-	//		if !ok {
-	//			m = make(map[string]ConfigValue)
-	//			GlobalConfig[r.Section] = m
-	//		}
-	//		m[r.Keyword] = ConfigValue{
-	//			ValueS: r.ValueS,
-	//			ValueN: r.ValueN,
-	//		}
-	//	}
-	//}
+	rows, err := models.GetSystemConfig()
+	if err == nil {
+		for _, r := range rows {
+			m, ok := libs.SysConfigMap[r.Section]
+			if !ok {
+				m = make(map[string]libs.MultiValue)
+				libs.SysConfigMap[r.Section] = m
+			}
+			m[r.Keyword] = libs.MultiValue{
+				ValueS: r.ValueS,
+				ValueN: r.ValueN,
+			}
+		}
+	}
 
 	return nil
 }
 
 // 템플릿 변수 추가
 func addExtraFunctions() error {
-	// Extra functions
+	// 순수 문자열 출력 함수
 	if err := beego.AddFuncMap("literal", literal); err != nil {
 		return err
 	}
 
+	// 다국어 지원 함수
 	if err := beego.AddFuncMap("i18n", i18n.Tr); err != nil {
 		return err
 	}
@@ -74,24 +87,23 @@ func addExtraFunctions() error {
 	return nil
 }
 
-
 // 다국어 설정
 func initLocale() error {
-	beego.Debug("Initializing locale..")
-	langs := strings.Split("ko-kr|en-us|ja-jp", "|")
+	log.Debug("Initializing locale..")
+	languages := strings.Split("ko-kr|en-us|ja-jp", "|")
 	names := strings.Split("KO|EN|JP", "|")
-	langTypes = make([]*langType, 0, len(langs))
-	for i, v := range langs {
+	langTypes = make([]*langType, 0, len(languages))
+	for i, v := range languages {
 		langTypes = append(langTypes, &langType{
 			Lang: v,
 			Name: names[i],
 		})
 	}
 
-	for _, lang := range langs {
-		beego.Trace("Loading language: " + lang)
+	for _, lang := range languages {
+		log.Debug("Loading language: " + lang)
 		if err := i18n.SetMessage(lang, "conf/"+"locale_"+lang+".ini"); err != nil {
-			beego.Error("Fail to load message file: " + err.Error())
+			log.Error("Fail to load message file: " + err.Error())
 		}
 	}
 

@@ -1,7 +1,7 @@
 package libs
 
-
 type ByteSize float64
+
 const (
 	_           = iota             // ignore first value by assigning to blank identifier
 	KB ByteSize = 1 << (10 * iota) // 1 << (10*1)
@@ -14,18 +14,15 @@ const (
 	YB                             // 1 << (10*8)
 )
 
-
-// Multi-language
-type langType struct {
-	Lang, Name string
-}
-var langTypes []*langType // Languages are supported.
-
-
-
 // System configuration
-type SysConfigValue struct {
+type SysConfig struct {
+	Section, Keyword, ValueS string
+	ValueN                   int
+}
+
+var SysConfigMap = make(map[string]map[string]MultiValue)
+
+type MultiValue struct {
 	ValueS string
 	ValueN int
 }
-var SysConfig map[string]map[string]SysConfigValue
