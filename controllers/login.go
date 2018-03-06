@@ -8,8 +8,8 @@ type LoginController struct {
 	baseController
 }
 
-func (c *LoginController) SubPrepare() {
-	c.isLoginRequired = false
+func (c *LoginController) CtrlPrepare() {
+	c.loginRequired(false)
 }
 
 func (c *LoginController) Get() {
@@ -17,7 +17,7 @@ func (c *LoginController) Get() {
 }
 
 func (c *LoginController) GetPasswordSalt() {
-	//username := c.Ctx.Input.Param(":username")
+	username := c.Ctx.Input.Param(":username")
 
 	//// Check if member exists
 	//member, err := models.GetMemberByUsername(username)
@@ -31,5 +31,6 @@ func (c *LoginController) GetPasswordSalt() {
 	//	CheckError(err)
 	//	c.Data["json"] = models.Result{true, "", salt}
 	//}
+	c.Data["json"] = username
 	c.ServeJSON()
 }

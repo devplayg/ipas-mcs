@@ -3,8 +3,13 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
+	"github.com/devplayg/ipas-mcs/models"
+	"github.com/devplayg/ipas-mcs/objs"
 	"html/template"
+	log "github.com/sirupsen/logrus"
 	"strings"
+	"time"
+	"net/url"
 )
 
 const (
@@ -27,34 +32,38 @@ type CtrlPreparer interface {
 
 // 기본 Controller
 type baseController struct {
-	beego.Controller               // 메인 구조체 임베딩
-	i18n.Locale                    // 다국어
-	isLoginRequired  bool          // 로그인 필수 여부
-	acl              int           // 권한
-	//member           models.Member // 사용자 정보
-	isLogged         bool          // 로그인 상태
-	ctrlName         string        // Controller 이름
-	actName          string        // Action 이름
+	beego.Controller              // 메인 구조체 임베딩
+	i18n.Locale                   // 다국어
+	isLoginRequired  bool         // 로그인 필수 여부
+	acl              int          // 권한
+	member           *objs.Member // 사용자 정보
+	isLogged         bool         // 로그인 상태
+	ctrlName         string       // Controller 이름
+	actName          string       // Action 이름
 }
 
 func (c *baseController) Prepare() {
 
+	// Controller 와 Action 이름 설정
+	c.ctrlName, c.actName = c.GetControllerAndAction()
+	c.ctrlName = strings.ToLower(strings.TrimSuffix(c.ctrlName, "Controller"))
+
 	// 기본 접근권한 설정
 	c.isLoginRequired = true         // 로그인 필수
 	c.grant(Superman, Administrator) // 관리자 이상만 실행 허용
+	c.isLogged = false               // 로그인 상태
 
 	// 호출된 Controller 접근권한 덮어쓰기
 	if app, ok := c.AppController.(CtrlPreparer); ok {
 		app.CtrlPrepare()
 	}
+	log.Debugf("Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d", c.ctrlName, c.actName, c.isLoginRequired, c.acl)
 
-	// Client 상태 업데이트
+	// 로그인 상태 체크
+	c.checkLoginStatus()
 
-	// 접근권한 검토
-
-	// Controller 와 Action 이름 설정
-	c.ctrlName, c.actName = c.GetControllerAndAction()
-	c.ctrlName = strings.ToLower(strings.TrimSuffix(c.ctrlName, "Controller"))
+	// 접근 제한
+	c.checkAccessPermission()
 
 	// 언어 설정
 	c.setLangVer()
@@ -67,6 +76,41 @@ func (c *baseController) Prepare() {
 	c.Data["xsrf_token"] = c.XSRFToken()
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
+}
+
+func (c *baseController) loginRequired(required bool) {
+	c.isLoginRequired = required
+	if ! required {
+		c.acl = 0
+	}
+}
+
+func (c *baseController) checkLoginStatus() {
+	val := c.GetSession("memberId")
+	if val != nil {
+		memberId := val.(int)
+		member, err := models.GetMemberById(memberId)
+		checkErr(err)
+
+		if member != nil {
+			c.member = member
+			c.member.Location, _ = time.LoadLocation(c.member.Timezone)
+			c.isLogged = true
+		}
+	}
+}
+
+func (c *baseController) checkAccessPermission() {
+	if c.isLoginRequired {
+		if !c.isLogged {
+			redirectUri := url.QueryEscape(c.Ctx.Request.RequestURI)
+			c.Redirect("/signin?redirectUri="+redirectUri, 302)
+		}
+
+		if c.member.Position & c.acl < 1 {
+			c.Abort("403")
+		}
+	}
 }
 
 func (c *baseController) setTpl(tplName string) {
