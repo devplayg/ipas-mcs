@@ -3,6 +3,9 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
+	"database/sql"
+	"fmt"
+	"strings"
 )
 
 
@@ -14,6 +17,20 @@ func GetSystemConfig() ([]objs.SysConfig, error) {
 	_, err := o.Raw(query).QueryRows(&rows)
 
 	return rows, err
+}
+
+
+func UpdateRow(tableName string, pkColumn string, pkValue interface{}, data map[string]interface{}) (sql.Result, error)  {
+	args := make([]interface{}, 0)
+	list := make([]string, 0)
+	for k, v := range data {
+		list = append(list, fmt.Sprintf("%s = ?", k))
+		args = append(args, v)
+	}
+	args = append(args, pkValue)
+	query := fmt.Sprintf("update %s set %s where %s = ?", tableName, strings.Join(list, ","), pkColumn)
+	o := orm.NewOrm()
+	return o.Raw(query, args).Exec()
 }
 
 //func UpdateSystemConfig(configs []SysConfig) {
