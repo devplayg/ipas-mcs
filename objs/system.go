@@ -26,4 +26,3 @@ type MultiValue struct {
 	ValueS string
 	ValueN int
 }
-

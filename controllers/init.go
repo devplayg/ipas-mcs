@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"math/rand"
 	"github.com/beego/i18n"
 	"github.com/devplayg/golibs/secureconfig"
 	"github.com/devplayg/ipas-mcs/models"
+	"github.com/devplayg/ipas-mcs/objs"
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 	"html/template"
 	"os"
 	"path/filepath"
 	"strings"
-	"github.com/devplayg/ipas-mcs/objs"
+	"time"
 )
 
 // Multi-language
@@ -54,12 +56,10 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 	}
 }
 
-
 func initFramework() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.BConfig.WebConfig.Session.SessionName = "ipas-mcs"
 }
-
 
 func loadSystemConfig() error {
 	rows, err := models.GetSystemConfig()
@@ -196,9 +196,22 @@ func literal(text string) template.HTML {
 	return template.HTML(text)
 }
 
-
 func checkErr(err error) {
 	if err != nil {
 		log.Error(err)
 	}
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func GetRandomString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

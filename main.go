@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/devplayg/golibs/secureconfig"
+	"github.com/devplayg/ipas-mcs/controllers"
 	_ "github.com/devplayg/ipas-mcs/routers"
 	"os"
 	"path/filepath"
 	"strings"
-	"github.com/devplayg/ipas-mcs/controllers"
 )
 
 var (
@@ -24,8 +24,8 @@ func main() {
 	var (
 		version   = flags.Bool("version", false, "Version")            // 버전
 		setConfig = flags.Bool("config", false, "Edit configurations") // 환경설정
-		debug     = flags.Bool("debug", true, "Debug")                // 디버그
-		verbose   = flags.Bool("v", true, "Verbose")
+		debug     = flags.Bool("debug", true, "Debug")                 // 디버그
+		verbose   = flags.Bool("v", true, "Verbose")                   // 로그를 STDOUT 으로 출력
 	)
 	flags.Usage = printHelp // 도움말
 	flags.Parse(os.Args[1:])
@@ -52,7 +52,7 @@ func main() {
 	// Error controller 로딩
 	beego.ErrorController(&controllers.ErrorController{})
 
-	// 시작
+	// 웹 프레임워크 시작
 	beego.Run()
 }
 
@@ -69,5 +69,3 @@ func getEncryptionKey() []byte {
 	key := sha256.Sum256([]byte("CharlieHunter-NoWomanNoCry"))
 	return key[:]
 }
-
-
