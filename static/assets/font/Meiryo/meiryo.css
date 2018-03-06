@@ -1,0 +1,5 @@
+@font-face {
+    font-family: "Meiryo UI";
+    src: url(MeiryoUI.eot);
+    src: local("Meiryo UI"), url(MeiryoUI.woff) format("woff");
+}
