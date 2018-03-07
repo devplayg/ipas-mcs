@@ -94,7 +94,7 @@ CREATE TABLE `ast_asset` (
   `s2` varchar(256) NOT NULL DEFAULT '',
   `s3` varchar(256) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_id`),
   KEY `ix_parent_id` (`parent_id`),
   KEY `ix_class` (`class`),
@@ -145,7 +145,7 @@ CREATE TABLE `mbr_config` (
   `value_s` varchar(128) NOT NULL,
   `value_n` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `ix_member_id` (`member_id`),
   KEY `ix_keyword` (`keyword`),
   CONSTRAINT `fk_mbr_config_member_id` FOREIGN KEY (`member_id`) REFERENCES `mbr_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -184,7 +184,7 @@ CREATE TABLE `mbr_member` (
   `last_read_message` int(11) unsigned NOT NULL DEFAULT '0',
   `session_id` varchar(64) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
@@ -201,7 +201,7 @@ CREATE TABLE `mbr_password` (
   `password` varchar(64) NOT NULL,
   `salt` varchar(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`member_id`),
   CONSTRAINT `fk_mbr_password_member_id` FOREIGN KEY (`member_id`) REFERENCES `mbr_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -219,7 +219,7 @@ CREATE TABLE `sys_config` (
   `value_s` varchar(256) NOT NULL,
   `value_n` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`section`,`keyword`),
   KEY `ix_section` (`section`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

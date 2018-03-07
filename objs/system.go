@@ -26,3 +26,11 @@ type MultiValue struct {
 	ValueS string
 	ValueN int
 }
+
+type AuditMsg struct {
+	MemberId int
+	Category string
+	IP       string
+	Message  interface{}
+	Detail   interface{}
+}

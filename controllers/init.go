@@ -58,7 +58,9 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 
 func initFramework() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
-	beego.BConfig.WebConfig.Session.SessionName = "ipas-mcs"
+	beego.BConfig.WebConfig.Session.SessionName = "imsessionID"
+	beego.BConfig.WebConfig.Session.SessionProvider = "file"
+	beego.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"
 }
 
 func loadSystemConfig() error {
@@ -159,7 +161,7 @@ func initLogger(processName string, debug, verbose bool) {
 	// Set log level
 	if debug {
 		log.SetLevel(log.DebugLevel)
-		orm.Debug = true
+		orm.Debug = false
 	}
 
 	if verbose {
@@ -206,7 +208,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_")
 
 func GetRandomString(n int) string {
 	b := make([]rune, n)

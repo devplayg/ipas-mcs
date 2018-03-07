@@ -3,7 +3,13 @@ package controllers
 import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
-	"github.com/sirupsen/logrus"
+	"github.com/astaxie/beego/orm"
+	"crypto/sha256"
+	"encoding/hex"
+	"bytes"
+	"github.com/astaxie/beego"
+	log "github.com/sirupsen/logrus"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type LoginController struct {
@@ -14,55 +20,96 @@ func (c *LoginController) CtrlPrepare() {
 	c.loginRequired(false)
 }
 
+// 로그인 페이지
 func (c *LoginController) Get() {
+	if c.isLogged {
+		uri := beego.AppConfig.DefaultString("home_uri", "/syslog")
+		c.Redirect(uri, 302)
+	} else {
+		if len(c.GetString("redirectUri")) > 0 {
+			c.Data["redirectUri"] = c.GetString("redirectUri")
+		}
+	}
+
 	c.setTpl("login.tpl")
+}
+
+// 로그인 시도
+func (c *LoginController) Post() {
+
+	// 리턴 구조체 설정
+	result := objs.NewResult()
+
+	// 입력값 수신
+	username := c.GetString("username")
+	encPassword := c.GetString("encPassword")
+	log.Debugf("username=%s, pwd=%s", username, encPassword)
+
+	// 사용자 정보 조회
+	member, err := models.GetMember(map[string]interface{}{
+		"t.username": username,
+	})
+
+	if err != nil { // 존재하지 않으면
+		result.Message = err.Error()
+	} else {
+		userPassword,  _ := hex.DecodeString(encPassword)
+		serverPassword := sha256.Sum256([]byte(member.Password+member.Salt))
+
+		if bytes.Equal(userPassword, serverPassword[:]) {
+			result.State = true
+
+			c.SetSession("memberId", member.MemberId)
+			c.SetSession("username", member.Username)
+			c.SetSession("sessionId", c.Ctx.GetCookie(beego.BConfig.WebConfig.Session.SessionName))
+
+			result.Data = map[string]string{
+				"redirectUrl": beego.AppConfig.DefaultString("home_url", "/syslog"),
+			}
+		} else {
+			result.Message =  c.Tr("msg_fail_to_request_open") + " (-1)"
+		}
+	}
+
+	c.Data["json"] = result
+	c.ServeJSON()
 }
 
 func (c *LoginController) GetPasswordSalt() {
 	result := objs.NewResult()
-
 	username := c.Ctx.Input.Param(":username")
 
 	// Check if member exists
 	member, err := models.GetMemberByUsername(username)
+	spew.Dump(member)
+	c.audit("test_logging", map[string]string{"username": username}, nil)
 	if err != nil {
+		// 결과 값이 없는 상황 이외에는 시스템 로깅
+		if err != orm.ErrNoRows {
+			checkErr(err)
+		}
+		c.audit("signin_failed", map[string]string{"username": username, "message": err.Error()}, nil)
 		result.Message = err.Error()
+		c.Data["json"] = result
 		c.ServeJSON()
 		return
 	}
 
-	if member != nil {
-		salt := GetRandomString(10)
-		result.Data = salt
-		logrus.Debugf("Salt: %s", salt)
-		result.State = true
-
-		data := map[string]interface{} {
-			"zipcode": salt,
-			"country": salt+salt,
-			"state": len(salt),
-			"last_read_message":len(salt),
-		}
-
-		//rs, err := models.UpdateMember(member.MemberId, data )
-		rs, err := models.UpdateRow("mbr_member", "member_id", member.MemberId, data)
+	// 비밀번호 Salt 값 생성
+	salt := GetRandomString(10)
+	_, err = models.UpdateRow("mbr_password", "member_id", member.MemberId, map[string]interface{}{"salt": salt})
+	if err != nil {
 		checkErr(err)
-		affectedRows, _ := rs.RowsAffected()
-		logrus.Debugf("AffectedRows: %d", affectedRows)
-
+		result.Message = err.Error()
 	} else {
-		result.Message = "No users"
+		result.Data = salt
+		result.State = true
 	}
-	//if member.MemberId < 1 || err != nil {
-	//	result := models.Result{false, c.Tr("msg_fail_to_request_open"), "1"}
-	//	c.Data["json"] = result
-	//	c.WriteAuditLog("signin_failed", result, "")
-	//} else {
-	//	salt := libs.GetRandomString(10)
-	//	_, err := models.UpdatePassword(member.MemberId, "", salt)
-	//	CheckError(err)
-	//	c.Data["json"] = models.Result{true, "", salt}
-	//}
 	c.Data["json"] = result
 	c.ServeJSON()
+}
+
+func (c *LoginController) Logout() {
+	c.DestroySession()
+	c.Redirect("/signin", 302)
 }

@@ -4,6 +4,25 @@
 
 // Ajax
 $.ajaxSetup({cache:false});
+var ajax = $.ajax;
+$.extend({
+    ajax: function(url, options) {
+        if (typeof url === 'object') {
+            options = url;
+            url = undefined;
+        }
+        options = options || {};
+        url = options.url;
+        var xsrftoken = $('meta[name=_xsrf]').attr('content');
+        var headers = options.headers || {};
+        var domain = document.domain.replace(/\./ig, '\\.');
+        if (!/^(http:|https:).*/.test(url) || eval('/^(http:|https:)\\/\\/(.+\\.)*' + domain + '.*/').test(url)) {
+            headers = $.extend(headers, {'X-Xsrftoken':xsrftoken});
+        }
+        options.headers = headers;
+        return ajax(url, options);
+    }
+});
 
 // Mask
 $( ".mask_yyyymmddhhii" ).mask( "0000-00-00 00:00" );
@@ -42,11 +61,11 @@ function getBit(value, pos) {
     return !!( value & ( 1 << pos ) );
 }
 
-function getXsrsToken() {
-    var _xsrf = Cookies.get( "_xsrf" ).split( "|" ),
-        xsrf = $.base64.decode(_xsrf[0]);
-    return xsrf;
-}
+// function getXsrsToken() {
+//     var _xsrf = Cookies.get( "_xsrf" ).split( "|" ),
+//         xsrf = $.base64.decode(_xsrf[0]);
+//     return xsrf;
+// }
 
 // 테이블 키 생성
 function getTableKey( $table, ctrl, act ) {
@@ -89,3 +108,5 @@ function restoreTableColumns( table, key ) {
         });
     }
 }
+
+

@@ -7,8 +7,9 @@ import (
 
 func init() {
 	// 로그인
-    beego.Router("/", &controllers.LoginController{})
+    beego.Router("/", &controllers.LoginController{}, "get:Get")
 	beego.Router(`/signin`, &controllers.LoginController{})
+	beego.Router(`/signout`, &controllers.LoginController{}, "*:Logout")
 	beego.Router(`/signin/:username([\w]+)/salt`, &controllers.LoginController{}, "Get:GetPasswordSalt")
     ///login/member/salt
 
