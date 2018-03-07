@@ -7,14 +7,14 @@ import (
 type Member struct {
 	MemberId           int
 	Username           string
-	//Password           string `json:"-"`
+	Password           string `json:"-"`
 	//PasswordConfirm    string `json:"-"`
 	//OldPassword        string `json:"-"`
 	//NewPassword        string `json:"-"`
 	//NewPasswordConfirm string `json:"-"`
 	//EncPassword        string `json:"-"`
 	//Email              string
-	//Salt               string `json:"-"`
+	Salt               string `json:"-"`
 	Name               string
 	//Status             int `json:"-"`
 	Position           int
@@ -22,7 +22,6 @@ type Member struct {
 	Timezone           string `json:"-"`
 	//AllowedIp          string
 	//Usergroups         []int `json:"-"`
-	aaa string
 	Location           *time.Location
 	SessionId          string `json:"-"`
 }

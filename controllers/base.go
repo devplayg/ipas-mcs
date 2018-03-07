@@ -5,11 +5,11 @@ import (
 	"github.com/beego/i18n"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
-	"html/template"
 	log "github.com/sirupsen/logrus"
 	"strings"
 	"time"
 	"net/url"
+	"github.com/davecgh/go-spew/spew"
 )
 
 const (
@@ -57,10 +57,18 @@ func (c *baseController) Prepare() {
 	if app, ok := c.AppController.(CtrlPreparer); ok {
 		app.CtrlPrepare()
 	}
-	log.Debugf("Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d", c.ctrlName, c.actName, c.isLoginRequired, c.acl)
-
 	// 로그인 상태 체크
 	c.checkLoginStatus()
+
+	// 요청 디버깅 코드
+	if beego.BConfig.RunMode == "dev" {
+		spew.Println("=============START=====================")
+		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, route=%s, ReqUrl=%s", c.Ctx.Input.Method(), c.ctrlName, c.actName, c.isLoginRequired, c.acl, c.isLogged, c.IsAjax(), c.Data["RouterPattern"], c.Ctx.Request.URL.String())
+		spew.Dump(c.Input()) // Input body
+		//spew.Dump(c.Ctx.Request.Header)
+		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
+		spew.Println("=============END=====================")
+	}
 
 	// 접근 제한
 	c.checkAccessPermission()
@@ -72,7 +80,7 @@ func (c *baseController) Prepare() {
 	c.Data["title"] = beego.BConfig.AppName
 	//c.Data["member"] = c.GetMember()
 	//c.Data["IsLogged"] = c.IsLogged
-	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	//c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["xsrf_token"] = c.XSRFToken()
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
@@ -172,4 +180,13 @@ func (c *baseController) setLangVer() {
 	c.Data["Lang"] = curLang.Lang
 	c.Data["CurLang"] = curLang.Name
 	c.Data["RestLangs"] = restLangs
+}
+
+func (c *baseController) audit(category string, message interface{}, detail interface{}) error {
+	var memberId int
+	if c.member != nil {
+		memberId = c.member.MemberId
+	}
+	models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
+	return nil
 }

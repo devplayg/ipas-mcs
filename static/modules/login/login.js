@@ -5,36 +5,59 @@ $(function() {
  */
 $( "#form-signin input[name=Username]" ).focus();
 
+// Ajax
+var ajax = $.ajax;
+$.extend({
+    ajax: function(url, options) {
+        if (typeof url === 'object') {
+            options = url;
+            url = undefined;
+        }
+        options = options || {};
+        url = options.url;
+        var xsrftoken = $('meta[name=_xsrf]').attr('content');
+        var headers = options.headers || {};
+        var domain = document.domain.replace(/\./ig, '\\.');
+        if (!/^(http:|https:).*/.test(url) || eval('/^(http:|https:)\\/\\/(.+\\.)*' + domain + '.*/').test(url)) {
+            headers = $.extend(headers, {'X-Xsrftoken':xsrftoken});
+        }
+        options.headers = headers;
+        return ajax(url, options);
+    }
+});
 
 /**
  * 2. Events
  *
  */
 // Validation
-$( "#form-signin" ).validate({
-    submitHandler: function( form ) {
-        var $form = $( form );
+$( "#form-login" ).validate({
+    submitHandler: function( form, e ) {
+        e.preventDefault();
+
+        var $form = $( form ),
+            username = $( "input[name=username]", $form ).val().toLowerCase(),
+            password = $( "input[name=password]", $form ).val();
+
         $.ajax({
             type: "get",
             async: true,
-            url: "/signin/" + $( "input[name=Username]", $form ).val() + "/salt"
+            url: "/signin/" + username + "/salt"
         }).done( function( result ) {
-
-            if ( result.State == true ) {
-                var username    = $( "input[name=Username]", $form ).val().toLowerCase(),
-                    password    = $( "input[name=Password]", $form ).val();
-                $( "input[name=EncPassword]", $form ).val( getHash( getHash( username + password ) + result.Code ) );
-                $( "input[name=Salt]", $form ).val(result.Code);
+            if ( result.state ) {
                 $.ajax({
-                    type: "post",
+                    type: "POST",
                     async: true,
                     url: "/signin",
-                    data: $form.serialize()
+                    data: {
+                        username: username,
+                        encPassword: getHash( getHash( username + password ) + result.data )
+                    }
                 }).done( function( result2 ) {
-                    if ( result2.State ) {
-                        window.location.href = result2.Code;
+                    if ( result2.state ) {
+                        window.location.href = result2.data.redirectUrl;
                     } else {
-                        $( ".note", $form ).text( result2.Message + " / Code: " + result2.Code ).removeClass( "hidden" );
+                    //     $( ".note", $form ).text( result2.Message + " / Code: " + result2.Code ).removeClass( "hidden" );
                     }
 
                 }).always(function() {
@@ -48,10 +71,10 @@ $( "#form-signin" ).validate({
     ignore: "input[type='hidden']",
     errorClass: "help-block",
     rules: {
-        Username: {
+        username: {
             required: true
         },
-        Password: {
+        password: {
             required: true
         }
     },
