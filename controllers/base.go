@@ -192,3 +192,20 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 	models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
 	return nil
 }
+
+
+func (c *baseController) toJson(logs interface{}, total int64, err error, fastPaging string) {
+	if fastPaging == "on" {
+		c.Data["json"] = logs
+	} else {
+		dbResult := objs.NewDbResult()
+		if err == nil {
+			dbResult.State = true
+		}
+		dbResult.Rows = logs
+		dbResult.Total = total
+		c.Data["json"] = dbResult
+	}
+
+	c.ServeJSON()
+}

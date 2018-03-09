@@ -17,7 +17,7 @@
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/css/themes/darkblue.min.css_" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Fonts -->
@@ -41,7 +41,7 @@
     </head>
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
-        <div class="page-header navbar navbar-fixed-top hidden">
+        <div class="page-header navbar navbar-fixed-top">
             <div class="page-header-inner ">
                 <div class="page-logo">
                     <a href="index.html">
@@ -572,7 +572,6 @@
             Layout.setSidebarMenuActiveLink("match");
         </script>
         <!-- 네임카드 -->
-        {{template "form-namecard.tpl"}}
 
         <!-- Javascript -->
         {{ block "javascript" . }}

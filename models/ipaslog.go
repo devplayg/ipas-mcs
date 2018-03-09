@@ -5,40 +5,68 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/objs"
+	"regexp"
 )
+
+var RegexFoundRows = regexp.MustCompile(`(?i)SELECT(\s+)SQL_CALC_FOUND_ROWS`)
 
 func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	var where string
 	var rows []objs.IpasLog
 
-	args := make([]interface{}, 0, 20)
+	// 조건 설정
+	args := make([]interface{}, 0)
+	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
 
 	if len(filter.Orgs) > 0 {
 		where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Orgs, ","))
+	}
+
+	if filter.FastPaging == "off" {
+		filter.FoundRows = "SQL_CALC_FOUND_ROWS"
 	}
 
 	// Set query
 	query := `
 		SELECT %s *
 		from log_ipas
-		where date >= ? and date <= ? %s order by %s %s limit ?, ?
+		where date >= ? and date <= ? %s
+		order by %s %s
+		limit ?, ?
 	`
 	query = fmt.Sprintf(query, filter.FoundRows, where, filter.Sort, filter.Order)
-
-	args = append(args, filter.StartDate + ":00", filter.EndDate+":59", filter.Offset, filter.Limit)
+	args = append(args, filter.Offset, filter.Limit)
 
 	o := orm.NewOrm()
-	total, _ := o.Raw(query, args).QueryRows(&rows)
-	//	dbResult := DbResult{}
-	//	isMatch := RegexFoundRows.MatchString(query)
-	//	if isMatch {
-	//		o.Raw("select FOUND_ROWS() total").QueryRow(&dbResult)
-	//		total = dbResult.Total
-	//
-	//	}
-	return rows, total, nil
+	o.Begin()
+	defer o.Commit()
+	total, err := o.Raw(query, args).QueryRows(&rows)
 
+	if RegexFoundRows.MatchString(query) {
+		dbResult := objs.NewDbResult()
+		o.Raw("select FOUND_ROWS() total").QueryRow(dbResult)
+		total = dbResult.Total
+	}
+	return rows, total, err
 }
+
+//func executeQuery(query string, args []interface{}, obj interface{})  {
+//	o := orm.NewOrm()
+//	o.Begin()
+//	defer o.Commit()
+//	spew.Dump(args)
+//	refresh
+//	objs := make([]obj.ref, 0)
+//	o.Raw(query, args).QueryRows(&obj)
+////
+////	spew.Dump(obj)
+//	//if RegexFoundRows.MatchString(query) {
+//	//	dbResult := objs.NewDbResult()
+//	//	o.Raw("select FOUND_ROWS() total").QueryRow(dbResult)
+//	//	total = dbResult.Total
+//	//}
+//	//return obj, total, err
+//}
 
 //func GetIpasLog(filter *FilterFiletranslog) ([]objs.IpasLog, int64, error) {
 //	var where string

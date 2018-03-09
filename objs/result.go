@@ -1,6 +1,5 @@
 package objs
 
-import "github.com/astaxie/beego/orm"
 
 type Result struct {
 	State   bool        `json:"state"`
@@ -13,14 +12,14 @@ func NewResult() *Result {
 }
 
 type DbResult struct {
-	State        bool         `json:"state"`
-	Message      string       `json:"message"`
-	Rows         []orm.Params `json:"rows"`
-	AffectedRows int64        `json:"affected_rows"`
-	Total        int64        `json:"total"`
-	LastInsertId int64        `json:"last_insert_id"`
+	State        bool          `json:"state"`
+	Message      string        `json:"message"`
+	Rows         interface{} `json:"rows"`
+	AffectedRows int64         `json:"affected_rows"`
+	Total        int64         `json:"total"`
+	LastInsertId int64         `json:"last_insert_id"`
 }
 
-func newDbResult() *DbResult {
-	return &DbResult{}
+func NewDbResult() *DbResult {
+	return &DbResult{false, "", nil, 0, 0, 0}
 }

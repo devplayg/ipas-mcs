@@ -46,15 +46,10 @@
                     <div class="modal-body">
                         <div class="row lh18">
                             <div class="col-lg-12 form-group">
-                                <div class="md-checkbox">
-                                    <input type="checkbox" name="fastPaging" class="md-check" {{if eq .filter.FastPaging "on"}}checked{{end}}>
+                                    <input type="checkbox" id="fastPaging" name="fastPaging" class="md-check" {{if eq .filter.FastPaging "on"}}checked{{end}}>
                                     <label for="FastPaging">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                        <span style="margin: -10px 0px 0px 30px;">Fast Paging</span>
+                                        <span>Fast Paging</span>
                                     </label>
-                                </div>
                             </div>
                         </div>
 
@@ -68,7 +63,7 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-data-url="/ipaslog/getlogs/?StartDate={{.filter.StartDate}}&EndDate={{.filter.EndDate}}&FastPaging={{.filter.FastPaging}}"
+data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}"
 <table  id="table-log"
         class="table-condensed"
         data-toggle="table"
@@ -88,7 +83,7 @@ data-url="/ipaslog/getlogs/?StartDate={{.filter.StartDate}}&EndDate={{.filter.En
     {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
     {{else}} {* 일반 페이징 *}
-        data-url="/ipaslog/getlogs/?StartDate={{.filter.StartDate}}&EndDate={{.filter.EndDate}}&FastPaging={{.filter.FastPaging}}"
+            data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}"
             data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
