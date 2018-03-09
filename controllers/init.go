@@ -161,7 +161,7 @@ func initLogger(processName string, debug, verbose bool) {
 	// Set log level
 	if debug {
 		log.SetLevel(log.DebugLevel)
-		orm.Debug = false
+		orm.Debug = true
 	}
 
 	if verbose {

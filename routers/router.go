@@ -17,6 +17,7 @@ func init() {
 
     // 로그
 	beego.Router(`/ipaslog`, &controllers.IpaslogController{})
+	beego.Router(`/ipaslog/getlogs`, &controllers.IpaslogController{}, "get:GetLogs")
 
     // 제어어
 

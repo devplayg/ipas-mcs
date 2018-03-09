@@ -24,8 +24,16 @@ $.extend({
     }
 });
 
+// jQuery
+jQuery.fn.addHidden = function (name, value) {
+    return this.each(function () {
+        var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
+        $(this).append($(input));
+    });
+};
+
 // Mask
-$( ".mask_yyyymmddhhii" ).mask( "0000-00-00 00:00" );
+$( ".mask-yyyymmddhhii" ).mask( "0000-00-00 00:00" );
 $( ".mask-ipv4-cidr" ).mask( "099.099.099.099/09" );
 $( ".mask-port" ).mask( "09999" );
 $( ".mask-0999" ).mask( "0999" );
@@ -57,9 +65,11 @@ function inet_ntoa(num) {
     return d;
 }
 
-function getBit(value, pos) {
-    return !!( value & ( 1 << pos ) );
-}
+
+
+// function getBit(value, pos) {
+    // return !!( value & ( 1 << pos ) );
+// }
 
 // function getXsrsToken() {
 //     var _xsrf = Cookies.get( "_xsrf" ).split( "|" ),

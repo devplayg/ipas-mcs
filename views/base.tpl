@@ -41,7 +41,7 @@
     </head>
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
-        <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header navbar navbar-fixed-top hidden">
             <div class="page-header-inner ">
                 <div class="page-logo">
                     <a href="index.html">
@@ -564,12 +564,9 @@
         <script src="/static/assets/js/common.js" type="text/javascript"></script>
         <script src="/static/assets/js/formatter.js" type="text/javascript"></script>
         <script>
-            {{/*// Timezone*/}}
-            {{/*var member = { "timezone": "{{.member.Timezone}}" || "Asia/Seoul" },*/}}
-                {{/*jsonvars = {*/}}
-                    {{/*"ctrlName": {{.ctrl}},*/}}
-                    {{/*"actName":  {{.act}}*/}}
-                {{/*};*/}}
+            // Timezone
+            var member = { "timezone": "{{.member.Timezone}}" || "Asia/Seoul" },
+                jsonvars = { "ctrl": {{.ctrl}}, "act":  {{.act}} };
 
             // Sidebar
             Layout.setSidebarMenuActiveLink("match");

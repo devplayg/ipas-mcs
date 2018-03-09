@@ -8,6 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"strings"
 	"time"
+	"html/template"
 	"net/url"
 	"github.com/davecgh/go-spew/spew"
 )
@@ -80,10 +81,11 @@ func (c *baseController) Prepare() {
 	c.Data["title"] = beego.BConfig.AppName
 	//c.Data["member"] = c.GetMember()
 	//c.Data["IsLogged"] = c.IsLogged
-	//c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["xsrf_token"] = c.XSRFToken()
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
+	c.Data["member"] = c.member
 }
 
 func (c *baseController) loginRequired(required bool) {
