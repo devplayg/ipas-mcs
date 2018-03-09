@@ -44,6 +44,19 @@
                     </div>
 
                     <div class="modal-body">
+                        <div class="row lh18">
+                            <div class="col-lg-12 form-group">
+                                <div class="md-checkbox">
+                                    <input type="checkbox" name="fastPaging" class="md-check" {{if eq .filter.FastPaging "on"}}checked{{end}}>
+                                    <label for="FastPaging">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        <span style="margin: -10px 0px 0px 30px;">Fast Paging</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -69,7 +82,7 @@ data-url="/ipaslog/getlogs/?StartDate={{.filter.StartDate}}&EndDate={{.filter.En
         {* 페이지 크기*}
         data-page-size="{{.filter.Limit}}"
         {* 정렬 *}
-        data-sort-name="rdate"
+        data-sort-name="date"
         data-sort-order="desc"
         {* 페이징 *}
     {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
