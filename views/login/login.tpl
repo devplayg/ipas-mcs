@@ -1,7 +1,7 @@
 {{template "base-blank.tpl" .}}
 
 {{define "css"}}
-<link href="/static/modules/login/login.css" rel="stylesheet" type="text/css" />
+<link href="/static/modules/login/login.css_" rel="stylesheet" type="text/css" />
 {{end}}
 
 {{define "contents"}}
@@ -32,13 +32,16 @@
                 <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
 
             <div class="note note-danger hidden"></div>
-            <div class="form-actions ">
+
+            <div class="form-actions">
                 <button type="submit" class="btn green uppercase">Login</button>
+                <!--
                 <label class="rememberme check mt-checkbox mt-checkbox-outline">
                     <input type="checkbox" name="remember" value="1" />Remember
                     <span></span>
                 </label>
                 <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
+                -->
             </div>
 
             <div class="login-options hidden">
