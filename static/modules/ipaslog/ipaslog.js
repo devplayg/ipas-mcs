@@ -151,9 +151,13 @@ $(function() {
         $( "#form-filter input[name=limit]" ).val ( size );
 
     }).on( "refresh.bs.table", function() { // 테이블 새로고침 이벤트 발생 시(고속 페이징)
-        if ( $( "#form-filter input[name=fast_paging]" ).is( ":checked" ) ) {
+        console.log(1);
+        if ( $( "#form-filter input[name=fastPaging]" ).is( ":checked" ) ) {
+            console.log(3);
             movePage( 0, true );
         }
+    }).on( "sort.bs.table", function ( e, name, order ) {
+        //console.log(name + " === " + order )
     });
 
 
@@ -174,24 +178,24 @@ $(function() {
         }
         $( ".btn-page-text" ).text( paging.no );
 
-
         // 페이징 컨트롤러
         paging.blockIndex = Math.floor( (paging.no - 1) / paging.blockSize );
         if ( paging.blockIndex != paging.blockIndex_before || is_refresh ) {
             var param = {
                 offset: ( paging.size * paging.blockSize ) * paging.blockIndex,
                 limit: paging.size * paging.blockSize,
+                sort: $table.bootstrapTable("getOptions").sortName,
+                order: $table.bootstrapTable("getOptions").sortOrder
             };
 
             var url = "/ipaslog/getlogs/?" + $( "#form-filter :input" ).serialize() + "&" + $.param( param );
-            console.log(url);
 
             // 데이터 조회
             console.log( 'Fetching' );
             $.ajax({
-                type  : "GET",
-                async : true,
-                url   : url
+                type:  "GET",
+                async: true,
+                url:   url
             }).done( function( result ) {
                 logs = result || []; // 값이 null 이면 크기0의 배열을 할당
                 showTableData( $table, logs, paging );
