@@ -16,6 +16,7 @@ func init() {
     // 대시보드
 
     // 로그
+	beego.Router(`/ipaslog`, &controllers.IpaslogController{})
 
     // 제어어
 

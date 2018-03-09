@@ -17,7 +17,7 @@
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="/static/assets/css/themes/darkblue.min.css_" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Fonts -->

@@ -64,7 +64,7 @@ $( "#form-login" ).validate({
 
                 });
             } else {
-                $( ".note", $form ).text( result.Message + " / Code: " + result.Code ).removeClass( "hidden" );
+                $( ".note", $form ).text( result.message ).removeClass( "hidden" );
             }
         });
     },

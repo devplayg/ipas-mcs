@@ -23,7 +23,7 @@ func (c *LoginController) CtrlPrepare() {
 // 로그인 페이지
 func (c *LoginController) Get() {
 	if c.isLogged {
-		uri := beego.AppConfig.DefaultString("home_uri", "/syslog")
+		uri := beego.AppConfig.DefaultString("home_uri", "/ipaslog")
 		c.Redirect(uri, 302)
 	} else {
 		if len(c.GetString("redirectUri")) > 0 {
