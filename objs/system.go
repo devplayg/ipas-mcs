@@ -34,3 +34,18 @@ type AuditMsg struct {
 	Message  interface{}
 	Detail   interface{}
 }
+
+type CommonFilter struct {
+	StartDate  string `form:"startDate"`
+	EndDate    string `form:"endDate"`
+	FastPaging string `form:"fastPaging"`
+	FoundRows  string
+
+	// Paging
+	Limit  int    `form:"limit"`
+	Offset int    `form:"offset"`
+
+	// Sort
+	Order  string `form:"order"`
+	Sort   string `form:"sort"`
+}
