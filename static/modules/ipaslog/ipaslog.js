@@ -35,8 +35,8 @@ $(function() {
         submitHandler: function( form, e ) {
             e.preventDefault();
 
-            if ( ! $( "input[name=fast_paging]", form ).is( ":checked" ) ) {
-                $( form ).addHidden( "fast_paging", "off" );
+            if ( ! $( "input[name=fastPaging]", form ).is( ":checked" ) ) {
+                $( form ).addHidden( "fastPaging", "off" );
             }
             form.submit();
         },
@@ -230,7 +230,7 @@ $(function() {
     function updateFilterStatus() {
 
         var fields = $( "#form-filter :input" )
-            .not( "input[type='hidden'], [name='StartDate'], [name='EndDate'], [name='FastPaging'], [name='limit'], [name='score']" ) // 제외할 항목
+            .not( "input[type='hidden'], [name='startDate'], [name='endDate'], [name='fastPaging'], [name='limit'], [name='score']" ) // 제외할 항목
             .serializeArray();
 
         // 항목에 조건값이 한 개 이상 설정되어 있으면
