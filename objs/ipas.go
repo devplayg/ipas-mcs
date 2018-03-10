@@ -18,8 +18,9 @@ type IpasLog struct {
 type IpasFilter struct {
 	CommonFilter
 
-	Orgs       []int
-	SubOrgs    []int
-	RiskLevels []int
-	Contents   string
+	Org       []int
+	SubOrg    []int
+	RiskLevel []int  `form:"risk_level[]"`
+	Contents  string `form:"contents"`
+	Guid      string `form:"guid"`
 }

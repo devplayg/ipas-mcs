@@ -28,7 +28,7 @@
         <!-- Plugins -->
         <link href="/static/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/plugins/bootstrap-table/bootstrap-table.css" rel="stylesheet" type="text/css" />
+        <link href="/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
         <link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -545,7 +545,6 @@
         <script src="/static/assets/js/layout.js" type="text/javascript"></script>
         <script src="/static/assets/js/quick-sidebar.min.js" type="text/javascript"></script>
 
-
         <!-- Plugins -->
         <script src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
@@ -564,9 +563,13 @@
         <script src="/static/assets/js/common.js" type="text/javascript"></script>
         <script src="/static/assets/js/formatter.js" type="text/javascript"></script>
         <script>
+
             // Timezone
             var member = { "timezone": "{{.member.Timezone}}" || "Asia/Seoul" },
-                jsonvars = { "ctrl": {{.ctrl}}, "act":  {{.act}} };
+                reqVars = {{.reqVars}};
+
+            reqVars["ctrl"] = {{.ctrl}};
+            reqVars["act"] = {{.act}};
 
             // Sidebar
             Layout.setSidebarMenuActiveLink("match");

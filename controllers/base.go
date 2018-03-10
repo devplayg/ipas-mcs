@@ -66,7 +66,8 @@ func (c *baseController) Prepare() {
 		spew.Println("=============START=====================")
 		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, route=%s, ReqUrl=%s", c.Ctx.Input.Method(), c.ctrlName, c.actName, c.isLoginRequired, c.acl, c.isLogged, c.IsAjax(), c.Data["RouterPattern"], c.Ctx.Request.URL.String())
 		spew.Dump(c.Input()) // Input body
-		//spew.Dump(c.Ctx.Request.Header)
+
+
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
 		spew.Println("=============END=====================")
 	}
@@ -86,6 +87,7 @@ func (c *baseController) Prepare() {
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
 	c.Data["member"] = c.member
+	c.Data["reqVars"] =c.Input()
 }
 
 func (c *baseController) loginRequired(required bool) {

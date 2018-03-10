@@ -54,7 +54,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	}
 
 	if filter.FastPaging == "" {
-		filter.FastPaging = "on"
+		filter.FastPaging = "off"
 	}
 
 	return &filter
