@@ -25,11 +25,13 @@
                     <button type="submit" class="btn btn-primary" value="Search"/>Search</button>
                     <a class="btn btn-default" href=".">Cancel</a>
 
+                    {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
                     <div class="input-group btn-group btn-page-group">
                         <button type="button" class="btn btn-primary btn-move-page btn-prev" data-direction="-1" data-loading-text="&lt;">&lt;</button>
                         <button type="button" class="btn btn-primary btn-move-page btn-page-text" data-direction="0">1</button>
                         <button type="button" class="btn btn-primary btn-move-page btn-next" data-direction="1" data-loading-text="&gt;">&gt;</button>
                     </div>
+                    {{end}}
                     <a href="#" data-toggle="modal" data-target="#modal-filter"><i class="fa fa-filter icon-filter hidden font-red"></i> Filter</a>
                 </div>
             </div>
@@ -44,12 +46,32 @@
                     </div>
 
                     <div class="modal-body">
-                        <div class="row lh18">
-                            <div class="col-lg-12 form-group">
-                                    <input type="checkbox" id="fastPaging" name="fastPaging" class="md-check" {{if eq .filter.FastPaging "on"}}checked{{end}}>
-                                    <label for="FastPaging">
-                                        <span>Fast Paging</span>
-                                    </label>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">GUID</label>
+                                    <input type="text" class="form-control" name="guid" value="{{.filter.Guid}}">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="control-label">Risk level</label>
+                                    <select name="risk_level[]" class="selectpicker" data-width="100%" data-size="5" multiple title="Risk level">
+                                        <option value="1">Risk1</option>
+                                        <option value="2">Risk2</option>
+                                        <option value="3">Risk3</option>
+                                        <option value="4">Risk4</option>
+                                        <option value="5">Risk5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label class="mt-checkbox mt-checkbox-outline">
+                                    <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> Fast paging
+                                    <span></span>
+                                </label>
                             </div>
                         </div>
 
@@ -63,7 +85,9 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}"
+/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}
+
+
 <table  id="table-log"
         class="table-condensed"
         data-toggle="table"
@@ -83,14 +107,13 @@ data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.En
     {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
     {{else}} {* 일반 페이징 *}
-            data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}"
+            data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
             data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
-            data-page-list="[10, 25, 50, 100, 1000, 2000, 5000]"
+
             data-pagination-v-align="both"
     {{end}}
-
 >
     <thead>
     <tr>

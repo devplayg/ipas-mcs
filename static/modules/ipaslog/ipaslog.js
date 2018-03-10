@@ -8,7 +8,7 @@ $(function() {
     // 로그 테이블
     var logs        = [], // 로그 저장소(고속 페이징)
         $table      = $( "#table-log" ),
-        tableKey    = getTableKey( $table, jsonvars.ctrl, jsonvars.act ); // 테이블 고유키
+        tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
 
     // 로그 페이징 변수
     var paging = {
@@ -43,21 +43,10 @@ $(function() {
         ignore: "input[type='hidden']",
         errorClass: "help-block",
         rules: {
-            Md5: {
-                minlength: 10,
-                maxlength: 32
+            guid: {
+                minlength: 2,
+                maxlength: 5
             },
-            SrcIpCidr: {
-                ipv4_cidr: true
-            },
-            SrcPortStart: {
-                min: 0,
-                max: 65535
-            },
-            SrcPortEnd: {
-                min: 0,
-                max: 65535
-            }
         },
         messages: {
             SrcPortStart: "0 ~ 65535",
@@ -366,279 +355,21 @@ $(function() {
         //         }
         //
         //         // 빠른 페이징일 때는
-        //         if ( $( "#form-filter input[name='fast_paging']" ).is( ":checked" ) ) {
+                if ( $( "#form-filter input[name='fastPaging']" ).is( ":checked" ) ) {
                     movePage( 0, false ); // 첫 페이지 디스플레이
-        //         }
+                }
         //     });
     }
 
     // 선택박스 초기설정
     function resetMultiSelctedBoxesOfFilter() {
-        //     var cols = "category,filetype,trans_type,ext3";
-        //     $.each(cols.split( "," ), function(i, c) {
-        //         if ( jsonvars[c] !== undefined ) {
-        //             $( "#form-filter select[name='" + c + "[]']" ).selectpicker( "val", jsonvars[c] ).selectpicker( "refresh" );
-        //         }
-        //     });
+            var cols = "risk_level[]";
+            $.each(cols.split( "," ), function(i, c) {
+                if ( reqVars[c] !== undefined ) {
+                    $( "#form-filter select[name='" + c + "']" ).selectpicker( "val", reqVars[c] ).selectpicker( "refresh" );
+                }
+            });
     }
 
 });
 
-
-// $(function() {
-// /**
-//  * 0. Test
-//  *
-//  */
-// //$( "#modal-filter" ).modal( "show" );
-// //$( "#modal-ipcard" ).modal( "show" );
-//
-//
-// /**
-//  * 1. Initialize
-//  *
-//  */
-// $( ".form_datetime" ).datetimepicker({
-//     pickerPosition : "bottom-left",
-//     autoclose      : 1,
-//     todayHighlight : 1,
-// });
-//
-// // Table
-// $( "#table-log" ).bootstrapTable();
-// var paging = {
-//     page   : 1,
-//     limit  : $( "#table-log" ).data( "page-size" ),
-//     offset : 0
-// };
-//
-//
-// // Load first page
-// if ( $( "#filter input[name='FastPaging']" ).is( ":checked" ) ) {
-//     movePage( 0 );
-// }
-//
-// // Set boxes
-// $( "#select-groups" ).selectpicker( "hide" );
-// $( "#select-networks" ).selectpicker( "hide" );
-//
-// // Initialize assets
-// var assets = { 0: "" },
-//     asset_count = {
-//         "sensor"  : 0,
-//         "group"   : 0,
-//         "network" : 0
-//     };
-// $.ajax({
-//     type  : "GET",
-//     async : true,
-//     url   : "/myassets/1"
-// }).done( function( myAssets ) {
-//
-//     // Sensor
-//     $.each( myAssets, function( idx, sensor ) { // Sensor
-//         $( "#select-sensors" ).append(
-//             $( "<option>", {
-//                 value: sensor.AssetId,
-//                 text: sensor.Name,
-//             })
-//         );
-//         asset_count.sensor++;
-//
-//         var $optgroup_group = $( "<optgroup>", {
-//             label: sensor.Name,
-//         });
-//         $.each( sensor.children, function( i, group ) { // Group
-//             $optgroup_group.append(
-//                 $( "<option>", {
-//                     value: group.AssetId,
-//                     text: group.Name,
-//                 })
-//             );
-//             asset_count.group++;
-//
-//             var $optgroup_network = $( "<optgroup>", {
-//                 label: group.Name,
-//             });
-//             $.each( group.children, function( i, network ) { // Network
-//                 $optgroup_network.append(
-//                     $( "<option>", {
-//                         value: network.AssetId,
-//                         text: network.Name,
-//                     })
-//                 );
-//                 asset_count.network++;
-//             });
-//             assets[ group.AssetId ] = $optgroup_network;
-//         });
-//         assets[ sensor.AssetId ] = $optgroup_group;
-//     });
-// }).always( function() {
-//     // Selected sensors
-//     $( "#select-sensors" ).selectpicker( "val", selected_sensors ).selectpicker( "refresh" );
-//     if ( selected_sensors !== null && selected_sensors.length > 0 ) {
-//         updateSelectGroups();
-//     }
-//
-//     // Selected groups
-//     $( "#select-groups" ).selectpicker( "val", selected_groups ).selectpicker( "refresh" );
-//     if ( selected_groups !== null && selected_groups.length > 0 ) {
-//         updateSelectNetworks();
-//     }
-//
-//     // Selected networks
-//     $( "#select-networks" ).selectpicker( "val", selected_networks ).selectpicker( "refresh" );
-// });
-// updateFilterStatus();
-//
-//
-// /**
-//  * 2. Events
-//  *
-//  */
-// // Validation
-// $( "#filter" ).validate({
-//     submitHandler: function( form, e ) {
-//         e.preventDefault();
-//         form.submit();
-//     },
-//     ignore: "input[type='hidden']",
-//     errorClass: "help-block",
-//     rules: {
-//         Md5: {
-//             minlength: 10,
-//             maxlength: 32
-//         },
-//         SrcIpCidr: {
-//             ipv4_cidr: true
-//         },
-//         SrcPortStart: {
-//             min: 0,
-//             max: 65535
-//         },
-//         SrcPortEnd: {
-//             min: 0,
-//             max: 65535
-//         }
-//     },
-//     messages: {
-//         SrcPortStart: "0 ~ 65535",
-//         SrcPortEnd  : "0 ~ 65535",
-//     },
-//     highlight: function( element ) {
-//         $( element ).closest( ".form-group" ).addClass( "has-error" );
-//     },
-//     unhighlight: function( element ) {
-//         $( element ).closest( ".form-group" ).removeClass( "has-error" );
-//     }
-// });
-//
-//
-// // Page buttons' events
-// $( ".btn-move-page" ).click(function(e) {
-//     e.preventDefault();
-//     var direction = $( this ).data( "direction" );
-//     $( this ).prop( "disabled", true );
-//
-//     movePage(direction);
-// });
-//
-//
-// // Table events
-// $( "#table-log" ).on( "load-success.bs.table", function ( e, data ) {
-//     $( ".btn-move-page" ).prop( "disabled", false );
-//
-//     if ( $( "#table-log" ).bootstrapTable( "getData" ).length == 0
-//             || $( "#table-log" ).bootstrapTable( "getData" ).length < $( "#table-log" ).data( "page-size" ) ) {
-//         $( ".btn-next" ).prop( "disabled", true );
-//     }
-// });
-//
-//
-// // Modal filter
-// $( "#modal-filter" ).on( "hidden.bs.modal", function () {
-//     // Reset and clear form
-//     $( "#filter" ).validate().resetForm();
-//     $( "#filter" ).get( 0 ).reset();
-// });
-//
-//
-// // Select boxes
-// $( "#select-sensors" ).change(function () {
-//     updateSelectGroups();
-//     updateSelectNetworks();
-// });
-// $( "#select-groups" ).change(function () {
-//     updateSelectNetworks();
-// });
-//
-//
-// /**
-//  * 3. Functions
-//  *
-//  */
-// function movePage(direction) {
-//     paging.offset = paging.offset + ( paging.limit * direction );
-//     if ( paging.offset < 0 ) {
-//         paging.offset = 0;
-//     }
-//     $( ".btn-page-text" ).text( paging.offset / paging.limit + 1 );
-//
-//     var param = {
-//         "StartDate"    : $( '#filter input[name="StartDate"]' ).val(),
-//         "EndDate"      : $( '#filter input[name="EndDate"]' ).val(),
-//         "Msg"          : $( '#filter input[name="Msg"]' ).val(),
-//         "SrcIpCidr"    : $( '#filter input[name="SrcIpCidr"]' ).val(),
-//         "SrcPortStart" : $( '#filter input[name="SrcPortStart"]' ).val(),
-//         "SrcPortEnd"   : $( '#filter input[name="SrcPortEnd"]' ).val(),
-//         "FastPaging"   : $( '#filter input[name="FastPaging"]' ).is( ":checked" ) ? "on" : "off",
-//         "offset"       : paging.offset,
-//         "limit"        : paging.limit
-//     };
-//     var url = "/filetranslog?" + $.param(param);
-//     $('#table-log').bootstrapTable( 'refresh', { url: url } );
-// }
-//
-//
-// function updateFilterStatus() {
-//     if (   ( selected_sensors !== null && selected_sensors.length > 0 )
-//         || ( selected_groups !== null && selected_groups.length > 0 )
-//         || ( selected_networks !== null && selected_networks.length > 0 )
-//         || $( "#filter input[name=SrcIpCidr]" ).val().length > 0
-//         || $( "#filter input[name=SrcPortStart]" ).val().length > 0
-//         || $( "#filter input[name=SrcPortEnd]" ).val().length > 0
-//     ) {
-//         $( ".icon-filter" ).removeClass( "hidden" );
-//     }
-// }
-//
-//
-// function updateSelectGroups() {
-//     if ( $( "#select-sensors :selected" ).length > 0) {
-//         $( "#select-groups" ).empty();
-//         $( "#select-sensors :selected" ).map(function() {
-//             var assetId = $( this ).val();
-//             $( "#select-groups" ).append( assets[ assetId ] );
-//         });
-//         $( "#select-groups" ).selectpicker( "refresh" ).selectpicker( "show" );
-//     } else {
-//         $( "#select-groups" ).empty().selectpicker( "hide" );
-//         $( "#select-networks" ).empty().selectpicker( "hide" );
-//     }
-// }
-//
-//
-// function updateSelectNetworks() {
-//     if ( $( "#select-groups :selected" ).length > 0) {
-//         $( "#select-networks" ).empty();
-//
-//         $( "#select-groups :selected" ).map(function() {
-//             var assetId = $( this ).val();
-//             $( "#select-networks" ).append( assets[ assetId ] );
-//         });
-//         $( "#select-networks" ).selectpicker( "refresh" ).selectpicker( "show" );
-//     } else {
-//         $( "#select-networks" ).empty().selectpicker( "hide" );
-//     }
-// }
-// });

@@ -27,8 +27,8 @@ $.extend({
 // jQuery
 jQuery.fn.addHidden = function (name, value) {
     return this.each(function () {
-        var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
-        $(this).append($(input));
+        var input = $( "<input>" ).attr( "type", "hidden" ).attr( "name", name ).val( value );
+        $( this ).append( $( input ) );
     });
 };
 
