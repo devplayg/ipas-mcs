@@ -15,9 +15,12 @@ func init() {
 
     // 대시보드
 
-    // 로그
-	beego.Router(`/ipaslog`, &controllers.IpaslogController{})
-	beego.Router(`/ipaslog/getlogs`, &controllers.IpaslogController{}, "get:GetLogs")
+    // IPAS 로그
+	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
+
+	// 사용자
+	beego.Router(`/members/`, &controllers.MemberController{})
+	//beego.Router(`/members/, &controllers.IpaslogController{}, "get:GetLogs")
 
     // 제어어
 

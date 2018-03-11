@@ -63,11 +63,12 @@ func (c *baseController) Prepare() {
 
 	// 요청 디버깅 코드
 	if beego.BConfig.RunMode == "dev" {
-		spew.Println("=============START=========================================================")
+
+		log.Debug("=============START=================================")
 		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, route=%s, ReqUrl=%s", c.Ctx.Input.Method(), c.ctrlName, c.actName, c.isLoginRequired, c.acl, c.isLogged, c.IsAjax(), c.Data["RouterPattern"], c.Ctx.Request.URL.String())
 		spew.Dump(c.Input()) // Input body
-
-
+		//spew.Dump(c.Ctx.Request.Header)
+		//log.Debugf("Content-Type: %s", c.Ctx.Request.Header["Content-Type"])
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
 	}
 
@@ -195,8 +196,7 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 	return nil
 }
 
-
-func (c *baseController) toJson(logs interface{}, total int64, err error, fastPaging string) {
+func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {
 	if fastPaging == "on" {
 		c.Data["json"] = logs
 	} else {

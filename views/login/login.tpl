@@ -1,7 +1,7 @@
 {{template "base-blank.tpl" .}}
 
 {{define "css"}}
-<link href="/static/modules/login/login.css_" rel="stylesheet" type="text/css" />
+<link href="/static/modules/login/login.css" rel="stylesheet" type="text/css" />
 {{end}}
 
 {{define "contents"}}

@@ -5,26 +5,27 @@ import (
 )
 
 type Member struct {
-	MemberId           int
-	Username           string
-	Password           string `json:"-"`
+	MemberId int    `json:"member_id"`
+	Username string `json:"username"`
+	Password string `json:"-"`
+	Salt string `json:"-"`
+	Name string `json:"name"`
+	Position int `json:"position"`
+	Timezone string `json:"-"`
+	Location  *time.Location `json:"-"`
+	SessionId string         `json:"-"`
+	FailedLoginCount   int `json:"failed_login_count"`
 	//PasswordConfirm    string `json:"-"`
 	//OldPassword        string `json:"-"`
 	//NewPassword        string `json:"-"`
 	//NewPasswordConfirm string `json:"-"`
 	//EncPassword        string `json:"-"`
 	//Email              string
-	Salt               string `json:"-"`
-	Name               string
 	//Status             int `json:"-"`
-	Position           int
-	//FailedLoginCount   int
-	Timezone           string `json:"-"`
 	//AllowedIp          string
 	//Usergroups         []int `json:"-"`
-	Location           *time.Location
-	SessionId          string `json:"-"`
 }
+
 //
 //type MemberConfig struct {
 //	MemberId int
