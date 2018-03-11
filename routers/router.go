@@ -13,7 +13,15 @@ func init() {
 	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
 
 	// 사용자
-	beego.Router(`/members/`, &controllers.MemberController{})
+	beego.Router(`/members`, &controllers.MemberController{})
+
+	// Post, Delete, Patch, Get(html, json)
+	/*
+		post /members
+		delete /members/1
+		patch / members/1
+		delete /members/1
+	 */
 
 	// 제어
 

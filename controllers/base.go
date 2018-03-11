@@ -13,20 +13,6 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
-const (
-	User = 1 << iota
-	UnknownLeve2
-	UnknownLeve3
-	UnknownLeve4
-	UnknownLeve5
-	UnknownLeve6
-	UnknownLeve7
-	UnknownLeve8
-	UnknownLeve9
-	Administrator // 512
-	Superman      // 1024
-)
-
 type CtrlPreparer interface {
 	CtrlPrepare()
 }
@@ -51,7 +37,7 @@ func (c *baseController) Prepare() {
 
 	// 기본 접근권한 설정
 	c.isLoginRequired = true         // 로그인 필수
-	c.grant(Superman, Administrator) // 관리자 이상만 실행 허용
+	c.grant(objs.Superman, objs.Administrator) // 관리자 이상만 실행 허용
 	c.isLogged = false               // 로그인 상태
 
 	// 호출된 Controller 접근권한 덮어쓰기

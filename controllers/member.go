@@ -17,6 +17,13 @@ func (c *MemberController) Get() {
 		checkErr(err)
 		c.serveResultJson(members, total, err, "off")
 	} else { // Ajax 외 요청이면 HTML 리턴
+		positions := make(map[string]int)
+		positions["User"] = objs.User
+		positions["Administrator"] = objs.Administrator
+		positions["Superman"] = objs.Superman
+		positions["Observer"] = objs.Observer
+		c.Data["positions"] = positions
+
 		c.setTpl("member.tpl")
 	}
 }
@@ -28,17 +35,6 @@ func (c *MemberController) getFilter() *objs.CommonFilter {
 	if err := c.ParseForm(&filter); err != nil {
 		log.Error(err)
 	}
-
-	//// 페이징 처리
-	//if filter.Sort == "" {
-	//	filter.Sort = "position"
-	//}
-	//if filter.Order == "" {
-	//	filter.Order = "desc"
-	//}
-	//if filter.Limit < 1 {
-	//	filter.Limit = 10
-	//}
 
 	if filter.FastPaging == "" {
 		filter.FastPaging = "off"

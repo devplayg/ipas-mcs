@@ -4,11 +4,10 @@ $(function() {
      * 1. 초기화
      *
      */
-    //
+
     //     // 로그 테이블
-    // var logs        = [], // 로그 저장소(고속 페이징)
-    //     $table      = $( "#table-log" ),
-    //     tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
+    var $table      = $( "#table-log" ),
+        tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
     //
     // // 로그 페이징 변수
     // var paging = {
@@ -45,7 +44,7 @@ $(function() {
     // resetMultiSelctedBoxesOfFilter();
 
     // 필터상태 업데이트
-    updateFilterStatus();
+    // updateFilterStatus();
 
 
 

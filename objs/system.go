@@ -1,5 +1,19 @@
 package objs
 
+const (
+	User = 1 << iota
+	UnknownLeve2
+	UnknownLeve3
+	UnknownLeve4
+	UnknownLeve5
+	UnknownLeve6
+	UnknownLeve7
+	UnknownLeve8
+	Observer      // 256
+	Administrator // 512
+	Superman      // 1024
+)
+
 type ByteSize float64
 
 const (
