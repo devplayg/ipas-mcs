@@ -12,11 +12,11 @@ $(function() {
 
     // 로그 페이징 변수
     var paging = {
-        no                 : 1,  // 페이지 번호
+        no                 : 1,                          // 페이지 번호
         size               : $table.data( "page-size" ), // 페이지 크기
-        blockIndex         : 0,  // 블럭 인덱스 (현재)
-        blockIndex_before  : -1, // 블럭 인덱스 (이전)
-        blockSize          : 3  // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 한 번에 조회함)
+        blockIndex         : 0,                          // 블럭 인덱스 (현재)
+        blockIndex_before  : -1,                         // 블럭 인덱스 (이전)
+        blockSize          : 3                           // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 미리 조회)
     };
 
     // 날짜
@@ -30,7 +30,6 @@ $(function() {
     });
 
     // 필터 유효성 체크
-
     $( "#form-filter" ).validate({
         submitHandler: function( form, e ) {
             e.preventDefault();
@@ -38,6 +37,9 @@ $(function() {
             if ( ! $( "input[name=fastPaging]", form ).is( ":checked" ) ) {
                 $( form ).addHidden( "fastPaging", "off" );
             }
+            $( form ).addHidden( "sort", $table.bootstrapTable("getOptions").sortName );
+            $( form ).addHidden( "order", $table.bootstrapTable("getOptions").sortOrder );
+
             form.submit();
         },
         ignore: "input[type='hidden']",
@@ -140,13 +142,17 @@ $(function() {
         $( "#form-filter input[name=limit]" ).val ( size );
 
     }).on( "refresh.bs.table", function() { // 테이블 새로고침 이벤트 발생 시(고속 페이징)
-        console.log(1);
         if ( $( "#form-filter input[name=fastPaging]" ).is( ":checked" ) ) {
-            console.log(3);
             movePage( 0, true );
         }
     }).on( "sort.bs.table", function ( e, name, order ) {
-        //console.log(name + " === " + order )
+        //console.log(name + " / " + order)
+        $( "#form-filter input[name=sort]" ).val ( name );
+        $( "#form-filter input[name=order]" ).val ( order );
+        // console.log($( this ).data( "sort-name"));
+        // $( this ).data( "sort-name", name );
+        // $( this ).data( "sort-order", order);
+        console.log(name + " === " + order )
     });
 
 

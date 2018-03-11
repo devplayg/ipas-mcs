@@ -22,6 +22,10 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 		where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
 	}
 
+	if len(filter.RiskLevel) > 0 {
+		where += fmt.Sprintf(" and risk_level in (%s)", libs.JoinInt(filter.RiskLevel, ","))
+	}
+
 	if len(filter.Guid) > 0 {
 		where += " and guid like ?"
 		args = append(args, "%"+filter.Guid+"%")
