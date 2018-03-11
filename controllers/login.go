@@ -1,15 +1,14 @@
 package controllers
 
 import (
-	"github.com/devplayg/ipas-mcs/models"
-	"github.com/devplayg/ipas-mcs/objs"
-	"github.com/astaxie/beego/orm"
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
-	"bytes"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
+	"github.com/devplayg/ipas-mcs/models"
+	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type LoginController struct {
@@ -47,14 +46,14 @@ func (c *LoginController) Post() {
 
 	// 사용자 정보 조회
 	member, err := models.GetMember(map[string]interface{}{
-		"t.username": username,
+		"username": username,
 	})
 
 	if err != nil { // 존재하지 않으면
 		result.Message = err.Error()
 	} else {
-		userPassword,  _ := hex.DecodeString(encPassword)
-		serverPassword := sha256.Sum256([]byte(member.Password+member.Salt))
+		userPassword, _ := hex.DecodeString(encPassword)
+		serverPassword := sha256.Sum256([]byte(member.Password + member.Salt))
 
 		if bytes.Equal(userPassword, serverPassword[:]) {
 			result.State = true
@@ -67,7 +66,7 @@ func (c *LoginController) Post() {
 				"redirectUrl": beego.AppConfig.DefaultString("home_url", "/syslog"),
 			}
 		} else {
-			result.Message =  c.Tr("msg_fail_to_request_open") + " (-1)"
+			result.Message = c.Tr("msg_fail_to_request_open") + " (-1)"
 		}
 	}
 
@@ -80,8 +79,10 @@ func (c *LoginController) GetPasswordSalt() {
 	username := c.Ctx.Input.Param(":username")
 
 	// Check if member exists
-	member, err := models.GetMemberByUsername(username)
-	spew.Dump(member)
+	//member, err := models.GetMemberByUsername(username)
+	member, err := models.GetMember(map[string]interface{}{
+		"username": username,
+	})
 	c.audit("test_logging", map[string]string{"username": username}, nil)
 	if err != nil {
 		// 결과 값이 없는 상황 이외에는 시스템 로깅

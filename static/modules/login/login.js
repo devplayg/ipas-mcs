@@ -57,7 +57,7 @@ $( "#form-login" ).validate({
                     if ( result2.state ) {
                         window.location.href = result2.data.redirectUrl;
                     } else {
-                    //     $( ".note", $form ).text( result2.Message + " / Code: " + result2.Code ).removeClass( "hidden" );
+                        $( ".note", $form ).text( result2.message ).removeClass( "hidden" );
                     }
 
                 }).always(function() {
