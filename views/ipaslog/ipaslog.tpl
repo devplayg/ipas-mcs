@@ -1,9 +1,8 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-
 <div id="toolbar-log">
-    <form id="form-filter" role="form" method="post" action="/ipaslog">
+    <form id="form-filter" role="form" method="post">
         {{/*<input type="hidden" name="sort" value="{{.filter.Sort}}">*/}}
         {{/*<input type="hidden" name="order" value="{{.filter.Order}}">*/}}
         {{ .xsrfdata }}
@@ -35,7 +34,7 @@
                         <button type="button" class="btn btn-primary btn-move-page btn-next" data-direction="1" data-loading-text="&gt;">&gt;</button>
                     </div>
                     {{end}}
-                    <a href="#" data-toggle="modal" data-target="#modal-filter"><i class="fa fa-filter icon-filter hidden font-red"></i> Filter</a>
+                    <a href="#" data-toggle="modal" data-target="#modal-filter"><i class="fa fa-filter icon-filter hidden font-red"></i>{{i18n .Lang "detail_filter"}}</a>
                 </div>
             </div>
         </div>
@@ -124,13 +123,11 @@ order={{.filter.Order}}
         {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
         {{else}} {* 일반 페이징 *}
-            data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
-
-        data-pagination="true"
+            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
+            data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
-            data-pagination-v-align="both"
-    {{end}}
+        {{end}}
 >
     <thead>
     <tr>

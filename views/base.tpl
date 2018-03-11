@@ -246,7 +246,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/ipaslog" class="nav-link"><span class="title">IPAS Log</span></a>
+                                    <a href="/ipaslogs" class="nav-link"><span class="title">IPAS Log</span></a>
                                 </li>
                             </ul>
                         </li>

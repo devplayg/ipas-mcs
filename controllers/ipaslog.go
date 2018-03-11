@@ -13,18 +13,19 @@ type IpaslogController struct {
 
 func (c *IpaslogController) Get() {
 	filter := c.getFilter()
-	c.Data["filter"] = filter
-	c.setTpl("ipaslog.tpl")
+
+	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
+		filter := c.getFilter()
+		logs, total, err := models.GetIpaslog(filter)
+		c.serveResultJson(logs, total, err, filter.FastPaging)
+	} else { // Ajax 외 요청이면 HTML 리턴
+		c.Data["filter"] = filter
+		c.setTpl("ipaslog.tpl")
+	}
 }
 
 func (c *IpaslogController) Post() {
 	c.Get()
-}
-
-func (c *IpaslogController) GetLogs() {
-	filter := c.getFilter()
-	logs, total, err := models.GetIpaslog(filter)
-	c.toJson(logs, total, err, filter.FastPaging)
 }
 
 func (c *IpaslogController) getFilter() *objs.IpasFilter {
