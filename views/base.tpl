@@ -246,7 +246,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/filetranslog/render" class="nav-link"><span class="title">Download logs</span></a>
+                                    <a href="/ipaslog" class="nav-link"><span class="title">IPAS Log</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -258,38 +258,22 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/config/render" class="nav-link">
+                                    <a href="/configure" class="nav-link">
                                         <span class="title">System</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/members/render" class="nav-link">
+                                    <a href="/members" class="nav-link">
                                         <span class="title">Members</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/assets/render" class="nav-link">
+                                    <a href="/assets" class="nav-link">
                                         <span class="title">Assets</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
-                                <span class="title">Test</span>
-                                <span class="arrow open"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item">
-                                    <a href="/fileupload/render" class="nav-link"><span class="title">File upload</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/https/render" class="nav-link"><span class="title">Https</span></a>
-                                </li>
-                            </ul>
-                        </li>
-
                     </ul>
                 </div>
             </div>
@@ -548,8 +532,11 @@
         <!-- Plugins -->
         <script src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
-        <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        {{/*<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>*/}}
+        <!-- Bootstrap-table -->
         <script src="/static/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script src="/static/plugins/bootstrap-table/locale/bootstrap-table-{{.Lang}}.min.js" type="text/javascript"></script>
+
         <script src="/static/plugins/jquery-validation/jquery.validate.min.js" type="text/javascript"></script>
         <script src="/static/plugins/jquery-validation/common-validate-methods.js" type="text/javascript"></script>
         <script src="/static/plugins/jquery-mask/jquery.mask.min.js" type="text/javascript"></script>

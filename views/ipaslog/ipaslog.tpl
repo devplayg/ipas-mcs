@@ -1,8 +1,11 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
+
 <div id="toolbar-log">
     <form id="form-filter" role="form" method="post" action="/ipaslog">
+        {{/*<input type="hidden" name="sort" value="{{.filter.Sort}}">*/}}
+        {{/*<input type="hidden" name="order" value="{{.filter.Order}}">*/}}
         {{ .xsrfdata }}
 
         <div class="form-body">
@@ -22,8 +25,8 @@
                     </div>
 
                     <!-- Buttons -->
-                    <button type="submit" class="btn btn-primary" value="Search"/>Search</button>
-                    <a class="btn btn-default" href=".">Cancel</a>
+                    <button type="submit" class="btn btn-primary"/>{{i18n .Lang "log.search"}}</button>
+                    <a class="btn btn-default" href=".">{{i18n .Lang "log.cancel"}}</a>
 
                     {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
                     <div class="input-group btn-group btn-page-group">
@@ -37,6 +40,7 @@
             </div>
         </div>
 
+        <!-- 상세필터 -->
         <div id="modal-filter" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -68,8 +72,12 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4 form-group">
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> Fast paging
+                                <label class="control-label">Page size</label>
+                                <input type="text" class="form-control mask-09999" name="limit" value="{{.filter.Limit}}">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="mt-checkbox mt-checkbox-outline mt30">
+                                    <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> Page size
                                     <span></span>
                                 </label>
                             </div>
@@ -77,7 +85,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">{{i18n .Lang "log.search"}}</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -85,8 +93,17 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}
-
+<pre>
+startDate={{.filter.StartDate}}
+endDate={{.filter.EndDate}}
+fastPaging={{.filter.FastPaging}}
+guid={{.filter.Guid}}
+limit={{.filter.Limit}}
+sort={{.filter.Sort}}
+order={{.filter.Order}}
+{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}
+{{.Lang}}
+</pre>
 
 <table  id="table-log"
         class="table-condensed"
@@ -101,17 +118,17 @@
         {* 페이지 크기*}
         data-page-size="{{.filter.Limit}}"
         {* 정렬 *}
-        data-sort-name="date"
-        data-sort-order="desc"
+        data-sort-name="{{.filter.Sort}}"
+        data-sort-order="{{.filter.Order}}"
         {* 페이징 *}
-    {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
+        {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
-    {{else}} {* 일반 페이징 *}
+        {{else}} {* 일반 페이징 *}
             data-url="/ipaslog/getlogs/?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
-            data-pagination="true"
+
+        data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
-
             data-pagination-v-align="both"
     {{end}}
 >
@@ -121,7 +138,7 @@
         <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
         <th data-field="asset_level1" data-sortable="true">Group1</th>
         <th data-field="asset_level2" data-sortable="true">Group2</th>
-        <th data-field="risk_level" data-sortable="true">Group2</th>
+        <th data-field="risk_level" data-sortable="true">Risk</th>
         <th data-field="guid" data-sortable="true">GUID</th>
         <th data-field="contents" data-sortable="true">Contents</th>
     </tr>

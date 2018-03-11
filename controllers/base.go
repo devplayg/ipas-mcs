@@ -63,13 +63,12 @@ func (c *baseController) Prepare() {
 
 	// 요청 디버깅 코드
 	if beego.BConfig.RunMode == "dev" {
-		spew.Println("=============START=====================")
+		spew.Println("=============START=========================================================")
 		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, route=%s, ReqUrl=%s", c.Ctx.Input.Method(), c.ctrlName, c.actName, c.isLoginRequired, c.acl, c.isLogged, c.IsAjax(), c.Data["RouterPattern"], c.Ctx.Request.URL.String())
 		spew.Dump(c.Input()) // Input body
 
 
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
-		spew.Println("=============END=====================")
 	}
 
 	// 접근 제한
