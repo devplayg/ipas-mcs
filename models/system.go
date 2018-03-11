@@ -32,6 +32,12 @@ func UpdateRow(tableName string, pkColumn string, pkValue interface{}, data map[
 	return o.Raw(query, args).Exec()
 }
 
+func RemoveRow(tableName string, pkColumn string, pkValue interface{}) (sql.Result, error) {
+	query := fmt.Sprintf("delete from %s where %s = ?", tableName, pkColumn)
+	o := orm.NewOrm()
+	return o.Raw(query, pkValue).Exec()
+}
+
 // 감사로깅
 func Audit(log *objs.AuditMsg) error {
 	o := orm.NewOrm()

@@ -24,8 +24,8 @@
                     </div>
 
                     <!-- Buttons -->
-                    <button type="submit" class="btn btn-primary"/>{{i18n .Lang "log.search"}}</button>
-                    <a class="btn btn-default" href=".">{{i18n .Lang "log.cancel"}}</a>
+                    <button type="submit" class="btn btn-primary"/>{{i18n .Lang "search"}}</button>
+                    <a class="btn btn-default" href=".">{{i18n .Lang "cancel"}}</a>
 
                     {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
                     <div class="input-group btn-group btn-page-group">
@@ -84,8 +84,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">{{i18n .Lang "log.search"}}</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">{{i18n .Lang "search"}}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
                     </div>
                 </div>
             </div>

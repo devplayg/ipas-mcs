@@ -70,75 +70,13 @@ func GetMembers(filter *objs.CommonFilter) ([]objs.Member, int64, error) {
 	}
 	return rows, total, err
 }
-
-
-//func GetMembers(condMap map[string]interface{}) ([]objs.Member, error) {
 //
-//	// 검색조건 생성
-//	var where string
-//	args := make([]interface{}, 0)
-//	for k, v := range condMap {
-//		where += fmt.Sprintf(" and %s = ?", k)
-//		args = append(args, v)
-//	}
-//
+//func AddMember(member *objs.Member) (sql.Result, err) {
 //	query := `
-//        SELECT t.member_id, username, position, t.failed_login_count, t.status, timezone, t.name, t.session_id
-//        from mbr_member t
-//        where true %s
+//		insert into mbr_member(username, name, email, position)
+//		values(?, ?, ?, ?);
 //	`
-//	query = fmt.Sprintf(query, where)
-//	o := orm.NewOrm()
-//	var members []objs.Member
-//	_, err := o.Raw(query, args).QueryRows(&members)
-//	return members, err
 //}
 
-
-
-//func GetMemberById(memberId int) (*objs.Member, error) {
-//	member := objs.Member{}
-//
-//	o := orm.NewOrm()
-//	query := `
-//        SELECT t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status, timezone, t.name, t.session_id
-//        from mbr_member t
-//        	left outer join mbr_password t1 on t1.member_id = t.member_id
-//        where t.member_id = ?
-//    `
-//	err := o.Raw(query, memberId).QueryRow(&member)
-//	return &member, err
-//}
-//
-//func GetMemberByUsername(username string) (*objs.Member, error) {
-//	member := objs.Member{}
-//	o := orm.NewOrm()
-//	query := `
-//        SELECT t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status, timezone, t.name, t.session_id
-//        from mbr_member t
-//        	left outer join mbr_password t1 on t1.member_id = t.member_id
-//        where username = ?
-//    `
-//	err := o.Raw(query, username).QueryRow(&member)
-//	return &member, err
-//}
-
-
-//func UpdateMember(memberId int, data map[string]interface{}) (sql.Result, error) {
-//	query := `
-//		update mbr_member
-//		set %s
-//		where member_id = ?
-//	`
-//	args := make([]interface{}, 0)
-//	contents := make([]string, 0)
-//	for k, v := range data {
-//		contents = append(contents, fmt.Sprintf("%s = ?", k))
-//		args = append(args, v)
-//	}
-//	args = append(args, memberId)
-//	query = fmt.Sprintf(query, strings.Join(contents, ","))
-//	o := orm.NewOrm()
-//	return o.Raw(query, args).Exec()
-//}
-//
+// Add , Update / Remove /
+//func
