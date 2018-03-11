@@ -149,10 +149,6 @@ $(function() {
         //console.log(name + " / " + order)
         $( "#form-filter input[name=sort]" ).val ( name );
         $( "#form-filter input[name=order]" ).val ( order );
-        // console.log($( this ).data( "sort-name"));
-        // $( this ).data( "sort-name", name );
-        // $( this ).data( "sort-order", order);
-        console.log(name + " === " + order )
     });
 
 

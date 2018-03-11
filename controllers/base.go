@@ -99,8 +99,9 @@ func (c *baseController) loginRequired(required bool) {
 func (c *baseController) checkLoginStatus() {
 	val := c.GetSession("memberId")
 	if val != nil {
-		memberId := val.(int)
-		member, err := models.GetMemberById(memberId)
+		member, err := models.GetMember(map[string]interface{}{
+			"t.member_id":val.(int),
+		})
 		checkErr(err)
 
 		if member != nil {
