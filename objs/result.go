@@ -1,6 +1,5 @@
 package objs
 
-
 type Result struct {
 	State   bool        `json:"state"`
 	Message string      `json:"message"`
@@ -12,12 +11,12 @@ func NewResult() *Result {
 }
 
 type DbResult struct {
-	State        bool          `json:"state"`
-	Message      string        `json:"message"`
+	State        bool        `json:"state"`
+	Message      string      `json:"message"`
 	Rows         interface{} `json:"rows"`
-	AffectedRows int64         `json:"affected_rows"`
-	Total        int64         `json:"total"`
-	LastInsertId int64         `json:"last_insert_id"`
+	AffectedRows int64       `json:"affected_rows"`
+	Total        int64       `json:"total"`
+	LastInsertId int64       `json:"last_insert_id"`
 }
 
 func NewDbResult() *DbResult {

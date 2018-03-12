@@ -5,22 +5,22 @@ import (
 )
 
 type Member struct {
-	MemberId int    `json:"member_id"`
-	Username string `json:"username"`
-	Password string `json:"-"`
-	Salt string `json:"-"`
-	Name string `json:"name"`
-	Position int `json:"position"`
-	Timezone string `json:"-"`
-	Location  *time.Location `json:"-"`
-	SessionId string         `json:"-"`
-	FailedLoginCount   int `json:"failed_login_count"`
-	//PasswordConfirm    string `json:"-"`
+	MemberId         int            `json:"member_id"`
+	Username         string         `json:"username" form:"username"`
+	Password         string         `json:"-" form:"password"`
+	PasswordConfirm  string         `json:"-" form:"password_confirm"`
+	Salt             string         `json:"-"`
+	Name             string         `json:"name" form:"name"`
+	Position         int            `json:"position"`
+	Timezone         string         `json:"-"`
+	Location         *time.Location `json:"-"`
+	SessionId        string         `json:"-"`
+	FailedLoginCount int            `json:"failed_login_count"`
+	Email            string         `json:"email" form:"email"`
 	//OldPassword        string `json:"-"`
 	//NewPassword        string `json:"-"`
 	//NewPasswordConfirm string `json:"-"`
 	//EncPassword        string `json:"-"`
-	//Email              string
 	//Status             int `json:"-"`
 	//AllowedIp          string
 	//Usergroups         []int `json:"-"`

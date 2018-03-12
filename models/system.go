@@ -41,6 +41,7 @@ func RemoveRow(tableName string, pkColumn string, pkValue interface{}) (sql.Resu
 // 감사로깅
 func Audit(log *objs.AuditMsg) error {
 	o := orm.NewOrm()
+	o.Begin()
 
 	var message string
 	if log.Message != nil {

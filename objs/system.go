@@ -49,7 +49,7 @@ type AuditMsg struct {
 	Detail   interface{}
 }
 
-type CommonFilter struct {
+type PagingFilter struct {
 	StartDate  string `form:"startDate"`
 	EndDate    string `form:"endDate"`
 	FastPaging string `form:"fastPaging"`

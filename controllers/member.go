@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
+	"strings"
 )
 
 type MemberController struct {
@@ -27,11 +30,35 @@ func (c *MemberController) Get() {
 		c.setTpl("member.tpl")
 	}
 }
+func (c *MemberController) Post() {
+	member := objs.Member{}
+	if err := c.ParseForm(&member); err != nil {
+		log.Error(err)
+	}
 
-func (c *MemberController) getFilter() *objs.CommonFilter {
+	member.Username = strings.ToLower(member.Username) // 아이디는 소문자로
+	member.Position = objs.User                        // 권한을 "일반"으로 등록
+	encPassword := sha256.Sum256([]byte(member.Username + member.Password))
+	member.PasswordConfirm = hex.EncodeToString(encPassword[:])
+
+	dbResult := objs.NewDbResult()
+	rs, err := models.AddMember(&member)
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.AffectedRows, _ = rs.RowsAffected()
+		if dbResult.AffectedRows == 1 {
+			dbResult.State = true
+		}
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+func (c *MemberController) getFilter() *objs.PagingFilter {
 
 	// 요청값 분류
-	filter := objs.CommonFilter{}
+	filter := objs.PagingFilter{}
 	if err := c.ParseForm(&filter); err != nil {
 		log.Error(err)
 	}
@@ -42,7 +69,3 @@ func (c *MemberController) getFilter() *objs.CommonFilter {
 
 	return &filter
 }
-
-
-
-
