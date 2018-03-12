@@ -16,7 +16,7 @@ type IpasLog struct {
 }
 
 type IpasFilter struct {
-	CommonFilter
+	PagingFilter
 
 	Org       []int
 	SubOrg    []int

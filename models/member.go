@@ -1,9 +1,10 @@
 package models
 
 import (
+	"database/sql"
+	"fmt"
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
-	"fmt"
 	"strings"
 )
 
@@ -34,7 +35,7 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 	return &member, err
 }
 
-func GetMembers(filter *objs.CommonFilter) ([]objs.Member, int64, error) {
+func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 	var where string
 	var rows []objs.Member
 
@@ -70,13 +71,34 @@ func GetMembers(filter *objs.CommonFilter) ([]objs.Member, int64, error) {
 	}
 	return rows, total, err
 }
-//
-//func AddMember(member *objs.Member) (sql.Result, err) {
-//	query := `
-//		insert into mbr_member(username, name, email, position)
-//		values(?, ?, ?, ?);
-//	`
-//}
+
+func AddMember(m *objs.Member) (sql.Result, error) {
+	o := orm.NewOrm()
+	o.Begin()
+
+	// 사용자 정보 등록
+	query := `
+		insert into mbr_member(username, name, email, position)
+		values(?, ?, ?, ?);
+	`
+	rs, err := o.Raw(query, m.Username, m.Name, m.Email, m.Position).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	// 비밀번호 등록
+	lastInsertId, _ := rs.LastInsertId()
+	query = "insert into mbr_password(member_id, password) values(?, ?)"
+	rs, err = o.Raw(query, lastInsertId, m.PasswordConfirm).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	o.Commit()
+	return rs, err
+}
 
 // Add , Update / Remove /
 //func
