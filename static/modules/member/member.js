@@ -32,10 +32,13 @@ $(function() {
                 url: "/members",
                 data: $( form ).serialize()
             }).done( function ( result ) {
+                console.log(result);
                 if ( result.state ) {
+                    $( ".alert", $( form ) ).addClass( "hidden" );
                     // $( "#modal-member-add" ).modal( "hide" );
                 } else {
-                    $( ".alert", $( form ) ).text( result.message ).removeClass( "hidden" );
+                    $( ".alert .message", $( form ) ).text( result.message );
+                    $( ".alert", $( form ) ).removeClass( "hidden" );
                 }
             }).always( function() {
             });
@@ -44,9 +47,6 @@ $(function() {
         ignore: "input[type='hidden']",
         errorClass: "help-block",
         rules: {
-            guid: {
-                minlength: 2,
-                maxlength: 5
             },
         },
         messages: {
@@ -91,7 +91,8 @@ $(function() {
             var $form = $( this ).find( "form" );
             $form.validate().resetForm();
             $form.get( 0 ).reset();
-            $( ".alert", $form ).empty().addClass( "hidden" );
+            $( ".alert", $form ).addClass( "hidden" );
+            $( ".alert .message", $form ).empty(    );
 
             // Refresh the member table
             $( "#table-member" ).bootstrapTable( "refresh" );

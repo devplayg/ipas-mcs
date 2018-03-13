@@ -145,10 +145,6 @@ $(function() {
         if ( $( "#form-filter input[name=fastPaging]" ).is( ":checked" ) ) {
             movePage( 0, true );
         }
-    }).on( "sort.bs.table", function ( e, name, order ) {
-        //console.log(name + " / " + order)
-        $( "#form-filter input[name=sort]" ).val ( name );
-        $( "#form-filter input[name=order]" ).val ( order );
     });
 
 

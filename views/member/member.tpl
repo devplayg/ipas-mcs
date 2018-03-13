@@ -96,7 +96,7 @@
                                 <label>User Groups</label>
                                 <div class="mt-checkbox-list">
                                     <label class="mt-checkbox mt-checkbox-outline"> Administrator
-                                        <input type="checkbox" name="user_groups" value="9" />
+                                        <input type="checkbox" name="user_groups" value="10" />
                                         <span></span>
                                     </label>
                                     <label class="mt-checkbox mt-checkbox-outline"> Observer
@@ -107,7 +107,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="alert alert-danger hidden bold"></div>
+                    <div class="alert alert-danger hidden">
+                        <i class="fa fa-warning"></i> <span class="message"></span>
+                    </div>
                 </div><!-- modal-body -->
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>

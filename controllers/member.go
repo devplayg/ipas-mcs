@@ -3,11 +3,12 @@ package controllers
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"strings"
-	"errors"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type MemberController struct {
@@ -49,7 +50,6 @@ func (c *MemberController) Post() {
 		return
 	}
 
-
 	//spew.Dump(member)
 	//
 	//member.Username = strings.ToLower(member.Username) // 아이디는 소문자로
@@ -66,23 +66,29 @@ func (c *MemberController) Post() {
 			dbResult.State = true
 		}
 	}
-	dbResult.Message = err.Error()
 	c.Data["json"] = dbResult
 	c.ServeJSON()
 }
 
 func (c *MemberController) CheckForm(m *objs.Member) error {
-
-	for _, v := range m.UserGroups {
-		if v > 1 {
-			return errors.New("invalid user group")
+	spew.Dump(m)
+	for _, g := range m.UserGroups {
+		if 1<<uint(g) > objs.Administrator {
+			return errors.New("unauthorized user group")
 		}
 	}
 	// 아이디는 소문자로 변환
 	m.Username = strings.ToLower(m.Username) // 아이디는 소문자로
-	m.Position |= objs.User                        // 권한을 "일반"으로 등록
+	m.Position |= objs.User                  // "일반"권한은 기본 추가
 	encPassword := sha256.Sum256([]byte(m.Username + m.Password))
 	m.PasswordConfirm = hex.EncodeToString(encPassword[:])
+
+	log.Debug("## start valid")
+	if err := m.Validate(); err != nil {
+		log.Debug(err)
+		return err
+	}
+	log.Debug("## end valid")
 	return nil
 }
 
