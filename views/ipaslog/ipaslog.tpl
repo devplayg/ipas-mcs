@@ -3,8 +3,6 @@
 {{define "contents"}}
 <div id="toolbar-log">
     <form id="form-filter" role="form" method="post">
-        {{/*<input type="hidden" name="sort" value="{{.filter.Sort}}">*/}}
-        {{/*<input type="hidden" name="order" value="{{.filter.Order}}">*/}}
         {{ .xsrfdata }}
 
         <div class="form-body">
@@ -25,7 +23,7 @@
 
                     <!-- Buttons -->
                     <button type="submit" class="btn btn-primary"/>{{i18n .Lang "search"}}</button>
-                    <a class="btn btn-default" href=".">{{i18n .Lang "cancel"}}</a>
+                    <a class="btn btn-default" href="">{{i18n .Lang "cancel"}}</a>
 
                     {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
                     <div class="input-group btn-group btn-page-group">
@@ -50,23 +48,19 @@
 
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="control-label">GUID</label>
-                                    <input type="text" class="form-control" name="guid" value="{{.filter.Guid}}">
-                                </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="control-label">GUID</label>
+                                <input type="text" class="form-control" name="guid" value="{{.filter.Guid}}">
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="control-label">Risk level</label>
-                                    <select name="risk_level[]" class="selectpicker" data-width="100%" data-size="5" multiple title="Risk level">
-                                        <option value="1">Risk1</option>
-                                        <option value="2">Risk2</option>
-                                        <option value="3">Risk3</option>
-                                        <option value="4">Risk4</option>
-                                        <option value="5">Risk5</option>
-                                    </select>
-                                </div>
+                            <div class="col-sm-4 form-group">
+                                <label class="control-label">Risk level</label>
+                                <select name="risk_level[]" class="selectpicker" data-width="100%" data-size="5" multiple title="Risk level">
+                                    <option value="1">Risk1</option>
+                                    <option value="2">Risk2</option>
+                                    <option value="3">Risk3</option>
+                                    <option value="4">Risk4</option>
+                                    <option value="5">Risk5</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -81,8 +75,7 @@
                                 </label>
                             </div>
                         </div>
-
-                    </div>
+                    </div><!-- modal-body-->
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">{{i18n .Lang "search"}}</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>

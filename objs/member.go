@@ -12,11 +12,13 @@ type Member struct {
 	Salt             string         `json:"-"`
 	Name             string         `json:"name" form:"name"`
 	Position         int            `json:"position"`
-	Timezone         string         `json:"-"`
+	Timezone         string         `json:"timezone" form:"timezone"`
 	Location         *time.Location `json:"-"`
 	SessionId        string         `json:"-"`
 	FailedLoginCount int            `json:"failed_login_count"`
 	Email            string         `json:"email" form:"email"`
+	AllowedIp        string         `json:"allowed_ip" form:"allowed_ip"`
+	UserGroups       []int          `form:"user_groups"`
 	//OldPassword        string `json:"-"`
 	//NewPassword        string `json:"-"`
 	//NewPasswordConfirm string `json:"-"`

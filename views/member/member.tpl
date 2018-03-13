@@ -79,11 +79,31 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="control-label">{$lang->role}</label>
-                                <select name="position[]" class="selectpicker" data-width="100%" multiple>
-                                    <option value="{$position.admin}">{$lang->administrator}</option>
-                                    <option value="{$position.sheriff}">{$lang->sheriff}</option>
+                                <label class="control-label">Timezone</label>
+                                <select name="timezone" class="selectpicker" data-width="100%">
+                                    <option value="Asia/Seoul">(+09:00) Asia / Seoul</option>
+                                    <option value="America/Los_Angeles">(−08:00) America / Los Angeles</option>
+                                    <option value="America/Santiago">(−04:00) America / Santiago</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="allowed_ip" class="control-label">Allowed IP</label>
+                                <textarea class="form-control" name="allowed_ip" rows="4" style="resize: none">0.0.0.0/0,
+10.0.7.194, 255.255.255.256,
+                                3.3.3.3,,,</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>User Groups</label>
+                                <div class="mt-checkbox-list">
+                                    <label class="mt-checkbox mt-checkbox-outline"> Administrator
+                                        <input type="checkbox" name="user_groups" value="9" />
+                                        <span></span>
+                                    </label>
+                                    <label class="mt-checkbox mt-checkbox-outline"> Observer
+                                        <input type="checkbox" name="user_groups" value="8" />
+                                        <span></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>

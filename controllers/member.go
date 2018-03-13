@@ -7,6 +7,7 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"strings"
+	"errors"
 )
 
 type MemberController struct {
@@ -31,17 +32,31 @@ func (c *MemberController) Get() {
 	}
 }
 func (c *MemberController) Post() {
+	dbResult := objs.NewDbResult()
+
 	member := objs.Member{}
 	if err := c.ParseForm(&member); err != nil {
-		log.Error(err)
+		dbResult.Message = err.Error()
+		c.Data["json"] = dbResult
+		c.ServeJSON()
+		return
 	}
 
-	member.Username = strings.ToLower(member.Username) // 아이디는 소문자로
-	member.Position = objs.User                        // 권한을 "일반"으로 등록
-	encPassword := sha256.Sum256([]byte(member.Username + member.Password))
-	member.PasswordConfirm = hex.EncodeToString(encPassword[:])
+	if err := c.CheckForm(&member); err != nil {
+		dbResult.Message = err.Error()
+		c.Data["json"] = dbResult
+		c.ServeJSON()
+		return
+	}
 
-	dbResult := objs.NewDbResult()
+
+	//spew.Dump(member)
+	//
+	//member.Username = strings.ToLower(member.Username) // 아이디는 소문자로
+	//member.Position = objs.User                        // 권한을 "일반"으로 등록
+	//encPassword := sha256.Sum256([]byte(member.Username + member.Password))
+	//member.PasswordConfirm = hex.EncodeToString(encPassword[:])
+
 	rs, err := models.AddMember(&member)
 	if err != nil {
 		dbResult.Message = err.Error()
@@ -51,8 +66,24 @@ func (c *MemberController) Post() {
 			dbResult.State = true
 		}
 	}
+	dbResult.Message = err.Error()
 	c.Data["json"] = dbResult
 	c.ServeJSON()
+}
+
+func (c *MemberController) CheckForm(m *objs.Member) error {
+
+	for _, v := range m.UserGroups {
+		if v > 1 {
+			return errors.New("invalid user group")
+		}
+	}
+	// 아이디는 소문자로 변환
+	m.Username = strings.ToLower(m.Username) // 아이디는 소문자로
+	m.Position |= objs.User                        // 권한을 "일반"으로 등록
+	encPassword := sha256.Sum256([]byte(m.Username + m.Password))
+	m.PasswordConfirm = hex.EncodeToString(encPassword[:])
+	return nil
 }
 
 func (c *MemberController) getFilter() *objs.PagingFilter {
