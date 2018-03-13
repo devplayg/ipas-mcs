@@ -33,7 +33,7 @@ $(function() {
                 data: $( form ).serialize()
             }).done( function ( result ) {
                 if ( result.state ) {
-                    $( "#modal-member-add" ).modal( "hide" );
+                    // $( "#modal-member-add" ).modal( "hide" );
                 } else {
                     $( ".alert", $( form ) ).text( result.message ).removeClass( "hidden" );
                 }
