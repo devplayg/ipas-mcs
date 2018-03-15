@@ -538,7 +538,7 @@
         <script src="/static/plugins/bootstrap-table/locale/bootstrap-table-{{.Lang}}.min.js" type="text/javascript"></script>
 
         <script src="/static/plugins/jquery-validation/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="/static/plugins/jquery-validation/common-validate-methods.js" type="text/javascript"></script>
+        <script src="/static/plugins/jquery-validation/localization/messages-{{.Lang}}.js" type="text/javascript"></script>
         <script src="/static/plugins/jquery-mask/jquery.mask.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
         <script src="/static/plugins/sweetalert/sweetalert2.min.js"></script>

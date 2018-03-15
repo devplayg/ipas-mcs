@@ -73,6 +73,7 @@ func (c *MemberController) Post() {
 func (c *MemberController) CheckForm(m *objs.Member) error {
 	spew.Dump(m)
 	for _, g := range m.UserGroups {
+		log.Debugf("%d > %d", 1<<uint(g), objs.Administrator)
 		if 1<<uint(g) > objs.Administrator {
 			return errors.New("unauthorized user group")
 		}
@@ -83,12 +84,10 @@ func (c *MemberController) CheckForm(m *objs.Member) error {
 	encPassword := sha256.Sum256([]byte(m.Username + m.Password))
 	m.PasswordConfirm = hex.EncodeToString(encPassword[:])
 
-	log.Debug("## start valid")
 	if err := m.Validate(); err != nil {
 		log.Debug(err)
 		return err
 	}
-	log.Debug("## end valid")
 	return nil
 }
 
