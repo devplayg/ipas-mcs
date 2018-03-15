@@ -96,7 +96,7 @@ func AddMember(m *objs.Member) (sql.Result, error) {
 		return rs, err
 	}
 
-	o.Rollback()
+	o.Commit()
 	return rs, err
 }
 

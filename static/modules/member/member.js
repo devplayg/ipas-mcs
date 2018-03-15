@@ -35,7 +35,7 @@ $(function() {
                 console.log(result);
                 if ( result.state ) {
                     $( ".alert", $( form ) ).addClass( "hidden" );
-                    // $( "#modal-member-add" ).modal( "hide" );
+                    $( "#modal-member-add" ).modal( "hide" );
                 } else {
                     $( ".alert .message", $( form ) ).text( result.message );
                     $( ".alert", $( form ) ).removeClass( "hidden" );
@@ -47,7 +47,24 @@ $(function() {
         ignore: "input[type='hidden']",
         errorClass: "help-block",
         rules: {
+            username : {
+                required: true,
+                username: true
             },
+            password : {
+                required: true,
+                minlength: 8,
+                maxlength: 16,
+                password: true,
+            },
+            password_confirm : {
+                equalTo: "#form-member-add input[name=password]"
+            },
+            email : {
+                required: true,
+                email: true,
+            },
+
         },
         messages: {
             SrcPortStart: "0 ~ 65535",
@@ -98,7 +115,24 @@ $(function() {
             $( "#table-member" ).bootstrapTable( "refresh" );
         });
 
-
+    window.memberActionEvents = {
+        'click .edit': function(e, value, row, idx) {
+            console.log(1);
+            // showForm(row, 'edit');
+        },
+        'click .remove': function(e, value, row, idx) {
+            console.log(2);
+            // showForm(row, 'remove');
+        },
+        'click .reset_pwd': function(e, value, row, idx) {
+            console.log(3);
+            // showForm(row, 'reset_pwd');
+        },
+        'click .ippool': function(e, value, row, idx) {
+            console.log(4);
+            // showForm(row, 'ippool');
+        }
+    };
 
 
     /**

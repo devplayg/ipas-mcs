@@ -9,7 +9,7 @@ function memberPositionFormatter( val, row, idx ) {
     }
 
     if ( val & positions["Observer"] ) {
-        marks += '<button type="button" class="btn btn-primary btn-xs">Objserver <i class="fa fa-search"></i></button>';
+        marks += '<button type="button" class="btn btn-primary btn-xs clear">Objserver <i class="fa fa-search"></i></button>';
     }
     if ( val & positions["User"] ) {
         marks += '<button type="button" class="btn btn-success btn-xs">User <i class="fa fa-user"></i></button>';
@@ -18,22 +18,22 @@ function memberPositionFormatter( val, row, idx ) {
 }
 
 function memberCommandFormatter(val, row, idx) {
-    var str =     '<a class="edit ml5" href="javascript:void(0)" title="Edit">'
-        + '<i class="fa fa-edit color-green s18"></i>'
-        + '</a>'
-
-        + '<a class="reset_pwd ml5" href="javascript:void(0)" title="Reset password">'
-        + '<i class="fa fa-key color-green s18"></i>'
-        + '</a>';
-
-    if (row.position < 1) {
-        str +=    '<a class="remove ml10" href="javascript:void(0)" title="Remove">'
-            + '<i class="fa fa-remove color-red s18"></i>'
+    var str = '<a class="edit" href="javascript:void(0)" title="Edit">'
+            + '<i class="fa fa-edit s18"></i>'
             + '</a>'
 
-            + '<a class="ippool ml5" href="javascript:void(0)" title="IP Pool">'
-            + '<i class="fa fa-th color-green s18"></i>'
-            + '</a>'
+            + '<a class="reset_pwd ml5" href="javascript:void(0)" title="Reset password">'
+            + '<i class="fa fa-key s18"></i>'
+            + '</a>';
+
+    if ( (row.position & positions['Superman']) == 0) {
+        str +=    '<a class="remove ml5 " href="javascript:void(0)" title="Remove">'
+            + '<i class="fa fa-remove s18 font-red"></i>'
+            + '</a>';
+    //
+    //         + '<a class="ippool ml5" href="javascript:void(0)" title="IP Pool">'
+    //         + '<i class="fa fa-th s18"></i>'
+    //         + '</a>'
     }
     return str;
 

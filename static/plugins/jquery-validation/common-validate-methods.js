@@ -1,3 +1,11 @@
+$.validator.addMethod('username', function(value) {
+    var pattern = /^[a-zA-Z]{1}[a-zA-Z0-9_]{4,16}$/;
+
+    if (value.match(pattern)) {
+        return true;
+    }
+}, 'invalid');
+
 $.validator.addMethod('ipv4', function(value) {
     if (value.length == 0) return true;
 
@@ -21,17 +29,17 @@ $.validator.addMethod('ipv4_cidr', function(value) {
 }, 'msg_invalid_ipv4_cidr');
 
 
-$.validator.addMethod('password_rule', function(value) {
+$.validator.addMethod('password', function(value) {
     if (value.length == 0) return true;
-    var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{9,16}$/;
+    var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
     //var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{9,16}$/;
     if (value.match(regex)) {
         return true;
     }
 }, 'about_password');
-
-
-$.validator.addMethod("notEqual", function(value, element, param) {
-	return this.optional(element) || value != $(param).val();
-}, "This has to be different...");
+//
+//
+// $.validator.addMethod("notEqual", function(value, element, param) {
+// 	return this.optional(element) || value != $(param).val();
+// }, "This has to be different...");
 

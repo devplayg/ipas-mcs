@@ -33,7 +33,7 @@
 >
     <thead>
     <tr>
-        <th data-field="command" data-formatter="memberCommandFormatter" data-sortable="true">Command</th>
+        <th data-field="command" data-formatter="memberCommandFormatter" data-events="memberActionEvents" data-sortable="true">Command</th>
         <th data-field="member_id" data-visible="false" data-sortable="true">ID</th>
         <th data-field="username" data-sortable="true">Username</th>
         <th data-field="name" data-sortable="true">Name</th>
@@ -89,14 +89,14 @@
                             <div class="form-group">
                                 <label for="allowed_ip" class="control-label">Allowed IP</label>
                                 <textarea class="form-control" name="allowed_ip" rows="4" style="resize: none">0.0.0.0/0,
-10.0.7.194, 255.255.255.256,
+10.0.7.194, 255.255.255.255,
                                 3.3.3.3,,,</textarea>
                             </div>
                             <div class="form-group">
                                 <label>User Groups</label>
                                 <div class="mt-checkbox-list">
                                     <label class="mt-checkbox mt-checkbox-outline"> Administrator
-                                        <input type="checkbox" name="user_groups" value="10" />
+                                        <input type="checkbox" name="user_groups" value="9" />
                                         <span></span>
                                     </label>
                                     <label class="mt-checkbox mt-checkbox-outline"> Observer
@@ -122,6 +122,7 @@
 {{end}}
 
 {{define "javascript"}}
+<script src="/static/plugins/jquery-validation/common-validate-methods.js"></script>
 <script>
     var positions = {{.positions}};
     console.log(positions);
