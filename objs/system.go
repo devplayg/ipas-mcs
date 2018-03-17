@@ -28,6 +28,10 @@ const (
 	YB                             // 1 << (10*8)
 )
 
+const (
+	DefaultDateFormat = "2006-01-02 15:04:05"
+)
+
 // System configuration
 type SysConfig struct {
 	Section, Keyword, ValueS string

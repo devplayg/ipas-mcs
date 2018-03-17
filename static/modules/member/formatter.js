@@ -21,11 +21,11 @@ function memberPositionFormatter( val, row, idx ) {
 function memberCommandFormatter(val, row, idx) {
     var str = '<a class="edit" href="javascript:void(0)" title="Edit">'
             + '<i class="fa fa-edit s18"></i>'
-            + '</a>'
-
-            + '<a class="reset_pwd ml5" href="javascript:void(0)" title="Reset password">'
-            + '<i class="fa fa-key s18"></i>'
             + '</a>';
+
+            // + '<a class="reset_pwd ml5" href="javascript:void(0)" title="Reset password">'
+            // + '<i class="fa fa-key s18"></i>'
+            // + '</a>';
 
     if ( (row.position & positions['Superman']) == 0) {
         str +=    '<a class="remove ml5 " href="javascript:void(0)" title="Remove">'
@@ -38,4 +38,23 @@ function memberCommandFormatter(val, row, idx) {
     }
     return str;
 
+}
+
+function memberAllowedIpFormatter(val, row, idx) {
+    if (val !== null) {
+        var list = val.replace(/\/32/g, '').split(",");
+        var str = '';
+        for (var i=0; i<list.length; i++) {
+            if (list[i].indexOf("/") > -1) {
+                str += list[i];
+            } else {
+                console.log(list[i]);
+                // var s = namecardTagOnlyFormatter(list[i], row, index) + " " + list[i];
+                str += list[i];
+            }
+            str += "<br>";
+        }
+
+        return str;
+    }
 }

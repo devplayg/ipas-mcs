@@ -37,6 +37,8 @@
             <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">Position</th>
             <th data-field="failed_login_count" data-sortable="true">Failed login</th>
             <th data-field="last_success_login" data-sortable="true">Last access</th>
+            <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">Allowed IP</th>
+            <th data-field="timezone" data-sortable="true">Timezone</th>
         </tr>
         </thead>
     </table>
