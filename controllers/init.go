@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"math/rand"
 	"github.com/beego/i18n"
 	"github.com/devplayg/golibs/secureconfig"
 	"github.com/devplayg/ipas-mcs/models"
@@ -12,6 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 	"html/template"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -137,7 +137,8 @@ func initDatabase(processName string, encKey []byte) error {
 		conf["db.port"],
 		conf["db.database"],
 		"utf8",
-		strings.Replace(beego.AppConfig.DefaultString("timezone", "Asia/Seoul"), "/", "%2F", -1), "&parseTime=true",
+		strings.Replace(beego.AppConfig.DefaultString("timezone", "Asia/Seoul"), "/", "%2F", -1),
+		"&parseTime=true",
 	)
 	log.Debug("Connection string:", connStr)
 	log.Debug("Max idle connections:", maxIdle)

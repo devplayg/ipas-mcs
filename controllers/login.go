@@ -63,15 +63,15 @@ func (c *LoginController) Post() {
 			c.SetSession("username", member.Username)
 			c.SetSession("sessionId", c.Ctx.GetCookie(beego.BConfig.WebConfig.Session.SessionName))
 
-			//models.UpdateRow(
-			//	"mbr_member",
-			//	"member_id",
-			//	member.MemberId,
-			//	map[string]interface{}{
-			//		"last_success_login": time.Now().Format(objs.DefaultDateFormat),
-			//		"failed_login_count": 0,
-			//	},
-			//)
+			models.UpdateRow(
+				"mbr_member",
+				"member_id",
+				member.MemberId,
+				map[string]interface{}{
+					"last_success_login": time.Now().Format(objs.DefaultDateFormat),
+					"failed_login_count": 0,
+				},
+			)
 
 			// 로그인 성공하면
 			// 감사이력 생성

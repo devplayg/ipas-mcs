@@ -22,7 +22,8 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 	// 쿼리 생성
 	query := `
 		select 	t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
-				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email
+				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email,
+				last_success_login
 		from mbr_member t
 			left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
@@ -54,7 +55,8 @@ func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 	// Set query
 	query := `
 		select 	%s t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
-				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email
+				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email,
+				last_success_login
         from mbr_member t
         	left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
