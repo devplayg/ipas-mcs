@@ -7,10 +7,13 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
+	"net"
 	"html/template"
 	"net/url"
 	"strings"
 	"time"
+	"github.com/devplayg/ipas-mcs/libs"
+	"github.com/yl2chen/cidranger"
 )
 
 type CtrlPreparer interface {
@@ -51,7 +54,7 @@ func (c *baseController) Prepare() {
 	if beego.BConfig.RunMode == "dev" {
 
 		log.Debug("=============START=================================")
-		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, Path=%s, Ext=%s, route=%s, ReqUrl=%s",
+		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, Path=%s, Ext=%s, route=%s, ReqUrl=%s, remote_addr=%s",
 			c.Ctx.Input.Method(),
 			c.ctrlName,
 			c.actName,
@@ -63,6 +66,7 @@ func (c *baseController) Prepare() {
 			c.Ctx.Input.Param(":ext"),
 			c.Data["RouterPattern"],
 			c.Ctx.Request.URL.String(),
+			c.Ctx.Input.IP(),
 		)
 		spew.Dump(c.Input()) // Input body
 		//spew.Dump(c.Ctx.Request.Header)
@@ -105,20 +109,40 @@ func (c *baseController) checkLoginStatus() {
 
 		if member != nil {
 			c.member = member
-			c.member.Location, _ = time.LoadLocation(c.member.Timezone)
 			c.isLogged = true
+			c.member.Location, _ = time.LoadLocation(c.member.Timezone)
 		}
 	}
 }
 
 func (c *baseController) checkAccessPermission() {
-	if c.isLoginRequired {
-		if !c.isLogged {
+	if c.isLoginRequired { // 로그인이 요구돠는 페이지
+		if !c.isLogged { // 로그인 되어 있지 않으면
 			redirectUri := url.QueryEscape(c.Ctx.Request.RequestURI)
-			c.Redirect("/signin?redirectUri="+redirectUri, 302)
+			c.Redirect("/signin?redirectUri="+redirectUri, 302)  // 로그인화면으로 리다이렉션
 		}
 
-		if c.member.Position&c.acl < 1 {
+		if c.member.Position&c.acl < 1 { // 페이지 접근 권한이 없으면
+			c.Abort("403")
+		}
+
+		// IP 접근 제어
+		if c.Ctx.Input.IP() == "127.0.0.1" { // 로컬IP는 허용
+			return
+		}
+
+		// 허가된 IP인지 확인
+		allowedList := libs.SplitString(c.member.AllowedIp, ",")
+		if len(allowedList) < 1 {
+			c.Abort("403")
+		}
+		ranger := cidranger.NewPCTrieRanger()
+		for _, s := range libs.SplitString(c.member.AllowedIp, ",") {
+			_, network, _ := net.ParseCIDR(s)
+			ranger.Insert(cidranger.NewBasicRangerEntry(*network))
+		}
+		containingNetworks, _ := ranger.ContainingNetworks(net.ParseIP(c.Ctx.Input.IP()))
+		if len(containingNetworks) < 1 {
 			c.Abort("403")
 		}
 	}

@@ -14,7 +14,7 @@ $(function() {
      */
 
     //     // 로그 테이블
-    var $table      = $( "#table-log" ),
+    var $table      = $( "#table-member" ),
         tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
 
     // 테이블 컬럼속성 복원
@@ -35,7 +35,7 @@ $(function() {
                 console.log(result);
                 if ( result.state ) {
                     $( ".alert", $( form ) ).addClass( "hidden" );
-                    // $( "#modal-member-add" ).modal( "hide" );
+                    $( "#modal-member-add" ).modal( "hide" );
                 } else {
                     $( ".alert .message", $( form ) ).text( result.message );
                     $( ".alert", $( form ) ).removeClass( "hidden" );
@@ -133,6 +133,7 @@ $(function() {
      *
      */
     $table.on( "column-switch.bs.table", function( e, field, checked ) { // 테이블 컬럼 보기/숨기기 속성이 변경되는 경우
+        console.log(tableKey);
         captureTableColumns( $( this ), tableKey );
     });
 

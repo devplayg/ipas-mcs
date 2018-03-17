@@ -9,6 +9,7 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
+	"time"
 )
 
 type LoginController struct {
@@ -62,6 +63,20 @@ func (c *LoginController) Post() {
 			c.SetSession("username", member.Username)
 			c.SetSession("sessionId", c.Ctx.GetCookie(beego.BConfig.WebConfig.Session.SessionName))
 
+			//models.UpdateRow(
+			//	"mbr_member",
+			//	"member_id",
+			//	member.MemberId,
+			//	map[string]interface{}{
+			//		"last_success_login": time.Now().Format(objs.DefaultDateFormat),
+			//		"failed_login_count": 0,
+			//	},
+			//)
+
+			// 로그인 성공하면
+			// 감사이력 생성
+			// 로그인 실패수 초기화
+			// 마지막 로그인 시간 기록
 			result.Data = map[string]string{
 				"redirectUrl": beego.AppConfig.DefaultString("home_url", "/syslog"),
 			}
