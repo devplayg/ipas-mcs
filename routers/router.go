@@ -14,6 +14,9 @@ func init() {
 
 	// 사용자
 	beego.Router(`/members`, &controllers.MemberController{})
+	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{})
+	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")
+	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Post:UpdateMember")
 
 	// Post, Delete, Patch, Get(html, json)
 	/*

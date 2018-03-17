@@ -1,5 +1,6 @@
 function memberPositionFormatter( val, row, idx ) {
     var marks = '';
+    console.log(val);
     if ( val >= positions["Administrator"] ) {
         var star = '';
         if ( val & positions["Superman"] ) {

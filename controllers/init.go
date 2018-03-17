@@ -27,7 +27,7 @@ var langTypes []*langType // Languages are supported.
 
 // 초기화
 func Initialize(processName string, encKey []byte, debug, verbose bool) {
-	log.Debug("Initializing..")
+	log.Infof("Initializing..")
 	initLogger(processName, debug, verbose)
 	initFramework()
 
@@ -161,7 +161,7 @@ func initLogger(processName string, debug, verbose bool) {
 	// Set log level
 	if debug {
 		log.SetLevel(log.DebugLevel)
-		orm.Debug = true
+		orm.Debug = false
 	}
 
 	if verbose {

@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// 단일 사용자 검색
 func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 
 	// 검색조건 생성
@@ -20,10 +21,12 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 
 	// 쿼리 생성
 	query := `
-        SELECT t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status, timezone, t.name, t.session_id
-        from mbr_member t
-        	left outer join mbr_password t1 on t1.member_id = t.member_id
-        where true %s
+		select 	t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
+				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email
+		from mbr_member t
+			left outer join mbr_password t1 on t1.member_id = t.member_id
+			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
+		where true %s
     `
 	query = fmt.Sprintf(query, strings.Join(conditions, ","))
 
@@ -35,6 +38,8 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 	return &member, err
 }
 
+
+// 다중 사용자 검색
 func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 	var where string
 	var rows []objs.Member
@@ -48,9 +53,13 @@ func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 
 	// Set query
 	query := `
-        SELECT %s t.member_id, username, position, t.failed_login_count, t.status, timezone, t.name, t.session_id
+		select 	%s t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
+				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email
         from mbr_member t
+        	left outer join mbr_password t1 on t1.member_id = t.member_id
+			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
 		where true %s
+		group by member_id
 		order by %s %s
 		limit ?, ?
 	`
@@ -96,9 +105,67 @@ func AddMember(m *objs.Member) (sql.Result, error) {
 		return rs, err
 	}
 
+	// 접속 허용 IP 등록(prepared statement)
+	p, err := o.Raw("insert into mbr_allowed_ip(member_id, ip, cidr) values(?, inet_aton(?), ?)").Prepare()
+	for _, v := range m.AllowedIpList {
+		_, err := p.Exec(lastInsertId, v.IpStr, v.Cidr)
+		if err != nil {
+			o.Rollback()
+			return nil, err
+		}
+	}
+	p.Close()
+
 	o.Commit()
 	return rs, err
 }
 
-// Add , Update / Remove /
-//func
+func UpdateMember(m *objs.Member, admin *objs.Member) (sql.Result, error) {
+
+	o := orm.NewOrm()
+	o.Begin()
+
+	var query string
+
+	// 사용자 정보 업데이트
+	query = "update mbr_member set email = ?, name = ?, timezone = ? where member_id = ?"
+	rs, err := o.Raw(query, m.Email, m.Name, m.Timezone, m.MemberId).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	// 사용자 권한 업데이트
+	query = "update mbr_member set position = ? where member_id = ? and position < ?"
+	rs, err = o.Raw(query, m.Position, m.MemberId, admin.Position).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	// 비밀번호 업데이트
+	if len(m.Password) > 0 {
+		query = "update mbr_password set password = ? where member_id = ?"
+		rs, err = o.Raw(query, m.PasswordConfirm, m.MemberId).Exec()
+		if err != nil {
+			o.Rollback()
+			return rs, err
+		}
+	}
+
+	// 접속허용 IP 삭제 후 업데이트
+	o.Raw("delete from mbr_allowed_ip where member_id = ?", m.MemberId).Exec()
+	p, err := o.Raw("insert into mbr_allowed_ip(member_id, ip, cidr) values(?, inet_aton(?), ?)").Prepare()
+	for _, v := range m.AllowedIpList {
+		_, err := p.Exec(m.MemberId, v.IpStr, v.Cidr)
+		if err != nil {
+			o.Rollback()
+			return nil, err
+		}
+	}
+	p.Close()
+
+
+	o.Commit()
+	return rs, err
+}
