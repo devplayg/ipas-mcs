@@ -3,14 +3,14 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
-	"strings"
-	"time"
 	"html/template"
 	"net/url"
-	"github.com/davecgh/go-spew/spew"
+	"strings"
+	"time"
 )
 
 type CtrlPreparer interface {
@@ -22,7 +22,7 @@ type baseController struct {
 	beego.Controller              // 메인 구조체 임베딩
 	i18n.Locale                   // 다국어
 	isLoginRequired  bool         // 로그인 필수 여부
-	acl              int          // 권한
+	acl              uint         // 권한
 	member           *objs.Member // 사용자 정보
 	isLogged         bool         // 로그인 상태
 	ctrlName         string       // Controller 이름
@@ -36,9 +36,9 @@ func (c *baseController) Prepare() {
 	c.ctrlName = strings.ToLower(strings.TrimSuffix(c.ctrlName, "Controller"))
 
 	// 기본 접근권한 설정
-	c.isLoginRequired = true         // 로그인 필수
+	c.isLoginRequired = true                   // 로그인 필수
 	c.grant(objs.Superman, objs.Administrator) // 관리자 이상만 실행 허용
-	c.isLogged = false               // 로그인 상태
+	c.isLogged = false                         // 로그인 상태
 
 	// 호출된 Controller 접근권한 덮어쓰기
 	if app, ok := c.AppController.(CtrlPreparer); ok {
@@ -51,7 +51,19 @@ func (c *baseController) Prepare() {
 	if beego.BConfig.RunMode == "dev" {
 
 		log.Debug("=============START=================================")
-		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, route=%s, ReqUrl=%s", c.Ctx.Input.Method(), c.ctrlName, c.actName, c.isLoginRequired, c.acl, c.isLogged, c.IsAjax(), c.Data["RouterPattern"], c.Ctx.Request.URL.String())
+		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, Path=%s, Ext=%s, route=%s, ReqUrl=%s",
+			c.Ctx.Input.Method(),
+			c.ctrlName,
+			c.actName,
+			c.isLoginRequired,
+			c.acl,
+			c.isLogged,
+			c.IsAjax(),
+			c.Ctx.Input.Param(":path"),
+			c.Ctx.Input.Param(":ext"),
+			c.Data["RouterPattern"],
+			c.Ctx.Request.URL.String(),
+		)
 		spew.Dump(c.Input()) // Input body
 		//spew.Dump(c.Ctx.Request.Header)
 		//log.Debugf("Content-Type: %s", c.Ctx.Request.Header["Content-Type"])
@@ -73,12 +85,12 @@ func (c *baseController) Prepare() {
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
 	c.Data["member"] = c.member
-	c.Data["reqVars"] =c.Input()
+	c.Data["reqVars"] = c.Input()
 }
 
 func (c *baseController) loginRequired(required bool) {
 	c.isLoginRequired = required
-	if ! required {
+	if !required {
 		c.acl = 0
 	}
 }
@@ -87,7 +99,7 @@ func (c *baseController) checkLoginStatus() {
 	val := c.GetSession("memberId")
 	if val != nil {
 		member, err := models.GetMember(map[string]interface{}{
-			"t.member_id":val.(int),
+			"t.member_id": val,
 		})
 		checkErr(err)
 
@@ -106,7 +118,7 @@ func (c *baseController) checkAccessPermission() {
 			c.Redirect("/signin?redirectUri="+redirectUri, 302)
 		}
 
-		if c.member.Position & c.acl < 1 {
+		if c.member.Position&c.acl < 1 {
 			c.Abort("403")
 		}
 	}
@@ -116,7 +128,7 @@ func (c *baseController) setTpl(tplName string) {
 	c.TplName = c.ctrlName + "/" + tplName
 }
 
-func (c *baseController) grant(auth ...int) {
+func (c *baseController) grant(auth ...uint) {
 	for _, n := range auth {
 		c.acl |= n
 	}
