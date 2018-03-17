@@ -11,7 +11,7 @@ import (
 )
 
 type Member struct {
-	MemberId         int           `json:"member_id" form:"member_id"`
+	MemberId         int            `json:"member_id" form:"member_id"`
 	Username         string         `json:"username" form:"username"`
 	Password         string         `json:"-" form:"password"`
 	PasswordConfirm  string         `json:"-" form:"password_confirm"`
@@ -24,6 +24,7 @@ type Member struct {
 	FailedLoginCount uint           `json:"failed_login_count"`
 	Email            string         `json:"email" form:"email"`
 	AllowedIp        string         `json:"allowed_ip" form:"allowed_ip"`
+	LastSuccessLogin time.Time      `json:"last_success_login"`
 	AllowedIpList    []IpCidr       `json:"-"`
 	UserGroups       []int          `form:"user_groups"`
 }
