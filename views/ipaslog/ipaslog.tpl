@@ -137,5 +137,5 @@ order={{.filter.Order}}
 {{end}}
 
 {{define "javascript"}}
-<script src="/static/modules/{{.ctrl}}/ipaslog.js"></script>
+<script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 {{end}}

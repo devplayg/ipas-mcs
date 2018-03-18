@@ -11,7 +11,7 @@ import (
 
 func GetSystemConfig() ([]objs.SysConfig, error) {
 	query := "select section, keyword, value_s, value_n from sys_config"
-	rows := []objs.SysConfig{}
+	var rows []objs.SysConfig
 
 	o := orm.NewOrm()
 	_, err := o.Raw(query).QueryRows(&rows)

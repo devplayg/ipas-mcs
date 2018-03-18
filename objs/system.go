@@ -34,15 +34,16 @@ const (
 
 // System configuration
 type SysConfig struct {
-	Section, Keyword, ValueS string
-	ValueN                   int
+	Section string `json:"section"`
+	Keyword string `json:"keyword"`
+	MultiValue
 }
 
 var SysConfigMap = make(map[string]map[string]MultiValue)
 
 type MultiValue struct {
-	ValueS string
-	ValueN int
+	ValueS  string `json:"value_s"`
+	ValueN  int    `json:"value_n"`
 }
 
 type AuditMsg struct {
@@ -60,10 +61,10 @@ type PagingFilter struct {
 	FoundRows  string
 
 	// Paging
-	Limit  int    `form:"limit"`
-	Offset int    `form:"offset"`
+	Limit  int `form:"limit"`
+	Offset int `form:"offset"`
 
 	// Sort
-	Order  string `form:"order"`
-	Sort   string `form:"sort"`
+	Order string `form:"order"`
+	Sort  string `form:"sort"`
 }
