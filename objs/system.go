@@ -1,5 +1,7 @@
 package objs
 
+import "sync"
+
 const (
 	User = 1 << iota
 	UnknownLeve2
@@ -38,13 +40,13 @@ type SysConfig struct {
 	Keyword string `json:"keyword"`
 	MultiValue
 }
-
-var SysConfigMap = make(map[string]map[string]MultiValue)
-
 type MultiValue struct {
 	ValueS  string `json:"value_s"`
 	ValueN  int    `json:"value_n"`
 }
+//var SysConfigMap = make(map[string]map[string]MultiValue)
+
+var GlobalConfig sync.Map
 
 type AuditMsg struct {
 	MemberId int
@@ -68,3 +70,4 @@ type PagingFilter struct {
 	Order string `form:"order"`
 	Sort  string `form:"sort"`
 }
+

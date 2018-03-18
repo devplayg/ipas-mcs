@@ -31,7 +31,6 @@ func (c *ConfigController) Get() {
 }
 
 func (c *ConfigController) Patch() {
-
 	// 입력 파싱 및 수치 제한
 	filter := c.getFilter()
 

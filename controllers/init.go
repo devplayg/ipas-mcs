@@ -38,7 +38,7 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 	}
 
 	// 시스템 환경변수 초기화
-	if err := loadSystemConfig(); err != nil {
+	if err := loadGlobalConfig(); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
@@ -63,20 +63,26 @@ func initFramework() {
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"
 }
 
-func loadSystemConfig() error {
+func loadGlobalConfig() error {
+
+	// 기본값  설정
+	objs.GlobalConfig.Store("login_allow_multiple_login", objs.MultiValue{"on", 0})
+	objs.GlobalConfig.Store("login_block_seconds", objs.MultiValue{"", 60})
+	objs.GlobalConfig.Store("login_max_failed_login_attempts", objs.MultiValue{"", 5})
+	objs.GlobalConfig.Store("system_data_retention_days", objs.MultiValue{"", 365})
+	objs.GlobalConfig.Store("system_use_namecard", objs.MultiValue{"on", 0})
+
+	// DB 값 조회
 	rows, err := models.GetSystemConfig()
-	if err == nil {
-		for _, r := range rows {
-			m, ok := objs.SysConfigMap[r.Section]
-			if !ok {
-				m = make(map[string]objs.MultiValue)
-				objs.SysConfigMap[r.Section] = m
-			}
-			m[r.Keyword] = objs.MultiValue{
-				ValueS: r.ValueS,
-				ValueN: r.ValueN,
-			}
-		}
+	if err != nil {
+		return err
+	}
+
+	for _, r := range rows {
+		objs.GlobalConfig.Store(
+			r.Section+"_"+r.Keyword,
+			objs.MultiValue{r.ValueS, r.ValueN},
+		)
 	}
 
 	return nil

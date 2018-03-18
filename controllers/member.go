@@ -97,7 +97,6 @@ func (c *MemberController) Post() {
 // 입력폼 체크
 func (c *MemberController) CheckForm(m *objs.Member) error {
 	for _, g := range m.UserGroups {
-		//log.Debugf("%d > %d", 1<<uint(g), objs.Administrator)
 		if 1<<uint(g) > objs.Administrator {
 			return errors.New("unauthorized user group")
 		}
