@@ -1,6 +1,5 @@
 function memberPositionFormatter( val, row, idx ) {
     var marks = '';
-    console.log(val);
     if ( val >= positions["Administrator"] ) {
         var star = '';
         if ( val & positions["Superman"] ) {
@@ -48,7 +47,6 @@ function memberAllowedIpFormatter(val, row, idx) {
             if (list[i].indexOf("/") > -1) {
                 str += list[i];
             } else {
-                console.log(list[i]);
                 // var s = namecardTagOnlyFormatter(list[i], row, index) + " " + list[i];
                 str += list[i];
             }

@@ -22,6 +22,7 @@ type Member struct {
 	Location         *time.Location `json:"-"`
 	SessionId        string         `json:"-"`
 	FailedLoginCount uint           `json:"failed_login_count"`
+	LastFailedLogin  time.Time      `json:"last_failed_login"`
 	Email            string         `json:"email" form:"email"`
 	AllowedIp        string         `json:"allowed_ip" form:"allowed_ip"`
 	LastSuccessLogin time.Time      `json:"last_success_login"`

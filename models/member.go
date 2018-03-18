@@ -23,7 +23,7 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 	query := `
 		select 	t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
 				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email,
-				last_success_login
+				last_success_login, last_failed_login
 		from mbr_member t
 			left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
@@ -38,7 +38,6 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 
 	return &member, err
 }
-
 
 // 다중 사용자 검색
 func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
@@ -56,7 +55,7 @@ func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 	query := `
 		select 	%s t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
 				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email,
-				last_success_login
+				last_success_login, last_failed_login
         from mbr_member t
         	left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
@@ -167,7 +166,34 @@ func UpdateMember(m *objs.Member, admin *objs.Member) (sql.Result, error) {
 	}
 	p.Close()
 
-
 	o.Commit()
 	return rs, err
+}
+
+func AfterSignin(m *objs.Member) error {
+	query := `
+		update mbr_member
+		set failed_login_count = 0, last_success_login = now(), login_count = login_count + 1, session_id = ?
+		where member_id = ?
+	`
+	o := orm.NewOrm()
+	_, err := o.Raw(query, m.SessionId, m.MemberId).Exec()
+	return err
+}
+
+func LoginFailed(username string, lastFailedLogin bool) error {
+	var s string
+
+	if lastFailedLogin {
+		s = ", last_failed_login = now()"
+	}
+	query := `
+		update mbr_member
+		set failed_login_count = failed_login_count + 1 %s
+		where username = ?
+	`
+	query = fmt.Sprintf(query, s)
+	o := orm.NewOrm()
+	_, err := o.Raw(query, username).Exec()
+	return err
 }

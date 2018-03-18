@@ -36,7 +36,6 @@
                         </div>
                     </div>
                 </div>
-
             </div> <!-- #tab-system -->
 
             <div class="tab-pane fade" id="tab-members">
