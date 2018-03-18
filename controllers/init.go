@@ -27,8 +27,10 @@ var langTypes []*langType // Languages are supported.
 
 // 초기화
 func Initialize(processName string, encKey []byte, debug, verbose bool) {
-	log.Infof("Initializing..")
 	initLogger(processName, debug, verbose)
+	log.Info("Initializing..")
+
+	// 프레임워크 초기화
 	initFramework()
 
 	// 데이터베이스 초기화
@@ -58,7 +60,7 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 
 func initFramework() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
-	beego.BConfig.WebConfig.Session.SessionName = "imsessionID"
+	beego.BConfig.WebConfig.Session.SessionName = "ipmSessionID"
 	beego.BConfig.WebConfig.Session.SessionProvider = "file"
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"
 }
@@ -191,7 +193,7 @@ func initLogger(processName string, debug, verbose bool) {
 		} else {
 			log.SetOutput(os.Stdout)
 			orm.DebugLog = orm.NewLog(os.Stdout)
-			checkErr(err)
+			log.Error(err)
 		}
 	}
 
@@ -205,22 +207,12 @@ func literal(text string) template.HTML {
 	return template.HTML(text)
 }
 
-func checkErr(err error) {
-	if err != nil {
-		log.Error(err)
-	}
-}
+//func checkErr(err error) {
+//	if err != nil {
+//		log.Error(err)
+//	}
+//}
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
-}
-
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_")
-
-func GetRandomString(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return string(b)
 }

@@ -7,8 +7,10 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
@@ -49,8 +51,9 @@ func (c *LoginController) Post() {
 		"username": username,
 	})
 
-	if err != nil { // 존재하지 않으면
-		result.Message = c.Tr("msg.fail_to_request_open") + " (-2)"
+	if err != nil {
+		log.Error(err)
+		result.Message = c.Tr("msg.fail_to_request_open") + " (-3)"
 		c.Data["json"] = result
 		c.ServeJSON()
 		return
@@ -65,9 +68,9 @@ func (c *LoginController) Post() {
 	if int(member.FailedLoginCount) > maxFailedLoginAttempts.ValueN { // 로그인 시도회수 초과
 		elapsedTime := time.Now().Sub(member.LastFailedLogin).Seconds()
 		if elapsedTime < float64(loginBlockedTime.ValueN) { // 로그인 제한시간 이내이면
-			err := models.LoginFailed(username, false)
-			checkErr(err)
-			result.Message = c.Tr("msg.fail_to_request_open") + " (-3)" // 로그인 시간제한
+			models.LoginFailed(username, false)
+			result.Message = c.Tr("msg.fail_to_request_open") + " (-4)" // 로그인 시간제한
+			c.audit("signin_failed", map[string]string{"username": username, "message": "locked down account"}, nil)
 			c.Data["json"] = result
 			c.ServeJSON()
 			return
@@ -86,8 +89,7 @@ func (c *LoginController) Post() {
 		c.SetSession("username", member.Username)
 		c.SetSession(beego.BConfig.WebConfig.Session.SessionName, c.Ctx.GetCookie(beego.BConfig.WebConfig.Session.SessionName))
 		member.SessionId = c.GetSession(beego.BConfig.WebConfig.Session.SessionName).(string)
-		err := models.AfterSignin(member)
-		checkErr(err)
+		models.AfterSignin(member)
 
 		// 로그인 성공하면
 		// 감사이력 생성
@@ -97,9 +99,9 @@ func (c *LoginController) Post() {
 			"redirectUrl": beego.AppConfig.DefaultString("home_url", "/syslog"),
 		}
 	} else {
-		err := models.LoginFailed(username, true)
-		checkErr(err)
-		result.Message = c.Tr("msg.fail_to_request_open") + " (-4)" // 비밀번호 오류
+		c.audit("signin_failed", map[string]string{"username": username, "message": "wrong password"}, nil)
+		models.LoginFailed(username, true)
+		result.Message = c.Tr("msg.fail_to_request_open") + " (-5)" // 비밀번호 오류
 	}
 
 	c.Data["json"] = result
@@ -112,15 +114,12 @@ func (c *LoginController) GetPasswordSalt() {
 	spew.Dump()
 
 	// 사용자 정보 조회
-	//member, err := models.GetMemberByUsername(username)
 	member, err := models.GetMember(map[string]interface{}{
 		"username": username,
 	})
-	//c.audit("test_logging", map[string]string{"username": username}, nil)
 	if err != nil || member.MemberId < 1 {
-		// 결과 값이 없는 상황 이외에는 시스템 로깅
-		if err != orm.ErrNoRows {
-			checkErr(err)
+		if err != orm.ErrNoRows { // 예상되지 않은 에러이면 출력
+			log.Error(err)
 		}
 		c.audit("signin_failed", map[string]string{"username": username, "message": "user not found"}, nil)
 		result.Message = c.Tr("msg.fail_to_request_open") + " (-1)"
@@ -130,11 +129,10 @@ func (c *LoginController) GetPasswordSalt() {
 	}
 
 	// 비밀번호 Salt 값 생성
-	salt := GetRandomString(10)
+	salt := libs.GetRandomString(10)
 	_, err = models.UpdateRow("mbr_password", "member_id", member.MemberId, map[string]interface{}{"salt": salt})
 	if err != nil {
-		checkErr(err)
-		result.Message = err.Error()
+		result.Message = c.Tr("msg.fail_to_request_open") + " (-2)"
 	} else {
 		result.Data = salt
 		result.State = true

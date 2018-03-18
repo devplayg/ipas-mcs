@@ -152,6 +152,13 @@ func UpdateMember(m *objs.Member, admin *objs.Member) (sql.Result, error) {
 			o.Rollback()
 			return rs, err
 		}
+
+		query = "update mbr_member set failed_login_count = 0 where member_id = ?"
+		rs, err = o.Raw(query, m.MemberId).Exec()
+		if err != nil {
+			o.Rollback()
+			return rs, err
+		}
 	}
 
 	// 접속허용 IP 삭제 후 업데이트

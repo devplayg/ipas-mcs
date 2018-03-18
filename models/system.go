@@ -75,19 +75,3 @@ func Audit(log *objs.AuditMsg) error {
 
 	return nil
 }
-
-//func UpdateSystemConfig(configs []SysConfig) {
-//	o := orm.NewOrm()
-//	query := `
-//        insert into sys_config(section, keyword, value_s, value_n)
-//        values (?, ?, ?, ?)
-//        on duplicate key update
-//            value_s = values(value_s),
-//            value_n = values(value_n);
-//    `
-//	stmt, _ := o.Raw(query).Prepare()
-//	for _, v := range configs {
-//		stmt.Exec(v.Section, v.Keyword, v.ValueS, v.ValueN)
-//	}
-//	stmt.Close()
-//}

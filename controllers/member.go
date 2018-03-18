@@ -25,7 +25,6 @@ func (c *MemberController) Get() {
 		} else {
 			filter := c.getPagingFilter()
 			members, total, err := models.GetMembers(filter)
-			checkErr(err)
 			c.serveResultJson(members, total, err, "off")
 		}
 		//
@@ -72,7 +71,7 @@ func (c *MemberController) Post() {
 		return
 	}
 	member.Username = strings.ToLower(member.Username) // 아이디는 소문자로
-	member.Position |= objs.User                  // "일반"권한은 기본 추가
+	member.Position |= objs.User                       // "일반"권한은 기본 추가
 
 	if err := c.CheckForm(&member); err != nil {
 		dbResult.Message = err.Error()
