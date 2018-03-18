@@ -4,16 +4,16 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
-	"net"
+	"github.com/yl2chen/cidranger"
 	"html/template"
+	"net"
 	"net/url"
 	"strings"
 	"time"
-	"github.com/devplayg/ipas-mcs/libs"
-	"github.com/yl2chen/cidranger"
 )
 
 type CtrlPreparer interface {
@@ -89,6 +89,9 @@ func (c *baseController) Prepare() {
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
 	c.Data["member"] = c.member
+	c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "KYUNGWOO")
+	c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
+	c.Data["product_version"] = beego.AppConfig.DefaultString("product_version", "")
 	c.Data["reqVars"] = c.Input()
 }
 
@@ -105,7 +108,9 @@ func (c *baseController) checkLoginStatus() {
 		member, err := models.GetMember(map[string]interface{}{
 			"t.member_id": val,
 		})
-		checkErr(err)
+		if err != nil {
+			log.Error(err)
+		}
 
 		if member != nil {
 			c.member = member
@@ -119,7 +124,7 @@ func (c *baseController) checkAccessPermission() {
 	if c.isLoginRequired { // 로그인이 요구돠는 페이지
 		if !c.isLogged { // 로그인 되어 있지 않으면
 			redirectUri := url.QueryEscape(c.Ctx.Request.RequestURI)
-			c.Redirect("/signin?redirectUri="+redirectUri, 302)  // 로그인화면으로 리다이렉션
+			c.Redirect("/signin?redirectUri="+redirectUri, 302) // 로그인화면으로 리다이렉션
 		}
 
 		if c.member.Position&c.acl < 1 { // 페이지 접근 권한이 없으면
@@ -209,13 +214,14 @@ func (c *baseController) setLangVer() {
 	c.Data["RestLangs"] = restLangs
 }
 
+// 감사로그
 func (c *baseController) audit(category string, message interface{}, detail interface{}) error {
 	var memberId int
 	if c.member != nil {
 		memberId = c.member.MemberId
 	}
-	models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
-	return nil
+	err := models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
+	return err
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {

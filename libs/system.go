@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"regexp"
+	"math/rand"
 )
 
 func JoinInt(arr []int, delimiter string) string {
@@ -19,4 +20,14 @@ func SplitString(s string, pattern string) []string {
 	}
 
 	return list
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_")
+
+func GetRandomString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

@@ -84,11 +84,3 @@ func (c *ConfigController) getFilter() *objs.Configuration {
 
 	return &filter
 }
-
-//func UpdateSystemConfigs(configs []models.SysConfig) {
-//	models.UpdateSystemConfig(configs)
-//	for _, c := range configs {
-//		conf := ConfigValue{c.ValueS, c.ValueN}
-//		GlobalConfig[c.Section][c.Keyword] = conf
-//	}
-//}

@@ -1,7 +1,15 @@
 {{template "base-blank.tpl" .}}
 
 {{define "css"}}
+<!-- Flags -->
+<link href="/static/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
 <link href="/static/modules/login/login.css" rel="stylesheet" type="text/css" />
+<style>
+    .flag-border {
+        border: 1px solid #cccccc;
+    }
+
+</style>
 {{end}}
 
 {{define "contents"}}
@@ -34,7 +42,12 @@
             <div class="note note-danger hidden"></div>
 
             <div class="form-actions">
-                <button type="submit" class="btn green uppercase">Login</button>
+                <button type="submit" class="btn green uppercase">{{i18n .Lang "signin"}}</button>
+                <div class="pull-right mt10 font-lg">
+                    <a href="javascript:;" data-lang="en-us" class="lang-changed"><span class="flag-icon flag-icon-us flag-border"></span></a>
+                    <a href="javascript:;" data-lang="ja-jp" class="lang-changed"><span class="flag-icon flag-icon-jp flag-border"></span></a>
+                    <a href="javascript:;" data-lang="ko-kr" class="lang-changed"><span class="flag-icon flag-icon-kr flag-border"></span></a>
+                </div>
                 <!--
                 <label class="rememberme check mt-checkbox mt-checkbox-outline">
                     <input type="checkbox" name="remember" value="1" />Remember
@@ -61,13 +74,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="create-account hidden">
-                <p>
-                    <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
-                </p>
-            </div>
         </form>
         <!-- END LOGIN FORM -->
+    </div>
+    <div class="copyright">
+        <a href="http://www.kyungwoo.com/" class="font-grey-cararra" target="_blank">&copy; 2018 {{ .company_name }} Inc.</a>
     </div>
 
 </div>
@@ -76,6 +87,8 @@
 {{define "javascript"}}
 <!-- CryptoJS -->
 <script src="/static/plugins/crypto/rollups/sha256.js"></script>
+<!-- Cookie -->
+<script src="/static/assets/js/jquery.cookie.js" type="text/javascript"></script>
 <!-- Module -->
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 {{end}}
