@@ -27,7 +27,6 @@
         <link href="/static/assets/font/{{.Lang}}.css" rel="stylesheet" type="text/css" />
 
         <!-- Plugins -->
-
         {{ block "css" . }}{{ end }}
         <link rel="shortcut icon" href="favicon.ico" />
     </head>

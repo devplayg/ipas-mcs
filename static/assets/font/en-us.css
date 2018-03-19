@@ -1,1 +1,5 @@
-@import url(NanumGothic/nanumgothic.css);
+@import url(/static/assets/font/NanumGothic/nanumgothic.css);
+
+body {
+    font-family: "Nanum Gothic" !important;
+}
