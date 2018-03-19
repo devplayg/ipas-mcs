@@ -15,7 +15,7 @@
 
         <!-- Theme -->
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="/static/assets/css/components-rounded.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
@@ -23,7 +23,7 @@
         <!-- Fonts -->
         <link href="/static/assets/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/font/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css" />
-        <!--<link href="/static/assets/font/{{.Lang}}.css" rel="stylesheet" type="text/css" />-->
+        <link href="/static/assets/font/{{.Lang}}.css" rel="stylesheet" type="text/css" />
 
         <!-- Plugins -->
         <link href="/static/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
@@ -33,6 +33,7 @@
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
         <link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/waitMe/waitMe.min.css" rel="stylesheet" type="text/css" />
+        <link href="/static/plugins/flag-icon-css/css/flag-icon.css" rel="stylesheet" type="text/css" />
 
         <link href="/static/assets/css/custom.css" rel="stylesheet" type="text/css" />
 
@@ -170,33 +171,8 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="page_user_profile_1.html">
-                                        <i class="icon-user"></i> My Profile </a>
-                                </li>
-                                <li>
-                                    <a href="app_calendar.html">
-                                        <i class="icon-calendar"></i> My Calendar </a>
-                                </li>
-                                <li>
-                                    <a href="app_inbox.html">
-                                        <i class="icon-envelope-open"></i> My Inbox
-                                        <span class="badge badge-danger"> 3 </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="app_todo.html">
-                                        <i class="icon-rocket"></i> My Tasks
-                                        <span class="badge badge-success"> 7 </span>
-                                    </a>
-                                </li>
-                                <li class="divider"> </li>
-                                <li>
-                                    <a href="page_user_lock_1.html">
-                                        <i class="icon-lock"></i> Lock Screen </a>
-                                </li>
-                                <li>
                                     <a href="/signout">
-                                        <i class="icon-key"></i> Log Out </a>
+                                        <i class="icon-key"></i> {{i18n .Lang "signout"}}</a>
                                 </li>
                             </ul>
                         </li>
@@ -207,7 +183,12 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 {{range .RestLangs}}
-                                <li><a href="javascript:;" data-lang="{{.Lang}}" class="lang-changed">{{i18n $.Lang .Name}}</a></li>
+                                <li>
+                                    <a href="javascript:;" data-lang="{{.Lang}}" class="lang-changed">
+                                        <span class="flag-icon flag-icon-{{i18n $.Lang .Name | toLower}} flag-border mr10"></span>
+                                        {{i18n $.Lang .Name}}
+                                    </a>
+                                </li>
                                 {{end}}
                             </ul>
                         </li>
@@ -215,9 +196,6 @@
                             <a href="javascript:;" class="dropdown-toggle">
                                 <i class="icon-logout"></i>
                             </a>
-                        </li>
-                        <li>
-                            <a href="/signout"><i class="fa fa-power-off"></i> </a>
                         </li>
                     </ul>
                 </div>
@@ -532,13 +510,13 @@
         <!-- Plugins -->
         <script src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
-        {{/*<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>*/}}
+        <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
         <!-- Bootstrap-table -->
         <script src="/static/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-table/locale/bootstrap-table-{{.Lang}}.min.js" type="text/javascript"></script>
 
         <script src="/static/plugins/jquery-validation/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="/static/plugins/jquery-validation/localization/messages-{{.Lang}}.js" type="text/javascript"></script>
+        <script src="/static/plugins/jquery-validation/localization/messages-{{.Lang}}.min.js" type="text/javascript"></script>
         <script src="/static/plugins/jquery-mask/jquery.mask.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
         <script src="/static/plugins/sweetalert/sweetalert2.min.js"></script>

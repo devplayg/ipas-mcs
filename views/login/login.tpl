@@ -4,12 +4,6 @@
 <!-- Flags -->
 <link href="/static/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
 <link href="/static/modules/login/login.css" rel="stylesheet" type="text/css" />
-<style>
-    .flag-border {
-        border: 1px solid #cccccc;
-    }
-
-</style>
 {{end}}
 
 {{define "contents"}}

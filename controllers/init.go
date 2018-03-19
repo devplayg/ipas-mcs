@@ -97,6 +97,10 @@ func addExtraFunctions() error {
 		return err
 	}
 
+	if err := beego.AddFuncMap("toLower", toLower); err != nil {
+		return err
+	}
+
 	// 다국어 지원 함수
 	if err := beego.AddFuncMap("i18n", i18n.Tr); err != nil {
 		return err
@@ -203,8 +207,12 @@ func initLogger(processName string, debug, verbose bool) {
 }
 
 //
-func literal(text string) template.HTML {
-	return template.HTML(text)
+func literal(s string) template.HTML {
+	return template.HTML(s)
+}
+
+func toLower(s string) template.HTML {
+	return template.HTML(strings.ToLower(s))
 }
 
 //func checkErr(err error) {
