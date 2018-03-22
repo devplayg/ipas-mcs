@@ -12,3 +12,14 @@ INSERT INTO `mbr_password` VALUES
   (11,'277cb9537ff81684e57ba6cf5d3ed23fde2f55d2f251abca9103f4b9b661c2ea','!je0hc]6)7','2017-07-02 19:50:39','2017-07-20 00:09:18'),
   (12,'7a44b918107a4ac6d19ca672d000904a72d660dd25bcf7e18907fc5fdc20fb97','0p$s=^!8=)','2017-07-02 19:51:01','2017-07-02 19:51:01'),
   (13,'7284223a268b6b0d88dd0606894ce69412e5658977ba672302a26ccdea58d279','htv]]ie[b!','2017-07-02 19:51:21','2017-07-02 19:51:21');
+
+insert into ast_ipas values
+( 'VT_001', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'VT_002', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'VT_003', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'PT_001', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'PT_002', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'PT_003', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'ZT_001', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'ZT_002', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() ),
+( 'ZT_003', 0, 1, FLOOR(1 + RAND() * 10) , FLOOR(1 + RAND() * 10) , '', '3412', now(), now() )
