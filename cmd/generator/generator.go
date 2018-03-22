@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/sha256"
 	"flag"
 	"fmt"
 	"github.com/astaxie/beego/orm"
@@ -173,9 +172,4 @@ func newIpasLog() *objs.IpasLog {
 func printHelp() {
 	fmt.Println(strings.TrimSuffix(filepath.Base(os.Args[0]), filepath.Ext(os.Args[0])))
 	flags.PrintDefaults()
-}
-
-func getEncryptionKey() []byte {
-	key := sha256.Sum256([]byte("CharlieHunter-NoWomanNoCry"))
-	return key[:]
 }
