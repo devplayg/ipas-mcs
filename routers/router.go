@@ -12,6 +12,9 @@ func init() {
 	// IPAS 로그
 	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
 
+	// Sample
+	beego.Router(`/samplelogs`, &controllers.SamplelogController{})
+
 	// 사용자
 	beego.Router(`/members`, &controllers.MemberController{})
 	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{})
