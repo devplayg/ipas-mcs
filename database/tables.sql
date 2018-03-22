@@ -115,16 +115,16 @@ DROP TABLE IF EXISTS `ast_ipas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ast_ipas` (
-  `eqid` varchar(16) NOT NULL,
+  `equip_id` varchar(16) NOT NULL,
   `group_id` int(10) unsigned NOT NULL DEFAULT '0',
   `type` int(11) NOT NULL COMMENT 'vt, zt, pt',
-  `overspeed_count` int(11) NOT NULL,
+  `speeding_count` int(11) NOT NULL,
   `shock_count` int(11) NOT NULL,
   `snr` varchar(32) NOT NULL,
   `contact` varchar(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`eqid`),
+  PRIMARY KEY (`equip_id`),
   KEY `ix_ast_ipas_type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -169,9 +169,9 @@ DROP TABLE IF EXISTS `log_ipas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_ipas` (
   `date` datetime NOT NULL,
-  `eqid` varchar(16) NOT NULL,
+  `equip_id` varchar(16) NOT NULL,
   `target` varchar(128) NOT NULL,
-  `overspeed_count` int(11) NOT NULL,
+  `speeding_count` int(11) NOT NULL,
   `shock_count` int(11) NOT NULL,
   `latitude` float(10,6) NOT NULL,
   `longitude` float(10,6) NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `log_ipas` (
   `speed_thr` int(11) NOT NULL,
   `rdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `ix_log_ipas_date` (`date`),
-  KEY `ix_log_ipas_date_eqid` (`date`,`eqid`)
+  KEY `ix_log_ipas_date_equip_id` (`date`,`equip_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,16 +196,16 @@ DROP TABLE IF EXISTS `log_status`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `log_status` (
   `date` datetime NOT NULL,
-  `eqid` varchar(16) NOT NULL,
+  `equip_id` varchar(16) NOT NULL,
   `latitude` float(10,6) NOT NULL,
   `longitude` float(10,6) NOT NULL,
   `speed` int(11) NOT NULL,
   `uptime` int(11) NOT NULL,
-  `overspeed_count` int(11) NOT NULL,
+  `speeding_count` int(11) NOT NULL,
   `shock_count` int(11) NOT NULL,
   `rdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `ix_log_status_date` (`date`),
-  KEY `ix_log_status_date_eqid` (`date`,`eqid`)
+  KEY `ix_log_status_date_equip_id` (`date`,`equip_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
