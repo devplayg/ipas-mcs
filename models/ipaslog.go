@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	"github.com/devplayg/ipas-mcs/libs"
+	//"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/objs"
 	"regexp"
 )
@@ -18,18 +18,18 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	args := make([]interface{}, 0)
 	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
 
-	if len(filter.Org) > 0 {
-		where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
-	}
-
-	if len(filter.RiskLevel) > 0 {
-		where += fmt.Sprintf(" and risk_level in (%s)", libs.JoinInt(filter.RiskLevel, ","))
-	}
-
-	if len(filter.Guid) > 0 {
-		where += " and guid like ?"
-		args = append(args, "%"+filter.Guid+"%")
-	}
+	//if len(filter.Org) > 0 {
+	//	where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
+	//}
+	//
+	//if len(filter.RiskLevel) > 0 {
+	//	where += fmt.Sprintf(" and risk_level in (%s)", libs.JoinInt(filter.RiskLevel, ","))
+	//}
+	//
+	//if len(filter.Guid) > 0 {
+	//	where += " and guid like ?"
+	//	args = append(args, "%"+filter.Guid+"%")
+	//}
 
 	if filter.FastPaging == "off" {
 		filter.FoundRows = "SQL_CALC_FOUND_ROWS"
@@ -205,3 +205,4 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 //	return &rows, total, err
 //}
 //
+
