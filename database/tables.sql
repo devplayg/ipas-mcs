@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.24-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.28-MariaDB, for Win32 (AMD64)
 --
 -- Host: localhost    Database: ipasm
 -- ------------------------------------------------------
--- Server version	10.1.24-MariaDB
+-- Server version	10.1.28-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,6 +27,7 @@ USE `ipasm`;
 -- Table structure for table `adt_audit`
 --
 
+DROP TABLE IF EXISTS `adt_audit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `adt_audit` (
@@ -39,13 +40,15 @@ CREATE TABLE `adt_audit` (
   PRIMARY KEY (`audit_id`),
   KEY `ix_member_id` (`member_id`),
   KEY `ix_created` (`created`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `adt_audit_detail`
 --
 
+DROP TABLE IF EXISTS `adt_audit_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `adt_audit_detail` (
@@ -62,6 +65,7 @@ CREATE TABLE `adt_audit_detail` (
 -- Table structure for table `ast_asset`
 --
 
+DROP TABLE IF EXISTS `ast_asset`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ast_asset` (
@@ -70,9 +74,10 @@ CREATE TABLE `ast_asset` (
   `parent_id` int(10) unsigned NOT NULL,
   `name` varchar(128) NOT NULL,
   `type1` int(10) unsigned NOT NULL,
-  `type2` int(10) unsigned NOT NULL,
+  `type2` int(10) unsigned NOT NULL DEFAULT '0',
   `seq` int(10) unsigned NOT NULL DEFAULT '0',
   `hostname` varchar(256) NOT NULL DEFAULT '',
+  `ip` int(10) unsigned NOT NULL DEFAULT '0',
   `cidr` tinyint(3) unsigned NOT NULL DEFAULT '32',
   `guid` varchar(64) NOT NULL DEFAULT '',
   `mac` varchar(32) NOT NULL DEFAULT '',
@@ -89,23 +94,46 @@ CREATE TABLE `ast_asset` (
   `state` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `n1` int(11) NOT NULL DEFAULT '0',
   `n2` int(11) NOT NULL DEFAULT '0',
-  `n3` int(11) NOT NULL DEFAULT '0',
   `s1` varchar(256) NOT NULL DEFAULT '',
   `s2` varchar(256) NOT NULL DEFAULT '',
-  `s3` varchar(256) NOT NULL DEFAULT '',
+  `f1` float(10,6) NOT NULL DEFAULT '0.000000',
+  `f2` float(10,6) NOT NULL DEFAULT '0.000000',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`asset_id`),
   KEY `ix_parent_id` (`parent_id`),
   KEY `ix_class` (`class`),
   KEY `ix_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ast_ipcard`
+-- Table structure for table `ast_ipas`
 --
 
+DROP TABLE IF EXISTS `ast_ipas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ast_ipas` (
+  `eqid` varchar(16) NOT NULL,
+  `group_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `type` int(11) NOT NULL COMMENT 'vt, zt, pt',
+  `overspeed_count` int(11) NOT NULL,
+  `shock_count` int(11) NOT NULL,
+  `snr` varchar(32) NOT NULL,
+  `contact` varchar(32) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`eqid`),
+  KEY `ix_ast_ipas_type` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ast_namecard`
+--
+
+DROP TABLE IF EXISTS `ast_namecard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ast_namecard` (
@@ -132,15 +160,97 @@ CREATE TABLE `ast_namecard` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `log_ipas`
+--
+
+DROP TABLE IF EXISTS `log_ipas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log_ipas` (
+  `date` datetime NOT NULL,
+  `eqid` varchar(16) NOT NULL,
+  `target` varchar(128) NOT NULL,
+  `overspeed_count` int(11) NOT NULL,
+  `shock_count` int(11) NOT NULL,
+  `latitude` float(10,6) NOT NULL,
+  `longitude` float(10,6) NOT NULL,
+  `warning_dist` int(11) NOT NULL COMMENT 'cm',
+  `caution_dist` int(11) NOT NULL COMMENT 'cm',
+  `v2v_dist` int(11) NOT NULL COMMENT 'cm',
+  `collision_thr` int(11) NOT NULL,
+  `shock_thr` int(11) NOT NULL,
+  `speed_thr` int(11) NOT NULL,
+  `rdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `ix_log_ipas_date` (`date`),
+  KEY `ix_log_ipas_date_eqid` (`date`,`eqid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `log_status`
+--
+
+DROP TABLE IF EXISTS `log_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log_status` (
+  `date` datetime NOT NULL,
+  `eqid` varchar(16) NOT NULL,
+  `latitude` float(10,6) NOT NULL,
+  `longitude` float(10,6) NOT NULL,
+  `speed` int(11) NOT NULL,
+  `uptime` int(11) NOT NULL,
+  `overspeed_count` int(11) NOT NULL,
+  `shock_count` int(11) NOT NULL,
+  `rdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `ix_log_status_date` (`date`),
+  KEY `ix_log_status_date_eqid` (`date`,`eqid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `mbr_allowed_ip`
+--
+
+DROP TABLE IF EXISTS `mbr_allowed_ip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mbr_allowed_ip` (
+  `member_id` int(11) NOT NULL,
+  `ip` int(10) unsigned NOT NULL,
+  `cidr` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`member_id`,`ip`,`cidr`),
+  CONSTRAINT `fk_mbr_allowed_ip_member_id` FOREIGN KEY (`member_id`) REFERENCES `mbr_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='4.0.1506.30401';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `mbr_asset`
+--
+
+DROP TABLE IF EXISTS `mbr_asset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mbr_asset` (
+  `member_id` int(11) NOT NULL,
+  `asset_type` int(11) NOT NULL,
+  `asset_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`member_id`,`asset_type`,`asset_id`),
+  CONSTRAINT `fk_mbr_asset_member_id` FOREIGN KEY (`member_id`) REFERENCES `mbr_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='4.0.1506.30401';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `mbr_config`
 --
 
+DROP TABLE IF EXISTS `mbr_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mbr_config` (
-  `member_id` int(10) unsigned NOT NULL,
+  `member_id` int(11) NOT NULL,
   `keyword` varchar(64) NOT NULL,
   `value_s` varchar(128) NOT NULL,
   `value_n` int(11) NOT NULL,
@@ -156,10 +266,11 @@ CREATE TABLE `mbr_config` (
 -- Table structure for table `mbr_member`
 --
 
+DROP TABLE IF EXISTS `mbr_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mbr_member` (
-  `member_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL AUTO_INCREMENT,
   `org_id` varchar(16) NOT NULL DEFAULT '',
   `username` varchar(32) NOT NULL,
   `email` varchar(256) NOT NULL,
@@ -179,25 +290,26 @@ CREATE TABLE `mbr_member` (
   `status` tinyint(3) NOT NULL DEFAULT '0',
   `timezone` varchar(64) NOT NULL DEFAULT '',
   `failed_login_count` int(11) unsigned NOT NULL DEFAULT '0',
-  `last_sucess_login` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+  `last_success_login` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
   `last_failed_login` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
   `last_read_message` int(11) unsigned NOT NULL DEFAULT '0',
   `session_id` varchar(64) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `mbr_password`
 --
 
+DROP TABLE IF EXISTS `mbr_password`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mbr_password` (
-  `member_id` int(11) unsigned NOT NULL,
+  `member_id` int(11) NOT NULL,
   `password` varchar(64) NOT NULL,
   `salt` varchar(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -211,6 +323,7 @@ CREATE TABLE `mbr_password` (
 -- Table structure for table `sys_config`
 --
 
+DROP TABLE IF EXISTS `sys_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_config` (
@@ -224,7 +337,7 @@ CREATE TABLE `sys_config` (
   KEY `ix_section` (`section`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -233,3 +346,5 @@ CREATE TABLE `sys_config` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-03-22 10:49:33
