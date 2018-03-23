@@ -178,9 +178,8 @@ CREATE TABLE `log_ipas` (
   `warning_dist` int(11) NOT NULL COMMENT 'cm',
   `caution_dist` int(11) NOT NULL COMMENT 'cm',
   `v2v_dist` int(11) NOT NULL COMMENT 'cm',
-  `collision_thr` int(11) NOT NULL,
-  `shock_thr` int(11) NOT NULL,
-  `speed_thr` int(11) NOT NULL,
+  `shock_threshold` int(11) NOT NULL,
+  `speed_threshold` int(11) NOT NULL,
   `rdate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `ix_log_ipas_date` (`date`),
   KEY `ix_log_ipas_date_equip_id` (`date`,`equip_id`)

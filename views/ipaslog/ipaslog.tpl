@@ -1,6 +1,7 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
+<!--user icon in two different styles-->22
 <div id="toolbar-log">
     <form id="form-filter" role="form" method="post">
         {{ .xsrfdata }}
@@ -22,7 +23,7 @@
                     </div>
 
                     <!-- Buttons -->
-                    <button type="submit" class="btn btn-primary"/>{{i18n .Lang "search"}}</button>
+                    <button type="submit" class="btn blue"/>{{i18n .Lang "search"}}</button>
                     <a class="btn btn-default" href="">{{i18n .Lang "cancel"}}</a>
 
                     {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
@@ -124,13 +125,18 @@ order={{.filter.Order}}
 >
     <thead>
     <tr>
-        <th data-field="no" data-sortable="false">No</th>
         <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
-        <th data-field="asset_level1" data-sortable="true">Group1</th>
-        <th data-field="asset_level2" data-sortable="true">Group2</th>
-        <th data-field="risk_level" data-sortable="true">Risk</th>
-        <th data-field="guid" data-sortable="true">GUID</th>
-        <th data-field="contents" data-sortable="true">Contents</th>
+        <th data-field="equip_id" data-formatter="equipIdFormatter" data-sortable="true">ID</th>
+        <th data-field="target" data-formatter="targetEquipIdFormatter" data-sortable="true">Target</th>
+        <th data-field="speeding_count" data-sortable="true">Speeding</th>
+        <th data-field="shock_count" data-sortable="true">Shock</th>
+        <th data-field="latitude" data-sortable="true">위도</th>
+        <th data-field="longitude" data-sortable="true">경도</th>
+        <th data-field="warning_dist" data-sortable="true">경보 설정(M)</th>
+        <th data-field="caution_dist" data-sortable="true">주의 설정(M)</th>
+        <th data-field="v2v_dist" data-sortable="true">V2V 거리</th>
+        <th data-field="shock_threshold" data-sortable="true">충격 임계치</th>
+        <th data-field="speed_threshold" data-sortable="true">속도 임계치</th>
     </tr>
     </thead>
 </table>

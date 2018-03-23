@@ -30,3 +30,33 @@ function dateFormatter( val, row, idx ) {
 function numberFormatter( val, row, idx ) {
     return val.toLocaleString();
 }
+
+function equipIdFormatter( val, row, idx ) {
+    var prefix = val.substr(0, 3),
+        tag = "";
+
+    if ( prefix == "VT_" ) {
+        tag += '<button class="btn blue-dark btn-xs">';
+    } else if ( prefix == "ZT_" ) {
+        tag += '<button class="btn blue-sharp btn-xs">';
+    } else if ( prefix == "PT_" ) {
+        tag += '<button class="btn green-sharp btn-xs">';
+    } else {
+        tag += '<i class="fa fa-question"> ';
+    }
+    tag += val+'</button>';
+
+    return tag;
+}
+
+function targetEquipIdFormatter( val, row, idx ) {
+    var list = val.split(","),
+        tags = '';
+
+    for ( var i=0; i<list.length; i++ ) {
+        tags += equipIdFormatter(list[i]);
+    }
+
+    return tags;
+
+}

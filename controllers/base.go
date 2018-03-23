@@ -30,6 +30,7 @@ type baseController struct {
 	isLogged         bool         // 로그인 상태
 	ctrlName         string       // Controller 이름
 	actName          string       // Action 이름
+	log *log.Logger
 }
 
 func (c *baseController) Prepare() {

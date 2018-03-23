@@ -8,7 +8,7 @@ $(function() {
     // 로그 테이블
     var logs        = [], // 로그 저장소(고속 페이징)
         $table      = $( "#table-log" ),
-        tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
+        tableKey    = getTableKey( $table, reqVars.ctrl ); // 테이블 고유키
 
     // 로그 페이징 변수
     var paging = {
@@ -361,12 +361,12 @@ $(function() {
 
     // 선택박스 초기설정
     function resetMultiSelctedBoxesOfFilter() {
-            var cols = "risk_level[]";
-            $.each(cols.split( "," ), function(i, c) {
-                if ( reqVars[c] !== undefined ) {
-                    $( "#form-filter select[name='" + c + "']" ).selectpicker( "val", reqVars[c] ).selectpicker( "refresh" );
-                }
-            });
+        var cols = "risk_level[]";
+        $.each(cols.split( "," ), function(i, c) {
+            if ( reqVars[c] !== undefined ) {
+                $( "#form-filter select[name='" + c + "']" ).selectpicker( "val", reqVars[c] ).selectpicker( "refresh" );
+            }
+        });
     }
 
 });
