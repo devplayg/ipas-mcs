@@ -204,6 +204,7 @@ func initLogger(processName string, debug, verbose bool) {
 	if log.GetLevel() != log.InfoLevel {
 		log.Infof("LoggingLevel=%s", log.GetLevel())
 	}
+
 }
 
 //
@@ -215,11 +216,11 @@ func toLower(s string) template.HTML {
 	return template.HTML(strings.ToLower(s))
 }
 
-//func checkErr(err error) {
-//	if err != nil {
-//		log.Error(err)
-//	}
-//}
+func CheckError(err error) {
+	if err != nil {
+		log.Error(err)
+	}
+}
 
 func init() {
 	rand.Seed(time.Now().UnixNano())

@@ -78,8 +78,8 @@ function inet_ntoa(num) {
 // }
 
 // 테이블 키 생성
-function getTableKey( $table, ctrl, act ) {
-    return 'tk_' + ctrl + "/" + act + "/" + $table.attr( "id" );
+function getTableKey( $table, ctrl ) {
+    return 'tk_' + ctrl + "/" + $table.attr( "id" );
 }
 
 // 테이블 데이터 디스플레이

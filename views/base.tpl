@@ -17,7 +17,7 @@
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/components-rounded.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="/static/assets/css/themes/darkblue.min.css_" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Fonts -->
@@ -66,7 +66,7 @@
                 </a>
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
-                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <li class="hidden dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <i class="icon-bell"></i>
                                 <span class="badge badge-default"> 1 </span>
@@ -92,7 +92,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+                        <li class="hidden dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <i class="icon-envelope-open"></i>
                                 <span class="badge badge-default"> 1 </span>
@@ -120,7 +120,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                        <li class="hidden dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <i class="icon-calendar"></i>
                                 <span class="badge badge-default"> 3 </span>
@@ -225,6 +225,9 @@
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="/ipaslogs" class="nav-link"><span class="title">IPAS Log</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>
                                 </li>
                             </ul>
                         </li>

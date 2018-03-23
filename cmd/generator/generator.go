@@ -63,7 +63,7 @@ func generateIpasLogs(count int) {
 	defer os.Remove(tempFile.Name())
 
 	for _, r := range logs {
-		str := fmt.Sprintf("%s\t%s\t%s\t%d\t%d\t%3.6f\t%4.6f\t%d\t%d\t%d\t%d\t%d\t%d\n",
+		str := fmt.Sprintf("%s\t%s\t%s\t%d\t%d\t%3.6f\t%4.6f\t%d\t%d\t%d\t%d\t%d\n",
 			r.Date.Format("2006-01-02 15:04:05"),
 			r.EquipId,
 			r.Target,
@@ -74,9 +74,8 @@ func generateIpasLogs(count int) {
 			r.WarningDist,
 			r.CautionDist,
 			r.V2vDist,
-			r.CollisionThr,
-			r.ShockThr,
-			r.SpeedThr,
+			r.ShockThreshold,
+			r.SpeedThreshold,
 		)
 		tempFile.WriteString(str)
 	}
@@ -89,7 +88,7 @@ func generateIpasLogs(count int) {
 		LOAD DATA LOCAL INFILE '%s' INTO TABLE log_ipas
 		FIELDS TERMINATED BY '\t'
 		LINES TERMINATED BY '\n'
-		(date,equip_id,target,speeding_count,shock_count,latitude,longitude,warning_dist,caution_dist,v2v_dist,collision_thr,shock_thr,speed_thr)
+		(date,equip_id,target,speeding_count,shock_count,latitude,longitude,warning_dist,caution_dist,v2v_dist,shock_threshold,speed_threshold)
 	`
 	query = fmt.Sprintf(query, filepath.ToSlash(tempFile.Name()))
 	o := orm.NewOrm()
@@ -133,19 +132,18 @@ func NumberRange(from, to int) int {
 
 func newIpasLog() *objs.IpasLog {
 	return &objs.IpasLog{
-		Date:          time.Now().Add(time.Duration(NumberRange(1, 60)) * time.Second),
-		EquipId:       randTag(),
-		Target:        strings.Join(randTags(), ","),
-		SpeedingCount: NumberRange(1, 10),
-		ShockCount:    NumberRange(1, 10),
-		Latitude:      fake.Latitude(),
-		Longitude:     fake.Longitude(),
-		WarningDist:   NumberRange(1, 10),
-		CautionDist:   NumberRange(1, 10),
-		V2vDist:       NumberRange(1, 10),
-		CollisionThr:  NumberRange(1, 10),
-		ShockThr:      NumberRange(1, 10),
-		SpeedThr:      NumberRange(1, 10),
+		Date:           time.Now().Add(time.Duration(NumberRange(1, 60)) * time.Second),
+		EquipId:        randTag(),
+		Target:         strings.Join(randTags(), ","),
+		SpeedingCount:  NumberRange(1, 10),
+		ShockCount:     NumberRange(1, 10),
+		Latitude:       fake.Latitude(),
+		Longitude:      fake.Longitude(),
+		WarningDist:    NumberRange(1, 10),
+		CautionDist:    NumberRange(1, 10),
+		V2vDist:        NumberRange(1, 10),
+		ShockThreshold: NumberRange(1, 10),
+		SpeedThreshold: NumberRange(1, 10),
 	}
 	//return &objs.IpasLog{
 	//Date: time.Now(),

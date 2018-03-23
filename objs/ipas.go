@@ -17,20 +17,19 @@ type Ipas struct {
 }
 
 type IpasLog struct {
-	Date          time.Time `json:"date"`
-	EquipId       string    `json:"equip_id"`
-	Target        string    `json:"target"`
-	SpeedingCount int       `json:"speeding_count"`
-	ShockCount    int       `json:"shock_count"`
-	Latitude      float32   `json:"latitude"`
-	Longitude     float32   `json:"longitude"`
-	WarningDist   int       `json:"warning_dist"`
-	CautionDist   int       `json:"caution_dist"`
-	V2vDist       int       `json:"v2v_dist"`
-	CollisionThr  int       `json:"collision_thr"`
-	ShockThr      int       `json:"shock_thr"`
-	SpeedThr      int       `json:"speed_thr"`
-	Rdate         time.Time `json:"rdate"`
+	Date           time.Time `json:"date"`
+	EquipId        string    `json:"equip_id"`
+	Target         string    `json:"target"`
+	SpeedingCount  int       `json:"speeding_count"`
+	ShockCount     int       `json:"shock_count"`
+	Latitude       float32   `json:"latitude"`
+	Longitude      float32   `json:"longitude"`
+	WarningDist    int       `json:"warning_dist"`
+	CautionDist    int       `json:"caution_dist"`
+	V2vDist        int       `json:"v2v_dist"`
+	ShockThreshold int       `json:"shock_threshold"`
+	SpeedThreshold int       `json:"speed_threshold"`
+	Rdate          time.Time `json:"rdate"`
 }
 
 type IpasFilter struct {
