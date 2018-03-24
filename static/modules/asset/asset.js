@@ -190,10 +190,10 @@ $(function() {
             "type_0": {
                 //icon: "fa fa-ban"
             },
-            "type_1": {
+            1: {
                 icon: "fa fa-building-o"
             },
-            "type_2": {
+            2: {
                 icon: "fa fa-folder font-blue-sharp"
             },
             "type_4": {

@@ -16,7 +16,7 @@ func GetAssetsByClass(class int) ([]objs.Asset, error) {
             select  *,
                     concat('assetid_', asset_id) id,
                     name text,
-                    concat('type_', type1) type
+                    type1 type
             from ast_asset
             where class & ? > 0
             order by class, name
