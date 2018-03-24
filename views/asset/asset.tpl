@@ -20,6 +20,7 @@
                     <button type="button" class="btn default btn-xs btn-tree-refresh"><i class="fa fa-refresh"></i> </button>
                     <button type="button" class="btn default btn-xs btn-tree-expand">Expand </button>
                     <button type="button" class="btn default btn-xs btn-tree-collapse">Collapse </button>
+                    <button type="button" class="btn default btn-xs btn-asset-add" data-toggle="modal" data-target="#modal-asset-add"><i class="fa fa-plus"></i></button>
                 </div>
                 <div id="tree-assets"></div>
             </div> <!-- .portlet-body -->
@@ -51,98 +52,29 @@
     </div>
 </div>
 
-
-<div class="modal fade modal-sensor" id="modal-sensor-add" tabindex="-1" role="basic" aria-hidden="true">
+<div id="modal-asset-add" class="modal fader" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-            <form role="form" id="form-sensor-add" class="form-sensor">
+            <form role="form" id="form-asset-add">
                 <input type="hidden" name="_xsrf" value="{{ .xsrf_token }}" />
                 <input type="hidden" name="Type1" />
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Sensor Registration</h4>
+                    <h4 class="modal-title">{{i18n .Lang "registration"}}</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 form-group">
-                            <label for="Type1" class="control-label">Type</label>
-                            <select name="Type1"  class="selectpicker" data-width="100%">
-                                <option value="1">Sniper APTX</option>
-                                <option value="2">Sniper IPS</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-12 form-group">
                             <label for="Name" class="control-label">Name</label>
                             <input type="text" class="form-control" name="Name" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-8 form-group">
-                            <label for="Hostname" class="control-label"> IP</label>
-                            <input type="text" class="form-control" name="Hostname" />
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="Port" class="control-label"> Port</label>
-                            <input type="text" class="form-control" name="Port" />
-                        </div>
-                    </div>
                     <div class="note note-danger hidden"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn blue">Registration</button>
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div> <!-- .modal-content -->
-    </div> <!-- .modal-dialog -->
-</div> <!-- .modal -->
-
-<div class="modal fade modal-sensor" id="modal-sensor-add" tabindex="-1" role="basic" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <form role="form" id="form-sensor-add" class="form-sensor">
-                <input type="hidden" name="_xsrf" value="{{ .xsrf_token }}" />
-                <input type="hidden" name="AssetId" />
-                <input type="hidden" name="Type1" />
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Sensor Registration</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 form-group">
-                            <label for="Type1" class="control-label">Type</label>
-                            <select name="Type1"  class="selectpicker" data-width="100%">
-                                <option value="1">Sniper APTX</option>
-                                <option value="2">Sniper IPS</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 form-group">
-                            <label for="Name" class="control-label">Name</label>
-                            <input type="text" class="form-control" name="Name" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-8 form-group">
-                            <label for="Hostname" class="control-label"> IP</label>
-                            <input type="text" class="form-control" name="Hostname" />
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="Port" class="control-label"> Port</label>
-                            <input type="text" class="form-control" name="Port" />
-                        </div>
-                    </div>
-                    <div class="note note-danger hidden"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn blue">Registration</button>
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn blue">{{i18n .Lang "registration"}}</button>
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{i18n .Lang "close"}}</button>
                 </div>
             </form>
         </div> <!-- .modal-content -->
