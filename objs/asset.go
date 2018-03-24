@@ -5,13 +5,13 @@ import (
 )
 
 type Asset struct {
-	AssetId     int
-	Class       int `json:"-"`
-	ParentId    int `json:"parent_id"`
-	Name        string
-	Type        string `json:"type"`
-	Type1       int
-	Type2       int
+	AssetId  int    `json:"asset_id"`
+	Class    int    `json:"-"`
+	ParentId int    `json:"parent_id"`
+	Name     string `json:"name"`
+	Type     int    `json:"type"`
+	Type1    int    `json:"type1"`
+	//Type2       int
 	//Hostname    string
 	//IP          string    `json:"-"`
 	//Cidr        int       `json:"-"`
@@ -34,15 +34,15 @@ type Asset struct {
 	//S2          string    `json:"-"`
 	//F1          float32   `json:"-"`
 	//F2          float64   `json:"-"`
-	Created     time.Time `json:"-"`
-	Updated     time.Time `json:"-"`
+	Created time.Time `json:"-"`
+	Updated time.Time `json:"-"`
 
 	Text     string   `json:"text"`
-	Id       string   `json:"id"` // for tree
+	Id       int      `json:"id"` // for tree
 	Icon     string   `json:"-"`
 	Children []*Asset `json:"children"`
 }
 
-var AssetClass = map[int]string {
+var AssetClass = map[int]string{
 	1: "IPAS",
 }

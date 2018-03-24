@@ -209,12 +209,11 @@ func organizeAssets(class int, assets []*objs.Asset) map[int]*objs.Asset {
 	assetMap := make(map[int]*objs.Asset)
 	root := objs.Asset{
 		AssetId:  0,
-		Id:       "assetid_0",
+		Id:       0,
 		Class:    1,
 		ParentId: -1,
-		Type:     "type_0",
 		Type1:    0,
-		Type2:    0,
+		//Type2:    0,
 		Text:     objs.AssetClass[class],
 		Children: nil,
 	}
