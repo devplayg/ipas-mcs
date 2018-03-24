@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `ast_asset`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ast_asset` (
   `asset_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `class` int(10) unsigned NOT NULL COMMENT '1:Server, 2: Sensor, 3: Agent',
+  `class` int(10) unsigned NOT NULL COMMENT '1:Company, 2: Company-dept, 4: ',
   `parent_id` int(10) unsigned NOT NULL,
   `name` varchar(128) NOT NULL,
   `type1` int(10) unsigned NOT NULL,

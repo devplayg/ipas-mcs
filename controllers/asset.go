@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"github.com/astaxie/beego/logs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"strconv"
-	"github.com/astaxie/beego/logs"
 )
 
 type AssetController struct {
@@ -24,6 +24,27 @@ func (c *AssetController) Get() {
 	}
 }
 
+func (c *AssetController) GetDescendantsWithParent() {
+
+	// 가져올 자산 class
+	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
+
+	// 최상위 자산 ID
+	rootId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+
+	assetMap := getAssetMapByClassId(class)
+
+	// Print
+	//root := objs.Asset{}
+
+	if assetMap[rootId].Children == nil {
+		c.Data["json"] = []int{}
+	} else {
+		c.Data["json"] = assetMap[rootId].Children
+	}
+	c.ServeJSON()
+}
+
 //
 func (c *AssetController) GetDescendants() {
 
@@ -35,15 +56,15 @@ func (c *AssetController) GetDescendants() {
 
 	assetMap := getAssetMapByClassId(class)
 
+	//spew.Dump(assetMap)
 	// Print
 	if assetMap[assetId].Children == nil {
 		c.Data["json"] = []int{}
 	} else {
-		c.Data["json"] = assetMap[assetId].Children
+		c.Data["json"] = assetMap[assetId]
 	}
 	c.ServeJSON()
 }
-
 
 func (c *AssetController) GetChildren() {
 
@@ -58,6 +79,7 @@ func (c *AssetController) GetChildren() {
 	c.Data["json"] = assets
 	c.ServeJSON()
 }
+
 //
 //func (this *AssetsController) Patch() {
 //
@@ -181,19 +203,19 @@ func (c *AssetController) GetChildren() {
 //	return myAssetList
 //}
 //
-func organizeAssets(assets []*objs.Asset) map[int]*objs.Asset {
+func organizeAssets(class int, assets []*objs.Asset) map[int]*objs.Asset {
 
 	// Create a root node
 	assetMap := make(map[int]*objs.Asset)
 	root := objs.Asset{
-		AssetId: 0,
-		Id: "assetid_0",
-		Class: 1,
+		AssetId:  0,
+		Id:       "assetid_0",
+		Class:    1,
 		ParentId: -1,
-		Type: "type_0",
-		Type1: 0,
-		Type2: 0,
-		Text: "root",
+		Type:     "type_0",
+		Type1:    0,
+		Type2:    0,
+		Text:     objs.AssetClass[class],
 		Children: nil,
 	}
 	assetMap[0] = &root
@@ -220,6 +242,7 @@ func organizeAssets(assets []*objs.Asset) map[int]*objs.Asset {
 
 	return assetMap
 }
+
 //
 //func getMemberAssetMapByClassId(member *models.Member, class int) map[int]*models.Asset {
 //	var assetMap map[int]*models.Asset
@@ -249,7 +272,7 @@ func getAssetMapByClassId(class int) map[int]*objs.Asset {
 	for idx, _ := range list {
 		assets = append(assets, &list[idx])
 	}
-		assetMap = organizeAssets(assets)
+	assetMap = organizeAssets(class, assets)
 	return assetMap
 }
 

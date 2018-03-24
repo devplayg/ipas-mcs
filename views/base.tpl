@@ -240,7 +240,7 @@
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="/config" class="nav-link">
-                                        <span class="title">System</span>
+                                        <span class="title">{{i18n .Lang "menu.configuration" }}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -250,7 +250,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="/assets" class="nav-link">
-                                        <span class="title">Assets</span>
+                                        <span class="title">{{i18n .Lang "menu.assets" }}</span>
                                     </a>
                                 </li>
                             </ul>
