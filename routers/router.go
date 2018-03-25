@@ -21,7 +21,7 @@ func init() {
 
 	// 자산
 	beego.Router(`/assets`, &controllers.AssetController{})
-	beego.Router("/assetclass/:class:int/descendants/:assetId:int", &controllers.AssetController{}, "get:GetDescendants")
+	beego.Router("/assetclass/:class:int/root/:assetId:int", &controllers.AssetController{}, "get:GetDescendantsWithRoot")
 	beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "get:GetChildren")
 	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")
 	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Post:UpdateMember")

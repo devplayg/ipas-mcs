@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div id="modal-asset-add" class="modal fader" tabindex="-1" role="basic" aria-hidden="true">
+<div id="modal-asset-add" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <form role="form" id="form-asset-add">
@@ -81,42 +81,6 @@
     </div> <!-- .modal-dialog -->
 </div> <!-- .modal -->
 
-<!-- modal
-<div class="row">
-                    <div class="col-lg-12 form-group">
-                        <label for="Username" class="control-label">센서 이름</label>
-                        <input type="text" class="form-control" name="Username" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 form-group">
-                        <label for="Password" class="control-label"> IP</label>
-                        <input type="password" class="form-control" name="Password" />
-                    </div>
-                    <div class="col-lg-4 form-group">
-                        <label for="PasswordConfirm" class="control-label"> 연결 Port</label>
-                        <input type="password" class="form-control" name="PasswordConfirm" />
-                    </div>
-                </div>
-                <div class="row">
-                    센서 유형
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 form-group">
-                        <label for="Name" class="control-label"> Name</label>
-                        <input type="text" class="form-control" name="Name" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 form-group">
-                        <label for="Email" class="control-label"><i class="fa fa-envelope-o"></i> Email</label>
-                        <input type="email" class="form-control" name="Email" />
-                    </div>
-                </div>
-                <div class="note note-danger hidden"></div>
-
-</div>
--->
 {{end}}
 
 {{define "javascript"}}

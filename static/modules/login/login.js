@@ -51,7 +51,8 @@ $(function() {
                         url: "/signin",
                         data: {
                             username: username,
-                            encPassword: getHash( getHash( username + password ) + result.data )
+                            encPassword: getHash( getHash( username + password ) + result.data ),
+                            redirectUri: $( "input[name=redirectUri]", $form ).val()
                         }
                     }).done( function( result2 ) {
                         if ( result2.state ) {
