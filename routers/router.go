@@ -18,9 +18,10 @@ func init() {
 	// 사용자
 	beego.Router(`/members`, &controllers.MemberController{})
 	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{})
+	beego.Router(`/members/:memberId([\d]+)/acl`, &controllers.MemberController{}, "Get:GetMemberAcl")
 
 	// 자산
-	beego.Router(`/assets`, &controllers.AssetController{})
+	beego.Router("/assets", &controllers.AssetController{})
 	beego.Router("/assetclass/:class:int/root/:assetId:int", &controllers.AssetController{}, "get:GetDescendantsWithRoot")
 	beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "get:GetChildren")
 	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")

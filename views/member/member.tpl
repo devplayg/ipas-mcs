@@ -2,9 +2,10 @@
 
 
 {{define "contents"}}
+
     <div id="toolbar-member">
-        <button type="button" class="btn btn-primary btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
-        <button type="button" class="btn btn-danger btn-member-remove">Delete</button>
+        <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
+        <button type="button" class="btn red btn-member-remove">Delete</button>
     </div>
 
     <table  id="table-member"
@@ -176,10 +177,6 @@
                                             <input type="checkbox" name="user_groups" value="8" />
                                             <span></span>
                                         </label>
-                                        <label class="mt-checkbox mt-checkbox-outline"> User
-                                            <input type="checkbox" name="user_groups" value="0" />
-                                            <span></span>
-                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -193,17 +190,31 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
                     </div>
                 </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div><!-- .modal -->
 
+    <div class="modal fade" id="modal-member-acl" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form role="form" id="form-member-grant" class="form-member">
+                <input type="hidden" name="member_id">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title"><i class="fa fa-edit"></i> {{i18n .Lang "grant"}}</h4>
+                </div>
+                <div class="modal-body">
+            </div>
+            </form>
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div><!-- .modal -->
 {{end}}
 
 {{define "javascript"}}
 <script src="/static/plugins/jquery-validation/common-validate-methods.js"></script>
 <script>
     var positions = {{.positions}};
-    console.log(positions);
 </script>
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>

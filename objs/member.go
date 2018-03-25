@@ -100,11 +100,10 @@ func isValidPassword(str string) bool {
 //	ValueN   int
 //}
 //
-//type MemberAsset struct {
-//	MemberId int
-//	Class    int
-//	Assets   []int
-//}
+type MemberAsset struct {
+	MemberId int
+	Assets   []int
+}
 //
 //type IpCidr struct {
 //	Ip   string

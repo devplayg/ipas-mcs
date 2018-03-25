@@ -11,11 +11,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 	"html/template"
-	"math/rand"
+	//"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
+	//"time"
 )
 
 // Multi-language
@@ -60,6 +60,7 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 
 func initFramework() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
+	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 60 * 60 * 24 * 7
 	beego.BConfig.WebConfig.Session.SessionName = "ipmSessionID"
 	beego.BConfig.WebConfig.Session.SessionProvider = "file"
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"
@@ -223,5 +224,5 @@ func CheckError(err error) {
 }
 
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	//rand.Seed(time.Now().UnixNano())
 }

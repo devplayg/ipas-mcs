@@ -19,6 +19,9 @@ import (
 type CtrlPreparer interface {
 	CtrlPrepare()
 }
+type LangPreparer interface {
+	LangPrepare()
+}
 
 // 기본 Controller
 type baseController struct {
@@ -30,6 +33,7 @@ type baseController struct {
 	isLogged         bool         // 로그인 상태
 	ctrlName         string       // Controller 이름
 	actName          string       // Action 이름
+	langMap map[string]string
 	log *log.Logger
 }
 
@@ -80,6 +84,7 @@ func (c *baseController) Prepare() {
 
 	// 언어 설정
 	c.setLangVer()
+	c.langToFrontEnd()
 
 	// 기본 템플릿 변수 설정
 	c.Data["title"] = beego.BConfig.AppName
@@ -223,6 +228,24 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 	}
 	err := models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
 	return err
+}
+
+func (c *baseController) langToFrontEnd(keyword... string) {
+	c.langMap = make(map[string]string)
+
+	for _, k := range keyword {
+		c.langMap[k] = c.Tr(k)
+	}
+	list := strings.Split("yes,no,msg.confirm_delete", ",")
+	for _, r := range list {
+		c.langMap[r] = c.Tr(r)
+	}
+
+	if app, ok := c.AppController.(LangPreparer); ok {
+		app.LangPrepare()
+	}
+
+	c.Data["lang"] = c.langMap
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {
