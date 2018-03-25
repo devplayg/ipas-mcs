@@ -17,7 +17,7 @@
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/components-rounded.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/css/themes/darkblue.min.css_" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Fonts -->
@@ -31,7 +31,7 @@
         <link href="/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-        <link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+        {{/*<link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />*/}}
         <link href="/static/plugins/waitMe/waitMe.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/flag-icon-css/css/flag-icon.css" rel="stylesheet" type="text/css" />
 
@@ -522,8 +522,7 @@
         <script src="/static/plugins/jquery-validation/localization/messages-{{.Lang}}.min.js" type="text/javascript"></script>
         <script src="/static/plugins/jquery-mask/jquery.mask.min.js" type="text/javascript"></script>
         <script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-        <script src="/static/plugins/sweetalert/sweetalert2.min.js"></script>
-        <script src="/static/plugins/sweetalert/core.js"></script>
+        <script src="/static/plugins/sweetalert2/sweetalert2.all.min.js"></script>
         <script src="/static/plugins/jquery-base64/jquery.base64.min.js"></script>
         <script src="/static/plugins/moment/moment.min.js" type="text/javascript"></script>
         <script src="/static/plugins/waitMe/waitMe.min.js" type="text/javascript"></script>
@@ -538,6 +537,7 @@
 
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
+            felang = {{.lang}}; // front-end languages
 
             // Sidebar
             Layout.setSidebarMenuActiveLink("match");

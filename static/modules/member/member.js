@@ -13,7 +13,7 @@ $(function() {
      *
      */
 
-    //     // 로그 테이블
+    // 로그 테이블
     var $table      = $( "#table-member" ),
         tableKey    = getTableKey( $table, reqVars.ctrl, reqVars.act ); // 테이블 고유키
 
@@ -32,7 +32,7 @@ $(function() {
                 url: "/members",
                 data: $( form ).serialize()
             }).done( function ( result ) {
-                console.log(result);
+                // console.log(result);
                 if ( result.state ) {
                     $( ".alert", $( form ) ).addClass( "hidden" );
                     $( "#modal-member-add" ).modal( "hide" );
@@ -161,21 +161,36 @@ $(function() {
         });
 
     window.memberActionEvents = {
-        'click .edit': function(e, val, row, idx) {
-            // console.log(1);
-            showForm(row, 'edit');
+        "click .edit": function( e, val, row, idx ) {
+            showForm( row, "edit" );
         },
-        'click .remove': function(e, val, row, idx) {
-            // console.log(2);
-            // showForm(row, 'remove');
+        "click .acl": function( e, val, row, idx ) {
+            showForm( row, "acl" );
         },
-        'click .reset_pwd': function(e, val, row, idx) {
-            // console.log(3);
-            // showForm(row, 'reset_pwd');
-        },
-        'click .ippool': function(e, val, row, idx) {
-            // console.log(4);
-            // showForm(row, 'ippool');
+        "click .remove": function( e, val, row, idx ) {
+            swal({
+                title: felang[ "msg.confirm_delete" ],
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn red",
+                confirmButtonText: felang[ "yes" ],
+                cancelButtonText: felang[ "no" ]
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "DELETE",
+                        async: true,
+                        url: "/members/" + row.member_id,
+                    }).done( function( result ) {
+                        if ( result.state ) {
+                            $( "#table-member" ).bootstrapTable( "refresh" );
+                        } else {
+                            swal("fail", result.message, "error");
+                        }
+                    });
+                }
+            })
+
         }
     };
 
@@ -185,37 +200,48 @@ $(function() {
      *
      */
     function showForm(row, mode) {
-        $.ajax({
-            type: "GET",
-            async: true,
-            url: "/members/" + row.member_id,
-        }).done(function(result) {
-            if ( ! result.state ) {
-                return;
-            }
-
-            var m = result.data;
-            var $form = $( "#form-member-edit" );
-
-            $( "input[name=member_id]", $form ).val( m.member_id );
-            $( "input[name=username]", $form ).val( result.data.username );
-            $( "input[name=name]", $form ).val( result.data.name );
-            $( "input[name=email]", $form ).val( result.data.email );
-            if (result.data.allowed_ip != null) {
-                $( "textarea[name=allowed_ip]", $form ).val(m.allowed_ip.replace(/\/32/g, "" ).replace(/,/g, "\n" ));
-            }
-
-            // 권한 설정
-            $form.find( "input[name=user_groups]" ).each(function(i) {
-                if ( m.position & ( 1 << $( this ).val() ) ) {
-                    $( this ).prop( "checked", true );
+        if (mode == "edit") { // 사용자 정보 수정
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: "/members/" + row.member_id,
+            }).done(function(result) {
+                if ( ! result.state ) {
+                    return;
                 }
+
+                var m = result.data;
+                var $form = $( "#form-member-edit" );
+
+                $( "input[name=member_id]", $form ).val( m.member_id );
+                $( "input[name=username]", $form ).val( result.data.username );
+                $( "input[name=name]", $form ).val( result.data.name );
+                $( "input[name=email]", $form ).val( result.data.email );
+                if (result.data.allowed_ip != null) {
+                    $( "textarea[name=allowed_ip]", $form ).val(m.allowed_ip.replace(/\/32/g, "" ).replace(/,/g, "\n" ));
+                }
+
+                // 권한 설정
+                $form.find( "input[name=user_groups]" ).each(function(i) {
+                    if ( m.position & ( 1 << $( this ).val() ) ) {
+                        $( this ).prop( "checked", true );
+                    }
+                });
+
+                // 타임존
+                $( "select[name=timezone]", $form ).val( m.timezone ).selectpicker( "refresh" );
+                $( "#modal-member-edit" ).modal( "show" );
             });
 
-            // 타임존
-            $( "select[name=timezone]", $form ).val( m.timezone ).selectpicker( "refresh" );
-            $( "#modal-member-edit" ).modal( "show" );
-        });
+        } else if (mode == "acl") { // 사용자 권한 설정
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: "/members/" + row.member_id + "/acl",
+            }).done(function(result) {
+                $( "#modal-member-acl" ).modal( "show" );
+            });
+        }
     }
 
 

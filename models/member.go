@@ -204,3 +204,21 @@ func LoginFailed(username string, lastFailedLogin bool) error {
 	_, err := o.Raw(query, username).Exec()
 	return err
 }
+
+func RemoveMember(memberId int, adminPosition uint) (sql.Result, error) {
+	query := "delete from mbr_member where member_id = ? and position < ?" // 삭제수행 주체보다 하위 권한만 삭제 가능
+
+	o := orm.NewOrm()
+	return o.Raw(query, memberId, adminPosition).Exec()
+}
+
+
+func GetMemberAcl(memberId int) ([]int, error) {
+	query := "select asset_id from mbr_asset where member_id = ?"
+
+	var assets []int
+	o := orm.NewOrm()
+	err := o.Raw(query, memberId).QueryRow(&assets)
+
+	return assets, err
+}

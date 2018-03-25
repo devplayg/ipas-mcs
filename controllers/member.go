@@ -17,6 +17,11 @@ type MemberController struct {
 	baseController
 }
 
+func (c *MemberController) LangPrepare() {
+
+	c.langMap["cancel"] = c.Tr("cancel")
+}
+
 // 사용자 정보 출력
 func (c *MemberController) Get() {
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
@@ -27,16 +32,19 @@ func (c *MemberController) Get() {
 			members, total, err := models.GetMembers(filter)
 			c.serveResultJson(members, total, err, "off")
 		}
-		//
+
 	} else { // Ajax 외 요청이면 HTML 리턴
 		positions := make(map[string]int)
-		positions["User"] = objs.User
+
 		positions["Administrator"] = objs.Administrator
 		positions["Superman"] = objs.Superman
 		positions["Observer"] = objs.Observer
 		c.Data["positions"] = positions
 
+		//c.langToFrontEnd("msg.confirm_delete")
 		c.setTpl("member.tpl")
+		//c.Data["langMap"].(map[string]string)["cancel"] = "abc"
+
 	}
 }
 
@@ -180,4 +188,39 @@ func (c *MemberController) Patch() {
 	}
 	c.Data["json"] = dbResult
 	c.ServeJSON()
+}
+
+func (c *MemberController) Delete() {
+	dbResult := objs.NewDbResult()
+
+	memberId, _ := strconv.Atoi(c.Ctx.Input.Param(":memberId"))
+	rs, err := models.RemoveMember(memberId, c.member.Position)
+	if err != nil {
+		dbResult.Message = err.Error()
+		c.Data["json"] = dbResult
+		c.ServeJSON()
+		return
+	}
+
+	affectedRows, _ := rs.RowsAffected()
+	if affectedRows > 0 {
+		dbResult.State = true
+	} else {
+		dbResult.Message = c.Tr("msg.not_founded")
+		dbResult.Message += " / " + c.Tr("msg.not_permitted")
+	}
+
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+
+func (c *MemberController) GetMemberAcl() {
+	//dbResult := objs.NewDbResult()
+	//
+	//memberId, _ := strconv.Atoi(c.Ctx.Input.Param(":memberId"))
+	//
+	//assets, err := models.GetMemberAcl(memberId)
+	//c.Data["json"]  = assets
+	//c.jsons
 }
