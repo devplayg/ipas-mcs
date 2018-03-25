@@ -25,7 +25,7 @@ func (c *LoginController) CtrlPrepare() {
 // 로그인 페이지
 func (c *LoginController) Get() {
 	if c.isLogged {
-		uri := beego.AppConfig.DefaultString("home_uri", "/ipaslog")
+		uri := beego.AppConfig.DefaultString("home_uri", "/ipaslogs")
 		c.Redirect(uri, 302)
 	} else {
 		if len(c.GetString("redirectUri")) > 0 {
@@ -95,8 +95,13 @@ func (c *LoginController) Post() {
 		// 감사이력 생성
 		// 로그인 실패수 초기화
 		// 마지막 로그인 시간 기록
+
+		redirectUri := c.GetString("redirectUri")
+		if len(redirectUri) < 1 {
+			redirectUri = beego.AppConfig.DefaultString("home_url", "/syslog")
+		}
 		result.Data = map[string]string{
-			"redirectUrl": beego.AppConfig.DefaultString("home_url", "/syslog"),
+			"redirectUrl": redirectUri,
 		}
 	} else {
 		c.audit("signin_failed", map[string]string{"username": username, "message": "wrong password"}, nil)

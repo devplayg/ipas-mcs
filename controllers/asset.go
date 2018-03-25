@@ -7,6 +7,10 @@ import (
 	"strconv"
 )
 
+const (
+	RootId = 0
+)
+
 type AssetController struct {
 	baseController
 }
@@ -24,46 +28,66 @@ func (c *AssetController) Get() {
 	}
 }
 
-func (c *AssetController) GetDescendantsWithParent() {
-
-	// 가져올 자산 class
-	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
-
-	// 최상위 자산 ID
-	rootId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
-
-	assetMap := getAssetMapByClassId(class)
-
-	// Print
-	//root := objs.Asset{}
-
-	if assetMap[rootId].Children == nil {
-		c.Data["json"] = []int{}
-	} else {
-		c.Data["json"] = assetMap[rootId].Children
-	}
-	c.ServeJSON()
-}
-
 //
 func (c *AssetController) GetDescendants() {
 
-	// 가져올 자산 class
+	// 조회할 자산 그룹
 	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
 
 	// 최상위 자산 ID
 	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
 
-	assetMap := getAssetMapByClassId(class)
+	// 자산 맵 구성
+	asset := c.getDescendants(class, assetId)
 
-	//spew.Dump(assetMap)
-	// Print
-	if assetMap[assetId].Children == nil {
-		c.Data["json"] = []int{}
-	} else {
-		c.Data["json"] = assetMap[assetId]
+	if asset != nil {
+		c.Data["json"] = asset.Children
 	}
 	c.ServeJSON()
+}
+
+func (c *AssetController) GetDescendantsWithRoot() {
+
+	// 조회할 자산 그룹
+	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
+
+	// 최상위 자산 ID
+	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+
+	// 자산 맵 구성
+	assetMap := getAssetMapByClassId(class)
+
+	if assetId == RootId {
+		c.Data["json"] = assetMap[assetId]
+	} else {
+		root := objs.NewRootAsset(class)
+		root.Children = append(root.Children, assetMap[assetId])
+		c.Data["json"] = root
+	}
+	c.ServeJSON()
+
+}
+
+func (c *AssetController) getDescendants(class, assetId int) *objs.Asset {
+	assetMap := getAssetMapByClassId(class)
+	return assetMap[assetId]
+}
+
+
+
+func getAssetMapByClassId(class int) objs.AssetMap {
+
+	// 클래스에 해당하는 자산 조회
+	list, err := models.GetAssetsByClass(class)
+	CheckError(err)
+	assets := make([]*objs.Asset, 0)
+	for idx := range list {
+		assets = append(assets, &list[idx])
+	}
+
+	// 자산 Map 구성
+	assetMap := organizeAssets(class, assets)
+	return assetMap
 }
 
 func (c *AssetController) GetChildren() {
@@ -78,6 +102,36 @@ func (c *AssetController) GetChildren() {
 	// Print
 	c.Data["json"] = assets
 	c.ServeJSON()
+}
+
+
+func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
+
+	// Create map and root node
+	assetMap := make(objs.AssetMap)
+	assetMap[RootId] = objs.NewRootAsset(class)
+
+	var keys []int
+	for idx, asset := range assets {
+		assetMap[asset.AssetId] = assets[idx]
+		keys = append(keys, asset.AssetId)
+	}
+
+	// Organize assets
+	for _, k := range keys {
+		parentId := assetMap[k].ParentId
+		if _, ok := assetMap[parentId]; ok {
+			assetMap[parentId].Children = append(assetMap[parentId].Children, assetMap[k])
+		} else { // Lost child
+			if assetMap[k].AssetId > 0 { // lost child
+				parentId = 0
+				assetMap[k].ParentId = parentId
+				assetMap[parentId].Children = append(assetMap[parentId].Children, assetMap[k])
+			}
+		}
+	}
+
+	return assetMap
 }
 
 //
@@ -203,44 +257,6 @@ func (c *AssetController) GetChildren() {
 //	return myAssetList
 //}
 //
-func organizeAssets(class int, assets []*objs.Asset) map[int]*objs.Asset {
-
-	// Create a root node
-	assetMap := make(map[int]*objs.Asset)
-	root := objs.Asset{
-		AssetId:  0,
-		Id:       0,
-		Class:    1,
-		ParentId: -1,
-		Type1:    0,
-		//Type2:    0,
-		Text:     objs.AssetClass[class],
-		Children: nil,
-	}
-	assetMap[0] = &root
-
-	var keys []int
-	for idx, asset := range assets {
-		assetMap[asset.AssetId] = assets[idx]
-		keys = append(keys, asset.AssetId)
-	}
-
-	// Organize assets
-	for _, k := range keys {
-		parentId := assetMap[k].ParentId
-		if _, ok := assetMap[parentId]; ok {
-			assetMap[parentId].Children = append(assetMap[parentId].Children, assetMap[k])
-		} else { // Lost child
-			if assetMap[k].AssetId > 0 { // lost child
-				parentId = 0
-				assetMap[k].ParentId = parentId
-				assetMap[parentId].Children = append(assetMap[parentId].Children, assetMap[k])
-			}
-		}
-	}
-
-	return assetMap
-}
 
 //
 //func getMemberAssetMapByClassId(member *models.Member, class int) map[int]*models.Asset {
@@ -262,18 +278,6 @@ func organizeAssets(class int, assets []*objs.Asset) map[int]*objs.Asset {
 //	return assetMap
 //}
 //
-func getAssetMapByClassId(class int) map[int]*objs.Asset {
-	var assetMap map[int]*objs.Asset
-
-	list, err := models.GetAssetsByClass(class)
-	CheckError(err)
-	assets := make([]*objs.Asset, 0)
-	for idx, _ := range list {
-		assets = append(assets, &list[idx])
-	}
-	assetMap = organizeAssets(class, assets)
-	return assetMap
-}
 
 //
 //func GetAssetDescendantsIdList(assetMap map[int]*models.Asset, assetId int) (id_list []int) {

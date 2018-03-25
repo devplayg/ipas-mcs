@@ -13,11 +13,17 @@ $(function() {
 
     // Tree
     var $tree = $( "#tree-assets" );
+
     $tree.jstree({
+        "plugins" : [
+            "types", "state", "sort"
+        ],
+
         "core" : {
             "data" : {
-                "url" : "/assetclass/1/descendants/0",
+                "url" : "/assetclass/1/root/0",
             },
+
             "check_callback" : function ( op, node, node_parent, node_position, more ) {
                 var ids = $tree.jstree( true ).get_selected();
                 console.log(node);
@@ -49,140 +55,6 @@ $(function() {
             'responsive': true
 //        }
         },
-//         "contextmenu": {
-//             "items": function( $node ) {
-//                 var type = this.get_type( $node );
-//
-//                 if ( type == "type_0" ) { // Root
-//                     return {
-//                         "Create": {
-//                             "separator_before": true,
-//                             "separator_after": true,
-//                             "label": "Create sensor",
-//                             "action": function ( obj ) {
-//                                 $node = $tree.jstree( true ).create_node($node);
-// //                            $tree.jstree( true ).edit( $node );
-// //                            $node = $tree.create_node( $node );
-// //                            $tree.edit( $node );
-//                             }
-//                         }
-//                     };
-//
-//                 } else if ( type == "type_1" ) { // Companies
-//                     return {
-//                         "Create": {
-//                             "separator_before": false,
-//                             "separator_after": true,
-//                             "label": "Create groups",
-//                             "icon": "fa fa-plus",
-//                             "action": function( obj ) {
-// //                            $node = tree.create_node( $node );
-// //                            tree.edit( $node );
-//                             }
-//                         },
-//                         "Rename": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Rename",
-//                             "icon": "fa fa-tag",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).edit( $node );
-//                             }
-//                         },
-//                         "Edit": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Edit",
-//                             "icon": "fa fa-edit",
-//                             "action": function( obj ) {
-// //                            $tree.jstree( true ).edit( $node );
-//                             }
-//                         },
-//                         "Remove": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Remove",
-//                             "icon": "fa fa-trash-o",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).delete_node( $node );
-//                             }
-//                         }
-//                     };
-//                 } else if (type == "type_2" ) { // Departments
-//                     return {
-//                         "Create": {
-//                             "separator_before": false,
-//                             "separator_after": true,
-//                             "label": "Create network",
-//                             "icon": "fa fa-plus",
-//                             "action": function( obj ) {
-// //                            $node = tree.create_node( $node );
-// //                            tree.edit( $node );
-//                             }
-//                         },
-//                         "Rename": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Rename",
-//                             "icon": "fa fa-trash-o",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).edit( $node );
-// //                            tree.edit( $node );
-//                             }
-//                         },
-//                         "Edit": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Edit",
-//                             "icon": "fa fa-edit",
-//                             "action": function( obj ) {
-// //                            alert(3);
-//                             }
-//                         },
-//                         "Remove": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Remove",
-//                             "icon": "fa fa-trash-o",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).delete_node( $node );
-//                             }
-//                         }
-//                     };
-//
-//                 } else if (type == "type_4" ) { // Network
-//                     return {
-//                         "Rename": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Rename",
-//                             "icon": "fa fa-edit",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).edit( $node );
-//                             }
-//                         },
-//                         "Edit": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Edit",
-//                             "icon": "fa fa-edit",
-//                             "action": function( obj ) {
-// //                            alert(3);
-//                             }
-//                         },
-//                         "Remove": {
-//                             "separator_before": false,
-//                             "separator_after": false,
-//                             "label": "Remove",
-//                             "icon": "fa fa-trash-o",
-//                             "action": function( obj ) {
-//                                 $tree.jstree( true ).delete_node( $node );
-//                             }
-//                         }
-//                     };
-//                 }
-//             }
-//         },
         "types" : {
             "default": {
                 icon: "fa fa-folder icon-state-warning"
@@ -201,36 +73,21 @@ $(function() {
             },
         },
 
-        "plugins" : [
-            "types", "state", "sort", "contextmenu"
-        ]
     }).on( "loaded.jstree", function() {
         // $(this).jstree( "open_all");
 
     }).on( "changed.jstree", function( e, obj ) {
-        // console.log("changed.jstree: " + obj.action);
-        // obj.
-        console.log(obj.node);
-        $( "#table-assets" ).bootstrapTable( "load", [] );
         if ( obj.action == "select_node" ) {
-            var assetId = obj.node.original.AssetId;
-            if (assetId == "j1_1" ) {
-                assetId = 0;
-            }
-
-            $.ajax({
-                type: "get",
-                async: true,
-                url: "/assets/" + assetId + "/children"
-            }).done( function( rows ) {
-                if ( rows !== null ) {
-                    $( "#table-assets" ).bootstrapTable( "load", rows );
-                }
-            });
+            console.log(obj.node);
         }
     });
 
-
+//$.ajax({;
+    //
+    // $('#jstree').on('ready.jstree', function (e, data) {
+    //     createNode("#jstree", "another_base_directory", "Another Base Directory", "first");
+    //     createNode("#base_directory", "sub_2", "Sub 2", "last");
+    // });
 //$.ajax({
 //    type: "GET",
 //    async: true,

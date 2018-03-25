@@ -10,7 +10,7 @@ type Asset struct {
 	ParentId int    `json:"parent_id"`
 	Name     string `json:"name"`
 	Type     int    `json:"type"`
-	Type1    int    `json:"type1"`
+	Type1    int    `json:"-"`
 	//Type2       int
 	//Hostname    string
 	//IP          string    `json:"-"`
@@ -45,4 +45,27 @@ type Asset struct {
 
 var AssetClass = map[int]string{
 	1: "IPAS",
+}
+
+type AssetMap map[int]*Asset
+
+
+func NewRootAsset(class int) *Asset{
+	str := "Unknown"
+	if _, ok := AssetClass[class]; ok {
+		str = AssetClass[class]
+	}
+
+	root := Asset{
+		AssetId:  0,
+		Id:       0,
+		Class:    1,
+		ParentId: -1,
+		Type1:    0,
+		//Type2:    0,
+		Text:     str,
+		Children: nil,
+	}
+
+	return &root
 }

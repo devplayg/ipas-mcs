@@ -14,8 +14,16 @@ import (
 	"time"
 )
 
+type Group struct {
+	OrgId   int
+	GroupId int
+	Name    string
+}
+
 var (
-	flags *flag.FlagSet
+	flags   *flag.FlagSet
+	idPools orm.ParamsList
+	groups  []Group
 )
 
 func init() {
@@ -34,6 +42,15 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	o := orm.NewOrm()
+	query := "SELECT parent_id org_id, asset_id group_id, name FROM ast_asset where class =1 and type1 = 2"
+	_, err = o.Raw(query).QueryRows(&groups)
+	if err != nil {
+		panic(err)
+	}
+
+	//spew.Dump(groups)
 }
 
 func main() {
@@ -56,15 +73,17 @@ func generateIpasLogs(count int) {
 	}
 
 	// Create templ file
-	tempFile, err := ioutil.TempFile("c:/temp", "")
+	tempFile, err := ioutil.TempFile("", "")
 	if err != nil {
 		panic(err)
 	}
 	defer os.Remove(tempFile.Name())
 
 	for _, r := range logs {
-		str := fmt.Sprintf("%s\t%s\t%s\t%d\t%d\t%3.6f\t%4.6f\t%d\t%d\t%d\t%d\t%d\n",
+		str := fmt.Sprintf("%s\t%d\t%d\t%s\t%s\t%d\t%d\t%3.6f\t%4.6f\t%d\t%d\t%d\t%d\t%d\n",
 			r.Date.Format("2006-01-02 15:04:05"),
+			r.OrgId,
+			r.GroupId,
 			r.EquipId,
 			r.Target,
 			r.SpeedingCount,
@@ -88,7 +107,7 @@ func generateIpasLogs(count int) {
 		LOAD DATA LOCAL INFILE '%s' INTO TABLE log_ipas
 		FIELDS TERMINATED BY '\t'
 		LINES TERMINATED BY '\n'
-		(date,equip_id,target,speeding_count,shock_count,latitude,longitude,warning_dist,caution_dist,v2v_dist,shock_threshold,speed_threshold)
+		(date,org_id,group_id,equip_id,target,speeding_count,shock_count,latitude,longitude,warning_dist,caution_dist,v2v_dist,shock_threshold,speed_threshold)
 	`
 	query = fmt.Sprintf(query, filepath.ToSlash(tempFile.Name()))
 	o := orm.NewOrm()
@@ -101,8 +120,7 @@ func generateIpasLogs(count int) {
 	fmt.Printf("%d logs\n", affectedRows)
 }
 
-func randTag() string {
-	//tagType := rand.Intn(3)
+func randTag(name string) string {
 	tagType := NumberRange(1, 3)
 	prefix := ""
 
@@ -113,14 +131,16 @@ func randTag() string {
 	} else if tagType == 3 {
 		prefix = "PT_"
 	}
+	prefix += name + "_"
+	//prefix += idPools[NumberRange(0, len(idPools)-1)].(string)
 	return prefix + fake.DigitsN(2)
 }
 
-func randTags() []string {
+func randTags(name string) []string {
 	count := NumberRange(1, 4)
 	list := make([]string, count)
 	for i := 0; i < count; i++ {
-		list[i] = randTag()
+		list[i] = randTag(name)
 	}
 
 	return list
@@ -130,11 +150,18 @@ func NumberRange(from, to int) int {
 	return fake.Year(from-1, to)
 }
 
+func randGroup() Group {
+	return groups[NumberRange(0, len(groups)-1)]
+}
+
 func newIpasLog() *objs.IpasLog {
+	group := randGroup()
 	return &objs.IpasLog{
 		Date:           time.Now().Add(time.Duration(NumberRange(1, 60)) * time.Second),
-		EquipId:        randTag(),
-		Target:         strings.Join(randTags(), ","),
+		OrgId:          group.OrgId,
+		GroupId:        group.GroupId,
+		EquipId:        randTag(group.Name),
+		Target:         strings.Join(randTags(group.Name), ","),
 		SpeedingCount:  NumberRange(1, 10),
 		ShockCount:     NumberRange(1, 10),
 		Latitude:       fake.Latitude(),
@@ -145,26 +172,6 @@ func newIpasLog() *objs.IpasLog {
 		ShockThreshold: NumberRange(1, 10),
 		SpeedThreshold: NumberRange(1, 10),
 	}
-	//return &objs.IpasLog{
-	//Date: time.Now(),
-	//EquipId: randomdata.StringSample("VT", "ZT", "PT") + "_" + randomdata.RandStringRunes(3),
-
-	//}
-
-	//Date          time.Time `json:"date"`
-	//EquipId       string    `json:"equip_id"`
-	//Target        string    `json:"target"`
-	//SpeedingCount int       `json:"speeding_count"`
-	//ShockCount    int       `json:"shock_count"`
-	//Latitude      float64   `json:"latitude"`
-	//Longitude     float64   `json:"longitude"`
-	//WarningDist   int       `json:"warning_dist"`
-	//CautionDist   int       `json:"caution_dist"`
-	//V2vDist       int       `json:"v2v_dist"`
-	//CollisionThr  int       `json:"collision_thr"`
-	//ShockThr      int       `json:"shock_thr"`
-	//SpeedThr      int       `json:"speed_thr"`
-	//Rdate         time.Time `json:"rdate"`
 }
 
 func printHelp() {

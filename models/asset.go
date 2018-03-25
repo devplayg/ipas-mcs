@@ -13,7 +13,7 @@ func GetAssetsByClass(class int) ([]objs.Asset, error) {
 	var err error
 	if class > 0 {
 		query := `
-            select  *,
+            select  asset_id, class, parent_id, name, type1, type2,
                     concat('assetid_', asset_id) id,
                     name text,
                     type1 type
@@ -24,7 +24,7 @@ func GetAssetsByClass(class int) ([]objs.Asset, error) {
 		_, err = o.Raw(query, class).QueryRows(&assets)
 	} else {
 		query = `
-            select  *,
+            select  asset_id, class, parent_id, name, type1, type2,
                     concat('assetid_', asset_id) id,
                     name text,
                     concat('type_', type1) type
