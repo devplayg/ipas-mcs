@@ -1,5 +1,8 @@
 {{template "base.tpl" .}}
 
+{{define "css"}}
+    <link href="/static/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+{{end}}
 
 {{define "contents"}}
 
@@ -37,9 +40,10 @@
             <th data-field="name" data-sortable="true">Name</th>
             <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">Position</th>
             <th data-field="failed_login_count" data-sortable="true">Failed login</th>
-            <th data-field="last_success_login" data-sortable="true">Last access</th>
+            <th data-field="last_success_login" data-sortable="true" data-visible="false">Last access</th>
             <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">Allowed IP</th>
-            <th data-field="timezone" data-sortable="true">Timezone</th>
+            <th data-field="timezone" data-sortable="true" data-visible="false">Timezone</th>
+            <th data-field="asset_summary" data-sortable="true" data-formatter="memberAssetSummaryFormatter">Timezone</th>
         </tr>
         </thead>
     </table>
@@ -197,22 +201,34 @@
     <div class="modal fade" id="modal-member-acl" tabindex="-1" role="basic" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <form role="form" id="form-member-grant" class="form-member">
-                <input type="hidden" name="member_id">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title"><i class="fa fa-edit"></i> {{i18n .Lang "grant"}}</h4>
-                </div>
-                <div class="modal-body">
-            </div>
-            </form>
+                <form role="form" id="form-member-acl" class="form-member">
+                    <input type="hidden" name="member_id">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">
+                            <i class="fa fa-edit"></i> {{i18n .Lang "grant"}} - <span class="username"></span>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="tree-member-acl"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">{{i18n .Lang "save"}}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
+                    </div>
+                </form>
             </div><!-- .modal-content -->
         </div><!-- .modal-dialog -->
     </div><!-- .modal -->
 {{end}}
 
 {{define "javascript"}}
+<!-- jstree -->
+<script src="/static/plugins/jstree/dist/jstree.js" type="text/javascript"></script>
+<!-- Validation -->
 <script src="/static/plugins/jquery-validation/common-validate-methods.js"></script>
+<!-- Module -->
+
 <script>
     var positions = {{.positions}};
 </script>

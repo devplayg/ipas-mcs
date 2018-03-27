@@ -110,6 +110,7 @@ func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 	// Create map and root node
 	assetMap := make(objs.AssetMap)
 	assetMap[RootId] = objs.NewRootAsset(class)
+	assetMap[RootId].State.Opened = true
 
 	var keys []int
 	for idx, asset := range assets {

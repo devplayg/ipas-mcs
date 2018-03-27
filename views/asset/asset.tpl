@@ -1,7 +1,7 @@
 {{template "base.tpl" .}}
 
 {{define "css"}}
-<link href="/static/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
 {{end}}
 
 {{define "contents"}}

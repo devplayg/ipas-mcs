@@ -4,6 +4,12 @@ import (
 	"time"
 )
 
+type treeState struct {
+	Opened   bool `json:"opened"`
+	Disabled bool `json:"disabled"`
+	Selected bool `json:"selected"`
+}
+
 type Asset struct {
 	AssetId  int    `json:"asset_id"`
 	Class    int    `json:"-"`
@@ -37,10 +43,11 @@ type Asset struct {
 	Created time.Time `json:"-"`
 	Updated time.Time `json:"-"`
 
-	Text     string   `json:"text"`
-	Id       int      `json:"id"` // for tree
-	Icon     string   `json:"-"`
-	Children []*Asset `json:"children"`
+	Text     string    `json:"text"`
+	Id       int       `json:"id"` // for tree
+	Icon     string    `json:"-"`
+	Children []*Asset  `json:"children"`
+	State    treeState `json:"state"`
 }
 
 var AssetClass = map[int]string{
@@ -49,8 +56,7 @@ var AssetClass = map[int]string{
 
 type AssetMap map[int]*Asset
 
-
-func NewRootAsset(class int) *Asset{
+func NewRootAsset(class int) *Asset {
 	str := "Unknown"
 	if _, ok := AssetClass[class]; ok {
 		str = AssetClass[class]

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
@@ -26,7 +27,7 @@ func (c *MemberController) LangPrepare() {
 func (c *MemberController) Get() {
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 		if c.Ctx.Input.Param(":memberId") != "" { // 특정 사용자 정보 요청이면
-			c.GetMemberById()
+			log.Error("Invalid request(member id is zero")
 		} else {
 			filter := c.getPagingFilter()
 			members, total, err := models.GetMembers(filter)
@@ -44,7 +45,6 @@ func (c *MemberController) Get() {
 		//c.langToFrontEnd("msg.confirm_delete")
 		c.setTpl("member.tpl")
 		//c.Data["langMap"].(map[string]string)["cancel"] = "abc"
-
 	}
 }
 
@@ -214,13 +214,39 @@ func (c *MemberController) Delete() {
 	c.ServeJSON()
 }
 
-
 func (c *MemberController) GetMemberAcl() {
-	//dbResult := objs.NewDbResult()
-	//
-	//memberId, _ := strconv.Atoi(c.Ctx.Input.Param(":memberId"))
-	//
-	//assets, err := models.GetMemberAcl(memberId)
-	//c.Data["json"]  = assets
-	//c.jsons
+	dbResult := objs.NewDbResult()
+
+	memberId, _ := strconv.Atoi(c.Ctx.Input.Param(":memberId"))
+	assets, err := models.GetMemberAcl(memberId)
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+		dbResult.Data = assets
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+func (c *MemberController) UpdateMemberAcl() {
+	type asset struct {
+		MemberId int      `form:"member_id"`
+		Acl      []string `form:"acl[]"`
+	}
+
+	ma := asset{}
+	if err := c.ParseForm(&ma); err != nil {
+		CheckError(err)
+	}
+	spew.Dump(ma)
+	dbResult := objs.NewDbResult()
+	_, err := models.UpdateMemberAcl(ma.MemberId, ma.Acl)
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
 }

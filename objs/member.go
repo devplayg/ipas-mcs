@@ -28,6 +28,7 @@ type Member struct {
 	LastSuccessLogin time.Time      `json:"last_success_login"`
 	AllowedIpList    []IpCidr       `json:"-"`
 	UserGroups       []int          `form:"user_groups"`
+	AssetSummary     string         `json:"asset_summary"`
 }
 
 type IpCidr struct {
@@ -104,6 +105,7 @@ type MemberAsset struct {
 	MemberId int
 	Assets   []int
 }
+
 //
 //type IpCidr struct {
 //	Ip   string

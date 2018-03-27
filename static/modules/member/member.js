@@ -32,7 +32,6 @@ $(function() {
                 url: "/members",
                 data: $( form ).serialize()
             }).done( function ( result ) {
-                // console.log(result);
                 if ( result.state ) {
                     $( ".alert", $( form ) ).addClass( "hidden" );
                     $( "#modal-member-add" ).modal( "hide" );
@@ -86,7 +85,6 @@ $(function() {
                 url: "/members/" + $( "input[name=member_id]", $( form ) ).val(),
                 data: $( form ).serialize()
             }).done( function ( result ) {
-                // console.log(result);
                 if ( result.state ) {
                     $( ".alert", $( form ) ).addClass( "hidden" );
                     $( "#modal-member-edit" ).modal( "hide" );
@@ -127,13 +125,43 @@ $(function() {
         }
     });
 
+    // 자산
+    var $tree = $( "#tree-member-acl" );
+
+    $tree.jstree({
+        "plugins" : [
+            "types", "sort", "checkbox"
+        ],
+
+        "core" : {
+            "data" : {
+                "url" : "/assetclass/1/root/0",
+            },
+        },
+        "types" : {
+            1: {
+                icon: "fa fa-building-o"
+            },
+            2: {
+                icon: "fa fa-folder font-blue-sharp"
+            },
+        },
+
+    }).on( "loaded.jstree", function() {
+        // $(this).jstree( "open_all");
+
+    }).on( "changed.jstree", function( e, obj ) {
+        if ( obj.action == "select_node" ) {
+            console.log(obj.node);
+        }
+    });
+
 
     /**
      * 2. 이벤트
      *
      */
     $table.on( "column-switch.bs.table", function( e, field, checked ) { // 테이블 컬럼 보기/숨기기 속성이 변경되는 경우
-        console.log(tableKey);
         captureTableColumns( $( this ), tableKey );
     });
 
@@ -195,6 +223,46 @@ $(function() {
     };
 
 
+    $( "#modal-member-acl" )
+        .on( "hidden.bs.modal", function () {
+            $tree.jstree( "deselect_all" );
+            $tree.jstree( true ).refresh();
+            $( "#table-member" ).bootstrapTable( "refresh" );
+        });
+
+
+    // 자산 ACL 업데이트
+    $( "#form-member-acl" ).submit(function(e) {
+        e.preventDefault();
+
+        var memberId = $( "input[name=member_id]", $( this ) ).val(),
+            acl = $tree.jstree( true ).get_selected();
+
+        // console.log(acl.map(Number));
+        acl = acl.map(function(n) {
+            var nn = parseInt(n, 10);
+            if ( ! isNaN(nn) ) {
+                return n;
+            }
+            return "0";
+        });
+        $.ajax({
+            type: "PATCH",
+            async: true,
+            url: "/members/" + memberId + "/acl",
+            data: {
+                acl: acl,
+                member_id: memberId
+            }
+        }).done(function( result ) {
+            if ( result.state ) {
+                $( "#modal-member-acl" ).modal( "hide" );
+            } else {
+                swal( result.message, "", "error" );
+            }
+        });
+    });
+
     /**
      * 3. 함수
      *
@@ -238,8 +306,17 @@ $(function() {
                 type: "GET",
                 async: true,
                 url: "/members/" + row.member_id + "/acl",
-            }).done(function(result) {
-                $( "#modal-member-acl" ).modal( "show" );
+            }).done(function( result ) {
+                console.log(result);
+                if ( result.state ) {
+                    $tree.jstree( true ).select_node( result.data ); // 선택된 자산 표시
+                    $( "#form-member-acl input[name=member_id]" ).val( row.member_id );
+
+                    $( "#modal-member-acl .username" ).text( row.username );
+                    $( "#modal-member-acl" ).modal( "show" );
+                } else {
+                    swal( result.message, "", "error")
+                }
             });
         }
     }
