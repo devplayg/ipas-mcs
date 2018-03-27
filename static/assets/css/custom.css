@@ -16,6 +16,7 @@ body {
 
 .swal2-container {
     zoom: 1.5 !important;
+    z-index: 10050 !important; /* bigger than modal's z-index*/
 }
 
 /* Table */

@@ -48,11 +48,11 @@ $(function() {
 
                 return ( op === "rename_node" ) ? true : false;
             },
-            "multiple" : false,
-            "animation" : 1,
+            // "multiple" : false,
+            // "animation" : 1,
 //        'themes': {
 //            'name': 'proton',
-            'responsive': true
+//             'responsive': true
 //        }
         },
         "types" : {
@@ -82,45 +82,11 @@ $(function() {
         }
     });
 
-//$.ajax({;
-    //
-    // $('#jstree').on('ready.jstree', function (e, data) {
-    //     createNode("#jstree", "another_base_directory", "Another Base Directory", "first");
-    //     createNode("#base_directory", "sub_2", "Sub 2", "last");
-    // });
-//$.ajax({
-//    type: "GET",
-//    async: true,
-//    url: "/assetclass/1/descendants/0"
-//}).done(function(org) {
-//    $tree.jstree(true).settings.core.data = org;
-//    $tree.jstree(true).refresh(-1);
-
-//}).fail(function() {
-
-//}).always(function() {
-//});
-
-
-//$.ajax({
-//    type  : "get",
-//    async : true,
-//    url   : "/assets/class/1/tree"
-//}).done( function( result ) {
-//    $( "#tree-assets" ).jstree( true ).settings.core.data = result;
-//    $( "#tree-assets" ).jstree( true ).refresh(-1);
-//    $( "#tree-assets" ).jstree( "open_all", -1);
-//}).fail(function() {
-//}).always(function() {
-//     $( "#tree-assets" ).jstree( "open_all", -1);
-//});
-
 
     /**
      * 2. 이벤트
      *
      */
-
     $( ".btn-tree-refresh" ).click( function( e ) {
         e.preventDefault();
         refreshTree();

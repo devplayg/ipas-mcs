@@ -20,11 +20,13 @@ function memberPositionFormatter( val, row, idx ) {
 function memberCommandFormatter(val, row, idx) {
     var str = '<a class="edit" href="javascript:void(0)" title="Edit">'
             + '<i class="icon-pencil"></i>'
-            + '</a>'
+            + '</a>';
 
-            + '<a class="acl" href="javascript:void(0)" title="Grant">'
+    if (row.position < positions['Administrator']) {
+        str += '<a class="acl" href="javascript:void(0)" title="Access control list">'
             + '<i class="icon-layers ml5"></i>'
             + '</a>';
+    }
 
     if ( (row.position & positions['Superman']) == 0) {
         str +=    '<a class="remove ml5 " href="javascript:void(0)" title="Remove">'
@@ -51,4 +53,18 @@ function memberAllowedIpFormatter(val, row, idx) {
 
         return str;
     }
+}
+
+
+function memberAssetSummaryFormatter(val, row, idx) {
+    console.log(val);
+    if ( val === null || val == "" ) return;
+
+    var list = val.split( "__//__" );
+    var tags = '';
+    for (var i=0; i<list.length; i++) {
+        var asset = list[i].split( "__--__" );
+        tags += asset[0] + '<i class="fa fa-chevron-right mlr10 font-grey-cascade"></i>' + asset[1] + "<br>";
+    }
+    return tags;
 }

@@ -28,7 +28,8 @@ func GetMember(condMap map[string]interface{}) (*objs.Member, error) {
 			left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
 		where true %s
-    `
+		group by member_id
+	`
 	query = fmt.Sprintf(query, strings.Join(conditions, ","))
 
 	// 쿼리 실행
@@ -53,12 +54,21 @@ func GetMembers(filter *objs.PagingFilter) ([]objs.Member, int64, error) {
 
 	// Set query
 	query := `
-		select 	%s t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
+		select %s t.member_id, t.username, t.position, t1.password, t1.salt, t.failed_login_count, t.status,
 				timezone, t.name, t.session_id, group_concat(inet_ntoa(t2.ip), '/', t2.cidr) allowed_ip, email,
-				last_success_login, last_failed_login
-        from mbr_member t
-        	left outer join mbr_password t1 on t1.member_id = t.member_id
+				last_success_login, last_failed_login, t3.asset_summary
+		from mbr_member t
+			left outer join mbr_password t1 on t1.member_id = t.member_id
 			left outer join mbr_allowed_ip t2 on t2.member_id =  t.member_id
+			left outer join (
+				select x.member_id, group_concat(x1.name, '__--__', x.name separator '__//__') asset_summary
+				from (
+					select o.member_id, o.asset_id, o1.parent_id, o1.name
+					from mbr_asset o left outer join ast_asset o1 on o1.asset_id = o.asset_id
+					order by parent_id, o1.name
+				) x left outer join ast_asset x1 on x1.asset_id =  x.parent_id
+				group by member_id
+			) t3 on t3.member_id = t.member_id
 		where true %s
 		group by member_id
 		order by %s %s
@@ -212,13 +222,43 @@ func RemoveMember(memberId int, adminPosition uint) (sql.Result, error) {
 	return o.Raw(query, memberId, adminPosition).Exec()
 }
 
-
 func GetMemberAcl(memberId int) ([]int, error) {
 	query := "select asset_id from mbr_asset where member_id = ?"
 
-	var assets []int
+	var list []int
 	o := orm.NewOrm()
-	err := o.Raw(query, memberId).QueryRow(&assets)
+	_, err := o.Raw(query, memberId).QueryRows(&list)
+	return list, err
+}
 
-	return assets, err
+
+// 사용자
+func UpdateMemberAcl(memberId int, acl []string) (sql.Result, error) {
+	o := orm.NewOrm()
+	o.Begin()
+
+	// 기존 자산정보 삭제
+	query := "delete from mbr_asset where member_id = ?"
+	rs, err := o.Raw(query,memberId).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	// 자산정보 업데이트(그룹 정보(type1=2)만 업데이트)
+	query =`
+		insert into mbr_asset(member_id, asset_id)
+		select ?, asset_id
+		from ast_asset
+		where class = 1 and type1 = 2 and asset_id in (%s)
+	`
+	query = fmt.Sprintf(query, strings.Join(acl, ","))
+	rs, err = o.Raw(query,memberId).Exec()
+	if err != nil {
+		o.Rollback()
+		return rs, err
+	}
+
+	o.Commit()
+	return rs, err
 }

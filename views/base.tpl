@@ -532,7 +532,10 @@
         <script>
 
             // Timezone
-            var member = { "timezone": "{{.member.Timezone}}" || "Asia/Seoul" },
+            var member = {
+                    "timezone": "{{.member.Timezone}}" || "Asia/Seoul",
+                    "position": {{.member.Position}},
+                },
                 reqVars = {{.reqVars}};
 
             reqVars["ctrl"] = {{.ctrl}};

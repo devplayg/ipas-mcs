@@ -19,6 +19,7 @@ func init() {
 	beego.Router(`/members`, &controllers.MemberController{})
 	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{})
 	beego.Router(`/members/:memberId([\d]+)/acl`, &controllers.MemberController{}, "Get:GetMemberAcl")
+	beego.Router(`/members/:memberId([\d]+)/acl`, &controllers.MemberController{}, "Patch:UpdateMemberAcl")
 
 	// 자산
 	beego.Router("/assets", &controllers.AssetController{})
