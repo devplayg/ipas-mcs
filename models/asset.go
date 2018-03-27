@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
+	"database/sql"
 )
 
 func GetAssetsByClass(class int) ([]objs.Asset, error) {
@@ -36,18 +37,7 @@ func GetAssetsByClass(class int) ([]objs.Asset, error) {
 
 	return assets, err
 }
-//
-////select distinct a.asset_id, a.class, a.parent_id, a.name, a.type1, a.type2, a.hostname, a.cidr, a.port
-////from ast_asset a	join (
-////	select t.asset_id, t.parent_id
-////	from ast_asset t
-////		join (
-////			select asset_id, parent_id
-////			from ast_asset
-////			where asset_id in (select value_n from mbr_config where member_id = 11 and keyword = 'asset')
-////    ) t1 on t1.asset_id = t.asset_id or t1.parent_id = t.asset_id
-////) b on b.asset_id = a.asset_id or b.parent_id = a.asset_id
-//
+
 func GetAssetChildren(assetId int) ([]objs.Asset, error) {
 	o := orm.NewOrm()
 
@@ -60,6 +50,14 @@ func GetAssetChildren(assetId int) ([]objs.Asset, error) {
     `
 	_, err := o.Raw(query, assetId).QueryRows(&assets)
 	return assets, err
+}
+
+func AddAsset(asset objs.Asset) (sql.Result, error) {
+	query := "insert into ast_asset(class, parent_id, name, type1, type2) values(?, ?, ?, ?, ?)"
+
+	o := orm.NewOrm()
+	rs, err := o.Raw(query, asset.Class, asset.ParentId, asset.Name, asset.Type1, asset.Type2).Exec()
+	return rs, err
 }
 //
 //func UpdateAsset(asset Asset) (sql.Result, error) {

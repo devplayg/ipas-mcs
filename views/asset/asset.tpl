@@ -20,7 +20,7 @@
                     <button type="button" class="btn default btn-xs btn-tree-refresh"><i class="fa fa-refresh"></i> </button>
                     <button type="button" class="btn default btn-xs btn-tree-expand">Expand </button>
                     <button type="button" class="btn default btn-xs btn-tree-collapse">Collapse </button>
-                    <button type="button" class="btn default btn-xs btn-asset-add" data-toggle="modal" data-target="#modal-asset-add"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn default btn-xs btn-asset-add"><i class="fa fa-plus"></i> {{i18n .Lang "registration"}}</button>
                 </div>
                 <div id="tree-assets"></div>
             </div> <!-- .portlet-body -->
@@ -56,18 +56,20 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <form role="form" id="form-asset-add">
-                <input type="hidden" name="_xsrf" value="{{ .xsrf_token }}" />
-                <input type="hidden" name="Type1" />
+                {{.xsrfdata}}
+                <input type="hidden" name="class" value="1">
+                <input type="hidden" name="parent_id">
+                <input type="hidden" name="type1">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">{{i18n .Lang "registration"}}</h4>
+                    <h4 class="modal-title">{{i18n .Lang "registration"}} - <span class="name"></span></h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12 form-group">
-                            <label for="Name" class="control-label">Name</label>
-                            <input type="text" class="form-control" name="Name" />
+                            <label for="name" class="control-label">{{i18n .Lang "name"}}</label>
+                            <input type="text" class="form-control" name="name" />
                         </div>
                     </div>
                     <div class="note note-danger hidden"></div>
@@ -89,4 +91,8 @@
 <!-- Module -->
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
+<script>
+    felang[ "org" ] = {{i18n .Lang "org" }};
+    felang[ "group" ] = {{i18n .Lang "group" }};
+</script>
 {{end}}

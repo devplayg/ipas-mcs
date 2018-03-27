@@ -57,7 +57,6 @@ function memberAllowedIpFormatter(val, row, idx) {
 
 
 function memberAssetSummaryFormatter(val, row, idx) {
-    console.log(val);
     if ( val === null || val == "" ) return;
 
     var list = val.split( "__//__" );
