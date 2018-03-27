@@ -11,13 +11,13 @@ type treeState struct {
 }
 
 type Asset struct {
-	AssetId  int    `json:"asset_id"`
-	Class    int    `json:"-"`
-	ParentId int    `json:"parent_id"`
-	Name     string `json:"name"`
+	AssetId  int    `json:"asset_id" form:"asset_id"`
+	Class    int    `json:"-" form:"class"`
+	ParentId int    `json:"parent_id" form:"parent_id"`
+	Name     string `json:"name" form:"name"`
 	Type     int    `json:"type"`
-	Type1    int    `json:"-"`
-	//Type2       int
+	Type1    int    `json:"-" form:"type1"`
+	Type2    int    `json:"-" formn:"type2"`
 	//Hostname    string
 	//IP          string    `json:"-"`
 	//Cidr        int       `json:"-"`

@@ -12,7 +12,11 @@ $(function() {
      */
 
     // Tree
-    var $tree = $( "#tree-assets" );
+    var $tree = $( "#tree-assets" ),
+        selected = null,
+        Root = 0,
+        Org = 1,
+        Group = 2;
 
     $tree.jstree({
         "plugins" : [
@@ -23,62 +27,19 @@ $(function() {
             "data" : {
                 "url" : "/assetclass/1/root/0",
             },
-
-            "check_callback" : function ( op, node, node_parent, node_position, more ) {
-                var ids = $tree.jstree( true ).get_selected();
-                console.log(node);
-                if ( op === "create_node" ) {
-                    $( "#modal-sensor-add" ).modal( "show" );
-
-                } else if ( op === "rename_node" ) {  //  can be 'create_node', 'rename_node', 'delete_node', 'move_node', 'copy_node' or 'edit'
-                    $.ajax({
-                        type: "patch",
-                        async: true,
-                        url: "/assets/" + node.original.AssetId,
-                        data: {
-                            Name: node_position
-                        }
-                    }).done( function( rows ) {
-                    }).always( function() {
-//                    refreshTree();
-                    });
-                } else if ( op === "delete_node" ) {
-                    delete_node( node );
-                }
-
-                return ( op === "rename_node" ) ? true : false;
-            },
-            // "multiple" : false,
-            // "animation" : 1,
-//        'themes': {
-//            'name': 'proton',
-//             'responsive': true
-//        }
         },
         "types" : {
-            "default": {
-                icon: "fa fa-folder icon-state-warning"
-            },
-            "type_0": {
-                //icon: "fa fa-ban"
-            },
             1: {
                 icon: "fa fa-building-o"
             },
             2: {
                 icon: "fa fa-folder font-blue-sharp"
-            },
-            "type_4": {
-                icon: "fa fa-sitemap"
-            },
+            }
         },
-
-    }).on( "loaded.jstree", function() {
-        // $(this).jstree( "open_all");
 
     }).on( "changed.jstree", function( e, obj ) {
         if ( obj.action == "select_node" ) {
-            console.log(obj.node);
+            selected = obj.node;
         }
     });
 
@@ -88,16 +49,59 @@ $(function() {
      *
      */
     $( ".btn-tree-refresh" ).click( function( e ) {
-        e.preventDefault();
-        refreshTree();
+        $tree.jstree( true ).refresh( -1 );
     });
     $( ".btn-tree-expand" ).click( function( e ) {
-        e.preventDefault();
         $tree.jstree( "open_all" );
     });
     $( ".btn-tree-collapse" ).click( function( e ) {
-        e.preventDefault();
         $tree.jstree( "close_all" );
+    });
+
+    $( "#modal-asset-add" )
+        .on( "shown.bs.modal", function () {
+            $( "#form-asset-add input[name=name]" ).focus();
+        }).on( "hidden.bs.modal", function () {
+            var $form = $( this ).find( "form" );
+            $form.get( 0 ).reset();
+        });
+
+    $( ".btn-asset-add" ).click(function() {
+        var name ;
+        if ( selected.original.type === Root ) {
+            name = felang[ "org" ];
+        } else if ( selected.original.type === Org ) {
+            name = felang[ "group" ];
+        } else if ( selected.original.type === Group ) {
+            return;
+        } else {
+            return;
+        }
+
+        $( "#form-asset-add input[name=parent_id]" ).val( selected.original.asset_id );
+        $( "#form-asset-add input[name=type1]" ).val( selected.original.type + 1 );
+        $( "#form-asset-add .name" ).text( name );
+        $( "#modal-asset-add" ).modal( "show" );
+    });
+
+    $( "#form-asset-add" ).submit(function( e ) {
+        e.preventDefault();
+        var $form = $( this );
+
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: "/assets",
+            data: $form.serialize()
+        }).done( function( result ) {
+            if ( result.state ) {
+                $( "#modal-asset-add" ).modal( "hide" );
+                $tree.jstree( true ).refresh( -1 );
+            } else {
+                swal("fail", result.message, "error");
+            }
+        });
+
     });
 
 //$( "#tree-assets').on( "changed.jstree", function (e, data) {
@@ -140,41 +144,36 @@ $(function() {
      *
      */
 
-    function refreshTree() {
-        $tree.jstree( true ).refresh( -1 );
-    }
-
-
-    var delete_node = function( node ) {
-        swal({
-            title: "Are you sure?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showLoaderOnConfirm: true,
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, keep it",
-            confirmButtonColor: "#E7505A",
-        }).then(function() {
-            $.ajax({
-                type: "DELETE",
-                url: "/assets/" + node.original.AssetId,
-                async: true,
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader("X-CSRFToken", getXsrsToken());
-                },
-            }).done( function( result ) {
-                if ( result.State ) {
-//                $tree.jstree( true ).refresh( -1 );
-                } else {
-                    swal( "Fail", result.Message, "error" );
-                }
-            }).fail( function() {
-            }).always( function() {
-                refreshTree();
-            });
-        })
-    }
+//     var delete_node = function( node ) {
+//         swal({
+//             title: "Are you sure?",
+//             text: "You will not be able to recover this imaginary file!",
+//             type: "warning",
+//             showLoaderOnConfirm: true,
+//             showCancelButton: true,
+//             confirmButtonText: "Yes, delete it!",
+//             cancelButtonText: "No, keep it",
+//             confirmButtonColor: "#E7505A",
+//         }).then(function() {
+//             $.ajax({
+//                 type: "DELETE",
+//                 url: "/assets/" + node.original.AssetId,
+//                 async: true,
+//                 beforeSend: function(xhr) {
+//                     xhr.setRequestHeader("X-CSRFToken", getXsrsToken());
+//                 },
+//             }).done( function( result ) {
+//                 if ( result.state ) {
+// //                $tree.jstree( true ).refresh( -1 );
+//                 } else {
+//                     swal( "Fail", result.Message, "error" );
+//                 }
+//             }).fail( function() {
+//             }).always( function() {
+//                 $tree.jstree( true ).refresh( -1 );
+//             });
+//         })
+//     }
 
 
 });

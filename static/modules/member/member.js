@@ -152,7 +152,7 @@ $(function() {
 
     }).on( "changed.jstree", function( e, obj ) {
         if ( obj.action == "select_node" ) {
-            console.log(obj.node);
+            // console.log(obj.node);
         }
     });
 
@@ -307,7 +307,6 @@ $(function() {
                 async: true,
                 url: "/members/" + row.member_id + "/acl",
             }).done(function( result ) {
-                console.log(result);
                 if ( result.state ) {
                     $tree.jstree( true ).select_node( result.data ); // 선택된 자산 표시
                     $( "#form-member-acl input[name=member_id]" ).val( row.member_id );

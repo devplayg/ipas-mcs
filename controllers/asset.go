@@ -28,6 +28,29 @@ func (c *AssetController) Get() {
 	}
 }
 
+func (c *AssetController) Post() {
+
+	// Parse form
+	asset := objs.Asset{}
+	if err := c.ParseForm(&asset); err != nil {
+		result := objs.NewResult()
+		result.Message = err.Error()
+		c.Data["json"] = result
+		c.ServeJSON()
+		return
+	}
+
+	_, err := models.AddAsset(asset)
+	dbResult := objs.NewDbResult()
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
 //
 func (c *AssetController) GetDescendants() {
 
@@ -73,8 +96,6 @@ func (c *AssetController) getDescendants(class, assetId int) *objs.Asset {
 	return assetMap[assetId]
 }
 
-
-
 func getAssetMapByClassId(class int) objs.AssetMap {
 
 	// 클래스에 해당하는 자산 조회
@@ -103,7 +124,6 @@ func (c *AssetController) GetChildren() {
 	c.Data["json"] = assets
 	c.ServeJSON()
 }
-
 
 func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 
