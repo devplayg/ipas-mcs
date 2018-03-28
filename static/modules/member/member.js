@@ -213,12 +213,11 @@ $(function() {
                         if ( result.state ) {
                             $( "#table-member" ).bootstrapTable( "refresh" );
                         } else {
-                            swal("fail", result.message, "error");
+                            swal(result.message, "", "error");
                         }
                     });
                 }
-            })
-
+            });
         }
     };
 
@@ -273,7 +272,9 @@ $(function() {
                 type: "GET",
                 async: true,
                 url: "/members/" + row.member_id,
-            }).done(function(result) {
+            }).done(function( result ) {
+                console.log(result);
+
                 if ( ! result.state ) {
                     return;
                 }
@@ -299,6 +300,8 @@ $(function() {
                 // 타임존
                 $( "select[name=timezone]", $form ).val( m.timezone ).selectpicker( "refresh" );
                 $( "#modal-member-edit" ).modal( "show" );
+            }).fail(function( data, status, jqXHR ) {
+                console.log(jqXHR);
             });
 
         } else if (mode == "acl") { // 사용자 권한 설정

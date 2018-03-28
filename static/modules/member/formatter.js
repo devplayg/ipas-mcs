@@ -5,14 +5,14 @@ function memberPositionFormatter( val, row, idx ) {
         if ( val & positions["Superman"] ) {
             star += '<i class="fa fa-star"></i> ';
         }
-        marks += '<button type="button" class="btn red btn-xs">Administrator ' + star + '</button>';
+        marks += '<button type="button" class="btn red btn-xs" title="' + val + '">Administrator ' + star + '</button>';
     }
 
     if ( val & positions["Observer"] ) {
-        marks += '<button type="button" class="btn blue btn-xs clear">Objserver <i class="fa fa-search"></i></button>';
+        marks += '<button type="button" class="btn blue btn-xs clear" title="' + val + '">Objserver <i class="fa fa-search"></i></button>';
     }
     if ( val & positions["User"] ) {
-        marks += '<button type="button" class="btn green btn-xs">User <i class="fa fa-user"></i></button>';
+        marks += '<button type="button" class="btn green btn-xs" title="' + val + '">User <i class="fa fa-user"></i></button>';
     }
     return marks;
 }
