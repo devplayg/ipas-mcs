@@ -5,83 +5,117 @@
 {{end}}
 
 {{define "contents"}}
-<div class="row">
-    <div class="col-lg-3">
-        <div class="portlet light bordered">
-            <div class="portlet-title hidden">
-                <div class="caption font-green-sharp">
-                    <i class="icon-speech font-green-sharp"></i>
-                    <span class="caption-subject bold uppercase"> Assets</span>
-                    <span class="caption-helper"></span>
-                </div>
-            </div> <!-- .portlet-title -->
-            <div class="portlet-body mb5">
-                <div class="mb10">
-                    <button type="button" class="btn default btn-xs btn-tree-refresh"><i class="fa fa-refresh"></i> </button>
-                    <button type="button" class="btn default btn-xs btn-tree-expand">Expand </button>
-                    <button type="button" class="btn default btn-xs btn-tree-collapse">Collapse </button>
-                    <button type="button" class="btn default btn-xs btn-asset-add"><i class="fa fa-plus"></i> {{i18n .Lang "registration"}}</button>
-                </div>
-                <div id="tree-assets"></div>
-            </div> <!-- .portlet-body -->
-        </div> <!-- .portlet -->
-    </div>
-
-    <div class="col-lg-9">
-        <div class="portlet light bordered">
-            <table class=""
-                   id="table-assets"
-                   data-toggle="table"
-                   data-toolbar="#toolbar"
-                   data-page-size="15"
-                   data-pagination="true"
-                   data-sort-order="desc"
-                   data-show-refresh="true"
-                   data-show-columns="true"
-            >
-                <thead>
-                <tr>
-                    <th data-field="AssetId" data-sortable="true">Code</th>
-                    <th data-field="Name" data-sortable="true" data-formatter="assetsNameFormatter">Name</th>
-                    <th data-field="Hostname" data-sortable="true" data-formatter="assetsHostnameFormatter">Host</th>
-                </tr>
-                </thead>
-            </table>
-        </div> <!-- .portlet -->
-
-    </div>
-</div>
-
-<div id="modal-asset-add" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <form role="form" id="form-asset-add">
-                {{.xsrfdata}}
-                <input type="hidden" name="class" value="1">
-                <input type="hidden" name="parent_id">
-                <input type="hidden" name="type1">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">{{i18n .Lang "registration"}} - <span class="name"></span></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 form-group">
-                            <label for="name" class="control-label">{{i18n .Lang "name"}}</label>
-                            <input type="text" class="form-control" name="name" />
-                        </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="portlet light bordered">
+                <div class="portlet-title hidden">
+                    <div class="caption font-green-sharp">
+                        <i class="icon-speech font-green-sharp"></i>
+                        <span class="caption-subject bold uppercase"> Assets</span>
+                        <span class="caption-helper"></span>
                     </div>
-                    <div class="note note-danger hidden"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn blue">{{i18n .Lang "registration"}}</button>
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{i18n .Lang "close"}}</button>
-                </div>
-            </form>
-        </div> <!-- .modal-content -->
-    </div> <!-- .modal-dialog -->
-</div> <!-- .modal -->
+                </div> <!-- .portlet-title -->
+                <div class="portlet-body mb5">
+                    <div class="mb10">
+                        <button type="button" class="btn default btn-xs btn-tree-refresh"><i class="fa fa-refresh"></i> </button>
+                        <button type="button" class="btn default btn-xs btn-tree-expand"><i class="fa fa-expand"></i></button>
+                        <button type="button" class="btn blue btn-xs btn-asset-manage btn-asset-add hide" data-perm="3"><i class="fa fa-plus"></i> {{i18n .Lang "registration"}}</button>
+                        <button type="button" class="btn green btn-xs btn-asset-manage btn-asset-edit hide" data-perm="6"><i class="fa fa-edit"></i> {{i18n .Lang "edit"}}</button>
+                        <button type="button" class="btn red btn-xs btn-asset-manage btn-asset-remove hide" data-perm="6"><i class="fa fa-trash"></i></button>
+                    </div>
+                    <div id="tree-assets"></div>
+                </div> <!-- .portlet-body -->
+            </div> <!-- .portlet -->
+        </div>
+
+        <div class="col-lg-9">
+            <div class="portlet light bordered">
+                <table class=""
+                       id="table-assets"
+                       data-toggle="table"
+                       data-toolbar="#toolbar"
+                       data-page-size="15"
+                       data-pagination="true"
+                       data-sort-order="desc"
+                       data-show-refresh="true"
+                       data-show-columns="true"
+                >
+                    <thead>
+                    <tr>
+                        <th data-field="AssetId" data-sortable="true">Code</th>
+                        <th data-field="Name" data-sortable="true" data-formatter="assetsNameFormatter">Name</th>
+                        <th data-field="Hostname" data-sortable="true" data-formatter="assetsHostnameFormatter">Host</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div> <!-- .portlet -->
+
+        </div>
+    </div>
+
+    <div id="modal-asset-add" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <form role="form" id="form-asset-add">
+                {{.xsrfdata}}
+                    <input type="hidden" name="class" value="1">
+                    <input type="hidden" name="parent_id">
+                    <input type="hidden" name="type1">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">{{i18n .Lang "registration"}} - <span class="target"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <label for="name" class="control-label">
+                                    <span class="label label-info name"></span>
+                                </label>
+                                <input type="text" class="form-control" name="name" />
+                            </div>
+                        </div>
+                        <div class="note note-danger hidden"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn blue">{{i18n .Lang "registration"}}</button>
+                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{i18n .Lang "close"}}</button>
+                    </div>
+                </form>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
+
+    <div id="modal-asset-edit" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <form role="form" id="form-asset-edit">
+                    {{.xsrfdata}}
+                    <input type="hidden" name="asset_id">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">{{i18n .Lang "edit"}} - <span class="target"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <label for="name" class="control-label">
+                                    <span class="label label-success name"></span>
+                                </label>
+                                <input type="text" class="form-control" name="name" />
+                            </div>
+                        </div>
+                        <div class="note note-danger hidden"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn green">{{i18n .Lang "edit"}}</button>
+                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{i18n .Lang "close"}}</button>
+                    </div>
+                </form>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
 
 {{end}}
 

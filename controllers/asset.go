@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego/logs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"strconv"
@@ -51,13 +50,29 @@ func (c *AssetController) Post() {
 	c.ServeJSON()
 }
 
+// 선택된 자산의 전체 하위노드 조회
+//func (c *AssetController) GetChildren() {
 //
+//	// Get information
+//	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+//
+//	// Get assets
+//	assets, err := models.GetAssetChildren(assetId)
+//	logs.Error(err)
+//
+//	// Print
+//	c.Data["json"] = assets
+//	c.ServeJSON()
+//}
+
+
+// 선택된 자산의 전체 하위노드 조회
 func (c *AssetController) GetDescendants() {
 
 	// 조회할 자산 그룹
 	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
 
-	// 최상위 자산 ID
+	// 자산 ID
 	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
 
 	// 자산 맵 구성
@@ -69,12 +84,13 @@ func (c *AssetController) GetDescendants() {
 	c.ServeJSON()
 }
 
+
 func (c *AssetController) GetDescendantsWithRoot() {
 
 	// 조회할 자산 그룹
 	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
 
-	// 최상위 자산 ID
+	// 자산 ID
 	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
 
 	// 자산 맵 구성
@@ -88,7 +104,6 @@ func (c *AssetController) GetDescendantsWithRoot() {
 		c.Data["json"] = root
 	}
 	c.ServeJSON()
-
 }
 
 func (c *AssetController) getDescendants(class, assetId int) *objs.Asset {
@@ -96,6 +111,77 @@ func (c *AssetController) getDescendants(class, assetId int) *objs.Asset {
 	return assetMap[assetId]
 }
 
+
+// 자산ID로 조회
+func (c *AssetController) GetAsset() {
+	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+	asset, err := models.GetAsset(assetId)
+	dbResult := objs.NewDbResult()
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+		dbResult.Data = asset
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+// 자산정보 업데이트
+func (c *AssetController) UpdateAsset() {
+	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+
+	rs, err := models.UpdateRow("ast_asset", "asset_id", assetId, map[string]interface{}{
+		"name": c.GetString("name"),
+	})
+
+	dbResult := objs.NewDbResult()
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+		dbResult.AffectedRows, _ = rs.RowsAffected()
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+
+// 자산정보 삭제
+func (c *AssetController) RemoveAsset() {
+
+	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
+	if assetId < 1 {
+		result := objs.NewResult()
+		result.Message = c.Tr("msg.invalid_request")
+		c.Data["json"] = result
+		c.ServeJSON()
+	}
+
+	dbResult := objs.NewDbResult()
+	rs, err := models.RemoveRow("ast_asset", "asset_id", assetId)
+	if err != nil {
+		dbResult.Message = err.Error()
+		c.Data["json"] = dbResult
+		c.ServeJSON()
+		return
+	}
+
+	affectedRows, _ := rs.RowsAffected()
+	if affectedRows > 0 {
+		dbResult.State = true
+	} else {
+		dbResult.Message = c.Tr("msg.not_founded")
+	}
+
+	c.Data["json"] = dbResult
+	c.ServeJSON()
+}
+
+
+
+
+// 자산 맵 조회
 func getAssetMapByClassId(class int) objs.AssetMap {
 
 	// 클래스에 해당하는 자산 조회
@@ -111,20 +197,7 @@ func getAssetMapByClassId(class int) objs.AssetMap {
 	return assetMap
 }
 
-func (c *AssetController) GetChildren() {
-
-	// Get information
-	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
-
-	// Get assets
-	assets, err := models.GetAssetChildren(assetId)
-	logs.Error(err)
-
-	// Print
-	c.Data["json"] = assets
-	c.ServeJSON()
-}
-
+// 자산정보 조직화
 func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 
 	// Create map and root node
@@ -154,6 +227,8 @@ func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 
 	return assetMap
 }
+
+
 
 //
 //func (this *AssetsController) Patch() {

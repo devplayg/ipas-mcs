@@ -26,13 +26,16 @@ func (c *MemberController) LangPrepare() {
 // 사용자 정보 출력
 func (c *MemberController) Get() {
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-		if c.Ctx.Input.Param(":memberId") != "" { // 특정 사용자 정보 요청이면
-			log.Error("Invalid request(member id is zero")
-		} else {
+		//if c.Ctx.Input.Param(":memberId") == "" { // 특정 사용자 정보 요청이면
+		//	result := objs.NewResult()
+		//	result.Message = "Invalid request(member id is zero)"
+		//	c.Data["json"] = result
+		//	c.ServeJSON()
+		//} else {
 			filter := c.getPagingFilter()
 			members, total, err := models.GetMembers(filter)
 			c.serveResultJson(members, total, err, "off")
-		}
+		//}
 
 	} else { // Ajax 외 요청이면 HTML 리턴
 		positions := make(map[string]int)
@@ -42,9 +45,7 @@ func (c *MemberController) Get() {
 		positions["Observer"] = objs.Observer
 		c.Data["positions"] = positions
 
-		//c.langToFrontEnd("msg.confirm_delete")
 		c.setTpl("member.tpl")
-		//c.Data["langMap"].(map[string]string)["cancel"] = "abc"
 	}
 }
 

@@ -99,11 +99,11 @@
                                 <div class="form-group">
                                     <label>User Groups</label>
                                     <div class="mt-checkbox-list">
-                                        <label class="mt-checkbox mt-checkbox-outline"> Administrator
+                                        <label class="mt-checkbox mt-checkbox-outline font-red bold"> Administrator
                                             <input type="checkbox" name="user_groups" value="9" />
                                             <span></span>
                                         </label>
-                                        <label class="mt-checkbox mt-checkbox-outline"> Observer
+                                        <label class="mt-checkbox mt-checkbox-outline font-blue bold"> Observer
                                             <input type="checkbox" name="user_groups" value="8" />
                                             <span></span>
                                         </label>
@@ -173,11 +173,11 @@
                                 <div class="form-group">
                                     <label>User Groups</label>
                                     <div class="mt-checkbox-list">
-                                        <label class="mt-checkbox mt-checkbox-outline"> Administrator
+                                        <label class="mt-checkbox mt-checkbox-outline font-red bold"> Administrator
                                             <input type="checkbox" name="user_groups" value="9" />
                                             <span></span>
                                         </label>
-                                        <label class="mt-checkbox mt-checkbox-outline"> Observer
+                                        <label class="mt-checkbox mt-checkbox-outline font-blue bold"> Observer
                                             <input type="checkbox" name="user_groups" value="8" />
                                             <span></span>
                                         </label>

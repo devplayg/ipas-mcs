@@ -17,14 +17,17 @@ func init() {
 
 	// 사용자
 	beego.Router(`/members`, &controllers.MemberController{})
-	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{})
+	beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")
 	beego.Router(`/members/:memberId([\d]+)/acl`, &controllers.MemberController{}, "Get:GetMemberAcl")
 	beego.Router(`/members/:memberId([\d]+)/acl`, &controllers.MemberController{}, "Patch:UpdateMemberAcl")
 
 	// 자산
 	beego.Router("/assets", &controllers.AssetController{})
 	beego.Router("/assetclass/:class:int/root/:assetId:int", &controllers.AssetController{}, "get:GetDescendantsWithRoot")
-	beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "get:GetChildren")
+	//beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "get:GetChildren")
+	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Get:GetAsset")
+	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Patch:UpdateAsset")
+	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Delete:RemoveAsset")
 	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")
 	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Post:UpdateMember")
 
