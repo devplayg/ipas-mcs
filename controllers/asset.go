@@ -65,7 +65,6 @@ func (c *AssetController) Post() {
 //	c.ServeJSON()
 //}
 
-
 // 선택된 자산의 전체 하위노드 조회
 func (c *AssetController) GetDescendants() {
 
@@ -83,7 +82,6 @@ func (c *AssetController) GetDescendants() {
 	}
 	c.ServeJSON()
 }
-
 
 func (c *AssetController) GetDescendantsWithRoot() {
 
@@ -110,7 +108,6 @@ func (c *AssetController) getDescendants(class, assetId int) *objs.Asset {
 	assetMap := getAssetMapByClassId(class)
 	return assetMap[assetId]
 }
-
 
 // 자산ID로 조회
 func (c *AssetController) GetAsset() {
@@ -146,7 +143,6 @@ func (c *AssetController) UpdateAsset() {
 	c.ServeJSON()
 }
 
-
 // 자산정보 삭제
 func (c *AssetController) RemoveAsset() {
 
@@ -159,7 +155,15 @@ func (c *AssetController) RemoveAsset() {
 	}
 
 	dbResult := objs.NewDbResult()
-	rs, err := models.RemoveRow("ast_asset", "asset_id", assetId)
+	asset, err := models.GetAsset(assetId)
+	if err != nil {
+		dbResult.Message = err.Error()
+		c.Data["json"] = dbResult
+		c.ServeJSON()
+		return
+	}
+
+	rs, err := models.RemoveAsset(asset)
 	if err != nil {
 		dbResult.Message = err.Error()
 		c.Data["json"] = dbResult
@@ -177,9 +181,6 @@ func (c *AssetController) RemoveAsset() {
 	c.Data["json"] = dbResult
 	c.ServeJSON()
 }
-
-
-
 
 // 자산 맵 조회
 func getAssetMapByClassId(class int) objs.AssetMap {
@@ -227,8 +228,6 @@ func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 
 	return assetMap
 }
-
-
 
 //
 //func (this *AssetsController) Patch() {
