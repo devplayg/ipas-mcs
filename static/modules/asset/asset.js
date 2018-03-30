@@ -13,7 +13,6 @@ $(function() {
 
     // Tree
     var $tree = $( "#tree-assets" ),
-        selected = null,
         Root = 0,
         Org = 1,
         Group = 2;
@@ -38,29 +37,7 @@ $(function() {
         },
 
     }).on( "changed.jstree", function( e, obj ) {
-        if ( obj.action == "select_node" ) {
-
-            selected = obj.node;
-            console.log(selected);
-            $( "button.btn-asset-manage" ).each(function( idx ) {
-                var $el = $( this ),
-                    perm = $el.data( "perm" );
-
-                if ( perm & (1 << selected.original.type) ) {
-                    $el.removeClass( "hide" );
-                    // console.log("perm:" + perm);
-                    // console.log("selected.original.type:" + (1 << selected.original.type));
-                } else {
-                    $el.addClass( "hide" );
-                }
-            });
-            // console.log(selected.original.type);
-            // if ( selected.original.type == Root || selected.original.type == Org ) {
-            //     $( ".btn-asset-add" ).removeClass( "hide" );
-            // } else {
-            //     $( ".btn-asset-add" ).addClass( "hide" );
-            // }
-        }
+        updateButtons();
     });
 
 
@@ -104,19 +81,22 @@ $(function() {
 
 
     $( ".btn-asset-add" ).click(function() {
+        var selected = $tree.jstree( true ).get_selected(),
+            node = $tree.jstree( true ).get_node( selected[0] );
+
         var target ;
-        if ( selected.original.type === Root ) {
+        if ( node.original.type === Root ) {
             target = felang[ "org" ];
-        } else if ( selected.original.type === Org ) {
+        } else if ( node.original.type === Org ) {
             target = felang[ "group" ];
         } else {
             return;
         }
 
-        $( "#form-asset-add input[name=parent_id]" ).val( selected.original.asset_id );
-        $( "#form-asset-add input[name=type1]" ).val( selected.original.type + 1 );
+        $( "#form-asset-add input[name=parent_id]" ).val( node.original.asset_id );
+        $( "#form-asset-add input[name=type1]" ).val( node.original.type + 1 );
         $( "#form-asset-add .target" ).text( target );
-        $( "#form-asset-add .name" ).text( selected.original.name );
+        $( "#form-asset-add .name" ).text( node.original.name );
         $( "#modal-asset-add" ).modal( "show" );
     });
 
@@ -142,23 +122,30 @@ $(function() {
 
 
     $( ".btn-asset-edit" ).click(function() {
+        var selected = $tree.jstree( true ).get_selected(),
+            node = $tree.jstree( true ).get_node( selected[0] );
+
+        if ( node.original.type === Root ) {
+            return;
+        }
+
         $.ajax({
             type: "GET",
             async: true,
-            url: "/assets/" + selected.original.asset_id,
+            url: "/assets/" + node.original.asset_id,
         }).done( function( result ) {
             if ( result.state ) {
                 var target ;
-                if ( selected.original.type === Org ) {
+                if ( node.original.type === Org ) {
                     target = felang[ "org" ];
-                } else if ( selected.original.type === Group ) {
+                } else if ( node.original.type === Group ) {
                     target = felang[ "group" ];
                 } else {
                     return;
                 }
                 $( "#form-asset-edit .target" ).text( target );
                 $( "#form-asset-edit input[name=name]" ).val( result.data.name );
-                $( "#form-asset-edit input[name=asset_id]" ).val( selected.original.asset_id );
+                $( "#form-asset-edit input[name=asset_id]" ).val( node.original.asset_id );
                 $( "#modal-asset-edit" ).modal( "show" );
 
             } else {
@@ -178,11 +165,17 @@ $(function() {
             cancelButtonText: felang[ "no" ]
         }).then((result) => {
             if (result.value) {
+                var list = $tree.jstree( true ).get_selected().map(Number);
+                console.log(list);
                 $.ajax({
-                    type: "DELETE",
+                    type: "POST",
                     async: true,
-                    url: "/assets/" + selected.original.asset_id,
+                    url: "/assets/delete",
+                    data: {
+                        asset_id_list: list
+                    }
                 }).done( function( result ) {
+                    // console.log(result);
                     if ( result.state ) {
                         $tree.jstree( true ).refresh( -1 );
                     } else {
@@ -205,7 +198,6 @@ $(function() {
             url: "/assets/" + $( "input[name=asset_id]", $form ).val(),
             data: $form.serialize()
         }).done( function( result ) {
-            console.log(result);
             if ( result.state ) {
                 $( "#modal-asset-edit" ).modal( "hide" );
                 $tree.jstree( true ).refresh( -1 );
@@ -216,77 +208,35 @@ $(function() {
     });
 
 
-//$( "#tree-assets').on( "changed.jstree", function (e, data) {
-//    console.log(3);
-//    $( ".btn-page').text(1);
-//    $( "#form-filter input[name=offset]').val(0);
-
-//    //if (defined(data.node.original)) {
-//    if (data.node != undefined) {
-//        // Nav. text
-//        var nav = data.node.original.text_origin;
-//        if (data.node.parents.length == 2) {
-//            nav = data.instance.get_node(data.node.parent).original.text_origin + " <span class='mlr10'> &gt; </span> " + nav;
-//        }
-//        if (data.node.parents.length == 3) {
-//            nav = data.instance.get_node(data.node.parent).original.text_origin + " <span class='mlr10'> &gt; </span> " + nav;
-//            nav = data.instance.get_node(data.instance.get_node(data.node.parent).parent).original.text_origin + " <span class='mlr10'> &gt; </span> " + nav;
-//        }
-//        $( ".btn-org-tag').html(nav);
-//        var param = {
-//            depth: data.node.parents.length,
-//            id: data.node.id,
-//            keyword: $.trim($( "#form-filter input[name=keyword]').val())
-//        };
-
-//        var url = '?mod=agent&act=procGetAgent&with_version=1&' + filter_query + '&' + $.param(param);
-//        $( "#table_agent').bootstrapTable( "refresh', {url: url} );
-//    } else {
-//        started = 1;
-//    }
-//});
-
-
-
-
-
 
     /**
      * 3. 함수
      *
      */
 
-//     var delete_node = function( node ) {
-//         swal({
-//             title: "Are you sure?",
-//             text: "You will not be able to recover this imaginary file!",
-//             type: "warning",
-//             showLoaderOnConfirm: true,
-//             showCancelButton: true,
-//             confirmButtonText: "Yes, delete it!",
-//             cancelButtonText: "No, keep it",
-//             confirmButtonColor: "#E7505A",
-//         }).then(function() {
-//             $.ajax({
-//                 type: "DELETE",
-//                 url: "/assets/" + node.original.AssetId,
-//                 async: true,
-//                 beforeSend: function(xhr) {
-//                     xhr.setRequestHeader("X-CSRFToken", getXsrsToken());
-//                 },
-//             }).done( function( result ) {
-//                 if ( result.state ) {
-// //                $tree.jstree( true ).refresh( -1 );
-//                 } else {
-//                     swal( "Fail", result.Message, "error" );
-//                 }
-//             }).fail( function() {
-//             }).always( function() {
-//                 $tree.jstree( true ).refresh( -1 );
-//             });
-//         })
-//     }
+    function updateButtons() {
+        var selected = $tree.jstree( true ).get_selected();
+        if ( selected.length < 1 ) {
+            $( ".btn-asset-manage" ).addClass( "hide" );
+        } else if ( selected.length == 1 ) {
+            $( ".btn-asset-manage" ).addClass( "hide" );
+            var node =  $tree.jstree( true ).get_node( selected[0] );
+            if ( node.original.type == Root ) {
+                $( ".btn-asset-remove" ).addClass( "hide" );
+            } else {
+                $( ".btn-asset-remove" ).removeClass( "hide" );
+            }
+            if ( node.original.type == Root || node.original.type == Org ) {
+                $( ".btn-asset-add" ).removeClass( "hide" );
+            }
 
+            if ( node.original.type == Org || node.original.type == Group ) {
+                $( ".btn-asset-edit" ).removeClass( "hide" );
+            }
+        } else {
+            $( ".btn-asset-manage" ).addClass( "hide" );
+        }
+    }
 
 });
 

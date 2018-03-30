@@ -4,6 +4,7 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"strconv"
+	//log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -145,17 +146,17 @@ func (c *AssetController) UpdateAsset() {
 
 // 자산정보 삭제
 func (c *AssetController) RemoveAsset() {
+	type input struct {
+		AssetIdList []int `form:"asset_id_list[]"`
+	}
 
-	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
-	if assetId < 1 {
-		result := objs.NewResult()
-		result.Message = c.Tr("msg.invalid_request")
-		c.Data["json"] = result
-		c.ServeJSON()
+	target := input{}
+	if err := c.ParseForm(&target); err != nil {
+		CheckError(err)
 	}
 
 	dbResult := objs.NewDbResult()
-	asset, err := models.GetAsset(assetId)
+	rs, err := models.RemoveAsset(target.AssetIdList)
 	if err != nil {
 		dbResult.Message = err.Error()
 		c.Data["json"] = dbResult
@@ -163,17 +164,13 @@ func (c *AssetController) RemoveAsset() {
 		return
 	}
 
-	rs, err := models.RemoveAsset(asset)
-	if err != nil {
-		dbResult.Message = err.Error()
-		c.Data["json"] = dbResult
-		c.ServeJSON()
-		return
+	var affectedRows int64
+	if rs != nil {
+		affectedRows, _ = rs.RowsAffected()
 	}
-
-	affectedRows, _ := rs.RowsAffected()
 	if affectedRows > 0 {
 		dbResult.State = true
+		dbResult.AffectedRows = affectedRows
 	} else {
 		dbResult.Message = c.Tr("msg.not_founded")
 	}
