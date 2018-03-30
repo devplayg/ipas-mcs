@@ -27,9 +27,7 @@ func init() {
 	//beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "get:GetChildren")
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Get:GetAsset")
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Patch:UpdateAsset")
-	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Delete:RemoveAsset")
-	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Get:GetMemberById")
-	//beego.Router(`/members/:memberId([\d]+)`, &controllers.MemberController{}, "Post:UpdateMember")
+	beego.Router("/assets/delete", &controllers.AssetController{}, "Post:RemoveAsset")
 
 	// Post, Delete, Patch, Get(html, json)
 	/*

@@ -2,8 +2,10 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
+	"strings"
 )
 
 func GetAssetsByClass(class int) ([]objs.Asset, error) {
@@ -70,28 +72,34 @@ func GetAsset(assetId int) (objs.Asset, error) {
 	return asset, err
 }
 
-func RemoveAsset(asset objs.Asset) (sql.Result, error) {
+func RemoveAsset(assetIdList []int) (sql.Result, error) {
 	o := orm.NewOrm()
 	var rs sql.Result
 	var err error
 	o.Begin()
 
-	if asset.Type1 == 1 { // 최상위 그룹이면 하위개체 먼저 삭제
-		query := "delete from ast_asset where parent_id = ?"
-		rs, err = o.Raw(query, asset.AssetId).Exec()
-		if err != nil {
-			o.Rollback()
-			return rs, err
-		}
-	}
-
-	query := "delete from ast_asset where asset_id = ?"
-	rs, err = o.Raw(query, asset.AssetId).Exec()
+	query := "delete from ast_asset where %s in (%s)"
+	query = fmt.Sprintf(query, "parent_id", JoinInt(assetIdList, ","))
+	_, err = o.Raw(query).Exec()
 	if err != nil {
 		o.Rollback()
-		return rs, err
+		return nil, err
+	}
+
+	query = "delete from ast_asset where %s in (%s)"
+	query = fmt.Sprintf(query, "asset_id", JoinInt(assetIdList, ","))
+	rs, err = o.Raw(query).Exec()
+	if err != nil {
+		o.Rollback()
+		return nil, err
 	}
 
 	o.Commit()
-	return rs, nil
+	return rs, err
+}
+
+func JoinInt(a []int, delim string) string {
+	return strings.Trim(strings.Replace(fmt.Sprint(a), " ", delim, -1), "[]")
+	//return strings.Trim(strings.Join(strings.Split(fmt.Sprint(a), " "), delim), "[]")
+	//return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(a)), delim), "[]")
 }

@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
@@ -32,9 +31,9 @@ func (c *MemberController) Get() {
 		//	c.Data["json"] = result
 		//	c.ServeJSON()
 		//} else {
-			filter := c.getPagingFilter()
-			members, total, err := models.GetMembers(filter)
-			c.serveResultJson(members, total, err, "off")
+		filter := c.getPagingFilter()
+		members, total, err := models.GetMembers(filter)
+		c.serveResultJson(members, total, err, "off")
 		//}
 
 	} else { // Ajax 외 요청이면 HTML 리턴
@@ -240,7 +239,6 @@ func (c *MemberController) UpdateMemberAcl() {
 	if err := c.ParseForm(&ma); err != nil {
 		CheckError(err)
 	}
-	spew.Dump(ma)
 	dbResult := objs.NewDbResult()
 	_, err := models.UpdateMemberAcl(ma.MemberId, ma.Acl)
 	if err != nil {

@@ -21,7 +21,7 @@
                         <button type="button" class="btn default btn-xs btn-tree-expand"><i class="fa fa-expand"></i></button>
                         <button type="button" class="btn blue btn-xs btn-asset-manage btn-asset-add hide" data-perm="3"><i class="fa fa-plus"></i> {{i18n .Lang "registration"}}</button>
                         <button type="button" class="btn green btn-xs btn-asset-manage btn-asset-edit hide" data-perm="6"><i class="fa fa-edit"></i> {{i18n .Lang "edit"}}</button>
-                        <button type="button" class="btn red btn-xs btn-asset-manage btn-asset-remove hide" data-perm="6"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn red btn-xs btn-asset-remove" data-perm="6"><i class="fa fa-trash"></i> {{i18n .Lang "remove"}}</button>
                     </div>
                     <div id="tree-assets"></div>
                 </div> <!-- .portlet-body -->
