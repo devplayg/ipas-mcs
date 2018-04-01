@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	//"github.com/devplayg/ipas-mcs/libs"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/objs"
 	"regexp"
 )
@@ -18,6 +19,8 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	args := make([]interface{}, 0)
 	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
 
+	spew.Dump(filter)
+
 	//if len(filter.Org) > 0 {
 	//	where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
 	//}
@@ -31,6 +34,13 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	//	args = append(args, "%"+filter.Guid+"%")
 	//}
 
+	if len(filter.EquipId) > 0 {
+		where += " and (equip_id like ? or target like ?)"
+		cond := "%"+filter.EquipId+"%"
+		args = append(args, cond, cond)
+	}
+
+	// 페이징 모드(고속/일반)
 	if filter.FastPaging == "off" {
 		filter.FoundRows = "SQL_CALC_FOUND_ROWS"
 	}
@@ -205,4 +215,3 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 //	return &rows, total, err
 //}
 //
-

@@ -1,7 +1,7 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-<!--user icon in two different styles-->22
+<!--user icon in two different styles-->
 <div id="toolbar-log">
     <form id="form-filter" role="form" method="post">
         {{ .xsrfdata }}
@@ -28,9 +28,9 @@
 
                     {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}
                     <div class="input-group btn-group btn-page-group">
-                        <button type="button" class="btn btn-primary btn-move-page btn-prev" data-direction="-1" data-loading-text="&lt;">&lt;</button>
-                        <button type="button" class="btn btn-primary btn-move-page btn-page-text" data-direction="0">1</button>
-                        <button type="button" class="btn btn-primary btn-move-page btn-next" data-direction="1" data-loading-text="&gt;">&gt;</button>
+                        <button type="button" class="btn blue btn-move-page btn-prev" data-direction="-1" data-loading-text="&lt;">&lt;</button>
+                        <button type="button" class="btn blue btn-move-page btn-page-text" data-direction="0">1</button>
+                        <button type="button" class="btn blue btn-move-page btn-next" data-direction="1" data-loading-text="&gt;">&gt;</button>
                     </div>
                     {{end}}
                     <a href="#" data-toggle="modal" data-target="#modal-filter"><i class="fa fa-filter icon-filter hidden font-red"></i>{{i18n .Lang "detail_filter"}}</a>
@@ -50,8 +50,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-4 form-group">
-                                <label class="control-label">GUID</label>
-                                <input type="text" class="form-control" name="guid" value="{{.filter.Guid}}">
+                                <label class="control-label">ID</label>
+                                <input type="text" class="form-control" name="equip_id" value="{{.filter.EquipId}}">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label class="control-label">Risk level</label>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label class="mt-checkbox mt-checkbox-outline mt30">
-                                    <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> Page size
+                                    <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> {{i18n .Lang "fast_paging"}}
                                     <span></span>
                                 </label>
                             </div>
@@ -86,11 +86,10 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-<pre>
+<pre class="hide">
 startDate={{.filter.StartDate}}
 endDate={{.filter.EndDate}}
 fastPaging={{.filter.FastPaging}}
-guid={{.filter.Guid}}
 limit={{.filter.Limit}}
 sort={{.filter.Sort}}
 order={{.filter.Order}}
@@ -104,10 +103,11 @@ order={{.filter.Order}}
         data-toolbar="#toolbar-log"
         data-show-refresh="true"
         data-show-columns="true"
-        data-row-style="scoreRowStyle"
         {* 내보내기 *}
         data-show-export="true"
         data-export-types="['csv', 'excel']"
+        {*Row강조*}
+        data-row-style="rowStyle"
         {* 페이지 크기*}
         data-page-size="{{.filter.Limit}}"
         {* 정렬 *}
@@ -117,7 +117,7 @@ order={{.filter.Order}}
         {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
         {{else}} {* 일반 페이징 *}
-            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&guid={{.filter.Guid}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
+            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
             data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
@@ -128,8 +128,8 @@ order={{.filter.Order}}
         <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
         <th data-field="equip_id" data-formatter="equipIdFormatter" data-sortable="true">ID</th>
         <th data-field="target" data-formatter="targetEquipIdFormatter" data-sortable="true">Target</th>
-        <th data-field="speeding_count" data-sortable="true">Speeding</th>
-        <th data-field="shock_count" data-sortable="true">Shock</th>
+        <th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>
+        <th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>
         <th data-field="latitude" data-sortable="true">위도</th>
         <th data-field="longitude" data-sortable="true">경도</th>
         <th data-field="warning_dist" data-sortable="true">경보 설정(M)</th>
@@ -144,4 +144,5 @@ order={{.filter.Order}}
 
 {{define "javascript"}}
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
+<script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}
