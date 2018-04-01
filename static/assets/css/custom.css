@@ -19,6 +19,13 @@ body {
     z-index: 10050 !important; /* bigger than modal's z-index*/
 }
 
+.row-danger {
+    background: #ffe7e9;
+}
+.row-warning {
+    background: #fff3e2;
+}
+
 /* Table */
 .fixed-table-container {
   position: relative;

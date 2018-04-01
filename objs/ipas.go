@@ -41,5 +41,5 @@ type IpasFilter struct {
 	SubOrg    []int
 	RiskLevel []int  `form:"risk_level[]"`
 	Contents  string `form:"contents"`
-	Guid      string `form:"guid"`
+	EquipId   string `form:"equip_id"`
 }

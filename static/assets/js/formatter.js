@@ -24,7 +24,8 @@ function int2ipFormatter( val, row, idx ) {
 
 function dateFormatter( val, row, idx ) {
     var m = moment( val );
-    return m.format("YYYY-MM-DD HH:mm:ss");
+    // return m.format("YYYY-MM-DD HH:mm:ss");
+    return '<span class="s12">' + m.format() + '</span>';
 }
 
 function numberFormatter( val, row, idx ) {

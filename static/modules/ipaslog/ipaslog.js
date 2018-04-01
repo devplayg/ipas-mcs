@@ -170,12 +170,12 @@ $(function() {
         if ( paging.blockIndex != paging.blockIndex_before || is_refresh ) {
             var param = {
                 offset: ( paging.size * paging.blockSize ) * paging.blockIndex,
-                limit: paging.size * paging.blockSize,
-                sort: $table.bootstrapTable("getOptions").sortName,
-                order: $table.bootstrapTable("getOptions").sortOrder
+                limit : paging.size * paging.blockSize,
+                sort  : $table.bootstrapTable( "getOptions" ).sortName,
+                order : $table.bootstrapTable( "getOptions" ).sortOrder
             };
 
-            var url = "/ipaslog?" + $( "#form-filter :input" ).serialize() + "&" + $.param( param );
+            var url = "/ipaslogs?" + $( "#form-filter input[name!=limit]" ).serialize() + "&" + $.param( param );
 
             // 데이터 조회
             console.log( 'Fetching' );
@@ -185,6 +185,7 @@ $(function() {
                 url:   url
             }).done( function( result ) {
                 logs = result || []; // 값이 null 이면 크기0의 배열을 할당
+                // console.log(logs);
                 showTableData( $table, logs, paging );
                 updatePagingNavButtons();
             });
