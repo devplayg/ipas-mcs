@@ -3,8 +3,6 @@ package models
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	//"github.com/devplayg/ipas-mcs/libs"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/objs"
 	"regexp"
 )
@@ -18,8 +16,6 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	// 조건 설정
 	args := make([]interface{}, 0)
 	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
-
-	spew.Dump(filter)
 
 	//if len(filter.Org) > 0 {
 	//	where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
