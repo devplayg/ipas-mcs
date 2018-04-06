@@ -25,7 +25,7 @@ function int2ipFormatter( val, row, idx ) {
 function dateFormatter( val, row, idx ) {
     var m = moment( val );
     // return m.format("YYYY-MM-DD HH:mm:ss");
-    return '<span class="s12">' + m.format() + '</span>';
+    return '<span class="">' + m.format("YYYY-MM-DD HH:mm:ss") + '</span>';
 }
 
 function numberFormatter( val, row, idx ) {
@@ -50,7 +50,8 @@ function equipIdFormatter( val, row, idx ) {
     return tag;
 }
 
-function targetEquipIdFormatter( val, row, idx ) {
+function ipaslogTargetsFormatter( val, row, idx ) {
+    // console.log(val);
     var list = val.split(","),
         tags = '';
 
@@ -59,5 +60,4 @@ function targetEquipIdFormatter( val, row, idx ) {
     }
 
     return tags;
-
 }

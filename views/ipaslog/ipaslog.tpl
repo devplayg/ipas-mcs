@@ -10,13 +10,13 @@
             <div class="form-inline">
                 <div class="form-group">
 
-                    <!-- Start date -->
+                    <!-- 검색 시작날짜 -->
                     <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
                         <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="startDate" value="{{.filter.StartDate}}">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                     </div>
 
-                    <!-- End date -->
+                    <!-- 검색 끝날짜 -->
                     <div class="input-group date datetime">
                         <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="endDate" value="{{.filter.EndDate}}">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
@@ -53,7 +53,7 @@
                                 <label class="control-label">ID</label>
                                 <input type="text" class="form-control" name="equip_id" value="{{.filter.EquipId}}">
                             </div>
-                            <div class="col-sm-4 form-group">
+                            <div class="col-sm-4 form-group hide">
                                 <label class="control-label">Risk level</label>
                                 <select name="risk_level[]" class="selectpicker" data-width="100%" data-size="5" multiple title="Risk level">
                                     <option value="1">Risk1</option>
@@ -127,22 +127,55 @@ order={{.filter.Order}}
     <tr>
         <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
         <th data-field="equip_id" data-formatter="equipIdFormatter" data-sortable="true">ID</th>
-        <th data-field="target" data-formatter="targetEquipIdFormatter" data-sortable="true">Target</th>
-        <th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>
-        <th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>
-        <th data-field="latitude" data-sortable="true">위도</th>
-        <th data-field="longitude" data-sortable="true">경도</th>
-        <th data-field="warning_dist" data-sortable="true">경보 설정(M)</th>
-        <th data-field="caution_dist" data-sortable="true">주의 설정(M)</th>
-        <th data-field="v2v_dist" data-sortable="true">V2V 거리</th>
-        <th data-field="shock_threshold" data-sortable="true">충격 임계치</th>
-        <th data-field="speed_threshold" data-sortable="true">속도 임계치</th>
+        <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">Target</th>
+        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter">Location</th>
+        <th data-field="latitude" data-sortable="true">Lat</th>
+        <th data-field="longitude" data-sortable="true">Lon</th>
+        <th data-field="speed" data-sortable="true">Speed <small>(km/h)</small></th>
+        <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR</th>
+        <th data-field="usim" data-sortable="true">USIM</th>
+        <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter">IP</th>
+        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter">Received date</th>
+
+        {{/*<th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>*/}}
+        {{/*<th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>*/}}
     </tr>
     </thead>
 </table>
+
+<div class="modal modal-member fade" id="modal-ipas-map" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form" id="form-member-add" class="form-member">
+                <div class="modal-header">
+                    <h4 class="modal-title">Map</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="map" style="width:500px;height:400px;"></div>
+                </div><!-- modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 {{end}}
 
 {{define "javascript"}}
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02bd20e484466c7e20db78ebe8ec3439"></script>
+<script>
+    var container = document.getElementById('map');
+    // var options = {
+    //     center: new daum.maps.LatLng(33.450701, 126.570667),
+    //     level: 3
+    // };
+    //
+    // var map = new daum.maps.Map(container, options);
+</script>
+
 {{end}}

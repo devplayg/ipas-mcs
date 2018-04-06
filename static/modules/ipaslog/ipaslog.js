@@ -117,6 +117,29 @@ $(function() {
             $( "input[name=md5]", $form).focus().select();
         });
 
+    $( "#modal-ipas-map" ).on( "shown.bs.modal", function (e) {
+        // var latitude = $( e.relatedTarget ).data( "latitude" ),
+        //     longitude = $( e.relatedTarget ).data( "longitude" );
+
+        var latitude = 37.316531,
+            longitude = 127.069044;
+
+        console.log(latitude + "/" + longitude)
+        // var loc = $(e.relatedTarget).data( "latitude" );
+        // console.log(loc);
+        var options = {
+            center: new daum.maps.LatLng(latitude, longitude),
+            level: 3
+        };
+        var map = new daum.maps.Map(container, options);
+
+        var markerPosition  = new daum.maps.LatLng(latitude, longitude);
+        var marker = new daum.maps.Marker({
+            position: markerPosition
+        });
+        marker.setMap(map);
+
+    });
 
     // // 센서 선택
     // $( "#select-sensors" ).change(function() {

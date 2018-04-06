@@ -30,6 +30,7 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	//	args = append(args, "%"+filter.Guid+"%")
 	//}
 
+	// 장비 ID
 	if len(filter.EquipId) > 0 {
 		where += " and (equip_id like ? or target like ?)"
 		cond := "%"+filter.EquipId+"%"
@@ -43,8 +44,9 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 
 	// Set query
 	query := `
-		SELECT %s *
-		from log_ipas
+		SELECT 	%s date, org_id, group_id, event_type, session_id, equip_id, targets, latitude, longitude, speed
+				, snr, usim, distance, ip, recv_date
+		from log_ipas_event
 		where date >= ? and date <= ? %s
 		order by %s %s
 		limit ?, ?
