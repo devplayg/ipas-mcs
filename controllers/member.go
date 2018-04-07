@@ -163,7 +163,7 @@ func (c *MemberController) getPagingFilter() *objs.PagingFilter {
 }
 
 // 사용자 정보 업데이트
-func (c *MemberController) Patch() {
+func (c *MemberController) UpdateMember() {
 	dbResult := objs.NewDbResult()
 
 	member := objs.Member{}
@@ -190,7 +190,7 @@ func (c *MemberController) Patch() {
 	c.ServeJSON()
 }
 
-func (c *MemberController) Delete() {
+func (c *MemberController) DeleteMember() {
 	dbResult := objs.NewDbResult()
 
 	memberId, _ := strconv.Atoi(c.Ctx.Input.Param(":memberId"))
