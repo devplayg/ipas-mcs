@@ -530,7 +530,6 @@
         <script src="/static/assets/js/common.js" type="text/javascript"></script>
         <script src="/static/assets/js/formatter.js" type="text/javascript"></script>
         <script>
-
             // Timezone
             var member = {
                     "timezone": "{{.member.Timezone}}" || "Asia/Seoul",
@@ -540,17 +539,15 @@
 
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
-            felang = {{.lang}}; // front-end languages
+            felang = {{.frontLang}}; // front-end languages
 
             // Sidebar
             Layout.setSidebarMenuActiveLink("match");
         </script>
-        <!-- 네임카드 -->
 
         <!-- Javascript -->
-        {{ block "javascript" . }}
-        {{ end }}
+        {{ block "javascript" . }}{{ end }}
+        {{template "ipasreport/ipasreport.tpl" .}}
     </body>
-
 </html>
 

@@ -11,6 +11,10 @@ type IpaslogController struct {
 	baseController
 }
 
+func (c *IpaslogController) LangPrepare() {
+	c.addToFrontLang("ipas.start,shock,  speeding ")
+}
+
 func (c *IpaslogController) Get() {
 	filter := c.getFilter()
 
