@@ -65,6 +65,24 @@ function inet_ntoa(num) {
     return d;
 }
 
+function getIpasTag( val ) {
+    var prefix = val.substr(0, 3),
+        tag = "";
+
+    if ( prefix == "VT_" ) {
+        tag += '<button class="btn blue-dark btn-xs">';
+    } else if ( prefix == "ZT_" ) {
+        tag += '<button class="btn blue-sharp btn-xs">';
+    } else if ( prefix == "PT_" ) {
+        tag += '<button class="btn green-sharp btn-xs">';
+    } else {
+        tag += '<i class="fa fa-question"> ';
+    }
+    tag += val+'</button>';
+
+    return tag;
+}
+
 
 
 // function getBit(value, pos) {

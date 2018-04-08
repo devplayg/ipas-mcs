@@ -1,7 +1,6 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-<!--user icon in two different styles-->
 <div id="toolbar-log">
     <form id="form-filter" role="form" method="post">
         {{ .xsrfdata }}
@@ -126,16 +125,17 @@ order={{.filter.Order}}
     <thead>
     <tr>
         <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
-        <th data-field="equip_id" data-formatter="equipIdFormatter" data-sortable="true">ID</th>
-        <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">Target</th>
-        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter">Location</th>
-        <th data-field="latitude" data-sortable="true">Lat</th>
-        <th data-field="longitude" data-sortable="true">Lon</th>
-        <th data-field="speed" data-sortable="true">Speed <small>(km/h)</small></th>
+        <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
+        <th data-field="equip_id" data-formatter="ipaslogEquipIdFormatter" data-sortable="true">{{i18n .Lang "ipas.tag"}}</th>
+        <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>
+        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter">{{i18n .Lang "location"}}</th>
+        <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>
+        <th data-field="longitude" data-sortable="true" data-visible="false">{{i18n .Lang "longitude"}}</th>
+        <th data-field="speed" data-sortable="true">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
         <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR</th>
         <th data-field="usim" data-sortable="true">USIM</th>
-        <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter">IP</th>
-        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter">Received date</th>
+        <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter" data-visible="false">IP</th>
+        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received_date"}}</th>
 
         {{/*<th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>*/}}
         {{/*<th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>*/}}
@@ -143,39 +143,9 @@ order={{.filter.Order}}
     </thead>
 </table>
 
-<div class="modal modal-member fade" id="modal-ipas-map" tabindex="-1" role="basic" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form role="form" id="form-member-add" class="form-member">
-                <div class="modal-header">
-                    <h4 class="modal-title">Map</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="map" style="width:500px;height:400px;"></div>
-                </div><!-- modal-body -->
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-
 {{end}}
 
 {{define "javascript"}}
 <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02bd20e484466c7e20db78ebe8ec3439"></script>
-<script>
-    var container = document.getElementById('map');
-    // var options = {
-    //     center: new daum.maps.LatLng(33.450701, 126.570667),
-    //     level: 3
-    // };
-    //
-    // var map = new daum.maps.Map(container, options);
-</script>
-
 {{end}}

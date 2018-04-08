@@ -84,7 +84,9 @@ func (c *baseController) Prepare() {
 
 	// 언어 설정
 	c.setLangVer()
-	c.langToFrontEnd()
+	c.loadFrontLang()
+	//c.langMap = make(map[string]string)
+	//c.langToFrontEnd()
 
 	// 기본 템플릿 변수 설정
 	c.Data["title"] = beego.BConfig.AppName
@@ -230,22 +232,21 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 	return err
 }
 
-func (c *baseController) langToFrontEnd(keyword... string) {
+func (c *baseController) loadFrontLang() {
 	c.langMap = make(map[string]string)
-
-	for _, k := range keyword {
-		c.langMap[k] = c.Tr(k)
-	}
-	list := strings.Split("yes,no,msg.confirm_delete", ",")
-	for _, r := range list {
-		c.langMap[r] = c.Tr(r)
-	}
-
+	c.addToFrontLang("yes,no,msg.confirm_delete")
 	if app, ok := c.AppController.(LangPreparer); ok {
 		app.LangPrepare()
 	}
 
-	c.Data["lang"] = c.langMap
+	c.Data["frontLang"] = c.langMap
+}
+
+func (c *baseController) addToFrontLang(str string) {
+	list := libs.SplitString(str, `[\s|,]+`)
+	for _, r := range list {
+		c.langMap[r] = c.Tr(r)
+	}
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {

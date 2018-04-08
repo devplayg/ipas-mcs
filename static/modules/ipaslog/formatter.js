@@ -8,6 +8,17 @@ function shockCountFormatter(val, row, idx) {
 }
 
 
+function ipaslogEquipIdFormatter(val, row, idx) {
+    var header = '',
+        body = '',
+        footer = '';
+
+    header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
+    body = getIpasTag( row.equip_id );
+    return header + body + footer;
+}
+
+
 function rowStyle(row, idx) {
     if ( row.shock_count >= 10 ) {
         return {
@@ -24,7 +35,7 @@ function rowStyle(row, idx) {
 
 function snrFormatter(val, row, idx) {
     var c  = '\u2759',
-        color = ['red', 'red', 'yellow', 'yellow', 'green', 'green'],
+        color = ['red-mint', 'red-mint', 'yellow-crusta', 'yellow-crusta', 'blue', 'blue'],
         level = Math.ceil(val / 2);
 
     if ( level > 6 ) {
@@ -36,5 +47,23 @@ function snrFormatter(val, row, idx) {
 
 
 function ipaslogLocationFormatter(val, row, idx) {
-    return '<a href="#" data-toggle="modal" data-target="#modal-ipas-map" data-latitude="' + row.latitude + '" data-longitude="' + row.longitude + '"><i class="fa fa-map-o"></i></a>';
+    var loc = '';
+    loc += '<a href="#" class="tooltips"  data-container="body" data-placement="top" data-original-title="Tooltip in top" data-toggle="modal" data-target="#modal-ipas-map" data-latitude="' + row.latitude + '" data-longitude="' + row.longitude + '"><i class="fa fa-map-marker fa-1x"></i></a>';
+    // loc += '<small class="ml5">' + row.latitude + ", " + row.longitude + '</small>';
+
+    return loc;
+}
+
+
+function ipaslogEventTypeFormatter(val, row, idx) {
+    if (val === 1) {
+        return felang[ "ipas.start" ] + ' <i class="fa fa-power-off pull-right"></i>';
+
+    } else if (val === 2) {
+        return felang[ "shock" ] + ' <span class="pull-right"><i class="fa fa-bolt"></i></span>';
+
+    } else if (val === 3) {
+        return felang[ "speeding" ] + ' <i class="fa fa-long-arrow-up pull-right"></i>';
+
+    }
 }
