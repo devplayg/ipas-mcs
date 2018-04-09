@@ -24,10 +24,10 @@
         <!-- Fonts -->
         <link href="/static/assets/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/font/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css" />
-        <link href="/static/assets/font/{{.Lang}}.css" rel="stylesheet" type="text/css" />
 
         <!-- Plugins -->
         {{ block "css" . }}{{ end }}
+        <link href="/static/assets/font/{{.Lang}}.css" rel="stylesheet" type="text/css" />
         <link rel="shortcut icon" href="favicon.ico" />
     </head>
 

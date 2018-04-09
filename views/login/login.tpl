@@ -7,7 +7,7 @@
 {{end}}
 
 {{define "contents"}}
-<div class="login">
+<div class="login pt20">
 <!-- BEGIN LOGO -->
 <!--
 <div class="logo">
@@ -51,22 +51,9 @@
                 -->
             </div>
 
-            <div class="login-options hidden">
-                <h4>Or login with</h4>
-                <ul class="social-icons">
-                    <li>
-                        <a class="social-icon-color facebook" data-original-title="facebook" href="javascript:;"></a>
-                    </li>
-                    <li>
-                        <a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
-                    </li>
-                    <li>
-                        <a class="social-icon-color googleplus" data-original-title="Goole Plus" href="javascript:;"></a>
-                    </li>
-                    <li>
-                        <a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
-                    </li>
-                </ul>
+            <div class="text-center">
+                <h4 class="mt20">{{.title}}</h4>
+                <small>IPAS Monitoring & Control System</small>
             </div>
         </form>
         <!-- END LOGIN FORM -->

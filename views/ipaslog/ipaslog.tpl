@@ -124,18 +124,19 @@ order={{.filter.Order}}
 >
     <thead>
     <tr>
-        <th data-field="date" data-sortable="true" data-formatter="dateFormatter">Date</th>
+        <th data-field="date" data-sortable="true" data-formatter="dateFormatter">{{i18n .Lang "occurrence date"}}</th>
         <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
         <th data-field="equip_id" data-formatter="ipaslogEquipIdFormatter" data-sortable="true">{{i18n .Lang "ipas.tag"}}</th>
         <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>
-        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter">{{i18n .Lang "location"}}</th>
+        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
         <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>
         <th data-field="longitude" data-sortable="true" data-visible="false">{{i18n .Lang "longitude"}}</th>
-        <th data-field="speed" data-sortable="true">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
-        <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR</th>
+        <th data-field="distance" data-sortable="true" data-formatter="ipaslogDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
+        <th data-field="speed" data-sortable="true" data-formatter="ipaslogSpeedingFormatter">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
+        <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR&nbsp;&nbsp;</th>
         <th data-field="usim" data-sortable="true">USIM</th>
         <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter" data-visible="false">IP</th>
-        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received_date"}}</th>
+        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received date"}}</th>
 
         {{/*<th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>*/}}
         {{/*<th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>*/}}

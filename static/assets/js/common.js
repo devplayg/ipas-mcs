@@ -3,6 +3,11 @@
  */
 
 // Ajax
+var IpasStatusStart = 1,
+    IpasStatusShock = 2,
+    IpasStatusSpeeding = 3,
+    IpasStatusProximity = 4;
+
 $.ajaxSetup({cache:false});
 var ajax = $.ajax;
 $.extend({

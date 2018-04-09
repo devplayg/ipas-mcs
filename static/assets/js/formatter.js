@@ -32,18 +32,3 @@ function numberFormatter( val, row, idx ) {
     return val.toLocaleString();
 }
 
-function equipIdFormatter( val, row, idx ) {
-    return getIpasTag( val );
-}
-
-function ipaslogTargetsFormatter( val, row, idx ) {
-    // console.log(val);
-    var list = val.split(","),
-        tags = '';
-
-    for ( var i=0; i<list.length; i++ ) {
-        tags += equipIdFormatter(list[i]);
-    }
-
-    return tags;
-}

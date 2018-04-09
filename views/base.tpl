@@ -219,38 +219,38 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-list"></i>
-                                <span class="title">Log</span>
+                                <span class="title">{{i18n .Lang "menu.log"}}</span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/ipaslogs" class="nav-link"><span class="title">IPAS Log</span></a>
+                                    <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>
-                                </li>
+                                {{/*<li class="nav-item ">*/}}
+                                    {{/*<a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>*/}}
+                                {{/*</li>*/}}
                             </ul>
                         </li>
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
-                                <span class="title">Control panels</span>
+                                <span class="title">{{i18n .Lang "menu.settings"}}</span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="/config" class="nav-link">
-                                        <span class="title">{{i18n .Lang "menu.configuration" }}</span>
+                                        <span class="title">{{i18n .Lang "menu.settings" }}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/members" class="nav-link">
-                                        <span class="title">Members</span>
+                                        <span class="title">{{i18n .Lang "menu.user management"}}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/assets" class="nav-link">
-                                        <span class="title">{{i18n .Lang "menu.assets" }}</span>
+                                        <span class="title">{{i18n .Lang "menu.asset management"}}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -263,11 +263,11 @@
                     <div class="page-bar mb20">
                         <ul class="page-breadcrumb">
                             <li>
-                                <a href="index.html">Home</a>
+                                <a href="index.html">{{i18n .Lang "menu.log"}}</a>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>Page Layouts</span>
+                                <span>{{i18n .Lang "menu.ipas event"}}</span>
                             </li>
                         </ul>
                         <div class="page-toolbar">
