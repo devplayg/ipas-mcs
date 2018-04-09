@@ -12,7 +12,7 @@ type IpaslogController struct {
 }
 
 func (c *IpaslogController) LangPrepare() {
-	c.addToFrontLang("ipas.start,shock,  speeding ")
+	c.addToFrontLang("ipas.start,shock,speeding,proximity")
 }
 
 func (c *IpaslogController) Get() {
