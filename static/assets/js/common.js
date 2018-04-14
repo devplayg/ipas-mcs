@@ -52,6 +52,20 @@ $( ".lang-changed" ).click( function() {
     window.location.reload();
 });
 
+// Menu
+// var a = $('ul.page-sidebar-menu > li.active ').text();
+// var a = $('ul#page-sidebar-menu > li.selected').text();
+var a = $('ul.page-sidebar-menu').find('li.active a').text();
+// var a = $('ul#sub-menu > li.active');
+// var a = $('ul.page-sidebar-menu.li.').find('li.active').length;
+console.log(a);
+// console.log(4);
+
+// var el = $(this).closest('ul').closest('li');
+// var parent_el = $("a", el)[0];
+// var parent_text = $('.txt', parent_el).text();
+// $('.menu_depth1_text').text(parent_text);
+
 
 /**
  * Functions

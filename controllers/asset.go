@@ -4,7 +4,6 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"strconv"
-	//log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -127,11 +126,11 @@ func (c *AssetController) GetAsset() {
 
 // 자산정보 업데이트
 func (c *AssetController) UpdateAsset() {
-	assetId, _ := strconv.Atoi(c.Ctx.Input.Param(":assetId"))
-
-	rs, err := models.UpdateRow("ast_asset", "asset_id", assetId, map[string]interface{}{
-		"name": c.GetString("name"),
-	})
+	asset := objs.Asset{}
+	if err := c.ParseForm(&asset); err != nil {
+		CheckError(err)
+	}
+	rs, err := models.UpdateAsset(&asset)
 
 	dbResult := objs.NewDbResult()
 	if err != nil {

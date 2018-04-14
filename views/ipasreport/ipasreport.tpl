@@ -15,6 +15,11 @@
                             <div class="col-sm-3 col-xs-4"><i class="fa fa-square-o mr5"></i>발생시간</div>
                             <div class="col-sm-9 col-xs-8"><span class="ipasreport-data ipasreport-date strong"></span></div>
                         </div>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
                     </div>
                 </div>
             </div><!-- modal-body -->
