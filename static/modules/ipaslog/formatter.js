@@ -20,15 +20,20 @@ function ipaslogEquipIdFormatter(val, row, idx) {
 
 
 function rowStyle(row, idx) {
-    if ( row.shock_count >= 10 ) {
+    if ( row.event_type == 4 ) {
         return {
             classes: "row-danger"
         };
-    } else if ( row.shock_count >= 8 ) {
-        return {
-            classes: "row-warning"
-        };
     }
+    // if ( row.shock_count >= 10 ) {
+    //     return {
+    //         classes: "row-danger"
+    //     };
+    // } else if ( row.shock_count >= 8 ) {
+    //     return {
+    //         classes: "row-warning"
+    //     };
+    // }
 
     return {};
 }

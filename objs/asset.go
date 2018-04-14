@@ -18,6 +18,7 @@ type Asset struct {
 	Type     int    `json:"type"`
 	Type1    int    `json:"-" form:"type1"`
 	Type2    int    `json:"-" form:"type2"`
+	Code     string `json:"code" form:"code"`
 	//Hostname    string
 	//IP          string    `json:"-"`
 	//Cidr        int       `json:"-"`

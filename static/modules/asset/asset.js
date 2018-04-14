@@ -64,9 +64,11 @@ $(function() {
         .on( "shown.bs.modal", function () {
             var $form = $( this ).find( "form" );
             $( "input[name=name]", $form ).focus();
+
         }).on( "hidden.bs.modal", function () {
             var $form = $( this ).find( "form" );
             $form.get( 0 ).reset();
+            $( ".form-option" ).addClass( "hide" );
         });
 
     $( "#modal-asset-edit" )
@@ -77,6 +79,7 @@ $(function() {
         }).on( "hidden.bs.modal", function () {
             var $form = $( this ).find( "form" );
             $form.get( 0 ).reset();
+            $( ".form-option" ).addClass( "hide" );
         });
 
 
@@ -86,17 +89,23 @@ $(function() {
 
         var target ;
         if ( node.original.type === Root ) {
-            target = felang[ "org" ];
+            target = '<i class="fa fa-building-o"></i> ' + felang[ "org" ];
+            $( ".form-option-org" ).removeClass( "hide" );
         } else if ( node.original.type === Org ) {
-            target = felang[ "group" ];
+            target = '<i class="fa fa-folder-o"></i> ' + felang[ "group" ];
+            $( ".form-option-group" ).removeClass( "hide" );
         } else {
             return;
         }
 
         $( "#form-asset-add input[name=parent_id]" ).val( node.original.asset_id );
         $( "#form-asset-add input[name=type1]" ).val( node.original.type + 1 );
-        $( "#form-asset-add .target" ).text( target );
-        $( "#form-asset-add .name" ).text( node.original.name );
+        $( "#form-asset-add .target" ).html( target );
+        $( "#form-asset-add .name" ).html(
+            node.original.name.length > 0 ? '<i class="fa fa-chevron-left"1></i> <label class="label label-info">' + node.original.name + '</label>'
+                                          : ""
+        );
+
         $( "#modal-asset-add" ).modal( "show" );
     });
 
@@ -134,17 +143,22 @@ $(function() {
             async: true,
             url: "/assets/" + node.original.asset_id,
         }).done( function( result ) {
+            console.log(result.data);
             if ( result.state ) {
                 var target ;
                 if ( node.original.type === Org ) {
-                    target = felang[ "org" ];
+                    target = '<i class="fa fa-building-o"></i> ' + felang[ "org" ];
+                    $( ".form-option-org" ).removeClass( "hide" );
                 } else if ( node.original.type === Group ) {
-                    target = felang[ "group" ];
+                    target = '<i class="fa fa-folder-o"></i> ' + felang[ "group" ];
+                    $( ".form-option-group" ).removeClass( "hide" );
                 } else {
                     return;
                 }
-                $( "#form-asset-edit .target" ).text( target );
+
+                $( "#form-asset-edit .target" ).html( target );
                 $( "#form-asset-edit input[name=name]" ).val( result.data.name );
+                $( "#form-asset-edit input[name=code]" ).val( result.data.code );
                 $( "#form-asset-edit input[name=asset_id]" ).val( node.original.asset_id );
                 $( "#modal-asset-edit" ).modal( "show" );
 

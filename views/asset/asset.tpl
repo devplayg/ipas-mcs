@@ -63,16 +63,17 @@
                     <input type="hidden" name="type1">
 
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title">{{i18n .Lang "registration"}} - <span class="target"></span></h4>
+                        <h4 class="modal-title">{{i18n .Lang "registration"}} <span class="target pull-right"></span></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 form-group">
-                                <label for="name" class="control-label">
-                                    <span class="label label-info name"></span>
-                                </label>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="name" class="control-label">{{i18n .Lang "name"}} <span class="name"></span></label>
                                 <input type="text" class="form-control" name="name" />
+                            </div>
+                            <div class="form-group form-option form-option-org hide">
+                                <label for="code" class="control-label">{{i18n .Lang "code"}}</label>
+                                <input type="text" class="form-control" name="code" />
                             </div>
                         </div>
                         <div class="note note-danger hidden"></div>
@@ -94,16 +95,17 @@
                     <input type="hidden" name="asset_id">
 
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title">{{i18n .Lang "edit"}} - <span class="target"></span></h4>
+                        <h4 class="modal-title">{{i18n .Lang "edit"}} <span class="target pull-right"></span></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 form-group">
-                                <label for="name" class="control-label">
-                                    <span class="label label-success name"></span>
-                                </label>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="name" class="control-label">{{i18n .Lang "name"}} <span class="name"></span></label>
                                 <input type="text" class="form-control" name="name" />
+                            </div>
+                            <div class="form-group form-option form-option-org hide">
+                                <label for="name" class="control-label">{{i18n .Lang "code"}}</label>
+                                <input type="text" class="form-control" name="code" />
                             </div>
                         </div>
                         <div class="note note-danger hidden"></div>
