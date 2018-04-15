@@ -11,8 +11,9 @@ type IpaslogController struct {
 	baseController
 }
 
-func (c *IpaslogController) LangPrepare() {
+func (c *IpaslogController) CtrlPrepare() {
 	c.addToFrontLang("ipas.start,shock,speeding,proximity")
+	c.grant(objs.User)
 }
 
 func (c *IpaslogController) Get() {
@@ -20,7 +21,7 @@ func (c *IpaslogController) Get() {
 
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 		filter := c.getFilter()
-		logs, total, err := models.GetIpaslog(filter)
+		logs, total, err := models.GetIpaslog(filter, c.member)
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter

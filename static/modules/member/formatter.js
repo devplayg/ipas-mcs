@@ -67,3 +67,10 @@ function memberAssetSummaryFormatter(val, row, idx) {
     }
     return tags;
 }
+
+function memberFailedLoginCount(val, row, idx) {
+    if ( val > 0 ) {
+        return '<i class="fa fa-warning font-red"></i> ' + val;
+    }
+    return val;
+}

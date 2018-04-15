@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
+	"github.com/devplayg/ipas-mcs/libs"
 	"regexp"
 )
 
 var RegexFoundRows = regexp.MustCompile(`(?i)SELECT(\s+)SQL_CALC_FOUND_ROWS`)
 
-func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
+func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, int64, error) {
 	var where string
 	var rows []objs.IpasLog
 
@@ -17,13 +18,17 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 	args := make([]interface{}, 0)
 	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
 
+	if member.Position <= objs.User {
+
+	}
+
 	//if len(filter.Org) > 0 {
 	//	where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
 	//}
 	//
-	//if len(filter.RiskLevel) > 0 {
-	//	where += fmt.Sprintf(" and risk_level in (%s)", libs.JoinInt(filter.RiskLevel, ","))
-	//}
+	if len(filter.EventType) > 0 {
+		where += fmt.Sprintf(" and event_type in (%s)", libs.JoinInt(filter.EventType, ","))
+	}
 	//
 	//if len(filter.Guid) > 0 {
 	//	where += " and guid like ?"
@@ -32,7 +37,7 @@ func GetIpaslog(filter *objs.IpasFilter) ([]objs.IpasLog, int64, error) {
 
 	// 장비 ID
 	if len(filter.EquipId) > 0 {
-		where += " and (equip_id like ? or target like ?)"
+		where += " and (equip_id like ? or targets like ?)"
 		cond := "%"+filter.EquipId+"%"
 		args = append(args, cond, cond)
 	}

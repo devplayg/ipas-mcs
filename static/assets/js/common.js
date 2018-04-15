@@ -40,7 +40,7 @@ jQuery.fn.addHidden = function (name, value) {
 // Mask
 $( ".mask-yyyymmddhhii" ).mask( "0000-00-00 00:00" );
 $( ".mask-ipv4-cidr" ).mask( "099.099.099.099/09" );
-$( ".mask-port" ).mask( "09999" );
+$( ".mask-09999" ).mask( "09999" );
 $( ".mask-0999" ).mask( "0999" );
 $( ".mask-099" ).mask( "099" );
 
