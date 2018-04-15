@@ -8,16 +8,6 @@ function shockCountFormatter(val, row, idx) {
 }
 
 
-function ipaslogEquipIdFormatter(val, row, idx) {
-    var header = '',
-        body = '',
-        footer = '';
-
-    header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
-    body = getIpasTag( row.equip_id );
-    return header + body + footer;
-}
-
 
 function rowStyle(row, idx) {
     if ( row.event_type == 4 ) {
