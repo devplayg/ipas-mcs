@@ -216,7 +216,7 @@ $(function() {
     function updateFilterStatus() {
 
         var fields = $( "#form-filter :input" )
-            .not( "input[type='hidden'], [name='startDate'], [name='endDate'], [name='fastPaging'], [name='limit'], [name='score']" ) // 제외할 항목
+            .not( "input[type='hidden'], [name='startDate'], [name='endDate'], [name='fastPaging'], [name='limit']" ) // 제외할 항목
             .serializeArray();
 
         // 항목에 조건값이 한 개 이상 설정되어 있으면
@@ -226,12 +226,6 @@ $(function() {
                 return;
             }
         });
-
-        // 악성가능성 조회 범위 값이 0 ~ 100이 아니면
-        if ( $( "#form-filter input[name=score]" ).val() != "0,100" ) {
-            $( ".icon-filter" ).removeClass( "hidden" );
-            return;
-        }
     }
 
     // // 그룹 업데이트
@@ -360,7 +354,7 @@ $(function() {
 
     // 선택박스 초기설정
     function resetMultiSelctedBoxesOfFilter() {
-        var cols = "risk_level[]";
+        var cols = "event_type[]";
         $.each(cols.split( "," ), function(i, c) {
             if ( reqVars[c] !== undefined ) {
                 $( "#form-filter select[name='" + c + "']" ).selectpicker( "val", reqVars[c] ).selectpicker( "refresh" );

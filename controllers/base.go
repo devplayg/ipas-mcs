@@ -19,9 +19,6 @@ import (
 type CtrlPreparer interface {
 	CtrlPrepare()
 }
-type LangPreparer interface {
-	LangPrepare()
-}
 
 // 기본 Controller
 type baseController struct {
@@ -47,6 +44,10 @@ func (c *baseController) Prepare() {
 	c.isLoginRequired = true                   // 로그인 필수
 	c.grant(objs.Superman, objs.Administrator) // 관리자 이상만 실행 허용
 	c.isLogged = false                         // 로그인 상태
+
+	// 언어 설정
+	c.setLangVer()
+	c.loadFrontLang()
 
 	// 호출된 Controller 접근권한 덮어쓰기
 	if app, ok := c.AppController.(CtrlPreparer); ok {
@@ -81,12 +82,6 @@ func (c *baseController) Prepare() {
 
 	// 접근 제한
 	c.checkAccessPermission()
-
-	// 언어 설정
-	c.setLangVer()
-	c.loadFrontLang()
-	//c.langMap = make(map[string]string)
-	//c.langToFrontEnd()
 
 	// 기본 템플릿 변수 설정
 	c.Data["title"] = beego.BConfig.AppName
@@ -235,10 +230,6 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 func (c *baseController) loadFrontLang() {
 	c.langMap = make(map[string]string)
 	c.addToFrontLang("yes,no,msg.confirm_delete")
-	if app, ok := c.AppController.(LangPreparer); ok {
-		app.LangPrepare()
-	}
-
 	c.Data["frontLang"] = c.langMap
 }
 

@@ -8,19 +8,19 @@ import (
 //select org_id, equip_id, group_id, equip_type, latitude, longitude, speed, snr, usim
 //from ast_ipas
 type Ipas struct {
-	OrgId     int    `json:"org_id"`
-	EquipId   string `json:"equip_id"`
-	GroupId   int    `json:"group_id"`
-	EquipType int    `json:"equip_type"`
-	Speed     int    `json:"spped"`
-	Snr       int    `json:"snr"`
-	Usim      string `json:"usim"`
-	Latitude  float32   `json:"latitude"`
-	Longitude float32   `json:"longitude"`
+	OrgId     int     `json:"org_id"`
+	EquipId   string  `json:"equip_id"`
+	GroupId   int     `json:"group_id"`
+	EquipType int     `json:"equip_type"`
+	Speed     int     `json:"spped"`
+	Snr       int     `json:"snr"`
+	Usim      string  `json:"usim"`
+	Latitude  float32 `json:"latitude"`
+	Longitude float32 `json:"longitude"`
 	//SpeedingCount int       `json:"speeding_count"`
 	//ShockCount    int       `json:"shock_count"`
-	Created time.Time `json:"created"`
-	Updated time.Time `json:"updated"`
+	Created   time.Time `json:"created"`
+	Updated   time.Time `json:"updated"`
 	OrgName   string    `json:"org_name"`
 	GroupName string    `json:"group_name"`
 }
@@ -48,7 +48,7 @@ type IpasFilter struct {
 
 	OrgId     []int
 	GroupId   []int
-	RiskLevel []int  `form:"risk_level[]"`
+	EventType []int  `form:"event_type[]"`
 	Contents  string `form:"contents"`
 	EquipId   string `form:"equip_id"`
 }

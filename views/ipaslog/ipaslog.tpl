@@ -48,18 +48,17 @@
 
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label">ID</label>
+                            <div class="col-sm-6 form-group">
+                                <label class="control-label">{{i18n .Lang "tag"}}</label>
                                 <input type="text" class="form-control" name="equip_id" value="{{.filter.EquipId}}">
                             </div>
-                            <div class="col-sm-4 form-group hide">
-                                <label class="control-label">Risk level</label>
-                                <select name="risk_level[]" class="selectpicker" data-width="100%" data-size="5" multiple title="Risk level">
-                                    <option value="1">Risk1</option>
-                                    <option value="2">Risk2</option>
-                                    <option value="3">Risk3</option>
-                                    <option value="4">Risk4</option>
-                                    <option value="5">Risk5</option>
+                            <div class="col-sm-6 form-group ">
+                                <label class="control-label">{{i18n .Lang "event type"}}</label>
+                                <select name="event_type[]" class="selectpicker" data-width="100%" data-size="5" multiple title="{{i18n .Lang "event type"}}">
+                                    <option value="1">{{i18n .Lang "ipas.start"}}</option>
+                                    <option value="2">{{i18n .Lang "shock"}}</option>
+                                    <option value="3">{{i18n .Lang "speeding"}}</option>
+                                    <option value="4">{{i18n .Lang "proximity"}}</option>
                                 </select>
                             </div>
                         </div>
@@ -85,14 +84,15 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-<pre class="hide">
+<pre class="">
 startDate={{.filter.StartDate}}
 endDate={{.filter.EndDate}}
+equip_id={{.filter.EquipId}}
 fastPaging={{.filter.FastPaging}}
 limit={{.filter.Limit}}
 sort={{.filter.Sort}}
 order={{.filter.Order}}
-{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}
+{{range .filter.EventType}}&event_type[]={{.}}{{end}}
 {{.Lang}}
 </pre>
 
@@ -116,7 +116,7 @@ order={{.filter.Order}}
         {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
         {{else}} {* 일반 페이징 *}
-            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.RiskLevel}}&risk_level[]={{.}}{{end}}"
+            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type[]={{.}}{{end}}"
             data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"
