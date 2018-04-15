@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"github.com/davecgh/go-spew/spew"
 	log "github.com/sirupsen/logrus"
+	"strings"
 )
 
 type IpaslistController struct {
@@ -75,4 +76,40 @@ func (c *IpaslistController) getFilter() *objs.IpasFilter {
 	}
 
 	return &filter
+}
+
+func (c *IpaslistController) UpdateIpasGroup() {
+
+	groupId, _ := strconv.Atoi(c.Ctx.Input.Param(":groupId"))
+
+	type input struct {
+		List []string `form:"list[]"`
+	}
+
+	form := input{}
+	if err := c.ParseForm(&form); err != nil {
+		CheckError(err)
+	}
+
+	list := make([]objs.Ipas, 0)
+	for _, s := range form.List {
+		arr := strings.SplitN(s, "/", 2)
+		orgId, _ := strconv.Atoi(arr[0])
+		list = append(list, objs.Ipas{
+			OrgId: orgId,
+			EquipId: arr[1],
+		})
+	}
+	//spew.Dump(list)
+
+	dbResult := objs.NewDbResult()
+	rs, err := models.UpdateIpasGroup(groupId, list)
+	if err != nil {
+		dbResult.Message = err.Error()
+	} else {
+		dbResult.State = true
+		dbResult.AffectedRows, _ = rs.RowsAffected()
+	}
+	c.Data["json"] = dbResult
+	c.ServeJSON()
 }

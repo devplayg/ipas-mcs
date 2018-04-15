@@ -39,37 +39,97 @@ $(function() {
         },
 
     }).on( "changed.jstree", function( e, obj ) {
-        // var selected = $tree.jstree( true ).get_selected();
         // console.log(selected);
-        // console.log(1);
     }).on( "select_node.jstree", function( e, obj ) {
-        updateButtons();
-        // console.log(obj.node);
+        updateTreeButtons();
+        if ( obj.node.original.type > 0 ) {
+            getLeafNodes( obj.node );
+        }
         showIpasList( obj.node );
-        // console.log(3);
     });
 
 
-    function showIpasList( selected ) {
-        var url;
+    $ipasTable.on('check.bs.table', function (e, row) {
+        updateTableButtons( $(this) );
 
-        if ( selected.original.type == Root ) {
-            url = "/ipasorg/0";
-        } else if ( selected.original.type == Org ) {
-            url = "/ipasorg/" + selected.id;
-        } else if ( selected.original.type == Group ) {
-            url = "/ipasgroup/" + selected.id;
+    }).on('uncheck.bs.table', function (e, row) {
+        updateTableButtons( $(this) );
+
+    }).on('check-all.bs.table', function (e) {
+        updateTableButtons( $(this) );
+
+    }).on('uncheck-all.bs.table', function (e) {
+        updateTableButtons( $(this) );
+
+    });
+
+
+    function updateTableButtons( $table ) {
+        var selectedNode = $tree.jstree( true ).get_selected();
+            node = $tree.jstree( true ).get_node( selectedNode[0] );
+
+        if ( ! node ) {
+            return;
         }
 
-        $ipasTable.bootstrapTable( "removeAll" );
-        $ipasTable.bootstrapTable( "refresh", {
-            url: url
-        });
+        var selectedIpas = $table.bootstrapTable( "getSelections" );
+        if ( node.original.type > 0 && selectedIpas.length > 0 ) {
+            $( ".btn-asset-classify" ).removeClass( "hide" );
+        } else {
+            $( ".btn-asset-classify" ).addClass( "hide" );
+        }
     }
 
-    $ipasTable.on( "refresh.bs.table", function() { // 테이블 새로고침 이벤트 발생 시(고속 페이징)
-        // console.log($ipasTable.data("url"));
+    function getLeafNodes( node ) {
+        var list,
+            parentName = '';
+
+        if ( node.original.type == Org ) {
+            list = node.children;
+            parentName = node.text;
+
+        } else if ( node.original.type == Group ) {
+            var parent = $tree.jstree( true ).get_node( node.parent );
+            list = parent.children;
+            parentName = parent.text;
+        } else {
+            return;
+        }
+        $( ".ast-group" ).empty();
+
+        for (var i=0; i<list.length; i++) {
+            var n = $tree.jstree( true ).get_node( list[i] );
+
+            $( ".ast-group" ).append('<li><a href="#" class="btn-asset-tag" data-id="' + n.id + '">' + parentName + ' > ' + n.text + '</a></li>');;
+            // console.log(n.id + " / " + n.text);
+        }
+    }
+
+    $( document ).on( "click",".btn-asset-tag", function(e) {
+        var group_id = $( this ).data( "id" ),
+            selected = $ipasTable.bootstrapTable( "getSelections" );
+
+        var list = $ipasTable.bootstrapTable( "getSelections" ).map(function(r) {
+            return r.org_id + "/" + r.equip_id;
+        });
+
+        $.ajax({
+            type: "PATCH",
+            async: true,
+            url: "/ipasgroup/" + group_id,
+            data: {
+                list: list
+            }
+        }).done( function( result ) {
+            if ( result.state ) {
+                $ipasTable.bootstrapTable( "removeAll" );
+                updateTableButtons( $ipasTable );
+                $ipasTable.bootstrapTable( "refresh" );
+            }
+        });
+
     });
+
 
 
     /**
@@ -80,7 +140,7 @@ $(function() {
         $tree.jstree( true ).refresh( -1 );
     });
     $( ".btn-tree-expand" ).click( function( e ) {
-        var root = $tree.jstree(true).get_node("j1_1").state;
+        var root = $tree.jstree( true ).get_node("j1_1").state;
         if ( root.opened ) {
             $tree.jstree( "close_all" );
         } else {
@@ -174,7 +234,6 @@ $(function() {
             async: true,
             url: "/assets/" + node.original.asset_id,
         }).done( function( result ) {
-            console.log(result.data);
             if ( result.state ) {
                 var target ;
                 if ( node.original.type === Org ) {
@@ -210,8 +269,7 @@ $(function() {
             cancelButtonText: felang[ "no" ]
         }).then((result) => {
             if (result.value) {
-                var list = $tree.jstree( true ).get_selected().map(Number);
-                console.log(list);
+                var list = $tree.jstree( true ).get_selected().map( Number );
                 $.ajax({
                     type: "POST",
                     async: true,
@@ -220,12 +278,15 @@ $(function() {
                         asset_id_list: list
                     }
                 }).done( function( result ) {
-                    // console.log(result);
                     if ( result.state ) {
                         $tree.jstree( true ).refresh( -1 );
                     } else {
                         swal(result.message, "", "error");
                     }
+                }).always(function() {
+                    $ipasTable.bootstrapTable( "removeAll" );
+                    updateTableButtons( $ipasTable );
+                    $ipasTable.bootstrapTable( "refresh" );
                 });
             }
         });
@@ -259,7 +320,7 @@ $(function() {
      *
      */
 
-    function updateButtons() {
+    function updateTreeButtons() {
         var selected = $tree.jstree( true ).get_selected();
         if ( selected.length < 1 ) {
             $( ".btn-asset-manage" ).addClass( "hide" );
@@ -282,6 +343,24 @@ $(function() {
             $( ".btn-asset-manage" ).addClass( "hide" );
         }
     }
+
+
+    function showIpasList( selected ) {
+        var url;
+
+        if ( selected.original.type == Root ) {
+            url = "/ipasorg/0";
+        } else if ( selected.original.type == Org ) {
+            url = "/ipasorg/" + selected.id;
+        } else if ( selected.original.type == Group ) {
+            url = "/ipasgroup/" + selected.id;
+        }
+
+        $ipasTable.bootstrapTable( "removeAll" );
+        updateTableButtons( $ipasTable );
+        $ipasTable.bootstrapTable( "refresh", { url: url });
+    }
+
 
 });
 

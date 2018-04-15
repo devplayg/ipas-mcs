@@ -39,6 +39,6 @@ function ipasEquipIdFormatter(val, row, idx) {
         footer = '';
 
     header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
-    body = getIpasTag( row.equip_id );
+    body += getIpasTag( row.equip_id );
     return header + body + footer;
 }
