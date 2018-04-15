@@ -31,6 +31,12 @@ func init() {
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Patch:UpdateAsset")
 	beego.Router("/assets/delete", &controllers.AssetController{}, "Post:RemoveAsset")
 
+	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
+	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Get:GetIpasInGroup")
+
+	// users/me
+	// /ipaslist, /ipasorg/1/group/1
+	// ipasgroup
 	// Post, Delete, Patch, Get(html, json)
 	/*
 		post /members

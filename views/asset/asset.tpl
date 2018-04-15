@@ -31,20 +31,42 @@
         <div class="col-lg-9">
             <div class="portlet light bordered">
                 <table class=""
-                       id="table-assets"
+                       id="table-ipas"
+                       class="table-condensed"
                        data-toggle="table"
-                       data-toolbar="#toolbar"
-                       data-page-size="15"
-                       data-pagination="true"
-                       data-sort-order="desc"
+                       data-toolbar="#toolbar-log"
                        data-show-refresh="true"
                        data-show-columns="true"
+                       {* 내보내기 *}
+                       data-show-export="true"
+                       data-export-types="['csv', 'excel']"
+                       {*Row강조*}
+                       data-row-style="rowStyle"
+                       {* 페이지 크기*}
+                       data-page-size="15"
+                       {* 정렬 *}
+                       data-sort-name="equip_id"
+                       data-sort-order="asc"
+
+                       data-pagination="true"
+                       data-side-pagination="server"
+                       data-pagination-loop="false"
                 >
                     <thead>
                     <tr>
-                        <th data-field="AssetId" data-sortable="true">Code</th>
-                        <th data-field="Name" data-sortable="true" data-formatter="assetsNameFormatter">Name</th>
-                        <th data-field="Hostname" data-sortable="true" data-formatter="assetsHostnameFormatter">Host</th>
+                        <th data-field="org_name" data-sortable="true">equip_id</th>
+                        <th data-field="group_name" data-sortable="true">equip_id</th>
+                        {{/*<th data-field="org_id" data-sortable="true">org_id</th>*/}}
+                        <th data-field="equip_id" data-sortable="true" data-formatter="ipasEquipIdFormatter">equip_id</th>
+                        {{/*<th data-field="group_id" data-sortable="true">group_id</th>*/}}
+                        {{/*<th data-field="equip_type" data-sortable="true">equip_type</th>*/}}
+                        <th data-field="latitude" data-sortable="true">latitude</th>
+                        <th data-field="longitude" data-sortable="true">longitude</th>
+                        <th data-field="speed" data-sortable="true">speed</th>
+                        <th data-field="snr" data-sortable="true">snr</th>
+                        <th data-field="usim" data-sortable="true">usim</th>
+                        <th data-field="created" data-sortable="true" data-visible="false">created</th>
+                        <th data-field="updated" data-sortable="true">updated</th>
                     </tr>
                     </thead>
                 </table>

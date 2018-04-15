@@ -15,7 +15,8 @@ $(function() {
     var $tree = $( "#tree-assets" ),
         Root = 0,
         Org = 1,
-        Group = 2;
+        Group = 2,
+        $ipasTable = $( "#table-ipas" );
 
     $tree.jstree({
         "plugins" : [
@@ -26,6 +27,7 @@ $(function() {
             "data" : {
                 "url" : "/assetclass/1/root/0",
             },
+            "multiple": false
         },
         "types" : {
             1: {
@@ -37,7 +39,36 @@ $(function() {
         },
 
     }).on( "changed.jstree", function( e, obj ) {
+        // var selected = $tree.jstree( true ).get_selected();
+        // console.log(selected);
+        // console.log(1);
+    }).on( "select_node.jstree", function( e, obj ) {
         updateButtons();
+        // console.log(obj.node);
+        showIpasList( obj.node );
+        // console.log(3);
+    });
+
+
+    function showIpasList( selected ) {
+        var url;
+
+        if ( selected.original.type == Root ) {
+            url = "/ipasorg/0";
+        } else if ( selected.original.type == Org ) {
+            url = "/ipasorg/" + selected.id;
+        } else if ( selected.original.type == Group ) {
+            url = "/ipasgroup/" + selected.id;
+        }
+
+        $ipasTable.bootstrapTable( "removeAll" );
+        $ipasTable.bootstrapTable( "refresh", {
+            url: url
+        });
+    }
+
+    $ipasTable.on( "refresh.bs.table", function() { // 테이블 새로고침 이벤트 발생 시(고속 페이징)
+        // console.log($ipasTable.data("url"));
     });
 
 

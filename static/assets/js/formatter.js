@@ -32,3 +32,13 @@ function numberFormatter( val, row, idx ) {
     return val.toLocaleString();
 }
 
+
+function ipasEquipIdFormatter(val, row, idx) {
+    var header = '',
+        body = '',
+        footer = '';
+
+    header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
+    body = getIpasTag( row.equip_id );
+    return header + body + footer;
+}
