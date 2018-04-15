@@ -11,11 +11,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	log "github.com/sirupsen/logrus"
 	"html/template"
-	//"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
-	//"time"
 )
 
 // Multi-language
@@ -175,7 +173,7 @@ func initLogger(processName string, debug, verbose bool) {
 	// Set log level
 	if debug {
 		log.SetLevel(log.DebugLevel)
-		orm.Debug = false
+		orm.Debug = true
 	}
 
 	if verbose {

@@ -55,10 +55,10 @@ $( ".lang-changed" ).click( function() {
 // Menu
 // var a = $('ul.page-sidebar-menu > li.active ').text();
 // var a = $('ul#page-sidebar-menu > li.selected').text();
-var a = $('ul.page-sidebar-menu').find('li.active a').text();
+// var a = $('ul.page-sidebar-menu').find('li.active a').text();
 // var a = $('ul#sub-menu > li.active');
 // var a = $('ul.page-sidebar-menu.li.').find('li.active').length;
-console.log(a);
+// console.log(a);
 // console.log(4);
 
 // var el = $(this).closest('ul').closest('li');

@@ -125,9 +125,9 @@ $(function() {
         }
     });
 
+
     // 자산
     var $tree = $( "#tree-member-acl" );
-
     $tree.jstree({
         "plugins" : [
             "types", "sort", "checkbox"
@@ -261,6 +261,7 @@ $(function() {
             }
         });
     });
+
 
     /**
      * 3. 함수

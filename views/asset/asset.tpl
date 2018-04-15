@@ -29,14 +29,35 @@
         </div>
 
         <div class="col-lg-9">
-            <div class="portlet light bordered">
+                <div id="toolbar-ipas">
+                    <button class="btn default btn-asset-classify dropdown-toggle hide" type="button" data-toggle="dropdown">
+                        <i class="fa fa-tag"></i> <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu ast-group" role="menu">
+                        <li>
+                            <a href="javascript:;"> Action </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;"> Another action </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;"> Something else here </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li>
+                            <a href="javascript:;"> Separated link </a>
+                        </li>
+                    </ul>
+
+                </div>
                 <table class=""
                        id="table-ipas"
                        class="table-condensed"
                        data-toggle="table"
-                       data-toolbar="#toolbar-log"
+                       data-toolbar="#toolbar-ipas"
                        data-show-refresh="true"
                        data-show-columns="true"
+                       data-click-to-select="true"
                        {* 내보내기 *}
                        data-show-export="true"
                        data-export-types="['csv', 'excel']"
@@ -47,13 +68,14 @@
                        {* 정렬 *}
                        data-sort-name="equip_id"
                        data-sort-order="asc"
-
+                       {* 서버사이드 페이징*}
                        data-pagination="true"
                        data-side-pagination="server"
                        data-pagination-loop="false"
                 >
                     <thead>
                     <tr>
+                        <th data-field="state" data-width="10" data-checkbox="true"></th>
                         <th data-field="org_name" data-sortable="true">equip_id</th>
                         <th data-field="group_name" data-sortable="true">equip_id</th>
                         {{/*<th data-field="org_id" data-sortable="true">org_id</th>*/}}

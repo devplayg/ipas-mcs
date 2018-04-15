@@ -1,10 +1,11 @@
 package models
 
 import (
-	"github.com/devplayg/ipas-mcs/objs"
-	"github.com/astaxie/beego/orm"
+	"database/sql"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
+	"github.com/astaxie/beego/orm"
+	"github.com/devplayg/ipas-mcs/objs"
+	"strings"
 )
 
 //
@@ -16,6 +17,25 @@ import (
 //select org_id, equip_id, group_id, equip_type, latitude, longitude, speed, snr, usim
 //from ast_ipas
 //
+func UpdateIpasGroup(groupId int, list []objs.Ipas) (sql.Result, error) {
+	query := `
+		update ast_ipas
+		set group_id = ?
+		where (org_id, equip_id) in (%s)
+	`
+
+	arr := make([]string, 0)
+	for _, ipas := range list {
+		s := fmt.Sprintf("(%d, '%s')", ipas.OrgId, ipas.EquipId)
+		arr = append(arr, s)
+	}
+
+	query = fmt.Sprintf(query, strings.Join(arr, ","))
+	o := orm.NewOrm()
+	rs, err := o.Raw(query, groupId).Exec()
+	return rs, err
+}
+
 func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 
 	args := make([]interface{}, 0)
@@ -25,10 +45,10 @@ func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 
 	// 기관 또는 그룹 ID
 	if len(filter.OrgId) > 0 {
-		where += fmt.Sprintf(" and t.org_id in (%s)",JoinInt(filter.OrgId, ","))
+		where += fmt.Sprintf(" and t.org_id in (%s)", JoinInt(filter.OrgId, ","))
 	}
 	if len(filter.GroupId) > 0 {
-		where += fmt.Sprintf(" and t.group_id in (%s)",JoinInt(filter.GroupId, ","))
+		where += fmt.Sprintf(" and t.group_id in (%s)", JoinInt(filter.GroupId, ","))
 	}
 
 	// 페이징 모드(고속/일반)
@@ -58,9 +78,6 @@ func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 	o.Begin()
 	defer o.Commit()
 	total, err := o.Raw(query, args).QueryRows(&rows)
-	if err != nil {
-		spew.Dump(err)
-	}
 
 	if filter.FastPaging == "off" {
 		if RegexFoundRows.MatchString(query) {
