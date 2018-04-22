@@ -89,9 +89,9 @@ function ipaslogDistanceFormatter( val, row, idx ) {
 }
 
 function ipaslogSpeedingFormatter( val, row, idx ) {
-    if ( row.event_type === IpasStatusSpeeding ) {
-        var threshold = 13;
-            return val + '<span class="pull-right font-red bold s12">+' + ( val - threshold ) + '</span>';
+    var threshold = 12;
+    if ( row.event_type === IpasStatusSpeeding && val > threshold) {
+        return val + '<span class="pull-right font-red bold s12">+' + ( val - threshold ) + '</span>';
     }
 }
 
