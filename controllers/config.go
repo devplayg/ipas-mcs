@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 )
@@ -24,7 +23,6 @@ func (c *ConfigController) Get() {
 			config[r.Section][r.Keyword] = objs.MultiValue{r.ValueS, r.ValueN}
 		}
 	}
-	spew.Dump(config)
 	c.Data["config"] = config
 	c.setTpl("config.tpl")
 

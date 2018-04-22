@@ -66,6 +66,6 @@ func getProcessName() string {
 }
 
 func getEncryptionKey() []byte {
-	key := sha256.Sum256([]byte("CharlieHunter-NoWomanNoCry"))
+	key := sha256.Sum256([]byte("D?83F4 E?E"))
 	return key[:]
 }
