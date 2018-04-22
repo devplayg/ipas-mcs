@@ -24,7 +24,7 @@
             {* 페이지 크기*}
             data-page-size="10"
             {* 정렬 *}
-            data-sort-name="position"
+            data-sort-name="username"
             data-sort-order="desc"
             {* 일반 페이징 *}
             data-url="/members"
@@ -179,6 +179,10 @@
                                         </label>
                                         <label class="mt-checkbox mt-checkbox-outline font-blue bold"> Observer
                                             <input type="checkbox" name="user_groups" value="8" />
+                                            <span></span>
+                                        </label>
+                                        <label class="mt-checkbox mt-checkbox-outline font-blue bold"> User
+                                            <input type="checkbox" name="user_groups" value="0" />
                                             <span></span>
                                         </label>
                                     </div>

@@ -274,8 +274,6 @@ $(function() {
                 async: true,
                 url: "/members/" + row.member_id,
             }).done(function( result ) {
-                console.log(result);
-
                 if ( ! result.state ) {
                     return;
                 }
