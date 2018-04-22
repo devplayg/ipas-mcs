@@ -22,8 +22,8 @@
                     </div>
 
                     <!-- 자산 선택 -->
-                    <select id="select-orgs" name="orgs[]" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>
-                    <select id="select-groups" name="groups[]" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>
+                    {{/*<select id="select-orgs" name="orgs[]" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>*/}}
+                    {{/*<select id="select-groups" name="groups[]" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>*/}}
 
                     <!-- Buttons -->
                     <button type="submit" class="btn blue"/>{{i18n .Lang "search"}}</button>
@@ -88,7 +88,7 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-<pre class="">
+<pre class="hide">
 startDate={{.filter.StartDate}}
 endDate={{.filter.EndDate}}
 equip_id={{.filter.EquipId}}
@@ -132,7 +132,7 @@ order={{.filter.Order}}
         <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
         <th data-field="group_name" data-sortable="true">{{i18n .Lang "group"}}</th>
         <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
-        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "ipas.tag"}}</th>
+        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
         <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>
         <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
         <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>

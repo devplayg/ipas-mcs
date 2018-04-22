@@ -45,8 +45,8 @@
         <div class="page-header navbar navbar-fixed-top">
             <div class="page-header-inner ">
                 <div class="page-logo">
-                    <a href="index.html">
-                        <img src="/static/assets/img/logo.png" alt="logo" class="logo-default" /> </a>
+                    <a href="/">
+                        <img src="/static/assets/img/logo.png" alt="logo" class="logo-default" style="margin-top: 15px; margin-left: -20px;" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
                     </div>
@@ -219,7 +219,7 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-list"></i>
-                                <span class="title">{{i18n .Lang "menu.log"}}</span>
+                                <span class="title">{{i18n .Lang "log"}}</span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
@@ -234,13 +234,13 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
-                                <span class="title">{{i18n .Lang "menu.settings"}}</span>
+                                <span class="title">{{i18n .Lang "preferences"}}</span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/config" class="nav-link">
-                                        <span class="title">{{i18n .Lang "menu.settings" }}</span>
+                                    <a href="/assets" class="nav-link">
+                                        <span class="title">{{i18n .Lang "menu.asset management"}}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -249,8 +249,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/assets" class="nav-link">
-                                        <span class="title">{{i18n .Lang "menu.asset management"}}</span>
+                                    <a href="/config" class="nav-link">
+                                        <span class="title">{{i18n .Lang "menu.system settings" }}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -489,8 +489,8 @@
             </div>
         </div>
         <div class="page-footer">
-            <div class="page-footer-inner"> 2017 &copy;
-                <a href="#" title="" target="_blank">By Kusnowan</a>
+            <div class="page-footer-inner"> 2018 &copy;
+                <a href="#" title="" target="_blank">Kyungwoo Inc.</a>
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>

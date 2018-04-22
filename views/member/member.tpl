@@ -5,7 +5,6 @@
 {{end}}
 
 {{define "contents"}}
-
     <div id="toolbar-member">
         <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
         <button type="button" class="btn red btn-member-remove">Delete</button>
@@ -34,16 +33,16 @@
     >
         <thead>
         <tr>
-            <th data-field="command" data-formatter="memberCommandFormatter" data-events="memberActionEvents" data-sortable="true">Command</th>
+            <th data-field="command" data-formatter="memberCommandFormatter" data-events="memberActionEvents" data-sortable="true">{{i18n .Lang "command"}}</th>
             <th data-field="member_id" data-visible="false" data-sortable="true">ID</th>
-            <th data-field="username" data-sortable="true">Username</th>
-            <th data-field="name" data-sortable="true">Name</th>
-            <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">Position</th>
-            <th data-field="failed_login_count" data-sortable="true" data-formatter="memberFailedLoginCount">Failed login</th>
-            <th data-field="last_success_login" data-sortable="true" data-visible="false">Last access</th>
-            <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">Allowed IP</th>
-            <th data-field="timezone" data-sortable="true" data-visible="false">Timezone</th>
-            <th data-field="asset_summary" data-sortable="true" data-formatter="memberAssetSummaryFormatter">Timezone</th>
+            <th data-field="username" data-sortable="true">{{i18n .Lang "username"}}</th>
+            <th data-field="name" data-sortable="true">{{i18n .Lang "name"}}</th>
+            <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">{{i18n .Lang "priviledge"}}</th>
+            <th data-field="failed_login_count" data-sortable="true" data-formatter="memberFailedLoginCount">{{i18n .Lang "login failure"}}</th>
+            <th data-field="last_success_login" data-sortable="true" data-visible="false">{{i18n .Lang "last login"}}</th>
+            <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">{{i18n .Lang "allowed ip"}}</th>
+            <th data-field="timezone" data-sortable="true" data-visible="false">{{i18n .Lang "timezone"}}</th>
+            <th data-field="asset_summary" data-sortable="true" data-formatter="memberAssetSummaryFormatter">ACL</th>
         </tr>
         </thead>
     </table>

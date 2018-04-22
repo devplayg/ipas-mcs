@@ -8,7 +8,6 @@
                 <div class="row">
                     <div class="col-sm-3 text-center">
                         <div class="ipasreport-data ipasreport-equip-id"></div>
-
                     </div>
                     <div class="col-sm-9 " style="line-height: 200%; border-left: 1px dashed #acacac;">
                         <div class="row ipasreport-log ipasreport-filetrans ipasreport-email">
@@ -37,13 +36,14 @@
             <div class="modal-header">
                 <h4 class="modal-title">Map
                     <span class="pull-right">
+                        <i class="fa fa-map-marker font-gallery"></i>
                         <span class="latitude"></span>,
                         <span class="longitude"></span>
                     </span>
                 </h4>
             </div>
             <div class="modal-body">
-                <div id="map-ipas" style="width:500px;height:400px;"></div>
+                <div id="map-ipas" style="width:570px;height:400px;"></div>
             </div><!-- modal-body -->
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>

@@ -131,8 +131,10 @@ func addExtraFunctions() error {
 // 다국어 설정
 func initLocale() error {
 	log.Debug("Initializing locale..")
-	languages := strings.Split("ko-kr|en-us|ja-jp", "|")
-	names := strings.Split("KO|EN|JP", "|")
+	//languages := strings.Split("ko-kr|en-us|ja-jp", "|")
+	//names := strings.Split("KO|EN|JP", "|")
+	languages := strings.Split("ko-kr|en-us", "|")
+	names := strings.Split("KO|EN", "|")
 	langTypes = make([]*langType, 0, len(languages))
 	for i, v := range languages {
 		langTypes = append(langTypes, &langType{
