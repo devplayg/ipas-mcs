@@ -46,7 +46,7 @@
             <div class="page-header-inner ">
                 <div class="page-logo">
                     <a href="index.html">
-                        <img src="" alt="logo" class="logo-default" /> </a>
+                        <img src="/static/assets/img/logo.png" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
                     </div>

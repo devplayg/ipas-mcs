@@ -5,6 +5,7 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"time"
 	log "github.com/sirupsen/logrus"
+	"strconv"
 )
 
 type IpaslogController struct {
@@ -12,7 +13,10 @@ type IpaslogController struct {
 }
 
 func (c *IpaslogController) CtrlPrepare() {
+	// 추가 언어 키워드
 	c.addToFrontLang("ipas.start,shock,speeding,proximity")
+
+	// 권한 부여
 	c.grant(objs.User)
 }
 
@@ -22,6 +26,21 @@ func (c *IpaslogController) Get() {
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 		filter := c.getFilter()
 		logs, total, err := models.GetIpaslog(filter, c.member)
+
+		// 기관/그룹코드를 이름과 맵핑
+		for idx, a := range logs {
+			if v, ok:= assetMap.Load(a.OrgId); ok {
+				logs[idx].OrgName = v.(objs.Asset).Name
+			} else {
+				logs[idx].OrgName = strconv.Itoa(a.OrgId)
+			}
+			if v, ok:= assetMap.Load(a.GroupId); ok {
+				logs[idx].GroupName = v.(objs.Asset).Name
+			} else {
+				logs[idx].GroupName = strconv.Itoa(a.GroupId)
+			}
+		}
+
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter

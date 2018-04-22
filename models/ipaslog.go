@@ -18,8 +18,9 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 	args := make([]interface{}, 0)
 	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
 
-	if member.Position <= objs.User {
-
+	if member.Position < objs.Administrator {
+		where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"
+		args = append(args, member.MemberId)
 	}
 
 	//if len(filter.Org) > 0 {

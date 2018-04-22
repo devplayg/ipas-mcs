@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // Multi-language
@@ -22,6 +23,7 @@ type langType struct {
 }
 
 var langTypes []*langType // Languages are supported.
+var assetMap sync.Map
 
 // 초기화
 func Initialize(processName string, encKey []byte, debug, verbose bool) {
@@ -43,7 +45,7 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 		os.Exit(1)
 	}
 
-	// 템블린 함수 추가
+	// 템블릿 함수 추가
 	if err := addExtraFunctions(); err != nil {
 		log.Error(err)
 		os.Exit(1)
@@ -54,6 +56,24 @@ func Initialize(processName string, encKey []byte, debug, verbose bool) {
 		log.Error(err)
 		os.Exit(1)
 	}
+
+	// 다국어 기능 초기화
+	if err := loadAssets(); err != nil {
+		log.Error(err)
+		os.Exit(1)
+	}
+}
+
+func loadAssets() error {
+	assets, err := models.GetAssetsByClass(RootId)
+	if err != nil {
+		return err
+	}
+	for _, a := range assets {
+		assetMap.Store(a.AssetId, a)
+	}
+
+	return nil
 }
 
 func initFramework() {
@@ -173,7 +193,7 @@ func initLogger(processName string, debug, verbose bool) {
 	// Set log level
 	if debug {
 		log.SetLevel(log.DebugLevel)
-		orm.Debug = true
+		orm.Debug = false
 	}
 
 	if verbose {

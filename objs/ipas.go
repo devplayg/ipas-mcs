@@ -28,7 +28,9 @@ type Ipas struct {
 type IpasLog struct {
 	Date      time.Time `json:"date"`
 	OrgId     int       `json:"org_id"`
+	OrgName   string    `json:"org_name"`
 	GroupId   int       `json:"group_id"`
+	GroupName string    `json:"group_name"`
 	EventType int       `json:"event_type"`
 	SessionId string    `json:"session_id"`
 	EquipId   string    `json:"equip_id"`

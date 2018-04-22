@@ -14,6 +14,7 @@ func GetAssetsByClass(class int) ([]objs.Asset, error) {
 	var assets []objs.Asset
 	var query string
 	var err error
+
 	if class > 0 {
 		query := `
             select  t.asset_id, class, parent_id, name, type1, type2, code,
