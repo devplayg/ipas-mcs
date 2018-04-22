@@ -24,8 +24,8 @@ func main() {
 	var (
 		version   = flags.Bool("version", false, "Version")            // 버전
 		setConfig = flags.Bool("config", false, "Edit configurations") // 환경설정
-		debug     = flags.Bool("debug", true, "Debug")                 // 디버그
-		verbose   = flags.Bool("v", true, "Verbose")                   // 로그를 STDOUT 으로 출력
+		debug     = flags.Bool("debug", false, "Debug")                 // 디버그
+		verbose   = flags.Bool("v", false, "Verbose")                   // 로그를 STDOUT 으로 출력
 	)
 	flags.Usage = printHelp // 도움말
 	flags.Parse(os.Args[1:])
@@ -42,7 +42,7 @@ func main() {
 	encKey := getEncryptionKey()
 	if *setConfig {
 		keys := "db.hostname, db.port, db.username, db.password, db.database"
-		secureconfig.SetConfig(processName+".enc", keys, encKey[:])
+		secureconfig.SetConfig("conf/config.enc", keys, encKey[:])
 		return
 	}
 
