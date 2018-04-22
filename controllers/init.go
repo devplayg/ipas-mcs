@@ -155,7 +155,7 @@ func initLocale() error {
 
 // 데이터베이스 초기화
 func initDatabase(processName string, encKey []byte) error {
-	conf, err := secureconfig.GetConfig(processName+".enc", encKey)
+	conf, err := secureconfig.GetConfig("conf/config.enc", encKey)
 	if err != nil {
 		return err
 	}
