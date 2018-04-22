@@ -15,12 +15,6 @@ type AssetController struct {
 }
 
 
-func (c *AssetController) CtrlPrepare() {
-	// 권한 부여
-	c.grant(objs.User)
-}
-
-
 func (c *AssetController) Get() {
 	//filter := c.getFilter()
 

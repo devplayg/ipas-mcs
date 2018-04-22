@@ -3,7 +3,6 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
@@ -74,7 +73,7 @@ func (c *baseController) Prepare() {
 			c.Ctx.Request.URL.String(),
 			c.Ctx.Input.IP(),
 		)
-		spew.Dump(c.Input()) // Input body
+		//spew.Dump(c.Input()) // Input body
 		//spew.Dump(c.Ctx.Request.Header)
 		//log.Debugf("Content-Type: %s", c.Ctx.Request.Header["Content-Type"])
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))

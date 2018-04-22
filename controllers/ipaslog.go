@@ -75,7 +75,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 		filter.Order = "desc"
 	}
 	if filter.Limit < 1 {
-		filter.Limit = 15
+		filter.Limit = 24
 	}
 
 	if filter.FastPaging == "" {

@@ -76,19 +76,18 @@
                     <thead>
                     <tr>
                         <th data-field="state" data-width="10" data-checkbox="true"></th>
-                        <th data-field="org_name" data-sortable="true">equip_id</th>
-                        <th data-field="group_name" data-sortable="true">equip_id</th>
+                        <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
+                        <th data-field="group_name" data-sortable="true">{{i18n .Lang "group"}}</th>
                         {{/*<th data-field="org_id" data-sortable="true">org_id</th>*/}}
-                        <th data-field="equip_id" data-sortable="true" data-formatter="ipasEquipIdFormatter">equip_id</th>
+                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "ipas.tag"}}</th>
                         {{/*<th data-field="group_id" data-sortable="true">group_id</th>*/}}
                         {{/*<th data-field="equip_type" data-sortable="true">equip_type</th>*/}}
-                        <th data-field="latitude" data-sortable="true">latitude</th>
-                        <th data-field="longitude" data-sortable="true">longitude</th>
-                        <th data-field="speed" data-sortable="true">speed</th>
-                        <th data-field="snr" data-sortable="true">snr</th>
-                        <th data-field="usim" data-sortable="true">usim</th>
-                        <th data-field="created" data-sortable="true" data-visible="false">created</th>
-                        <th data-field="updated" data-sortable="true">updated</th>
+                        <th data-field="latitude" data-sortable="true">{{i18n .Lang "latitude"}}</th>
+                        <th data-field="longitude" data-sortable="true">{{i18n .Lang "longitude"}}</th>
+                        <th data-field="speed" data-sortable="true">{{i18n .Lang "speed"}}</th>
+                        <th data-field="snr" data-sortable="true">SNR</th>
+                        <th data-field="usim" data-sortable="true">USIM</th>
+                        <th data-field="updated" data-sortable="true">{{i18n .Lang "received date"}}</th>
                     </tr>
                     </thead>
                 </table>
