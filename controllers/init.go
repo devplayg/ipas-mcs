@@ -204,11 +204,11 @@ func initLogger(processName string, debug, verbose bool) {
 	} else {
 		var logFile string
 		if debug {
-			logFile = filepath.Join(filepath.Dir(os.Args[0]), processName+"-debug.log")
+			logFile = filepath.Join(filepath.Dir(os.Args[0]), "logs", processName+"-debug.log")
 			os.Remove(logFile)
 
 		} else {
-			logFile = filepath.Join(filepath.Dir(os.Args[0]), processName+".log")
+			logFile = filepath.Join(filepath.Dir(os.Args[0]), "logs", processName+".log")
 		}
 
 		file, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
