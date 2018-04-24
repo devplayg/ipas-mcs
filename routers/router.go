@@ -25,21 +25,29 @@ func init() {
 
 	// 자산
 	beego.Router("/assets", &controllers.AssetController{})
-	beego.Router("/assetclass/:class:int/root/:assetId:int", &controllers.AssetController{}, "get:GetDescendantsWithRoot")
-	beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "Get:GetDescendants")
+	beego.Router("/assetclass/:class:int/root/:assetId:int", &controllers.AssetController{}, "get:GetChildrenWithRoot")
+	//beego.Router("/assets/:assetId:int/children", &controllers.AssetController{}, "Get:GetDescendants")
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Get:GetAsset")
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Patch:UpdateAsset")
 	beego.Router("/assets/delete", &controllers.AssetController{}, "Post:RemoveAsset")
+
+	// 사용자 자사잔
+
+	beego.Router("/userassetclass/:class/children", &controllers.UserassetController{}, "Get:GetChildren")
 
 	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Get:GetIpasInGroup")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
 
+
+	//
 	// users/me
 	// /ipaslist, /ipasorg/1/group/1
 	// ipasgroup
 	// Post, Delete, Patch, Get(html, json)
 	/*
+		userassetclass/1/type1/1
+
 		post /members
 		delete /members/1
 		patch / members/1

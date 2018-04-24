@@ -6,6 +6,7 @@ import (
 	"time"
 	log "github.com/sirupsen/logrus"
 	"strconv"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type IpaslogController struct {
@@ -23,8 +24,9 @@ func (c *IpaslogController) CtrlPrepare() {
 func (c *IpaslogController) Get() {
 	filter := c.getFilter()
 
+
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-		filter := c.getFilter()
+		spew.Dump(filter)
 		logs, total, err := models.GetIpaslog(filter, c.member)
 
 		// 기관/그룹코드를 이름과 맵핑

@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type CtrlPreparer interface {
@@ -73,7 +74,7 @@ func (c *baseController) Prepare() {
 			c.Ctx.Request.URL.String(),
 			c.Ctx.Input.IP(),
 		)
-		//spew.Dump(c.Input()) // Input body
+		spew.Dump(c.Input()) // Input body
 		//spew.Dump(c.Ctx.Request.Header)
 		//log.Debugf("Content-Type: %s", c.Ctx.Request.Header["Content-Type"])
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
