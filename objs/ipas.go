@@ -48,9 +48,11 @@ type IpasLog struct {
 type IpasFilter struct {
 	PagingFilter
 
-	OrgId     []int
-	GroupId   []int
-	EventType []int  `form:"event_type[]"`
+	OrgId     []int `form:"org_id"`
+	GroupId   []int `form:"group_id"`
+	//Orgs      []int  `form:"orgs"`
+	//Groups    []int  `form:"group"`
+	EventType []int  `form:"event_type"`
 	Contents  string `form:"contents"`
 	EquipId   string `form:"equip_id"`
 }

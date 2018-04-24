@@ -22,8 +22,8 @@
                     </div>
 
                     <!-- 자산 선택 -->
-                    {{/*<select id="select-orgs" name="orgs[]" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>*/}}
-                    {{/*<select id="select-groups" name="groups[]" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>*/}}
+                    <select id="select-orgs" name="org_id" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>
+                    <select id="select-groups" name="group_id" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>
 
                     <!-- Buttons -->
                     <button type="submit" class="btn blue"/>{{i18n .Lang "search"}}</button>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-sm-6 form-group ">
                                 <label class="control-label">{{i18n .Lang "event type"}}</label>
-                                <select name="event_type[]" class="selectpicker" data-width="100%" data-size="5" multiple title="{{i18n .Lang "event type"}}">
+                                <select name="event_type" class="selectpicker" data-width="100%" data-size="5" multiple title="{{i18n .Lang "event type"}}">
                                     <option value="1">{{i18n .Lang "ipas.start"}}</option>
                                     <option value="2">{{i18n .Lang "shock"}}</option>
                                     <option value="3">{{i18n .Lang "speeding"}}</option>
@@ -88,7 +88,7 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-<pre class="hide">
+<pre class="">
 startDate={{.filter.StartDate}}
 endDate={{.filter.EndDate}}
 equip_id={{.filter.EquipId}}
@@ -96,7 +96,9 @@ fastPaging={{.filter.FastPaging}}
 limit={{.filter.Limit}}
 sort={{.filter.Sort}}
 order={{.filter.Order}}
-{{range .filter.EventType}}&event_type[]={{.}}{{end}}
+{{range .filter.EventType}}&event_type={{.}}{{end}}
+{{range .filter.OrgId}}&org_id={{.}}{{end}}
+{{range .filter.GroupId}}&group_id={{.}}{{end}}
 {{.Lang}}
 </pre>
 
@@ -120,7 +122,7 @@ order={{.filter.Order}}
         {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
             data-side-pagination="client"
         {{else}} {* 일반 페이징 *}
-            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type[]={{.}}{{end}}"
+            data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
             data-pagination="true"
             data-side-pagination="server"
             data-pagination-loop="false"

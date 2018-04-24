@@ -67,7 +67,7 @@ $(function() {
 
     // 자산 (센서 / 그룹 / IP Pool)
     var assets = { };
-    $( "#select-folders, #select-ippools" ).selectpicker( "hide" );
+    $( "#select-groups" ).selectpicker( "hide" );
     initializeAssets();
 
     // // 악성가능성
@@ -118,11 +118,10 @@ $(function() {
 
 
 
-    // // 센서 선택
-    // $( "#select-sensors" ).change(function() {
-    //     updateSelectFolders();
-    //     updateSelectIppools();
-    // });
+    // 센서 선택
+    $( "#select-orgs" ).change(function() {
+        updateSelectGroups();
+    });
     //
     // // 그룹 선택
     // $( "#select-folders" ).change(function() {
@@ -228,21 +227,21 @@ $(function() {
         });
     }
 
-    // // 그룹 업데이트
-    // function updateSelectFolders() {
-    //     if ( $( "#select-sensors :selected" ).length > 0) {
-    //         $( "#select-folders" ).empty();
-    //         $( "#select-sensors :selected" ).map(function() {
-    //             var asset_id = $( this ).val();
-    //             $( "#select-folders" ).append( assets[ "1_" + asset_id ] );
-    //         });
-    //         $( "#select-folders" ).selectpicker( "refresh" ).selectpicker( "show" );
-    //     } else {
-    //         $( "#select-folders" ).empty().selectpicker( "hide" );
-    //         $( "#select-ippools" ).empty().selectpicker( "hide" );
-    //     }
-    // }
-    //
+    // 그룹 업데이트
+    function updateSelectGroups() {
+        console.log(3);
+        if ( $( "#select-orgs :selected" ).length > 0) {
+            $( "#select-groups" ).empty();
+            $( "#select-orgs :selected" ).map(function() {
+                var asset_id = $( this ).val();
+                $( "#select-groups" ).append( assets[ "1_" + asset_id ] );
+            });
+            $( "#select-groups" ).selectpicker( "refresh" ).selectpicker( "show" );
+        } else {
+            $( "#select-groups" ).empty().selectpicker( "hide" );
+        }
+    }
+
     // // IP Pool 업데이트
     // function updateSelectIppools() {
     //     if ( $( "#select-folders :selected" ).length > 0) {
@@ -267,94 +266,62 @@ $(function() {
     //
     // 자산 초기화
     function initializeAssets() {
-        //     $.ajax({
-        //         type  : "GET",
-        //         async : true,
-        //         url   : "?mod=asset&act=procGetAssets"
-        //     }).done( function( result ) {
-        //         if ( result.state ) {
-        //             // 센서
-        //             $.each( result.data, function( idx, sensor ) {
-        //                 $( "#select-sensors" ).append(
-        //                     $( "<option>", {
-        //                         value: sensor.asset_id,
-        //                         text: sensor.name
-        //                     })
-        //                 );
-        //
-        //                 var $optgroup_folder = $( "<optgroup>", {
-        //                     label: sensor.name
-        //                 });
-        //
-        //                 // 그룹
-        //                 $.each( sensor.children, function( i, folder ) {
-        //                     $optgroup_folder.append(
-        //                         $( "<option>", {
-        //                             value   :folder.asset_id,
-        //                             text    :folder.name
-        //                         })
-        //                     );
-        //
-        //                     var $optgroup_ippool = $( "<optgroup>", {
-        //                         label: folder.name
-        //                     });
-        //
-        //                     // IP Pool
-        //                     $.each( folder.children, function( i, ippool ) {
-        //                         $optgroup_ippool.append(
-        //                             $( "<option>", {
-        //                                 value   :ippool.asset_id,
-        //                                 text    :ippool.name
-        //                             })
-        //                         );
-        //                     });
-        //                     assets[ folder.asset_type + "_" + folder.asset_id ] = $optgroup_ippool;
-        //                 });
-        //                 assets[ sensor.asset_type + "_" + sensor.asset_id ] = $optgroup_folder;
-        //             });
-        //         } else {
-        //             var msg = 'Error';
-        //             if (result.state == __FAIL__) {
-        //                 if (result.db !== undefined) {
-        //                     msg = result.db.error;
-        //                 } else if (result.message !== undefined) {
-        //                     msg = result.message;
-        //                 }
-        //             }
-        //
-        //             swal({ title : msg, type  : "warning" });
-        //         }
-        //
-        //     }).always( function() {
-        //         // Selected sensors
-        //         if ( jsonvars.sensors !== undefined && jsonvars.sensors.length > 0 ) {
-        //             $( "#select-sensors" ).selectpicker( "val", jsonvars.sensors ).selectpicker( "refresh" );
-        //             updateSelectFolders();
-        //         } else {
-        //             $( "#select-sensors" ).selectpicker( "refresh" );
-        //         }
-        //
-        //         // Selected folders
-        //         if ( jsonvars.folders !== undefined && jsonvars.folders.length > 0 ) {
-        //             $( "#select-folders" ).selectpicker( "val", jsonvars.folders ).selectpicker( "refresh" );
-        //             updateSelectIppools();
-        //         }
-        //
-        //         // Selected ippools
-        //         if ( jsonvars.ippools !== undefined && jsonvars.ippools.length > 0 ) {
-        //             $( "#select-ippools" ).selectpicker( "val", jsonvars.ippools ).selectpicker( "refresh" );
-        //         }
-        //
-        //         // 빠른 페이징일 때는
-                if ( $( "#form-filter input[name='fastPaging']" ).is( ":checked" ) ) {
-                    movePage( 0, false ); // 첫 페이지 디스플레이
-                }
-        //     });
+        $.ajax({
+            type  : "GET",
+            async : true,
+            url   : "/userassetclass/1/children"
+        }).done( function( result ) {
+            // 센서
+            $.each( result, function( idx, org ) {
+                $( "#select-orgs" ).append(
+                    $( "<option>", {
+                        value: org.asset_id,
+                        text: org.name
+                    })
+                );
+
+                var $optgroup = $( "<optgroup>", {
+                    label: org.name
+                });
+
+                // 그룹
+                $.each( org.children, function( i, group ) {
+                    $optgroup.append(
+                        $( "<option>", {
+                            value   :group.asset_id,
+                            text    :group.name
+                        })
+                    );
+                });
+                assets[ org.type + "_" + org.asset_id ] = $optgroup;
+            });
+
+
+        }).always( function() {
+            // Selected orgs
+            if ( reqVars.org_id !== undefined && reqVars.org_id.length > 0 ) {
+                $( "#select-orgs" ).selectpicker( "val", reqVars.org_id ).selectpicker( "refresh" );
+                updateSelectGroups();
+
+            } else {
+                $( "#select-orgs" ).selectpicker( "refresh" );
+            }
+
+            // Selected folders
+            if ( reqVars.group_id !== undefined && reqVars.group_id.length > 0 ) {
+                $( "#select-groups" ).selectpicker( "val", reqVars.group_id ).selectpicker( "refresh" );
+            }
+
+            // 빠른 페이징일 때는
+            if ( $( "#form-filter input[name='fastPaging']" ).is( ":checked" ) ) {
+                movePage( 0, false ); // 첫 페이지 디스플레이
+            }
+        });
     }
 
     // 선택박스 초기설정
     function resetMultiSelctedBoxesOfFilter() {
-        var cols = "event_type[]";
+        var cols = "event_type";
         $.each(cols.split( "," ), function(i, c) {
             if ( reqVars[c] !== undefined ) {
                 $( "#form-filter select[name='" + c + "']" ).selectpicker( "val", reqVars[c] ).selectpicker( "refresh" );

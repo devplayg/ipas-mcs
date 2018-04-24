@@ -23,18 +23,17 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 		args = append(args, member.MemberId)
 	}
 
-	//if len(filter.Org) > 0 {
-	//	where += fmt.Sprintf(" and org in (%s)", libs.JoinInt(filter.Org, ","))
-	//}
-	//
+	if len(filter.OrgId) > 0 {
+		where += fmt.Sprintf(" and org_id in (%s)", libs.JoinInt(filter.OrgId, ","))
+	}
+
+	if len(filter.GroupId) > 0 {
+		where += fmt.Sprintf(" and group_id in (%s)", libs.JoinInt(filter.GroupId, ","))
+	}
+
 	if len(filter.EventType) > 0 {
 		where += fmt.Sprintf(" and event_type in (%s)", libs.JoinInt(filter.EventType, ","))
 	}
-	//
-	//if len(filter.Guid) > 0 {
-	//	where += " and guid like ?"
-	//	args = append(args, "%"+filter.Guid+"%")
-	//}
 
 	// 장비 ID
 	if len(filter.EquipId) > 0 {

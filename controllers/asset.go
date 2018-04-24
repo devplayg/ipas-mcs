@@ -67,7 +67,7 @@ func (c *AssetController) Post() {
 //}
 
 // 선택된 자산의 전체 하위노드 조회
-func (c *AssetController) GetDescendants() {
+func (c *AssetController) GetChildren() {
 
 	// 조회할 자산 그룹
 	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
@@ -84,7 +84,7 @@ func (c *AssetController) GetDescendants() {
 	c.ServeJSON()
 }
 
-func (c *AssetController) GetDescendantsWithRoot() {
+func (c *AssetController) GetChildrenWithRoot() {
 
 	// 조회할 자산 그룹
 	class, _ := strconv.Atoi(c.Ctx.Input.Param(":class"))
