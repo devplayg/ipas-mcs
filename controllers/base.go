@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
@@ -13,7 +14,6 @@ import (
 	"net/url"
 	"strings"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type CtrlPreparer interface {
@@ -30,8 +30,8 @@ type baseController struct {
 	isLogged         bool         // 로그인 상태
 	ctrlName         string       // Controller 이름
 	actName          string       // Action 이름
-	langMap map[string]string
-	log *log.Logger
+	langMap          map[string]string
+	log              *log.Logger
 }
 
 func (c *baseController) Prepare() {
@@ -241,8 +241,14 @@ func (c *baseController) addToFrontLang(str string) {
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {
+		spew.Dump(total)
+
 	if fastPaging == "on" {
-		c.Data["json"] = logs
+		if total > 0 {
+			c.Data["json"] = logs
+		} else {
+			c.Data["json"] = []int{}
+		}
 	} else {
 		dbResult := objs.NewDbResult()
 		if err == nil {

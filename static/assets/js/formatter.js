@@ -28,6 +28,15 @@ function dateFormatter( val, row, idx ) {
     return '<span class="">' + m.format("YYYY-MM-DD HH:mm:ss") + '</span>';
 }
 
+function shortDateFormatter( val, row, idx ) {
+    var m = moment( val ),
+        prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format("YYYY-MM-DD HH:mm:ss") + '">',
+        suffix = '</span>';
+    return prefix + m.format("HH:mm") + suffix;
+
+
+}
+
 function numberFormatter( val, row, idx ) {
     return val.toLocaleString();
 }

@@ -219,6 +219,21 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-list"></i>
+                                <span class="title">{{i18n .Lang "monitoring"}}</span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item">
+                                    <a href="/realtimelogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>
+                                </li>
+                            {{/*<li class="nav-item ">*/}}
+                            {{/*<a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>*/}}
+                            {{/*</li>*/}}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-list"></i>
                                 <span class="title">{{i18n .Lang "log"}}</span>
                                 <span class="arrow open"></span>
                             </a>
@@ -539,7 +554,8 @@
 
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
-            felang = {{.frontLang}}; // front-end languages
+
+            var felang = {{.frontLang}}; // front-end languages
 
             // Sidebar
             Layout.setSidebarMenuActiveLink("match");
@@ -547,7 +563,6 @@
 
         <!-- Javascript -->
         {{ block "javascript" . }}{{ end }}
-        {{template "ipasreport/ipasreport.tpl" .}}
     </body>
 </html>
 

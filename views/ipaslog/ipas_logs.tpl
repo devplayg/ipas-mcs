@@ -88,7 +88,7 @@
         </div> <!-- #modal-filter -->
     </form>
 </div>
-<pre class="">
+<pre class="hide">
 startDate={{.filter.StartDate}}
 endDate={{.filter.EndDate}}
 equip_id={{.filter.EquipId}}
@@ -96,9 +96,9 @@ fastPaging={{.filter.FastPaging}}
 limit={{.filter.Limit}}
 sort={{.filter.Sort}}
 order={{.filter.Order}}
-{{range .filter.EventType}}&event_type={{.}}{{end}}
-{{range .filter.OrgId}}&org_id={{.}}{{end}}
-{{range .filter.GroupId}}&group_id={{.}}{{end}}
+event_type={{range .filter.EventType}}{{.}}{{end}}
+org_id={{range .filter.OrgId}}{{.}}{{end}}
+group_id={{range .filter.GroupId}}{{.}}{{end}}
 {{.Lang}}
 </pre>
 
@@ -155,6 +155,7 @@ order={{.filter.Order}}
 {{end}}
 
 {{define "javascript"}}
-<script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
+{{template "ipasreport/ipasreport.tpl" .}}
+<script src="/static/modules/{{.ctrl}}/ipas_logs.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}

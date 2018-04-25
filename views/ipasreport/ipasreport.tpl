@@ -53,5 +53,5 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02bd20e484466c7e20db78ebe8ec3439"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{.daummap}}"></script>
 <script src="/static/modules/ipasreport/ipasreport.js" type="text/javascript"></script>
