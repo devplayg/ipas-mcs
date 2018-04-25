@@ -6,7 +6,7 @@ import (
 	"time"
 	log "github.com/sirupsen/logrus"
 	"strconv"
-	"github.com/davecgh/go-spew/spew"
+	"github.com/astaxie/beego"
 )
 
 type IpaslogController struct {
@@ -24,9 +24,7 @@ func (c *IpaslogController) CtrlPrepare() {
 func (c *IpaslogController) Get() {
 	filter := c.getFilter()
 
-
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-		spew.Dump(filter)
 		logs, total, err := models.GetIpaslog(filter, c.member)
 
 		// 기관/그룹코드를 이름과 맵핑
@@ -46,7 +44,8 @@ func (c *IpaslogController) Get() {
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter
-		c.setTpl("ipaslog.tpl")
+		c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
+		c.setTpl("ipas_logs.tpl")
 	}
 }
 
@@ -88,3 +87,36 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 }
 
 
+func (c *IpaslogController) DisplayRealTimeLogs() {
+	c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
+	c.setTpl("realtime_logs.tpl")
+}
+
+func (c *IpaslogController) GetRealTimeLogs() {
+	filter := c.getFilter()
+
+	// 필터 제거
+	t := time.Now()
+	filter.StartDate = t.Format("2006-01-02") + " 00:00"
+	filter.EndDate = t.Format("2006-01-02") + " 23:59"
+	filter.FastPaging = "on"
+	filter.Limit = 7
+
+	logs, total, err := models.GetIpaslog(filter, c.member)
+
+	// 기관/그룹코드를 이름과 맵핑
+	for idx, a := range logs {
+		if v, ok:= assetMap.Load(a.OrgId); ok {
+			logs[idx].OrgName = v.(objs.Asset).Name
+		} else {
+			logs[idx].OrgName = strconv.Itoa(a.OrgId)
+		}
+		if v, ok:= assetMap.Load(a.GroupId); ok {
+			logs[idx].GroupName = v.(objs.Asset).Name
+		} else {
+			logs[idx].GroupName = strconv.Itoa(a.GroupId)
+		}
+	}
+
+	c.serveResultJson(logs, total, err, filter.FastPaging)
+}
