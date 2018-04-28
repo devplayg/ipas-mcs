@@ -16,7 +16,7 @@
         <!-- Theme -->
         <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/components-rounded.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="/static/assets/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="/static/assets/css/layout.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
 
@@ -34,14 +34,13 @@
         {{/*<link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />*/}}
         <link href="/static/plugins/waitMe/waitMe.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/flag-icon-css/css/flag-icon.css" rel="stylesheet" type="text/css" />
-
         <link href="/static/assets/css/custom.css" rel="stylesheet" type="text/css" />
 
         {{ block "css" . }}{{ end }}
         <link rel="shortcut icon" href="favicon.ico" />
     </head>
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-container-bg-solid">
         <div class="page-header navbar navbar-fixed-top">
             <div class="page-header-inner ">
                 <div class="page-logo">
@@ -205,7 +204,7 @@
         <div class="page-container">
             <div class="page-sidebar-wrapper">
                 <div class="page-sidebar navbar-collapse collapse">
-                    <ul class="page-sidebar-menu page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                    <ul class="page-sidebar-menu page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="sidebar-toggler-wrapper hide">
                             <div class="sidebar-toggler">
                                 <span></span>
