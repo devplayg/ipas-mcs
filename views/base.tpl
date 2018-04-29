@@ -277,11 +277,11 @@
                     <div class="page-bar mb20">
                         <ul class="page-breadcrumb">
                             <li>
-                                <a href="index.html">{{i18n .Lang "menu.log"}}</a>
+                                <span class="menu-depth1-text">{{i18n .Lang "menu.log"}}</span>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>{{i18n .Lang "menu.ipas event"}}</span>
+                                <span class="menu-depth2-text">{{i18n .Lang "menu.ipas event"}}</span>
                             </li>
                         </ul>
                         <div class="page-toolbar">
@@ -550,14 +550,10 @@
                     "position": {{.member.Position}},
                 },
                 reqVars = {{.reqVars}};
-
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
 
             var felang = {{.frontLang}}; // front-end languages
-
-            // Sidebar
-            Layout.setSidebarMenuActiveLink("match");
         </script>
 
         <!-- Javascript -->
