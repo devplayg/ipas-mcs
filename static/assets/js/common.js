@@ -8,17 +8,17 @@ var IpasStatusStart = 1,
     IpasStatusSpeeding = 3,
     IpasStatusProximity = 4;
 
-$.ajaxSetup({cache:false});
+$.ajaxSetup({ cache:false });
 var ajax = $.ajax;
 $.extend({
     ajax: function(url, options) {
-        if (typeof url === 'object') {
+        if (typeof url === "object" ) {
             options = url;
             url = undefined;
         }
         options = options || {};
         url = options.url;
-        var xsrftoken = $('meta[name=_xsrf]').attr('content');
+        var xsrftoken = $( "meta[name=_xsrf]" ).attr( "content" );
         var headers = options.headers || {};
         var domain = document.domain.replace(/\./ig, '\\.');
         if (!/^(http:|https:).*/.test(url) || eval('/^(http:|https:)\\/\\/(.+\\.)*' + domain + '.*/').test(url)) {
@@ -52,19 +52,32 @@ $( ".lang-changed" ).click( function() {
     window.location.reload();
 });
 
-// Menu
-// var a = $('ul.page-sidebar-menu > li.active ').text();
-// var a = $('ul#page-sidebar-menu > li.selected').text();
-// var a = $('ul.page-sidebar-menu').find('li.active a').text();
-// var a = $('ul#sub-menu > li.active');
-// var a = $('ul.page-sidebar-menu.li.').find('li.active').length;
-// console.log(a);
-// console.log(4);
+// Sidebar
+Layout.setSidebarMenuActiveLink( "match" )
 
-// var el = $(this).closest('ul').closest('li');
-// var parent_el = $("a", el)[0];
-// var parent_text = $('.txt', parent_el).text();
-// $('.menu_depth1_text').text(parent_text);
+// Selected menu
+
+updateNavText();
+
+function updateNavText() {
+    var menu = $( ".page-sidebar-menu" ),
+        el = null,
+        url = location.pathname.toLowerCase();
+
+    menu.find("li > a").each(function() {
+        var path = $( this ).attr( "href" ).toLowerCase();
+        if (path.length > 1 && url.substr( 1, path.length - 1 ) == path.substr( 1 )) {
+            el = $( this );
+            return;
+        }
+    });
+    var parent = el.closest( "ul" ).parent().find( "a:first" ),
+        depth2 = $.trim( el.text() ),
+        depth1 = $.trim( parent.text() );
+
+    $( ".menu-depth1-text" ).text( depth1 );
+    $( ".menu-depth2-text" ).text( depth2 );
+}
 
 
 /**

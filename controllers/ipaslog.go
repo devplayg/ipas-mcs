@@ -100,7 +100,7 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	filter.StartDate = t.Format("2006-01-02") + " 00:00"
 	filter.EndDate = t.Format("2006-01-02") + " 23:59"
 	filter.FastPaging = "on"
-	filter.Limit = 7
+	filter.Limit = 10
 
 	logs, total, err := models.GetIpaslog(filter, c.member)
 

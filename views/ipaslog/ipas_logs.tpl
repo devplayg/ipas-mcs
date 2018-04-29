@@ -4,9 +4,6 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body pt0">
-<div class="note note-info">
-    <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, mattis consectetur purus sit amet eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-</div>
         <div id="toolbar-log">
             <form id="form-filter" role="form" method="post">
             {{ .xsrfdata }}
