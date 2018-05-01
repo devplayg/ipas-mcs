@@ -17,28 +17,30 @@
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
             <div class="portlet-body pt0 mh">
-                <div id="toolbar-event1">
-                    <h4 class="caption ">
-                        <i class="icon-power"></i>
-                        <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
-                        <span class="caption-helper"></span>
-                    </h4>
+                <div id="toolbar-event4">
+                    <div class="caption s16 bold">
+                        <i class="icon-size-actual"></i>
+                        <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.proximity event"}}</span>
+                        <span class="caption-helper s13 font-grey-salsa">
+                            {{if ne .Lang "en-us" }}Proximity events{{end}}
+                        </span>
+                    </div>
                 </div>
-                <table  id="table-event1"
+                <table  id="table-event4"
+                        data-toolbar="#toolbar-event4"
                         class="table-data table-condensed"
-                        data-toolbar="#toolbar-event1"
                         data-toggle="table"
                         data-show-refresh="true"
                         data-show-columns="true"
                         {*Row강조*}
-                        data-row-style="rowStyle"
+
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=1"
+                        data-url="/getRealTimeLogs?event_type=4"
                 >
                     <thead>
                     <tr>
@@ -47,6 +49,7 @@
                         <th data-field="group_name" data-sortable="true" data-visible="false">{{i18n .Lang "group"}}</th>
                         <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
                         <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
+                        <th data-field="distance" data-sortable="true" data-formatter="ipaslogDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
                         <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
                         <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>
                         <th data-field="longitude" data-sortable="true" data-visible="false">{{i18n .Lang "longitude"}}</th>
@@ -63,11 +66,13 @@
         <div class="portlet light bordered pt0">
             <div class="portlet-body pt0 mh">
                 <div id="toolbar-event2">
-                    <h4 class="caption ">
-                        <i class="fa fa-bolt"></i>
+                    <div class="caption s16 bold">
+                        <i class="icon-size-actual"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.shock event"}}</span>
-                        <span class="caption-helper"></span>
-                    </h4>
+                        <span class="caption-helper s13 font-grey-salsa">
+                        {{if ne .Lang "en-us" }}Shock events{{end}}
+                        </span>
+                    </div>
                 </div>
                 <table  id="table-event2"
                         data-toolbar="#toolbar-event2"
@@ -110,11 +115,13 @@
         <div class="portlet light bordered pt0">
             <div class="portlet-body pt0 mh">
                 <div id="toolbar-event3">
-                    <h4 class="caption ">
-                        <i class="icon-speedometer"></i>
+                    <div class="caption s16 bold">
+                        <i class="icon-size-actual"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.speeding event"}}</span>
-                        <span class="caption-helper"></span>
-                    </h4>
+                        <span class="caption-helper s13 font-grey-salsa">
+                        {{if ne .Lang "en-us" }}Shock events{{end}}
+                        </span>
+                    </div>
                 </div>
                 <table  id="table-event3"
                         class="table-data table-condensed"
@@ -155,28 +162,30 @@
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
             <div class="portlet-body pt0 mh">
-                <div id="toolbar-event4">
-                    <h4 class="caption ">
+                <div id="toolbar-event1">
+                    <div class="caption s16 bold">
                         <i class="icon-size-actual"></i>
-                        <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.proximity event"}}</span>
-                        <span class="caption-helper"></span>
-                    </h4>
+                        <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
+                        <span class="caption-helper s13 font-grey-salsa">
+                        {{if ne .Lang "en-us" }}Startup events{{end}}
+                        </span>
+                    </div>
                 </div>
-                <table  id="table-event4"
-                        data-toolbar="#toolbar-event4"
+                <table  id="table-event1"
                         class="table-data table-condensed"
+                        data-toolbar="#toolbar-event1"
                         data-toggle="table"
                         data-show-refresh="true"
                         data-show-columns="true"
                         {*Row강조*}
-
+                        data-row-style="rowStyle"
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=4"
+                        data-url="/getRealTimeLogs?event_type=1"
                 >
                     <thead>
                     <tr>
@@ -185,7 +194,6 @@
                         <th data-field="group_name" data-sortable="true" data-visible="false">{{i18n .Lang "group"}}</th>
                         <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
                         <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
-                        <th data-field="distance" data-sortable="true" data-formatter="ipaslogDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
                         <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
                         <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>
                         <th data-field="longitude" data-sortable="true" data-visible="false">{{i18n .Lang "longitude"}}</th>
