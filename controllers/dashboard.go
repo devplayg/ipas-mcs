@@ -14,10 +14,7 @@ func (c *DashboardController) CtrlPrepare() {
 	c.grant(objs.User)
 }
 
-func (c *DashboardController) diplay() {
-	// 추가 언어 키워드
-	c.addToFrontLang("ipas.start,shock,speeding,proximity")
-
+func (c *DashboardController) Display() {
 	// 권한 부여
 	c.setTpl("dashboard.tpl")
 }
