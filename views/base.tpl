@@ -218,7 +218,7 @@
 
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-list"></i>
+                                <i class="icon-grid"></i>
                                 <span class="title">{{i18n .Lang "dashboard"}}</span>
                                 <span class="arrow open"></span>
                             </a>

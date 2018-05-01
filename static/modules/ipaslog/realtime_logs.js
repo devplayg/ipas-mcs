@@ -4,7 +4,7 @@ $(function() {
      * 1. 초기화
      *
      */
-    var refreshInterval = 2 * 1000, // 새로고침 주기
+    var refreshInterval = 7 * 1000, // 새로고침 주기
         extraQuery = '';
 
     // 테이블 컬럼속성 복원
