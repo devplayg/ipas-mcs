@@ -65,7 +65,7 @@ $(function() {
     // 테이블 컬럼속성 복원
     restoreTableColumns( $table, tableKey );
 
-    // 자산 (센서 / 그룹 / IP Pool)
+    // 자산 (기관 / 그룹)
     var assets = { };
     $( "#select-groups" ).selectpicker( "hide" );
     initializeAssets();
@@ -118,7 +118,7 @@ $(function() {
 
 
 
-    // 센서 선택
+    // 기관 선택
     $( "#select-orgs" ).change(function() {
         updateSelectGroups();
     });
@@ -229,7 +229,6 @@ $(function() {
 
     // 그룹 업데이트
     function updateSelectGroups() {
-        console.log(3);
         if ( $( "#select-orgs :selected" ).length > 0) {
             $( "#select-groups" ).empty();
             $( "#select-orgs :selected" ).map(function() {
@@ -271,7 +270,7 @@ $(function() {
             async : true,
             url   : "/userassetclass/1/children"
         }).done( function( result ) {
-            // 센서
+            // 기관
             $.each( result, function( idx, org ) {
                 $( "#select-orgs" ).append(
                     $( "<option>", {

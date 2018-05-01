@@ -1,16 +1,25 @@
 {{template "base.tpl" .}}
+{{define "css"}}
+<link href="/static/modules/{{.ctrl}}/realtime_logs.css" rel="stylesheet" type="text/css" />
+{{end}}
 
 {{define "contents"}}
-
-
+<div class="portlet light bordered mb10 pb8 pt8">
+    <!-- 자산 선택 -->
+    <select id="select-orgs" name="org_id" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>
+    <select id="select-groups" name="group_id" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>
+    <button class="btn blue btn-apply">{{i18n .Lang "apply"}}</button>
+    <a href="" class="btn default btn-action">{{i18n .Lang "cancel"}}</a>
+    <span class="text-applied font-red hide ml10">적용됨</span>
+</div>
 
 <div class="row">
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
-            <div class="portlet-body pt0">
+            <div class="portlet-body pt0 mh">
                 <div id="toolbar-event1">
                     <h4 class="caption ">
-                        <i class="icon-speech"></i>
+                        <i class="icon-power"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
                         <span class="caption-helper"></span>
                     </h4>
@@ -52,10 +61,10 @@
 
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
-            <div class="portlet-body pt0">
+            <div class="portlet-body pt0 mh">
                 <div id="toolbar-event2">
                     <h4 class="caption ">
-                        <i class="icon-speech"></i>
+                        <i class="fa fa-bolt"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.shock event"}}</span>
                         <span class="caption-helper"></span>
                     </h4>
@@ -99,10 +108,10 @@
 <div class="row">
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
-            <div class="portlet-body pt0">
+            <div class="portlet-body pt0 mh">
                 <div id="toolbar-event3">
                     <h4 class="caption ">
-                        <i class="icon-speech"></i>
+                        <i class="icon-speedometer"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.speeding event"}}</span>
                         <span class="caption-helper"></span>
                     </h4>
@@ -145,10 +154,10 @@
 
     <div class="col-md-6">
         <div class="portlet light bordered pt0">
-            <div class="portlet-body pt0">
+            <div class="portlet-body pt0 mh">
                 <div id="toolbar-event4">
                     <h4 class="caption ">
-                        <i class="icon-speech"></i>
+                        <i class="icon-size-actual"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.proximity event"}}</span>
                         <span class="caption-helper"></span>
                     </h4>

@@ -8,10 +8,11 @@ import (
 func init() {
 
 	// 대시보드
+	beego.Router(`/dashboard`, &controllers.DashboardController{}, "get:Display")
 
 	// IPAS 로그
 	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
-	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get:DisplayRealTimeLogs")
+	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get,post:DisplayRealTimeLogs")
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
 
 	// Sample
@@ -34,7 +35,6 @@ func init() {
 	beego.Router("/assets/delete", &controllers.AssetController{}, "Post:RemoveAsset")
 
 	// 사용자 자사잔
-
 	beego.Router("/userassetclass/:class/children", &controllers.UserassetController{}, "Get:GetChildren")
 
 	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
