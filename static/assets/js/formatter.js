@@ -42,7 +42,7 @@ function numberFormatter( val, row, idx ) {
 }
 
 
-function ipasEquipIdFormatter(val, row, idx) {
+function ipasEquipIdFormatter( val, row, idx ) {
     var header = '',
         body = '',
         footer = '';
@@ -50,4 +50,11 @@ function ipasEquipIdFormatter(val, row, idx) {
     header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
     body += getIpasTag( row.equip_id );
     return header + body + footer;
+}
+
+function groupNameFormatter( val, row, idx ) {
+    if ( row.group_id == 0 ) {
+        return;
+    }
+    return val;
 }
