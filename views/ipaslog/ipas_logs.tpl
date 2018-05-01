@@ -122,7 +122,7 @@
             <tr>
                 <th data-field="date" data-sortable="true" data-formatter="dateFormatter">{{i18n .Lang "occurrence date"}}</th>
                 <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
-                <th data-field="group_name" data-sortable="true">{{i18n .Lang "group"}}</th>
+                <th data-field="group_name" data-sortable="true" data-formatter="groupNameFormatter">{{i18n .Lang "group"}}</th>
                 <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
                 <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
                 <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>

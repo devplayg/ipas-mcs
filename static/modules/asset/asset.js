@@ -358,6 +358,7 @@ $(function() {
 
         $ipasTable.bootstrapTable( "removeAll" );
         updateTableButtons( $ipasTable );
+        $ipasTable.bootstrapTable('selectPage', 1);
         $ipasTable.bootstrapTable( "refresh", { url: url });
     }
 
