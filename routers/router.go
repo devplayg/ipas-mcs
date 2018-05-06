@@ -34,29 +34,14 @@ func init() {
 	beego.Router("/assets/:assetId:int", &controllers.AssetController{}, "Patch:UpdateAsset")
 	beego.Router("/assets/delete", &controllers.AssetController{}, "Post:RemoveAsset")
 
-	// 사용자 자사잔
+	// 사용자 자산
 	beego.Router("/userassetclass/:class/children", &controllers.UserassetController{}, "Get:GetChildren")
-
 	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Get:GetIpasInGroup")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
 
-
-	//
-	// users/me
-	// /ipaslist, /ipasorg/1/group/1
-	// ipasgroup
-	// Post, Delete, Patch, Get(html, json)
-	/*
-		userassetclass/1/type1/1
-
-		post /members
-		delete /members/1
-		patch / members/1
-		delete /members/1
-	 */
-
-	// 제어
+	// 통계
+	beego.Router("/stats/:statsType/by/:assetType", &controllers.StatsController{}, "Get:GetStats")
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})

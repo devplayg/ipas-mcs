@@ -5,48 +5,51 @@
 {{end}}
 
 {{define "contents"}}
-    <div id="toolbar-member">
-        <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
-        <button type="button" class="btn red btn-member-remove">Delete</button>
+    <div class="portlet light bordered pt0">
+        <div class="portlet-body">
+            <div id="toolbar-member">
+                <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn red btn-member-remove">Delete</button>
+            </div>
+
+            <table  id="table-member"
+                    class="table-condensed"
+                    data-toggle="table"
+                    data-toolbar="#toolbar-member"
+                    data-show-refresh="true"
+                    data-show-columns="true"
+                    data-row-style="scoreRowStyle"
+                    {* 내보내기 *}
+                    data-show-export="true"
+                    data-export-types="['csv', 'excel']"
+                    {* 페이지 크기*}
+                    data-page-size="10"
+                    {* 정렬 *}
+                    data-sort-name="username"
+                    data-sort-order="desc"
+                    {* 일반 페이징 *}
+                    data-url="/members"
+                    data-pagination="true"
+                    data-side-pagination="server"
+                    data-pagination-loop="false"
+            >
+                <thead>
+                <tr>
+                    <th data-field="command" data-formatter="memberCommandFormatter" data-events="memberActionEvents" data-sortable="true">{{i18n .Lang "command"}}</th>
+                    <th data-field="member_id" data-visible="false" data-sortable="true">ID</th>
+                    <th data-field="username" data-sortable="true">{{i18n .Lang "username"}}</th>
+                    <th data-field="name" data-sortable="true">{{i18n .Lang "name"}}</th>
+                    <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">{{i18n .Lang "priviledge"}}</th>
+                    <th data-field="failed_login_count" data-sortable="true" data-formatter="memberFailedLoginCount">{{i18n .Lang "login failure"}}</th>
+                    <th data-field="last_success_login" data-sortable="true" data-visible="false">{{i18n .Lang "last login"}}</th>
+                    <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">{{i18n .Lang "allowed ip"}}</th>
+                    <th data-field="timezone" data-sortable="true" data-visible="false">{{i18n .Lang "timezone"}}</th>
+                    <th data-field="asset_summary" data-sortable="true" data-formatter="memberAssetSummaryFormatter">ACL</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
-
-    <table  id="table-member"
-            class="table-condensed"
-            data-toggle="table"
-            data-toolbar="#toolbar-member"
-            data-show-refresh="true"
-            data-show-columns="true"
-            data-row-style="scoreRowStyle"
-            {* 내보내기 *}
-            data-show-export="true"
-            data-export-types="['csv', 'excel']"
-            {* 페이지 크기*}
-            data-page-size="10"
-            {* 정렬 *}
-            data-sort-name="username"
-            data-sort-order="desc"
-            {* 일반 페이징 *}
-            data-url="/members"
-            data-pagination="true"
-            data-side-pagination="server"
-            data-pagination-loop="false"
-    >
-        <thead>
-        <tr>
-            <th data-field="command" data-formatter="memberCommandFormatter" data-events="memberActionEvents" data-sortable="true">{{i18n .Lang "command"}}</th>
-            <th data-field="member_id" data-visible="false" data-sortable="true">ID</th>
-            <th data-field="username" data-sortable="true">{{i18n .Lang "username"}}</th>
-            <th data-field="name" data-sortable="true">{{i18n .Lang "name"}}</th>
-            <th data-field="position" data-sortable="true" data-formatter="memberPositionFormatter">{{i18n .Lang "priviledge"}}</th>
-            <th data-field="failed_login_count" data-sortable="true" data-formatter="memberFailedLoginCount">{{i18n .Lang "login failure"}}</th>
-            <th data-field="last_success_login" data-sortable="true" data-visible="false">{{i18n .Lang "last login"}}</th>
-            <th data-field="allowed_ip" data-formatter="memberAllowedIpFormatter" data-sortable="true">{{i18n .Lang "allowed ip"}}</th>
-            <th data-field="timezone" data-sortable="true" data-visible="false">{{i18n .Lang "timezone"}}</th>
-            <th data-field="asset_summary" data-sortable="true" data-formatter="memberAssetSummaryFormatter">ACL</th>
-        </tr>
-        </thead>
-    </table>
-
 
     <div class="modal modal-member fade" id="modal-member-add" tabindex="-1" role="basic" aria-hidden="true">
         <div class="modal-dialog">
