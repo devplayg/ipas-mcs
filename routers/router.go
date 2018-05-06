@@ -41,7 +41,8 @@ func init() {
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
 
 	// 통계
-	beego.Router("/stats/:statsType/by/:assetType", &controllers.StatsController{}, "Get:GetStats")
+	beego.Router("/stats/:statsType/by/group", &controllers.StatsController{}, "Get:GetOrgGroupStats")
+	beego.Router("/stats/:statsType/by/:assetType", &controllers.StatsController{}, "Get:GetEquipStats")
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})
