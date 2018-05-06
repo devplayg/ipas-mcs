@@ -3,7 +3,6 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
@@ -74,7 +73,7 @@ func (c *baseController) Prepare() {
 			c.Ctx.Request.URL.String(),
 			c.Ctx.Input.IP(),
 		)
-		spew.Dump(c.Input()) // Input body
+		//spew.Dump(c.Input()) // Input body
 		//spew.Dump(c.Ctx.Request.Header)
 		//log.Debugf("Content-Type: %s", c.Ctx.Request.Header["Content-Type"])
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
@@ -241,8 +240,6 @@ func (c *baseController) addToFrontLang(str string) {
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {
-		spew.Dump(total)
-
 	if fastPaging == "on" {
 		if total > 0 {
 			c.Data["json"] = logs

@@ -4,7 +4,6 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/devplayg/ipas-mcs/models"
 	"strconv"
-	"github.com/davecgh/go-spew/spew"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
@@ -15,7 +14,6 @@ type IpaslistController struct {
 
 func (c *IpaslistController) GetIpasInOrg() {
 	filter := c.getFilter()
-	spew.Dump(filter)
 	logs, total, err := models.GetIpaslist(filter)
 	//if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 	//	//filter := c.getFilter()
@@ -29,7 +27,6 @@ func (c *IpaslistController) GetIpasInOrg() {
 
 func (c *IpaslistController) GetIpasInGroup() {
 	filter := c.getFilter()
-	spew.Dump(filter)
 	logs, total, err := models.GetIpaslist(filter)
 	//if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 	//	//filter := c.getFilter()
@@ -57,7 +54,6 @@ func (c *IpaslistController) getFilter() *objs.IpasFilter {
 	if groupId > 0 {
 		filter.GroupId = append(filter.GroupId, groupId)
 	}
-	spew.Dump(filter)
 	//logrus.Debug(assetId)
 
 	// 페이징 처리
@@ -100,7 +96,6 @@ func (c *IpaslistController) UpdateIpasGroup() {
 			EquipId: arr[1],
 		})
 	}
-	//spew.Dump(list)
 
 	dbResult := objs.NewDbResult()
 	rs, err := models.UpdateIpasGroup(groupId, list)

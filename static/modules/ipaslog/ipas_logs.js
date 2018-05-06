@@ -213,7 +213,6 @@ $(function() {
 
     // 필터 상태
     function updateFilterStatus() {
-
         var fields = $( "#form-filter :input" )
             .not( "input[type='hidden'], [name='startDate'], [name='endDate'], [name='fastPaging'], [name='limit']" ) // 제외할 항목
             .serializeArray();
@@ -262,7 +261,7 @@ $(function() {
     //     $( ".score_min" ).text( min );
     //     $( ".score_max" ).text( max );
     // }
-    //
+
     // 자산 초기화
     function initializeAssets() {
         $.ajax({

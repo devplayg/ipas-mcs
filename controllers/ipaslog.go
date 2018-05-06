@@ -44,7 +44,7 @@ func (c *IpaslogController) Get() {
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter
-		c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
+		c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
 		c.setTpl("ipas_logs.tpl")
 	}
 }
@@ -100,7 +100,7 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	filter.StartDate = t.Format("2006-01-02") + " 00:00"
 	filter.EndDate = t.Format("2006-01-02") + " 23:59"
 	filter.FastPaging = "on"
-	filter.Limit = 10
+	filter.Limit = 9
 
 	logs, total, err := models.GetIpaslog(filter, c.member)
 

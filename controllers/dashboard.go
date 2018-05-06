@@ -1,6 +1,9 @@
 package controllers
 
-import "github.com/devplayg/ipas-mcs/objs"
+import (
+	"github.com/devplayg/ipas-mcs/objs"
+	"github.com/astaxie/beego"
+)
 
 type DashboardController struct {
 	baseController
@@ -15,6 +18,8 @@ func (c *DashboardController) CtrlPrepare() {
 }
 
 func (c *DashboardController) Display() {
+	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
+
 	// 권한 부여
 	c.setTpl("dashboard.tpl")
 }

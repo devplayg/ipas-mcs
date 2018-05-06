@@ -67,7 +67,7 @@
             <div class="portlet-body pt0 mh">
                 <div id="toolbar-event2">
                     <div class="caption s16 bold">
-                        <i class="icon-size-actual"></i>
+                        <i class="fa fa-bolt"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.shock event"}}</span>
                         <span class="caption-helper s13 font-grey-salsa">
                         {{if ne .Lang "en-us" }}Shock events{{end}}
@@ -116,7 +116,7 @@
             <div class="portlet-body pt0 mh">
                 <div id="toolbar-event3">
                     <div class="caption s16 bold">
-                        <i class="icon-size-actual"></i>
+                        <i class="icon-speedometer"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.speeding event"}}</span>
                         <span class="caption-helper s13 font-grey-salsa">
                         {{if ne .Lang "en-us" }}Shock events{{end}}
@@ -164,7 +164,7 @@
             <div class="portlet-body pt0 mh">
                 <div id="toolbar-event1">
                     <div class="caption s16 bold">
-                        <i class="icon-size-actual"></i>
+                        <i class="icon-power"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
                         <span class="caption-helper s13 font-grey-salsa">
                         {{if ne .Lang "en-us" }}Startup events{{end}}
