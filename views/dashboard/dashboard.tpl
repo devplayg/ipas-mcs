@@ -5,9 +5,11 @@
 {{end}}
 
 {{define "contents"}}
-<div class="portlet light bordered pt0">
-    <div class="portlet-body pt0 mh">
-        <select id="select-orgs" name="org_id" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>
+<div class="portlet light bordered pt0 pb10">
+    <div class="portlet-body">
+        <select id="select-assets" name="org_id" class="selectpicker" data-size="10" data-selected-text-format="count > 2">
+            <option value="0/-1">{{i18n .Lang "select all"}}</option>
+        </select>
     </div>
 </div>
 
@@ -27,7 +29,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt1/by/group">
+                       data-query="/stats/evt1/by/group">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -54,7 +56,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt2/by/group">
+                       data-query="/stats/evt2/by/group">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -81,7 +83,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt3/by/group">
+                       data-query="/stats/evt3/by/group">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -108,7 +110,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt4/by/group">
+                       data-query="/stats/evt4/by/group">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -140,7 +142,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt1/by/equip">
+                       data-query="/stats/evt1/by/equip">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -167,7 +169,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt2/by/equip">
+                       data-query="/stats/evt2/by/equip">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -194,7 +196,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt3/by/equip">
+                       data-query="/stats/evt3/by/equip">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
@@ -221,7 +223,7 @@
                        data-toggle="table"
                        data-cache="false"
                        data-show-header="false"
-                       data-url="/stats/evt4/by/equip">
+                       data-query="/stats/evt4/by/equip">
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="25%" data-formatter="rankFormatter"></th>
