@@ -2,3 +2,7 @@
     min-height: 250px !important;
     border: 1px solid red;
 }
+
+.bootstrap-table .table  {
+     border-bottom: 0px solid #ddd !important;
+}

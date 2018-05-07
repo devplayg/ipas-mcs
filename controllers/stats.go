@@ -6,16 +6,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"strconv"
 	"strings"
-	"time"
+	"github.com/davecgh/go-spew/spew"
 )
 
-//http://127.0.0.1/stats/evt1/by/equip/org/-1/group/-1
-//http://127.0.0.1/stats/evt1/by/equip/org/1/group/-1
-//http://127.0.0.1/stats/evt1/by/equip/org/1/group/7
-//
-//http://127.0.0.1/stats/evt1/by/group/org/-1/group/-1
-//http://127.0.0.1/stats/evt1/by/group/org/1/group/-1
-//http://127.0.0.1/stats/evt1/by/group/org/1/group/7
 
 type StatsController struct {
 	baseController
@@ -36,15 +29,15 @@ func (c *StatsController) getFilter() (int, int, map[string]interface{}) {
 	orgId, _ := strconv.Atoi(c.Ctx.Input.Param(":orgId"))
 	groupId, _ := strconv.Atoi(c.Ctx.Input.Param(":groupId"))
 
-	// 날짜 설정
-	t := time.Now()
-	if len(c.GetString("from")) > 0 || len(c.GetString("to")) > 0 {
-		filter["from"] = c.GetString("from") + " 00:00:00"
-		filter["to"] = c.GetString("to") + " 23:59:59"
-	} else {
-		filter["from"] = t.Format("2006-01-02") + " 00:00:00"
-		filter["to"] = t.Format("2006-01-02") + " 23:59:59"
-	}
+	//// 날짜 설정
+	//t := time.Now()
+	//if len(c.GetString("from")) > 0 || len(c.GetString("to")) > 0 {
+	//	filter["from"] = c.GetString("from") + " 00:00:00"
+	//	filter["to"] = c.GetString("to") + " 23:59:59"
+	//} else {
+	//	filter["from"] = t.Format("2006-01-02") + " 00:00:00"
+	//	filter["to"] = t.Format("2006-01-02") + " 23:59:59"
+	//}
 
 	// Top
 	top, err := c.GetInt("top")
@@ -56,10 +49,17 @@ func (c *StatsController) getFilter() (int, int, map[string]interface{}) {
 	return orgId, groupId, filter
 }
 
-func (c *StatsController) GetStats() {
-	orgId, groupId, filter := c.getFilter()
+func (c *StatsController) GetStatsBy() {
+	//http://127.0.0.1/stats/evt1/by/equip/org/-1/group/-1
+	//http://127.0.0.1/stats/evt1/by/equip/org/1/group/-1
+	//http://127.0.0.1/stats/evt1/by/equip/org/1/group/7
 
-	rows, _, err := models.GetStats(c.member, orgId, groupId, filter)
+	//http://127.0.0.1/stats/evt1/by/group/org/-1/group/-1
+	//http://127.0.0.1/stats/evt1/by/group/org/1/group/-1
+	//http://127.0.0.1/stats/evt1/by/group/org/1/group/7
+
+	orgId, groupId, filter := c.getFilter()
+	rows, _, err := models.GetStatsBy(c.member, orgId, groupId, filter)
 	if err != nil {
 		log.Error(err)
 	}
@@ -94,6 +94,60 @@ func (c *StatsController) updateItemText(rows []objs.Stats, assetType string) {
 			rows[i].ItemText += " / " + asset[1]
 		}
 	}
+}
+
+func (c *StatsController) GetStats() {
+	orgId, groupId, filter := c.getFilter()
+	rows, _, err := models.GetStats(c.member, orgId, groupId, filter)
+	if err != nil {
+		log.Error(err)
+	}
+
+	if rows == nil {
+		c.Data["json"] = []int{}
+	} else {
+		c.Data["json"] = rows
+	}
+	c.ServeJSON()
+}
+
+func (c *StatsController) GetSummary() {
+
+	orgId, groupId, filter := c.getFilter()
+	//filter["statsType"] = "evt"
+	//rows, _, err := models.GetStats(c.member, orgId, groupId, filter)
+	//if err != nil {
+	//	log.Error(err)
+	//}
+
+	//if rows == nil {
+	//	c.Data["json"] = []int{}
+	//} else {
+		c.Data["json"] = map[string]interface{} {
+			"eventType": c.getEventTypes(orgId, groupId, filter),
+		}
+	//}
+	c.ServeJSON()
+}
+
+func (c *StatsController) getEventTypes(orgId, groupId int, filter map[string]interface{}) map[int]int {
+	eventTypes := map[int]int {
+		1: 0,
+		2: 0,
+		3: 0,
+		4: 0,
+	}
+	filter["statsType"] = "evt"
+	rows, _, err := models.GetStats(c.member, orgId, groupId, filter)
+	spew.Dump(rows)
+	if err != nil {
+		log.Error(err)
+	}
+	for _, r := range rows {
+		eType, _ := strconv.Atoi(r.Item)
+		eventTypes[eType] += r.Count
+	}
+	return eventTypes
 }
 
 //

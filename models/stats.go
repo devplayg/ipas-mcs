@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GetStats(member *objs.Member, orgId, groupId int, p map[string]interface{}) ([]objs.Stats, int64, error) {
+func GetStatsBy(member *objs.Member, orgId, groupId int, p map[string]interface{}) ([]objs.Stats, int64, error) {
 	var where string
 	var args []interface{}
 	args = append(args, "stats", "last_updated")
@@ -47,6 +47,56 @@ func GetStats(member *objs.Member, orgId, groupId int, p map[string]interface{})
 	`
 	// where date >= ? and date <= ? and asset_id = ? %s
 	query = fmt.Sprintf(query, p["statsType"], p["assetType"], where)
+	args = append(args, p["top"])
+	var rows []objs.Stats
+	o := orm.NewOrm()
+	total, err := o.Raw(query, args).QueryRows(&rows)
+	if err != nil {
+		log.Error(err)
+	}
+	return rows, total, err
+}
+
+func GetStats(member *objs.Member, orgId, groupId int, p map[string]interface{}) ([]objs.Stats, int64, error) {
+	var where string
+	var args []interface{}
+	args = append(args, "stats", "last_updated")
+
+	if orgId < 1 { // 전체 자산통계 데이터 요청 시(org id가 -1인 경우. 참고: 0인 경우는 없음)
+		if member.Position >= objs.Administrator { // 관리자 세션이면 전체통계(asset_id=-1)에 대한 접근 가능
+			p["assetId"] = -1
+		} else { // 일반사용자 세션이면, 허용된 통계데이터에만 접근 가능
+			p["assetId"] = member.MemberId * -1
+		}
+		args = append(args, p["assetId"])
+	} else { // 부분 자산통계 데이터 접근 시
+		if groupId < 0 {
+			if member.Position >= objs.Administrator {
+				args = append(args, orgId)
+			} else {
+				// 일반 사용자는 기관 전체에 대한 통계데이터 접근 불가.
+				// 개발 그룹에 대한 통계데이터는 접근 가능
+				return nil, 0, nil
+			}
+		} else {
+			if member.Position >= objs.Administrator {
+				args = append(args, groupId)
+			} else {
+				where += " and asset_id in (select asset_id from mbr_asset where member_id = ?)"
+				args = append(args, groupId, member.MemberId)
+			}
+		}
+	}
+
+	query := `
+		select date, asset_id, item, count, rank
+		from stats_%s
+		where date = (select value_s from sys_config where section = ? and keyword = ?) and asset_id = ? %s
+		order by rank asc
+		limit ?
+	`
+	// where date >= ? and date <= ? and asset_id = ? %s
+	query = fmt.Sprintf(query, p["statsType"], where)
 	args = append(args, p["top"])
 	var rows []objs.Stats
 	o := orm.NewOrm()
