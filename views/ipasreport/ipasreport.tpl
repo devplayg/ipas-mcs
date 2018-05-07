@@ -34,7 +34,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Map
+                <h4 class="modal-title">{{i18n .Lang "location"}}
                     <span class="pull-right">
                         <i class="fa fa-map-marker font-gallery"></i>
                         <span class="latitude"></span>,

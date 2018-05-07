@@ -49,7 +49,7 @@ func (c *StatsController) getFilter() (int, int, map[string]interface{}) {
 	// Top
 	top, err := c.GetInt("top")
 	if err != nil || top < 1 {
-		filter["top"] = 3
+		filter["top"] = 5
 	} else {
 		filter["top"] = top
 	}

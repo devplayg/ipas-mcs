@@ -52,16 +52,18 @@ function ipaslogLocationFormatter(val, row, idx) {
 
 function ipaslogEventTypeFormatter(val, row, idx) {
     if (val === 1) {
-        return felang[ "ipas.start" ] + ' <span class="pull-right"><i class="fa fa-power-off"></i></span>';
+        return felang[ "ipas.start" ] + ' <span class="pull-right"><i class="icon-power"></i></span>';
 
     } else if (val === 2) {
         return felang[ "shock" ] + ' <span class="pull-right"><i class="fa fa-bolt"></i></span></span>';
 
     } else if (val === 3) {
-        return felang[ "speeding" ] + ' <span class="pull-right"><i class="fa fa-long-arrow-up"></i></span>';
+        return felang[ "speeding" ] + ' <span class="pull-right"><i class="icon-speedometer"></i></span>';
+        // return felang[ "speeding" ] + ' <span class="pull-right"><i class="fa fa-long-arrow-up"></i></span>';
 
     } else if (val === 4) {
-        return felang[ "proximity" ] + ' <span class="pull-right"><i class="fa fa-warning font-red"></i></span>';
+        // return felang[ "proximity" ] + ' <span class="pull-right"><i class="fa fa-warning font-red"></i></span>';
+        return felang[ "proximity" ] + ' <span class="pull-right"><i class="icon-size-actual"></i></span>';
     }
 }
 

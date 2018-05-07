@@ -6,7 +6,6 @@ import (
 	"time"
 	log "github.com/sirupsen/logrus"
 	"strconv"
-	"github.com/astaxie/beego"
 )
 
 type IpaslogController struct {
@@ -44,7 +43,7 @@ func (c *IpaslogController) Get() {
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter
-		c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
+		//c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
 		c.setTpl("ipas_logs.tpl")
 	}
 }
@@ -88,7 +87,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 
 
 func (c *IpaslogController) DisplayRealTimeLogs() {
-	c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
+	//c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
 	c.setTpl("realtime_logs.tpl")
 }
 

@@ -11,13 +11,14 @@
         <select id="select-assets" name="org_id" class="selectpicker" data-size="10" data-selected-text-format="count > 2">
             <option value="-1/-1">{{i18n .Lang "select all"}}</option>
         </select>
+        <span class="text-updated font-red hide ml10">Updated</span>
     </div>
 </div>
 
 <div class="row">
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                     {{i18n .Lang "monitoring.startup event"}}
@@ -44,7 +45,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.shock event"}}
@@ -71,7 +72,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.speeding event"}}
@@ -98,7 +99,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.proximity event"}}
@@ -130,7 +131,7 @@
 <div class="row">
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.startup event"}}
@@ -157,7 +158,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.shock event"}}
@@ -184,7 +185,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.speeding event"}}
@@ -211,7 +212,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="portlet light bordered">
+        <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
                 {{i18n .Lang "monitoring.proximity event"}}
@@ -245,4 +246,8 @@
 {{template "ipasreport/ipasreport.tpl" .}}
 <script src="/static/modules/{{.ctrl}}/dashboard.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
+<script>
+
+</script>
+
 {{end}}

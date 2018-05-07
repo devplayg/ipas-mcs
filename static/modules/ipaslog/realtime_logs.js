@@ -4,7 +4,8 @@ $(function() {
      * 1. 초기화
      *
      */
-    var refreshInterval = 7 * 1000, // 새로고침 주기
+    var interval = 7000,
+        timer = null,
         extraQuery = '';
 
     // 테이블 컬럼속성 복원
@@ -12,6 +13,9 @@ $(function() {
         var tableKey =  getTableKey( $( this ), reqVars.ctrl );
         restoreTableColumns( $( this ), tableKey );
     });
+
+    updateAllRanks();
+    startTimer();
 
 
     /**
@@ -42,9 +46,6 @@ $(function() {
         updateSelectGroups();
     });
 
-    setInterval(function() {
-        updateAllRanks();
-    }, refreshInterval );
 
 
     // 기관/그룹 선택
@@ -75,12 +76,14 @@ $(function() {
                 effect: "win8",
                 text: "Loading",
             });
-            console.log(extraQuery);
+            // console.log(extraQuery);
             $( this ).bootstrapTable( "refresh", {
                 url: $( this ).data( "url" ) + "&" + extraQuery,
                 silent: true
             });
         });
+        $( ".text-updated" ).removeClass( "hide" );
+        setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
     }
 
 
@@ -135,6 +138,27 @@ $(function() {
         }
     }
 
+
+    function startTimer() {  // use a one-off timer
+        $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
+        $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
+        timer = setInterval(updateAllRanks, interval);
+    }
+
+    function stopTimer() {
+        $( ".btn-start" ).removeClass( "blue" ).addClass( "default" );
+        $( ".btn-start .text" ).html( "<i class='fa fa-play'></i>" );
+        clearTimeout( timer );
+        timer = null;
+    }
+
+    $( ".btn-start" ).click(function(e) {
+        if ( timer === null ) {
+            startTimer();
+        } else {
+            stopTimer();
+        }
+    });
 
 });
 
