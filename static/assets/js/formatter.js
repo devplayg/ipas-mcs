@@ -33,8 +33,6 @@ function shortDateFormatter( val, row, idx ) {
         prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format("YYYY-MM-DD HH:mm:ss") + '">',
         suffix = '</span>';
     return prefix + m.format("HH:mm") + suffix;
-
-
 }
 
 function numberFormatter( val, row, idx ) {

@@ -91,9 +91,10 @@ func (c *baseController) Prepare() {
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
 	c.Data["member"] = c.member
-	c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "KYUNGWOO")
-	c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
-	c.Data["product_version"] = beego.AppConfig.DefaultString("product_version", "")
+	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
+	//c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "KYUNGWOO")
+	//c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
+	//c.Data["product_version"] = beego.AppConfig.DefaultString("product_version", "")
 	c.Data["reqVars"] = c.Input()
 }
 

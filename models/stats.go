@@ -10,7 +10,7 @@ import (
 func GetStats(member *objs.Member, orgId, groupId int, p map[string]interface{}) ([]objs.Stats, int64, error) {
 	var where string
 	var args []interface{}
-	args = append(args, p["from"], p["to"])
+	args = append(args, "stats", "last_updated")
 
 	if orgId < 1 { // 전체 자산통계 데이터 요청 시(org id가 -1인 경우. 참고: 0인 경우는 없음)
 		if member.Position >= objs.Administrator { // 관리자 세션이면 전체통계(asset_id=-1)에 대한 접근 가능
@@ -41,10 +41,11 @@ func GetStats(member *objs.Member, orgId, groupId int, p map[string]interface{})
 	query := `
 		select date, asset_id, item, count, rank
 		from stats_%s_by_%s
-		where date >= ? and date <= ? and asset_id = ? %s
+		where date = (select value_s from sys_config where section = ? and keyword = ?) and asset_id = ? %s
 		order by rank asc
 		limit ?
 	`
+	// where date >= ? and date <= ? and asset_id = ? %s
 	query = fmt.Sprintf(query, p["statsType"], p["assetType"], where)
 	args = append(args, p["top"])
 	var rows []objs.Stats

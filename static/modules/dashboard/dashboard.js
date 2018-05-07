@@ -6,16 +6,11 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 2000,
+        interval = 7000,
         timer = null;
     initializeAssets();
     updateStats();
     startTimer();
-
-
-
-
-
 
 
     /**
@@ -82,7 +77,7 @@ $(function() {
     function startTimer() {  // use a one-off timer
         $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
         $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
-        timer = setTimeout(updateStats, interval);
+        timer = setInterval(updateStats, interval);
     }
 
     function stopTimer() {
@@ -95,6 +90,8 @@ $(function() {
 
     function updateStats() {
         updateRankings();
+        $( ".text-updated" ).removeClass( "hide" );
+        setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
     }
 
 

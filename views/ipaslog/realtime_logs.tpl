@@ -6,11 +6,13 @@
 {{define "contents"}}
 <!-- 자산 선택 -->
 <div class="portlet light bordered mb10 pb8 pt8">
+    <button class="btn default btn-start"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
     <select id="select-orgs" name="org_id" class="selectpicker" multiple title="{{i18n .Lang "org"}}"  data-size="10" data-selected-text-format="count > 2"></select>
     <select id="select-groups" name="group_id" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>
     <button class="btn blue btn-apply">{{i18n .Lang "apply"}}</button>
     <a href="" class="btn default btn-action">{{i18n .Lang "cancel"}}</a>
     <span class="text-applied font-red hide ml10">{{i18n .Lang "applied"}}</span>
+    <span class="text-updated font-red hide ml10">Updated</span>
 </div>
 
 <div class="row">

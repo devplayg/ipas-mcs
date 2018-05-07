@@ -557,6 +557,7 @@
                 reqVars = {{.reqVars}};
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
+            daumMapKey = {{.daumMapKey}};
 
             var felang = {{.frontLang}}; // front-end languages
         </script>
