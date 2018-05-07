@@ -6,16 +6,14 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 3000;
+        interval = 2000,
+        timer = null;
     initializeAssets();
     updateStats();
+    startTimer();
 
 
 
-
-    setInterval(function() {
-        // updateStats();
-    }, interval);
 
 
 
@@ -26,12 +24,17 @@ $(function() {
      */
 
     $( "#select-assets" ).on( "change", function() {
-        var selected = $( "#select-assets :selected" ).val();
-        // arr = val.split('/');
-        // console.log(selected);
-        // asset_idx = asset.indexOf(val);
-        // client_last_update = '';
-        // changeAsset(asset[asset_idx]);
+        stopTimer();
+        updateStats();
+        startTimer();
+    });
+
+    $( ".btn-start" ).click(function(e) {
+        if ( timer === null ) {
+            startTimer();
+        } else {
+            stopTimer();
+        }
     });
 
 
@@ -55,6 +58,7 @@ $(function() {
                         text: org.name
                     })
                 );
+                // console.log(org.asset_id + "/-1");
 
                 // 그룹
                 $.each( org.children, function( i, group ) {
@@ -65,6 +69,7 @@ $(function() {
                             class: "ml20"
                         })
                     );
+                    // console.log(org.asset_id + "/-1");
                 });
             });
 
@@ -72,6 +77,19 @@ $(function() {
         }).always( function() {
             $( "#select-assets" ).selectpicker( "refresh" );
         });
+    }
+
+    function startTimer() {  // use a one-off timer
+        $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
+        $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
+        timer = setTimeout(updateStats, interval);
+    }
+
+    function stopTimer() {
+        $( ".btn-start" ).removeClass( "blue" ).addClass( "default" );
+        $( ".btn-start .text" ).html( "<i class='fa fa-play'></i>" );
+        clearTimeout( timer );
+        timer = null;
     }
 
 
@@ -82,10 +100,9 @@ $(function() {
 
     function updateRankings() {
         $( ".table-ranking" ).each(function( idx, obj ) {
-            var param = {
-                assetKey: $( "#select-assets :selected" ).val()
-            };
-            var url = $( this ).data( "query" ) + "?" + $.param( param );
+            var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+                url = $( this ).data( "query" ) + "/org/" + asset[0] + "/group/" + asset[1];
+            // console.log(url);
             $( this ).bootstrapTable( "refresh", { url: url, silent: true } );
         });
     }
