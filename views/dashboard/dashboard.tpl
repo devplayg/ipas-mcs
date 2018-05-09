@@ -21,7 +21,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                    {{i18n .Lang "monitoring.startup event"}}
+                    <i class="icon-power"></i> {{i18n .Lang "monitoring.startup event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="item_text">Item</th>
+                        <th data-field="org_name" data-formatter="orgGroupNameFormatter"></th>
                         <th data-field="count" data-formatter="numberFormatter" data-align="right">ccc</th>
                     </tr>
                     </thead>
@@ -48,7 +48,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.shock event"}}
+                    <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="item_text">Item</th>
+                        <th data-field="org_name" data-formatter="orgGroupNameFormatter"></th>
                         <th data-field="count" data-formatter="numberFormatter" data-align="right">ccc</th>
                     </tr>
                     </thead>
@@ -75,7 +75,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.speeding event"}}
+                    <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="item_text">Item</th>
+                        <th data-field="org_name" data-formatter="orgGroupNameFormatter"></th>
                         <th data-field="count" data-formatter="numberFormatter" data-align="right">ccc</th>
                     </tr>
                     </thead>
@@ -102,7 +102,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.proximity event"}}
+                    <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     <thead>
                     <tr>
                         <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="item_text">Item</th>
+                        <th data-field="org_name" data-formatter="orgGroupNameFormatter"></th>
                         <th data-field="count" data-formatter="numberFormatter" data-align="right">ccc</th>
                     </tr>
                     </thead>
@@ -134,7 +134,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.startup event"}}
+                    <i class="icon-power"></i> {{i18n .Lang "monitoring.startup event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
@@ -161,7 +161,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.shock event"}}
+                    <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
@@ -188,7 +188,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.speeding event"}}
+                    <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
@@ -215,7 +215,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                {{i18n .Lang "monitoring.proximity event"}}
+                    <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>

@@ -81,17 +81,17 @@ func (c *StatsController) updateItemText(rows []objs.Stats, assetType string) {
 		orgId, _ := strconv.Atoi(asset[0])
 		orgAsset, ok := assetMap.Load(orgId)
 		if ok {
-			rows[i].ItemText = orgAsset.(objs.Asset).Name
+			rows[i].OrgName = orgAsset.(objs.Asset).Name
 		} else {
-			rows[i].ItemText = asset[0]
+			rows[i].OrgName = asset[0]
 		}
 
 		groupId, _ := strconv.Atoi(asset[1])
 		groupAsset, ok := assetMap.Load(groupId)
 		if ok {
-			rows[i].ItemText += " / " + groupAsset.(objs.Asset).Name
+			rows[i].GroupName += groupAsset.(objs.Asset).Name
 		} else {
-			rows[i].ItemText += " / " + asset[1]
+			rows[i].GroupName += asset[1]
 		}
 	}
 }

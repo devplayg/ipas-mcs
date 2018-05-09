@@ -76,7 +76,7 @@ $(function() {
                 effect: "win8",
                 text: "Loading",
             });
-            // console.log(extraQuery);
+
             $( this ).bootstrapTable( "refresh", {
                 url: $( this ).data( "url" ) + "&" + extraQuery,
                 silent: true
