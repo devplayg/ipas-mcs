@@ -3,7 +3,7 @@ $(function() {
  * 1. Initialize
  *
  */
-    $( "#form-signin input[name=Username]" ).focus();
+    $( "#form-login input[name=username]" ).focus().select();
 
     // Ajax
     var ajax = $.ajax;
