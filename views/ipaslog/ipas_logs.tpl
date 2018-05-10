@@ -134,9 +134,6 @@
                     <th data-field="usim" data-sortable="true">USIM</th>
                     <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter" data-visible="false">IP</th>
                     <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received date"}}</th>
-
-                {{/*<th data-field="speeding_count" data-sortable="true">Speeding (km/h)</th>*/}}
-                {{/*<th data-field="shock_count" data-sortable="true" data-formatter="shockCountFormatter">Shock</th>*/}}
                 </tr>
                 </thead>
             </table>

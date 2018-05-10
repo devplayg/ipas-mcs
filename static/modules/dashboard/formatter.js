@@ -7,10 +7,18 @@ function rankFormatter( val, row, idx ) {
     return '<button class="btn ' + btn_class + ' btn-xs">' + val + '</button>';
 }
 
-function orgGroupNameFormatter( val, row, idx ) {
+function dashboardOrgGroupNameFormatter( val, row, idx ) {
     var groupName = row.group_name;
     if ( row.item.endsWith("/0") ) {
         groupName = '<span class="font-grey-silver">Default</span>';
     }
-    return row.org_name + '<i class="fa fa-angle-right mlr10"></i>' + groupName;
+
+    var asset = row.item.split( "/", 2 );
+    var param = {
+        orgId: asset[0],
+        groupId: asset[1]
+    };
+    var prefix = '<a href="#" style="color: inherit; " data-toggle="modal" data-target="#modal-ipaslog" data-query="'+ $.param(param) + '">',
+        suffix = '</a>';
+    return prefix + row.org_name + '<i class="fa fa-angle-right mlr10"></i>' + groupName + suffix;
 }

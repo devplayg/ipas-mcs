@@ -11,7 +11,7 @@ $(function() {
     initializeAssets();
     updateStats();
     startTimer();
-
+    // $( "#modal-ipaslog" ).modal( "show" );
 
     /**
      * 2. 이벤트
