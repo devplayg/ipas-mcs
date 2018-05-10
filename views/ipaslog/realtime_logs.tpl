@@ -169,7 +169,7 @@
                         <i class="icon-power"></i>
                         <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
                         <span class="caption-helper s13 font-grey-salsa">
-                        {{if ne .Lang "en-us" }}Startup events{{end}}
+                        {{if ne .Lang "en-us" }}Startup  events{{end}}
                         </span>
                     </div>
                 </div>
