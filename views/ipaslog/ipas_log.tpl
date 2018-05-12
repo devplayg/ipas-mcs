@@ -56,7 +56,7 @@
                                     <div class="row">
                                         <div class="col-sm-6 form-group">
                                             <label class="control-label">{{i18n .Lang "tag"}}</label>
-                                            <input type="text" class="form-control" name="equip_id" value="{{.filter.EquipId}}">
+                                            <input type="text" class="form-control" name="tag_pattern" value="{{.filter.TagPattern}}">
                                         </div>
                                         <div class="col-sm-6 form-group ">
                                             <label class="control-label">{{i18n .Lang "event type"}}</label>
@@ -102,20 +102,20 @@
                     data-export-types="['csv', 'excel']"
                     {*Row강조*}
                     data-row-style="rowStyle"
-                    {* 페이지 크기*}
-                    data-page-size="{{.filter.Limit}}"
                     {* 정렬 *}
                     data-sort-name="{{.filter.Sort}}"
                     data-sort-order="{{.filter.Order}}"
                     {* 페이징 *}
-            {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
-                    data-side-pagination="client"
-            {{else}} {* 일반 페이징 *}
-                    data-url="/ipaslogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
-                    data-pagination="true"
-                    data-side-pagination="server"
-                    data-pagination-loop="false"
-            {{end}}
+                    data-page-size="{{.filter.Limit}}"
+                    data-pagination-v-align="both"
+                    {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
+                        data-side-pagination="client"
+                    {{else}} {* 일반 페이징 *}
+                        data-url="/getIpasLogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
+                        data-pagination="true"
+                        data-side-pagination="server"
+                        data-pagination-loop="false"
+                    {{end}}
             >
                 <thead>
                 <tr>
@@ -159,6 +159,6 @@
 
 {{define "javascript"}}
     {{template "ipasreport/ipasreport.tpl" .}}
-    <script src="/static/modules/{{.ctrl}}/ipas_logs.js"></script>
+    <script src="/static/modules/{{.ctrl}}/ipas_log.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}

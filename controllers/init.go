@@ -94,7 +94,7 @@ func loadGlobalConfig() error {
 	objs.GlobalConfig.Store("system_use_namecard", objs.MultiValue{"on", 0})
 
 	// DB 값 조회
-	rows, err := models.GetSystemConfig()
+	rows, err := models.GetAllSystemConfig()
 	if err != nil {
 		return err
 	}

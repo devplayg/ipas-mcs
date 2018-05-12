@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/devplayg/ipas-mcs/models"
-	"time"
+	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"strconv"
+	"time"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type IpaslogController struct {
@@ -21,36 +22,46 @@ func (c *IpaslogController) CtrlPrepare() {
 }
 
 func (c *IpaslogController) Get() {
-	filter := c.getFilter()
-
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-		logs, total, err := models.GetIpaslog(filter, c.member)
-
-		// 기관/그룹코드를 이름과 맵핑
-		for idx, a := range logs {
-			if v, ok:= assetMap.Load(a.OrgId); ok {
-				logs[idx].OrgName = v.(objs.Asset).Name
-			} else {
-				logs[idx].OrgName = strconv.Itoa(a.OrgId)
-			}
-			if v, ok:= assetMap.Load(a.GroupId); ok {
-				logs[idx].GroupName = v.(objs.Asset).Name
-			} else {
-				logs[idx].GroupName = strconv.Itoa(a.GroupId)
-			}
-		}
-
-		c.serveResultJson(logs, total, err, filter.FastPaging)
+		c.GetLogs()
 	} else { // Ajax 외 요청이면 HTML 리턴
-		c.Data["filter"] = filter
-		//c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
-		c.setTpl("ipas_logs.tpl")
+		c.Display()
 	}
 }
 
 func (c *IpaslogController) Post() {
 	c.Get()
 }
+
+
+func (c *IpaslogController) Display() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+	c.setTpl("ipas_log.tpl")
+}
+
+func (c *IpaslogController) GetLogs() {
+	filter := c.getFilter()
+	spew.Dump(filter)
+	logs, total, err := models.GetIpaslog(filter, c.member)
+
+	// 기관/그룹코드를 이름과 맵핑
+	for idx, a := range logs {
+		if v, ok := assetMap.Load(a.OrgId); ok {
+			logs[idx].OrgName = v.(objs.Asset).Name
+		} else {
+			logs[idx].OrgName = strconv.Itoa(a.OrgId)
+		}
+		if v, ok := assetMap.Load(a.GroupId); ok {
+			logs[idx].GroupName = v.(objs.Asset).Name
+		} else {
+			logs[idx].GroupName = strconv.Itoa(a.GroupId)
+		}
+	}
+
+	c.serveResultJson(logs, total, err, filter.FastPaging)
+}
+
 
 func (c *IpaslogController) getFilter() *objs.IpasFilter {
 
@@ -59,12 +70,34 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if err := c.ParseForm(&filter); err != nil {
 		log.Error(err)
 	}
-
 	// 날짜 설정
-	if filter.StartDate == "" || filter.EndDate == "" {
-		t := time.Now()
-		filter.StartDate = t.AddDate(0, 0, -7).Format("2006-01-02") + " 00:00"
-		filter.EndDate = t.Format("2006-01-02") + " 23:59"
+	if ! filter.StatsMode { // 일반적으로 로그를 조회하는 경우
+		if filter.StartDate == "" || filter.EndDate == "" {
+			t := time.Now()
+			filter.StartDate = t.AddDate(0, 0, -7).Format("2006-01-02") + " 00:00"
+			filter.EndDate = t.Format("2006-01-02") + " 23:59"
+		}
+	} else { // 통계 근거로그를 조회하는 경우
+		if len(filter.StartDate) > 0 || len(filter.EndDate) > 0 {
+			filter.StartDate = filter.StartDate + " 00:00"
+			filter.EndDate = filter.EndDate + " 23:59"
+		} else if len(filter.StartDate) > 0 {
+			filter.StartDate = filter.StartDate + " 00:00"
+			filter.EndDate = filter.StartDate + " 23:59"
+		} else {
+			rs, err := models.GetSystemConfig("stats", "last_updated")
+			if err != nil {
+				log.Error(err)
+			}
+			if len(rs) == 1 {
+				filter.StartDate = rs[0].ValueS[0:10] + " 00:00"
+				filter.EndDate = rs[0].ValueS[0:10] + " 23:59"
+			} else {
+				t := time.Now()
+				filter.StartDate = t.Format("2006-01-02") + " 00:00"
+				filter.EndDate = t.Format("2006-01-02") + " 23:59"
+			}
+		}
 	}
 
 	// 페이징 처리
@@ -85,10 +118,9 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	return &filter
 }
 
-
 func (c *IpaslogController) DisplayRealTimeLogs() {
 	//c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
-	c.setTpl("realtime_logs.tpl")
+	c.setTpl("realtime_log.tpl")
 }
 
 func (c *IpaslogController) GetRealTimeLogs() {
@@ -105,12 +137,12 @@ func (c *IpaslogController) GetRealTimeLogs() {
 
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
-		if v, ok:= assetMap.Load(a.OrgId); ok {
+		if v, ok := assetMap.Load(a.OrgId); ok {
 			logs[idx].OrgName = v.(objs.Asset).Name
 		} else {
 			logs[idx].OrgName = strconv.Itoa(a.OrgId)
 		}
-		if v, ok:= assetMap.Load(a.GroupId); ok {
+		if v, ok := assetMap.Load(a.GroupId); ok {
 			logs[idx].GroupName = v.(objs.Asset).Name
 		} else {
 			logs[idx].GroupName = strconv.Itoa(a.GroupId)

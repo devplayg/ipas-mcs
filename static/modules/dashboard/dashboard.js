@@ -6,8 +6,20 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 7000,
-        timer = null;
+        interval = 60000,
+        timer = null,
+        realtimeStats = true;
+
+    // 날짜
+    $( ".datetime" ).datetimepicker({
+        format: "yyyy-mm-dd",
+        pickerPosition : "bottom-left",
+        todayHighlight : 1,
+        minView: 2,
+        maxView: 4,
+        autoclose: true
+    });
+
     initializeAssets();
     updateStats();
     startTimer();
@@ -18,11 +30,13 @@ $(function() {
      *
      */
 
+    // 자산 선택
     $( "#select-assets" ).on( "change", function() {
         stopTimer();
         updateStats();
         startTimer();
     });
+
 
     $( ".btn-start" ).click(function(e) {
         if ( timer === null ) {
@@ -31,6 +45,8 @@ $(function() {
             stopTimer();
         }
     });
+
+
 
 
     /**

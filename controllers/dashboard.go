@@ -1,8 +1,11 @@
 package controllers
 
 import (
-	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/astaxie/beego"
+	"github.com/devplayg/ipas-mcs/objs"
+	log "github.com/sirupsen/logrus"
+	"time"
+	"github.com/devplayg/ipas-mcs/models"
 )
 
 type DashboardController struct {
@@ -20,6 +23,35 @@ func (c *DashboardController) CtrlPrepare() {
 func (c *DashboardController) Display() {
 	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
 
-	// 권한 부여
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+
 	c.setTpl("dashboard.tpl")
+}
+
+func (c *DashboardController) getFilter() *objs.IpasFilter {
+
+	// 요청값 분류
+	filter := objs.IpasFilter{}
+	if err := c.ParseForm(&filter); err != nil {
+		log.Error(err)
+	}
+
+	// 날짜 설정
+	if filter.StartDate == "" || filter.EndDate == "" {
+		config, err := models.GetSystemConfig("stats", "last_updated")
+		if err != nil {
+			log.Error(err)
+		}
+		var t time.Time
+		if len(config) == 1 {
+			t, _ = time.Parse(objs.DefaultDateFormat, config[0].ValueS)
+		} else {
+			t = time.Now()
+		}
+		filter.StartDate = t.Format("2006-01-02")
+		filter.EndDate = t.Format("2006-01-02")
+	}
+
+	return &filter
 }
