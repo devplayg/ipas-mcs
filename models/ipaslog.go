@@ -35,11 +35,16 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 		where += fmt.Sprintf(" and event_type in (%s)", libs.JoinInt(filter.EventType, ","))
 	}
 
-	// 장비 ID
-	if len(filter.EquipId) > 0 {
+	// 장비 태크 검색
+	if len(filter.TagPattern) > 0 {
 		where += " and (equip_id like ? or targets like ?)"
 		cond := "%"+filter.EquipId+"%"
 		args = append(args, cond, cond)
+	}
+	if len(filter.EquipId) > 0 {
+		where += " and equip_id = ?"
+		cond := filter.EquipId
+		args = append(args, cond)
 	}
 
 	// 페이징 모드(고속/일반)

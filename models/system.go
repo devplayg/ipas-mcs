@@ -9,12 +9,29 @@ import (
 	"strings"
 )
 
-func GetSystemConfig() ([]objs.SysConfig, error) {
+func GetAllSystemConfig() ([]objs.SysConfig, error) {
 	query := "select section, keyword, value_s, value_n from sys_config"
 	var rows []objs.SysConfig
 
 	o := orm.NewOrm()
 	_, err := o.Raw(query).QueryRows(&rows)
+
+	return rows, err
+}
+
+func GetSystemConfig(section, keyword string) ([]objs.SysConfig, error) {
+	query := "select section, keyword, value_s, value_n from sys_config where section = ?"
+	var where string
+	args := make([]interface{}, 0)
+	args = append(args, section)
+
+	if len(keyword) > 0 {
+		where += " and keyword = ?"
+		args = append(args, keyword)
+	}
+	var rows []objs.SysConfig
+	o := orm.NewOrm()
+	_, err := o.Raw(query + where, args).QueryRows(&rows)
 
 	return rows, err
 }

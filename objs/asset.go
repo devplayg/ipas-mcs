@@ -4,6 +4,25 @@ import (
 	"time"
 )
 
+// 시동,충격,과속,근접
+type Ipas struct {
+	OrgId     int     `json:"org_id"`
+	EquipId   string  `json:"equip_id"`
+	GroupId   int     `json:"group_id"`
+	EquipType int     `json:"equip_type"`
+	Speed     int     `json:"spped"`
+	Snr       int     `json:"snr"`
+	Usim      string  `json:"usim"`
+	Latitude  float32 `json:"latitude"`
+	Longitude float32 `json:"longitude"`
+	//SpeedingCount int       `json:"speeding_count"`
+	//ShockCount    int       `json:"shock_count"`
+	Created   time.Time `json:"created"`
+	Updated   time.Time `json:"updated"`
+	OrgName   string    `json:"org_name"`
+	GroupName string    `json:"group_name"`
+}
+
 type treeState struct {
 	Opened   bool `json:"opened"`
 	Disabled bool `json:"disabled"`

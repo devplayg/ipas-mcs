@@ -72,7 +72,7 @@ function equipIdFormatter( val, row, idx ) {
 }
 
 function ipaslogTargetsFormatter( val, row, idx ) {
-    if ( row.event_type === IpasStatusProximity ) {
+    if ( row.event_type === ProximityEvent ) {
         var list = val.split(","),
             tags = '';
 
@@ -85,14 +85,14 @@ function ipaslogTargetsFormatter( val, row, idx ) {
 }
 
 function ipaslogDistanceFormatter( val, row, idx ) {
-    if ( row.event_type === IpasStatusProximity ) {
+    if ( row.event_type === ProximityEvent ) {
         return val;
     }
 }
 
 function ipaslogSpeedingFormatter( val, row, idx ) {
     var threshold = 12;
-    if ( row.event_type === IpasStatusSpeeding && val > threshold) {
+    if ( row.event_type === SpeedingEvent && val > threshold) {
         return val + '<span class="pull-right font-red bold s12">+' + ( val - threshold ) + '</span>';
     }
 }

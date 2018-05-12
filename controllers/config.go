@@ -11,7 +11,7 @@ type ConfigController struct {
 
 func (c *ConfigController) Get() {
 	var config = make(map[string]map[string]objs.MultiValue)
-	rows, err := models.GetSystemConfig()
+	rows, err := models.GetAllSystemConfig()
 	if err == nil {
 		for _, r := range rows {
 			if m, ok := config[r.Section]; ok {

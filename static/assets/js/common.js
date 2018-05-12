@@ -3,10 +3,10 @@
  */
 
 // Ajax
-var IpasStatusStart = 1,
-    IpasStatusShock = 2,
-    IpasStatusSpeeding = 3,
-    IpasStatusProximity = 4;
+var StartupEvent = 1,
+    ShockEvent = 2,
+    SpeedingEvent = 3,
+    ProximityEvent = 4;
 
 $.ajaxSetup({ cache:false });
 var ajax = $.ajax;
@@ -136,7 +136,7 @@ function getTableKey( $table, ctrl ) {
 function showTableData($t, logs, paging) {
     var offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
     $t.bootstrapTable( "load", logs.slice( offset, offset + paging.size ) );
-    console.log(offset + " ~ " + ( offset + paging.size ) );
+    //console.log(offset + " ~ " + ( offset + paging.size ) );
 }
 
 // 테이블 컬럼 저장
@@ -168,5 +168,10 @@ function restoreTableColumns( table, key ) {
         });
     }
 }
-
-
+//
+//
+// jQuery.extend({
+//     getQueryParameters : function(str) {
+//         return (str || document.location.search).replace(/(^\?)/,'').split("&").map(function(n){return n = n.split("="),this[n[0]] = n[1],this}.bind({}))[0];
+//     }
+// });

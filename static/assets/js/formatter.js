@@ -24,13 +24,12 @@ function int2ipFormatter( val, row, idx ) {
 
 function dateFormatter( val, row, idx ) {
     var m = moment( val );
-    // return m.format("YYYY-MM-DD HH:mm:ss");
-    return '<span class="">' + m.format("YYYY-MM-DD HH:mm:ss") + '</span>';
+    return '<span class="">' + m.format( "MMMM D YYYY, hh:mm:ss" ) + '</span>';
 }
 
 function shortDateFormatter( val, row, idx ) {
     var m = moment( val ),
-        prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format("YYYY-MM-DD HH:mm:ss") + '">',
+        prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '">',
         suffix = '</span>';
     return prefix + m.format("HH:mm") + suffix;
 }
@@ -45,7 +44,7 @@ function ipasEquipIdFormatter( val, row, idx ) {
         body = '',
         footer = '';
 
-    header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI(JSON.stringify(row)) + '" >';
+    header += '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI( JSON.stringify( row ) ) + '" >';
     body += getIpasTag( row.equip_id );
     return header + body + footer;
 }

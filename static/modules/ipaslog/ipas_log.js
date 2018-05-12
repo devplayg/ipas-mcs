@@ -11,21 +11,21 @@ $(function() {
 
     // 로그 페이징 변수
     var paging = {
-        no                 : 1,                          // 페이지 번호
-        size               : $table.data( "page-size" ), // 페이지 크기
-        blockIndex         : 0,                          // 블럭 인덱스 (현재)
-        blockIndex_before  : -1,                         // 블럭 인덱스 (이전)
-        blockSize          : 3                           // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 미리 조회)
+        no:                    1,                          // 페이지 번호
+        size:                  $table.data( "page-size" ), // 페이지 크기
+        blockIndex:            0,                          // 블럭 인덱스 (현재)
+        blockIndexJustBefore: -1,                          // 블럭 인덱스 (이전)
+        blockSize:             3                           // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 미리 조회)
     };
 
     // 날짜
     $( ".datetime" ).datetimepicker({
-        format: "yyyy-mm-dd hh:ii",
-        pickerPosition : "bottom-left",
-        todayHighlight : 1,
-        minView: 2,
-        maxView: 4,
-        autoclose: true
+        format:         "yyyy-mm-dd hh:ii",
+        pickerPosition: "bottom-left",
+        todayHighlight: 1,
+        minView:        2,
+        maxView:        4,
+        autoclose:      true
     });
 
     // 필터 유효성 체크
@@ -51,7 +51,7 @@ $(function() {
         },
         messages: {
             SrcPortStart: "0 ~ 65535",
-            SrcPortEnd  : "0 ~ 65535",
+            SrcPortEnd:   "0 ~ 65535",
         },
         highlight: function( element ) {
             $( element ).closest( ".form-group" ).addClass( "has-error" );
@@ -98,7 +98,7 @@ $(function() {
      */
 
     // 페이지 이동 (고속페이징)
-    $( ".btn-move-page" ).click(function(e) {
+    $( ".btn-move-page" ).click(function( e ) {
         e.preventDefault();
         movePage( $( this ).data( "direction" ), false);
     });
@@ -111,7 +111,7 @@ $(function() {
             $form.get( 0 ).reset();
             resetMultiSelctedBoxesOfFilter();
         })
-        .on( "shown.bs.modal", function(e) {
+        .on( "shown.bs.modal", function( e ) {
             var $form = $( this ).closest( "form" );
             $( "input[name=md5]", $form).focus().select();
         });
@@ -154,7 +154,7 @@ $(function() {
      */
 
     // 페이지 이동(고속페이징)
-    function movePage( direction, is_refresh ) {
+    function movePage( direction, isRefresh ) {
         paging.no += direction; // 검색할 페이지
         if (paging.no < 1) {
             paging.no = 1;
@@ -163,8 +163,8 @@ $(function() {
         $( ".btn-page-text" ).text( paging.no );
 
         // 페이징 컨트롤러
-        paging.blockIndex = Math.floor( (paging.no - 1) / paging.blockSize );
-        if ( paging.blockIndex != paging.blockIndex_before || is_refresh ) {
+        paging.blockIndex = Math.floor( ( paging.no - 1 ) / paging.blockSize );
+        if ( paging.blockIndex != paging.blockIndexJustBefore || isRefresh ) {
             var param = {
                 offset: ( paging.size * paging.blockSize ) * paging.blockIndex,
                 limit : paging.size * paging.blockSize,
@@ -172,9 +172,13 @@ $(function() {
                 order : $table.bootstrapTable( "getOptions" ).sortOrder
             };
 
-            var url = "/ipaslogs?" + $( "#form-filter input[name!=limit]" ).serialize() + "&" + $.param( param );
+            var url = "/getIpasLogs?" + $( "#form-filter :input[name!=limit]" ).serialize() + "&" + $.param( param );
 
             // 데이터 조회
+            // console.log(url);
+            // console.log( $( "#form-filter" ).serializeArray());
+            // console.log( $( "#form-filter :input[name!='limit']" ).serializeArray()    );
+            // console.log( $( "#form-filter" ).not("#form-filter input[name=limit]").serializeArray()    );
             console.log( 'Fetching' );
             $.ajax({
                 type:  "GET",
@@ -191,12 +195,12 @@ $(function() {
             updatePagingNavButtons();
         }
 
-        paging.blockIndex_before = paging.blockIndex;
+        paging.blockIndexJustBefore = paging.blockIndex;
     }
 
 
     // 네비게이션 버튼 상태변경(고속 페이징)
-    function updatePagingNavButtons( offset ) {
+    function updatePagingNavButtons() {
         var offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
         if ( logs.length - offset < paging.size ) {
             $( ".btn-next" ).prop( "disabled", true );
@@ -265,9 +269,9 @@ $(function() {
     // 자산 초기화
     function initializeAssets() {
         $.ajax({
-            type  : "GET",
-            async : true,
-            url   : "/userassetclass/1/children"
+            type:  "GET",
+            async: true,
+            url:   "/userassetclass/1/children"
         }).done( function( result ) {
             // 기관
             $.each( result, function( idx, org ) {
@@ -286,8 +290,8 @@ $(function() {
                 $.each( org.children, function( i, group ) {
                     $optgroup.append(
                         $( "<option>", {
-                            value   :group.asset_id,
-                            text    :group.name
+                            value: group.asset_id,
+                            text:  group.name
                         })
                     );
                 });
@@ -296,7 +300,7 @@ $(function() {
 
 
         }).always( function() {
-            // Selected orgs
+            // 기관 선택
             if ( reqVars.org_id !== undefined && reqVars.org_id.length > 0 ) {
                 $( "#select-orgs" ).selectpicker( "val", reqVars.org_id ).selectpicker( "refresh" );
                 updateSelectGroups();
@@ -305,7 +309,7 @@ $(function() {
                 $( "#select-orgs" ).selectpicker( "refresh" );
             }
 
-            // Selected folders
+            // 그룹 선택
             if ( reqVars.group_id !== undefined && reqVars.group_id.length > 0 ) {
                 $( "#select-groups" ).selectpicker( "val", reqVars.group_id ).selectpicker( "refresh" );
             }

@@ -1,6 +1,6 @@
 {{template "base.tpl" .}}
 {{define "css"}}
-<link href="/static/modules/{{.ctrl}}/realtime_logs.css" rel="stylesheet" type="text/css" />
+<link href="/static/modules/{{.ctrl}}/realtime_log.css" rel="stylesheet" type="text/css" />
 {{end}}
 
 {{define "contents"}}
@@ -212,6 +212,6 @@
 
 {{define "javascript"}}
 {{template "ipasreport/ipasreport.tpl" .}}
-<script src="/static/modules/{{.ctrl}}/realtime_logs.js"></script>
+<script src="/static/modules/{{.ctrl}}/realtime_log.js"></script>
 <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}

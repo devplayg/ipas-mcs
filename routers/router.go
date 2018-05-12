@@ -12,6 +12,7 @@ func init() {
 
 	// IPAS 로그
 	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
+	beego.Router(`/getIpasLogs`, &controllers.IpaslogController{}, "get:GetLogs")
 	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get,post:DisplayRealTimeLogs")
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
 
@@ -41,8 +42,8 @@ func init() {
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
 
 	// 통계
-	beego.Router(`/stats/:statsType/by/:assetType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStatsBy")
 	beego.Router(`/stats/:statsType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStats")
+	beego.Router(`/stats/:statsType/by/:assetType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStatsBy")
 	beego.Router(`/stats/summary/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetSummary")
 
 	// 환경설정
