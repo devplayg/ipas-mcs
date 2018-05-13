@@ -1,9 +1,24 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
+     <pre class="hide">
+        start_date={{.filter.StartDate}}
+        end_date={{.filter.EndDate}}
+        equip_id={{.filter.EquipId}}
+        tag_pattern={{.filter.TagPattern}}
+        fast_paging={{.filter.FastPaging}}
+        limit={{.filter.Limit}}
+        sort={{.filter.Sort}}
+        order={{.filter.Order}}
+        event_type={{range .filter.EventType}}{{.}}{{end}}
+        org_id={{range .filter.OrgId}}{{.}}{{end}}
+        group_id={{range .filter.GroupId}}{{.}}{{end}}
+        {{.Lang}}
+    </pre>
     <div class="portlet light bordered">
         <div class="portlet-body pt0">
             <div id="toolbar-log">
+
                 <form id="form-filter" role="form" method="post">
                 {{ .xsrfdata }}
 
@@ -13,13 +28,13 @@
 
                                 <!-- 검색 시작날짜 -->
                                 <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="startDate" value="{{.filter.StartDate}}">
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 
                                 <!-- 검색 끝날짜 -->
                                 <div class="input-group date datetime">
-                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="endDate" value="{{.filter.EndDate}}">
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 
@@ -75,7 +90,7 @@
                                         </div>
                                         <div class="col-sm-4 form-group">
                                             <label class="mt-checkbox mt-checkbox-outline mt30">
-                                                <input type="checkbox" name="fastPaging" {{if eq .filter.FastPaging "on"}}checked{{end}}> {{i18n .Lang "fast_paging"}}
+                                                <input type="checkbox" name="fast_paging" {{if eq .filter.FastPaging "on"}}checked{{end}}> {{i18n .Lang "fast_paging"}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -111,7 +126,7 @@
                     {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
                         data-side-pagination="client"
                     {{else}} {* 일반 페이징 *}
-                        data-url="/getIpasLogs?startDate={{.filter.StartDate}}&endDate={{.filter.EndDate}}&fastPaging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
+                        data-url="/getIpasLogs?start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
                         data-pagination="true"
                         data-side-pagination="server"
                         data-pagination-loop="false"
@@ -140,21 +155,6 @@
 
         </div>
     </div>
-
-    <pre class="hide">
-    startDate={{.filter.StartDate}}
-    endDate={{.filter.EndDate}}
-    equip_id={{.filter.EquipId}}
-    fastPaging={{.filter.FastPaging}}
-    limit={{.filter.Limit}}
-    sort={{.filter.Sort}}
-    order={{.filter.Order}}
-    event_type={{range .filter.EventType}}{{.}}{{end}}
-    org_id={{range .filter.OrgId}}{{.}}{{end}}
-    group_id={{range .filter.GroupId}}{{.}}{{end}}
-    {{.Lang}}
-    </pre>
-
 {{end}}
 
 {{define "javascript"}}

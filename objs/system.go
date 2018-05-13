@@ -41,10 +41,9 @@ type SysConfig struct {
 	MultiValue
 }
 type MultiValue struct {
-	ValueS  string `json:"value_s"`
-	ValueN  int    `json:"value_n"`
+	ValueS string `json:"value_s"`
+	ValueN int    `json:"value_n"`
 }
-//var SysConfigMap = make(map[string]map[string]MultiValue)
 
 var GlobalConfig sync.Map
 
@@ -57,17 +56,16 @@ type AuditMsg struct {
 }
 
 type PagingFilter struct {
-	StartDate  string `form:"startDate"`
-	EndDate    string `form:"endDate"`
-	FastPaging string `form:"fastPaging"`
+	StartDate  string `form:"start_date"`
+	EndDate    string `form:"end_date"`
+	FastPaging string `form:"fast_paging"`
 	FoundRows  string
 
 	// Paging
-	Limit  int `form:"limit"`
-	Offset int `form:"offset"`
+	Limit  int   `form:"limit"`
+	Offset int64 `form:"offset"`
 
 	// Sort
 	Order string `form:"order"`
 	Sort  string `form:"sort"`
 }
-

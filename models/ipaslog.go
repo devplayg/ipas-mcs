@@ -38,7 +38,7 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 	// 장비 태크 검색
 	if len(filter.TagPattern) > 0 {
 		where += " and (equip_id like ? or targets like ?)"
-		cond := "%"+filter.EquipId+"%"
+		cond := "%"+filter.TagPattern+"%"
 		args = append(args, cond, cond)
 	}
 	if len(filter.EquipId) > 0 {

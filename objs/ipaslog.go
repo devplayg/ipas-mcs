@@ -22,6 +22,7 @@ type IpasLog struct {
 	Distance  int       `json:"distance"`
 	Ip        uint32    `json:"ip"`
 	RecvDate  time.Time `json:"recv_date"`
+	No        int64     `json:"no"`
 }
 
 type IpasFilter struct {

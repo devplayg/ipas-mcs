@@ -31,27 +31,27 @@ function dashboardOrgGroupNameFormatter( val, row, eventType ) {
 
     var asset = row.item.split( "/", 2 ),
         param = {
-            stats_mode: true,
-            fastPaging: "on",
-            org_id:     asset[0],
-            group_id:   asset[1],
-            startDate:  null,
-            endDate:    null,
-            event_type: eventType
+            stats_mode:  true,
+            fast_paging: "on",
+            org_id:      asset[0],
+            group_id:    asset[1],
+            start_date:  null,
+            end_date:    null,
+            event_type:  eventType
         };
 
 
-    if ( $("#startDate").val() !== undefined && ! $("#startDate").prop( "disabled" ) ) {
-        param.startDate = $("#startDate").val();
+    if ( $("#start_date").val() !== undefined && ! $("#start_date").prop( "disabled" ) ) {
+        param.start_date = $("#start_date").val();
 
         // 검색 시작날짜가 설정된 경우
-        if ( $("#endDate").val() !== undefined && ! $("#endDate").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
-            param.endDate = $("#endDate").val();
+        if ( $("#end_date").val() !== undefined && ! $("#end_date").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
+            param.end_date = $("#end_date").val();
         } else { // 시작 날짜만 설졍된 경우 (특정 날짜를 검색하는 경우)
 
         }
     }
-    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param(param) + '">',
+    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
         suffix = '</a>';
     return prefix + row.org_name + '<i class="fa fa-angle-right mlr10"></i>' + groupName + suffix;
 }
@@ -78,27 +78,27 @@ dashboardIpasEquipIdOfStartupEventFormatter
 
 function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
     var param = {
-        stats_mode: true,
-        fastPaging: "on",
+        stats_mode:  true,
+        fast_paging: "on",
         equip_id:    equipId,
-        startDate:  null,
-        endDate:    null,
-        event_type: eventType
+        start_date:  null,
+        end_date:    null,
+        event_type:  eventType
     };
     // console.log(param);
 
-    if ( $("#startDate").val() !== undefined && ! $("#startDate").prop( "disabled" ) ) {
-        param.startDate = $("#startDate").val();
+    if ( $("#start_date").val() !== undefined && ! $("#start_date").prop( "disabled" ) ) {
+        param.start_date = $("#start_date").val();
 
         // 검색 시작날짜가 설정된 경우
-        if ( $("#endDate").val() !== undefined && ! $("#endDate").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
-            param.endDate = $("#endDate").val();
+        if ( $("#end_date").val() !== undefined && ! $("#end_date").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
+            param.end_date = $("#end_date").val();
         } else { // 시작 날짜만 설졍된 경우 (특정 날짜를 검색하는 경우)
 
         }
     }
 
-    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param(param) + '">',
+    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
         suffix = '</a>';
     return prefix + getIpasTag( equipId ) + suffix;
 }

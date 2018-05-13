@@ -33,8 +33,8 @@ $(function() {
         submitHandler: function( form, e ) {
             e.preventDefault();
 
-            if ( ! $( "input[name=fastPaging]", form ).is( ":checked" ) ) {
-                $( form ).addHidden( "fastPaging", "off" );
+            if ( ! $( "input[name=fast_paging]", form ).is( ":checked" ) ) {
+                $( form ).addHidden( "fast_paging", "off" );
             }
             $( form ).addHidden( "sort", $table.bootstrapTable("getOptions").sortName );
             $( form ).addHidden( "order", $table.bootstrapTable("getOptions").sortOrder );
@@ -141,7 +141,7 @@ $(function() {
         $( "#form-filter input[name=limit]" ).val ( size );
 
     }).on( "refresh.bs.table", function() { // 테이블 새로고침 이벤트 발생 시(고속 페이징)
-        if ( $( "#form-filter input[name=fastPaging]" ).is( ":checked" ) ) {
+        if ( $( "#form-filter input[name=fast_paging]" ).is( ":checked" ) ) {
             movePage( 0, true );
         }
     });
@@ -218,7 +218,7 @@ $(function() {
     // 필터 상태
     function updateFilterStatus() {
         var fields = $( "#form-filter :input" )
-            .not( "input[type='hidden'], [name='startDate'], [name='endDate'], [name='fastPaging'], [name='limit']" ) // 제외할 항목
+            .not( "input[type='hidden'], [name='start_date'], [name='end_date'], [name='fast_paging'], [name='limit']" ) // 제외할 항목
             .serializeArray();
 
         // 항목에 조건값이 한 개 이상 설정되어 있으면
@@ -315,7 +315,7 @@ $(function() {
             }
 
             // 빠른 페이징일 때는
-            if ( $( "#form-filter input[name='fastPaging']" ).is( ":checked" ) ) {
+            if ( $( "#form-filter input[name='fast_paging']" ).is( ":checked" ) ) {
                 movePage( 0, false ); // 첫 페이지 디스플레이
             }
         });
