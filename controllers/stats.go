@@ -89,25 +89,27 @@ func (c *StatsController) updateItemText(rows []objs.Stats) {
 	}
 }
 
-func (c *StatsController) GetStats() {
-	filter := c.getFilter()
-	rows, _, err := models.GetStats(c.member, filter)
-	if err != nil {
-		log.Error(err)
-	}
-
-	if rows == nil {
-		c.Data["json"] = []int{}
-	} else {
-		c.Data["json"] = rows
-	}
-	c.ServeJSON()
-}
+//
+//func (c *StatsController) GetStats() {
+//	filter := c.getFilter()
+//	rows, _, err := models.GetStats(c.member, filter)
+//	if err != nil {
+//		log.Error(err)
+//	}
+//
+//	if rows == nil {
+//		c.Data["json"] = []int{}
+//	} else {
+//		c.Data["json"] = rows
+//	}
+//	c.ServeJSON()
+//}
 
 func (c *StatsController) GetSummary() {
 	filter := c.getFilter()
 	c.Data["json"] = map[string]interface{}{
-		"eventType": c.getEventTypes(filter),
+		"eventType":        c.getEventTypes(filter),
+		"equipCountByType": c.getEquipCountByType(filter),
 	}
 	c.ServeJSON()
 }
@@ -120,6 +122,7 @@ func (c *StatsController) getEventTypes(filter *objs.StatsFilter) map[int]int {
 		4: 0,
 	}
 	filter.StatsType = "evt"
+	filter.Top = 99999
 	rows, _, err := models.GetStats(c.member, filter)
 	if err != nil {
 		log.Error(err)
@@ -129,4 +132,21 @@ func (c *StatsController) getEventTypes(filter *objs.StatsFilter) map[int]int {
 		eventTypes[eType] += r.Count
 	}
 	return eventTypes
+}
+
+func (c *StatsController) getEquipCountByType(filter *objs.StatsFilter) map[int]int {
+	tags := map[int]int{
+		1: 0,
+		2: 0,
+		4: 0,
+	}
+	rows, err := models.GetEquipCountByType(c.member, filter)
+	if err != nil {
+		log.Error(err)
+	}
+
+	for _, r := range rows {
+		tags[r.EquipType] += r.Count
+	}
+	return tags
 }

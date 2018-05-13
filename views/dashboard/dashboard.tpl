@@ -45,9 +45,25 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <p>ZT tag: <span class="text-zt-count"></span></p>
-                <p>PT tag: <span class="text-pt-count"></span></p>
-                <p>VT tag: <span class="text-vt-count"></span></p>
+                <p>ZT tag: <span class="count-zt"></span></p>
+                <p>PT tag: <span class="count-pt"></span></p>
+                <p>VT tag: <span class="count-bt"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-grid"></i> {{i18n .Lang "event"}}
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <p>Startup: <span class="count-startup"></span></p>
+                <p>Shock: <span class="count-shock"></span></p>
+                <p>Speeding: <span class="count-speeding"></span></p>
+                <p>Proximity: <span class="count-proximity"></span></p>
             </div>
         </div>
     </div>
