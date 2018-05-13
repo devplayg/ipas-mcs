@@ -115,18 +115,24 @@ $(function() {
     function updateSummary() {
         var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
             url = "/stats/summary/org/" + asset[0] + "/group/" + asset[1];
-        console.log(url);
 
         $.ajax({
             type  : "GET",
             async : true,
             url   : url
-        }).done( function( result ) {
-            console.log( result );
+        }).done( function( r ) {
+            console.log(r);
+            $( ".count-startup" ).text( r.eventTypes[1] );
+            $( ".count-shock" ).text( r.eventTypes[2] );
+            $( ".count-speeding" ).text( r.eventTypes[3] );
+            $( ".count-proximity" ).text( r.eventTypes[4] );
+            $( ".count-pt" ).text( r.equipCountByType[1] );
+            $( ".count-zt" ).text( r.equipCountByType[2] );
+            $( ".count-vt" ).text( r.equipCountByType[4] );
         }).always( function() {
         });
     }
-
+    // equipCountByType: {1: 16, 2: 16, 4: 12}eventType: {1: 53, 2: 54, 3: 53, 4: 41}__proto__: Object
 
     function updateRankings() {
         $( ".table-ranking" ).each(function( idx, obj ) {

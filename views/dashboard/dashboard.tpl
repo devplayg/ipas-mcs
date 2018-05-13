@@ -5,7 +5,7 @@
 {{end}}
 
 {{define "contents"}}
-<div class="portlet light bordered pt0 pb10 ">
+<div class="portlet light bordered pt0 pb10 hide">
     <div class="portlet-body">
         <form id="form-filter" role="form" method="post">
             <div class="form-body">
@@ -37,7 +37,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
@@ -45,18 +45,18 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <p>ZT tag: <span class="count-zt"></span></p>
                 <p>PT tag: <span class="count-pt"></span></p>
-                <p>VT tag: <span class="count-bt"></span></p>
+                <p>VT tag: <span class="count-vt"></span></p>
+                <p>ZT tag: <span class="count-zt"></span></p>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-grid"></i> {{i18n .Lang "event"}}
+                    <i class="icon-grid"></i> {{i18n .Lang "event type"}}
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
@@ -64,6 +64,38 @@
                 <p>Shock: <span class="count-shock"></span></p>
                 <p>Speeding: <span class="count-speeding"></span></p>
                 <p>Proximity: <span class="count-proximity"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-info"></i> {{i18n .Lang "activities"}}
+                </div>
+                <div class="pull-right">
+                    <div class="mt-checkbox-inline">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="activities" value="1"> {{i18n .Lang "monitoring.startup"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="activities" value="2" checked="checked"> {{i18n .Lang "monitoring.shock"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="activities" value="3" checked="checked"> {{i18n .Lang "monitoring.speeding"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="activities" value="4" checked="checked"> {{i18n .Lang "monitoring.proximity"}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
             </div>
         </div>
     </div>
