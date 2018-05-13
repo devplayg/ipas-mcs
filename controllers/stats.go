@@ -108,7 +108,7 @@ func (c *StatsController) updateItemText(rows []objs.Stats) {
 func (c *StatsController) GetSummary() {
 	filter := c.getFilter()
 	c.Data["json"] = map[string]interface{}{
-		"eventType":        c.getEventTypes(filter),
+		"eventTypes":        c.getEventTypes(filter),
 		"equipCountByType": c.getEquipCountByType(filter),
 	}
 	c.ServeJSON()

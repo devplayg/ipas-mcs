@@ -93,26 +93,7 @@ func isValidPassword(str string) bool {
 	return hasLowerCase && hasUpperCase && hasNumber && hasSpecialChar && properLength
 }
 
-//
-//type MemberConfig struct {
-//	MemberId int
-//	Keyword  string
-//	ValueS   string
-//	ValueN   int
-//}
-//
 type MemberAsset struct {
 	MemberId int
 	Assets   []int
 }
-
-//
-//type IpCidr struct {
-//	Ip   string
-//	Cidr int
-//}
-//
-//type Password struct {
-//	Password string
-//	Salt     string
-//}
