@@ -6,7 +6,7 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 60000,
+        interval = 60000000,
         timer = null;
 
     // 날짜
@@ -113,7 +113,18 @@ $(function() {
 
 
     function updateSummary() {
+        var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+            url = "/stats/summary/org/" + asset[0] + "/group/" + asset[1];
+        console.log(url);
 
+        $.ajax({
+            type  : "GET",
+            async : true,
+            url   : url
+        }).done( function( result ) {
+            console.log( result );
+        }).always( function() {
+        });
     }
 
 
@@ -121,7 +132,6 @@ $(function() {
         $( ".table-ranking" ).each(function( idx, obj ) {
             var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
                 url = $( this ).data( "query" ) + "/org/" + asset[0] + "/group/" + asset[1];
-            // console.log(url);
             $( this ).bootstrapTable( "refresh", { url: url, silent: true } );
         });
     }

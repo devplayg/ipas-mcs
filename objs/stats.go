@@ -21,3 +21,8 @@ type StatsFilter struct {
 	OrgId     int
 	GroupId   int
 }
+
+type TagCount struct {
+	EquipType int `json:"equip_type"`
+	Count     int `json:"count"`
+}
