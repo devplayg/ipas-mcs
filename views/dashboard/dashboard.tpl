@@ -12,14 +12,14 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <!-- 검색 시작날짜 -->
-                        <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                            <input id="startDate" class="form-control mask-yyyymmddhhii" size="16" type="text" name="startDate" value="{{.filter.StartDate}}" disabled>
+                        <div class="input-group date datetime hide" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
+                            <input id="start_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}" disabled>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                         </div>
 
                         <!-- 검색 끝날짜 -->
-                        <div class="input-group date datetime">
-                            <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="endDate" value="{{.filter.EndDate}}" disabled>
+                        <div class="input-group date datetime hide">
+                            <input id="end_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}" disabled>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                         </div>
 
@@ -36,9 +36,24 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-4">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-grid"></i> {{i18n .Lang "summary"}}
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <p>ZT tag: <span class="text-zt-count"></span></p>
+                <p>PT tag: <span class="text-pt-count"></span></p>
+                <p>VT tag: <span class="text-vt-count"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
-
     <div class="col-md-3">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">

@@ -7,8 +7,7 @@ $(function() {
     // 자산 (기관 / 그룹)
     var assets = { },
         interval = 60000,
-        timer = null,
-        realtimeStats = true;
+        timer = null;
 
     // 날짜
     $( ".datetime" ).datetimepicker({
@@ -105,9 +104,16 @@ $(function() {
 
 
     function updateStats() {
+        updateSummary();
         updateRankings();
+
         $( ".text-updated" ).removeClass( "hide" );
         setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
+    }
+
+
+    function updateSummary() {
+
     }
 
 

@@ -151,7 +151,9 @@ function captureTableColumns( table, key ) {
 
 //  테이블 컬럼 복구
 function restoreTableColumns( table, key ) {
+    console.log(key);
     if ( $.cookie( key ) !== undefined ) {
+        console.log($.cookie(key));
         var h = {};
         $.map(  $.cookie( key ).split( "," ), function( col, i ) {
             h[ col ] = true;
@@ -161,8 +163,10 @@ function restoreTableColumns( table, key ) {
         $( table ).find( "th" ).each(function( i, th ) {
             var col = $( th ).data( "field" );
             if ( h[ col ] ) {
+                console.log("show-"+col);
                 $( table ).bootstrapTable( "showColumn", col );
             } else {
+                console.log("hide-"+col);
                 $( table ).bootstrapTable( "hideColumn", col );
             }
         });

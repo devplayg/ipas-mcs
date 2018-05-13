@@ -47,6 +47,7 @@ func (c *IpaslogController) GetLogs() {
 
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
+		logs[idx].No = filter.PagingFilter.Offset + int64(idx) + 1
 		if v, ok := assetMap.Load(a.OrgId); ok {
 			logs[idx].OrgName = v.(objs.Asset).Name
 		} else {
@@ -81,10 +82,10 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 		if len(filter.StartDate) > 0 || len(filter.EndDate) > 0 {
 			filter.StartDate = filter.StartDate + " 00:00"
 			filter.EndDate = filter.EndDate + " 23:59"
-		} else if len(filter.StartDate) > 0 {
+		} else if len(filter.StartDate) > 0 { // 특정 지정 날짜에 대한 데이터 조회 시
 			filter.StartDate = filter.StartDate + " 00:00"
 			filter.EndDate = filter.StartDate + " 23:59"
-		} else {
+		} else { // 최종 통계산출 날짜에 대한 데이터 조회 시
 			rs, err := models.GetSystemConfig("stats", "last_updated")
 			if err != nil {
 				log.Error(err)
