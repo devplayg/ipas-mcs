@@ -45,6 +45,13 @@ $(function() {
         }
     });
 
+    $( ".activity" ).change(function() {
+        var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+            orgId = asset[0],
+            groupId = asset[1];
+        updateLogs( orgId, groupId );
+    });
+
 
 
 
@@ -68,7 +75,6 @@ $(function() {
                         text: org.name
                     })
                 );
-                // console.log(org.asset_id + "/-1");
 
                 // 그룹
                 $.each( org.children, function( i, group ) {
@@ -79,7 +85,6 @@ $(function() {
                             class: "ml20"
                         })
                     );
-                    // console.log(org.asset_id + "/-1");
                 });
             });
 
@@ -104,24 +109,26 @@ $(function() {
 
 
     function updateStats() {
-        updateSummary();
-        updateRankings();
+        var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+            orgId = asset[0],
+            groupId = asset[1];
+
+        updateSummary( orgId, groupId );
+        updateRankings( orgId, groupId );
+        updateLogs( orgId, groupId );
 
         $( ".text-updated" ).removeClass( "hide" );
         setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
     }
 
 
-    function updateSummary() {
-        var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
-            url = "/stats/summary/org/" + asset[0] + "/group/" + asset[1];
-
+    function updateSummary( orgId, groupId ) {
+        var url = "/stats/summary/org/" + orgId + "/group/" + groupId;
         $.ajax({
             type  : "GET",
             async : true,
             url   : url
         }).done( function( r ) {
-            console.log(r);
             $( ".count-startup" ).text( r.eventTypes[1] );
             $( ".count-shock" ).text( r.eventTypes[2] );
             $( ".count-speeding" ).text( r.eventTypes[3] );
@@ -132,14 +139,44 @@ $(function() {
         }).always( function() {
         });
     }
-    // equipCountByType: {1: 16, 2: 16, 4: 12}eventType: {1: 53, 2: 54, 3: 53, 4: 41}__proto__: Object
 
-    function updateRankings() {
+
+    function updateRankings( orgId, groupId ) {
         $( ".table-ranking" ).each(function( idx, obj ) {
-            var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
-                url = $( this ).data( "query" ) + "/org/" + asset[0] + "/group/" + asset[1];
-            $( this ).bootstrapTable( "refresh", { url: url, silent: true } );
+            var url = $( this ).data( "query" ) + "/org/" + orgId + "/group/" + groupId;
+            $( this ).bootstrapTable( "refresh", {
+                url: url,
+                silent: true
+            });
         });
+    }
+
+
+    function updateLogs( orgId, groupId ) {
+        var url = '/getRealTimeLogs?limit=5';
+
+        var activities = [];
+        $( ".activity" ).each(function( idx, obj ) {
+            if ( $( obj ).is(":checked") ) {
+                activities.push( "event_type=" + $( obj ).val() );
+            }
+        });
+
+        if ( activities.length < 1 ) {
+            $( "#table-ipaslogs" ).bootstrapTable( "removeAll" );
+        } else {
+            var urlSuffix = "";
+            if ( orgId > 0 ) {
+                urlSuffix += "&org_id=" + orgId;
+                if ( groupId > 0 ) {
+                    urlSuffix += "&group_id=" + groupId;
+                }
+            }
+            $( "#table-ipaslogs" ).bootstrapTable( "refresh", {
+                url: url + "&" + activities.join( "&" ) + urlSuffix,
+                silent: true
+            });
+        }
     }
 
 });

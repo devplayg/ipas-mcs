@@ -5,7 +5,7 @@
 {{end}}
 
 {{define "contents"}}
-<div class="portlet light bordered pt0 pb10 hide">
+<div class="portlet light bordered pt0 pb10 ">
     <div class="portlet-body">
         <form id="form-filter" role="form" method="post">
             <div class="form-body">
@@ -77,25 +77,36 @@
                 <div class="pull-right">
                     <div class="mt-checkbox-inline">
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="activities" value="1"> {{i18n .Lang "monitoring.startup"}}
+                            <input type="checkbox" class="activity" name="startupEvent" value="1"> {{i18n .Lang "startup"}}
                             <span></span>
                         </label>
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="activities" value="2" checked="checked"> {{i18n .Lang "monitoring.shock"}}
+                            <input type="checkbox" class="activity" name="shockEvent" value="2" checked="checked"> {{i18n .Lang "shock"}}
                             <span></span>
                         </label>
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="activities" value="3" checked="checked"> {{i18n .Lang "monitoring.speeding"}}
+                            <input type="checkbox" class="activity" name="speedingEvent" value="3" checked="checked"> {{i18n .Lang "speeding"}}
                             <span></span>
                         </label>
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="activities" value="4" checked="checked"> {{i18n .Lang "monitoring.proximity"}}
+                            <input type="checkbox" class="activity" name="proximityEvent " value="4" checked="checked"> {{i18n .Lang "proximity"}}
                             <span></span>
                         </label>
                     </div>
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
+                <table id="table-ipaslogs" class="table"
+                       data-classes="table-condensed table-no-bordered"
+                       data-toggle="table"
+                       data-cache="false"
+                       data-show-header="false">
+                    <thead>
+                    <tr>
+                        <th data-field="description" data-formatter="dashboardEventDescriptionFormatter" data-sortable="true">{{i18n .Lang "description"}}</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>

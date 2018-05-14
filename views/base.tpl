@@ -551,15 +551,16 @@
         <script>
             // Timezone
             var member = {
-                    "timezone": "{{.member.Timezone}}" || "Asia/Seoul",
-                    "position": {{.member.Position}},
-                },
-                reqVars = {{.reqVars}};
+                "timezone": "{{.member.Timezone}}" || "Asia/Seoul",
+                "position": {{.member.Position}},
+            };
+            var reqVars = {{.reqVars}};
             reqVars["ctrl"] = {{.ctrl}};
             reqVars["act"] = {{.act}};
-            daumMapKey = {{.daumMapKey}};
 
-            var felang = {{.frontLang}}; // front-end languages
+            var daumMapKey = {{.daumMapKey}},
+                felang = {{.frontLang}}, // front-end languages
+                lang = {{.Lang}};
         </script>
 
         <!-- Javascript -->

@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"strconv"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type IpaslogController struct {
@@ -32,7 +32,6 @@ func (c *IpaslogController) Get() {
 func (c *IpaslogController) Post() {
 	c.Get()
 }
-
 
 func (c *IpaslogController) Display() {
 	filter := c.getFilter()
@@ -63,7 +62,6 @@ func (c *IpaslogController) GetLogs() {
 	c.serveResultJson(logs, total, err, filter.FastPaging)
 }
 
-
 func (c *IpaslogController) getFilter() *objs.IpasFilter {
 
 	// 요청값 분류
@@ -72,7 +70,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 		log.Error(err)
 	}
 	// 날짜 설정
-	if ! filter.StatsMode { // 일반적으로 로그를 조회하는 경우
+	if !filter.StatsMode { // 일반적으로 로그를 조회하는 경우
 		if filter.StartDate == "" || filter.EndDate == "" {
 			t := time.Now()
 			filter.StartDate = t.AddDate(0, 0, -7).Format("2006-01-02") + " 00:00"
@@ -111,7 +109,6 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if filter.Limit < 1 {
 		filter.Limit = 24
 	}
-
 	if filter.FastPaging == "" {
 		filter.FastPaging = "off"
 	}
@@ -132,7 +129,6 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	filter.StartDate = t.Format("2006-01-02") + " 00:00"
 	filter.EndDate = t.Format("2006-01-02") + " 23:59"
 	filter.FastPaging = "on"
-	filter.Limit = 9
 
 	logs, total, err := models.GetIpaslog(filter, c.member)
 
