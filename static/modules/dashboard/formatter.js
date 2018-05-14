@@ -111,16 +111,20 @@ function dashboardEventDescriptionFormatter( val, row, idx ) {
     if ( row.event_type === StartupEvent ) {
         eventName = felang.startup;
         eventIcon = '<i class="icon-power"></i>';
+
     } else if ( row.event_type === ShockEvent ) {
         eventName = felang.shock;
         eventIcon = '<i class="fa fa-bolt"></i>';
+
     } else if ( row.event_type === SpeedingEvent ) {
         eventName = felang.speeding;
         eventIcon = '<i class="icon-speedometer"></i>';
+
     } else if ( row.event_type === ProximityEvent ) {
         eventName = felang.proximity;
-        eventIcon = '<i class="icon-power"></i>';
+        eventIcon = '<i class="icon-size-actual"></i>';
         prefix = '<span class="font-red">';
+
     } else {
         eventName = "Unknown";
         eventIcon = '<i class="icon-info"></i>';
