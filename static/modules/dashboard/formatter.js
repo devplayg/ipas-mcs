@@ -130,11 +130,9 @@ function dashboardEventDescriptionFormatter( val, row, idx ) {
         eventIcon = '<i class="icon-info"></i>';
     }
 
-
-
-
     if ( lang === "ko-kr" ){
         return prefix + lineIcon + " <i>" + row.org_name + "</i> 의 <i>" + row.group_name + "</i> 에서 " + eventIcon + " " + eventName + " 이벤트가 발생하였습니다" + suffix;
+    } else {
+        return prefix + lineIcon + " " + eventName + " event in <i>" + row.group_name + ", " + row.org_name + "</i>" + suffix;
     }
-    return 3;
 }
