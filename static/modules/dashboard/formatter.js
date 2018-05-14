@@ -74,8 +74,6 @@ function dashboardIpasEquipIdOfProximityEventFormatter( val, row, idx ) {
     return dashboardIpasEquipIdFormatter( val, row, ProximityEvent );
 }
 
-dashboardIpasEquipIdOfStartupEventFormatter
-
 function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
     var param = {
         stats_mode:  true,
@@ -101,4 +99,38 @@ function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
     var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
         suffix = '</a>';
     return prefix + getIpasTag( equipId ) + suffix;
+}
+
+function dashboardEventDescriptionFormatter( val, row, idx ) {
+    var eventName,
+        eventIcon,
+        prefix = "<span>",
+        suffix = "</span>",
+        lineIcon = '<i class="icon-info"></i>';
+
+    if ( row.event_type === StartupEvent ) {
+        eventName = felang.startup;
+        eventIcon = '<i class="icon-power"></i>';
+    } else if ( row.event_type === ShockEvent ) {
+        eventName = felang.shock;
+        eventIcon = '<i class="fa fa-bolt"></i>';
+    } else if ( row.event_type === SpeedingEvent ) {
+        eventName = felang.speeding;
+        eventIcon = '<i class="icon-speedometer"></i>';
+    } else if ( row.event_type === ProximityEvent ) {
+        eventName = felang.proximity;
+        eventIcon = '<i class="icon-power"></i>';
+        prefix = '<span class="font-red">';
+    } else {
+        eventName = "Unknown";
+        eventIcon = '<i class="icon-info"></i>';
+    }
+
+
+
+
+    if ( lang === "ko-kr" ){
+        return prefix + lineIcon + " <i>" + row.org_name + "</i> 의 <i>" + row.group_name + "</i> 에서 " + eventIcon + " " + eventName + " 이벤트가 발생하였습니다" + suffix;
+    }
+    return 3;
 }

@@ -34,16 +34,13 @@
                         data-toggle="table"
                         data-show-refresh="true"
                         data-show-columns="true"
-                        {*Row강조*}
-
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=4"
-                >
+                        data-url="/getRealTimeLogs?limit=9&event_type=4">
                     <thead>
                     <tr>
                         <th data-field="date" data-width="10%" data-sortable="true" data-formatter="shortDateFormatter">{{i18n .Lang "occurrence date"}}</th>
@@ -90,8 +87,7 @@
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=2"
-                >
+                        data-url="/getRealTimeLogs?limit=9&event_type=2">
                     <thead>
                     <tr>
                         <th data-field="date" data-width="10%" data-sortable="true" data-formatter="shortDateFormatter">{{i18n .Lang "occurrence date"}}</th>
@@ -139,8 +135,7 @@
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=3"
-                >
+                        data-url="/getRealTimeLogs?limit=9&event_type=3">
                     <thead>
                     <tr>
                         <th data-field="date" data-width="10%" data-sortable="true" data-formatter="shortDateFormatter">{{i18n .Lang "occurrence date"}}</th>
@@ -187,8 +182,7 @@
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?event_type=1"
-                >
+                        data-url="/getRealTimeLogs?limit=9&event_type=1">
                     <thead>
                     <tr>
                         <th data-field="date" data-width="10%" data-sortable="true" data-formatter="shortDateFormatter">{{i18n .Lang "occurrence date"}}</th>
