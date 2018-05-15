@@ -6,3 +6,16 @@
 .bootstrap-table .table  {
      border-bottom: 0px solid #ddd !important;
 }
+
+.portlet.light.bordered > .portlet-title {
+    border-bottom: 1px solid #eef1f5;
+}
+
+.portlet.light > .portlet-title {
+    padding: 0;
+    min-height: 38px;
+}
+
+.portlet.light > .portlet-title > .caption {
+    padding-top: 5px;
+}

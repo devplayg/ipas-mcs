@@ -6,7 +6,7 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 60000000,
+        interval = 211000,
         timer = null;
 
     // 날짜
@@ -17,6 +17,20 @@ $(function() {
         minView: 2,
         maxView: 4,
         autoclose: true
+    });
+
+    // Chart - 이벤트 유형
+    var eventTypeChart = Morris.Donut({
+        element: 'chart-eventType',
+        resize: true,
+        data: [
+            {value: 1, label: 'SHOCK'},
+            {value: 1, label: 'SPD'},
+            {value: 1, label: 'PRXY'},
+        ],
+        formatter: function (x) { return x + ""}
+    }).on('click', function(i, row){
+        console.log(i, row);
     });
 
     initializeAssets();
@@ -38,6 +52,7 @@ $(function() {
 
 
     $( ".btn-start" ).click(function(e) {
+        // e.preventDefault();
         if ( timer === null ) {
             startTimer();
         } else {
@@ -116,6 +131,7 @@ $(function() {
         updateSummary( orgId, groupId );
         updateRankings( orgId, groupId );
         updateLogs( orgId, groupId );
+        // updateCharts( orgId, groupId );
 
         $( ".text-updated" ).removeClass( "hide" );
         setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
@@ -129,13 +145,23 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
-            $( ".count-startup" ).text( r.eventTypes[1] );
-            $( ".count-shock" ).text( r.eventTypes[2] );
-            $( ".count-speeding" ).text( r.eventTypes[3] );
-            $( ".count-proximity" ).text( r.eventTypes[4] );
-            $( ".count-pt" ).text( r.equipCountByType[1] );
-            $( ".count-zt" ).text( r.equipCountByType[2] );
-            $( ".count-vt" ).text( r.equipCountByType[4] );
+            $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
+            $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
+            $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
+            $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
+
+            $( ".count-pt" ).text( r.equipCountByType[PT] );
+            $( ".count-zt" ).text( r.equipCountByType[ZT] );
+            $( ".count-vt" ).text( r.equipCountByType[VT] );
+            $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
+
+            var  data= [
+                {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
+                {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
+                {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
+            ];
+
+            eventTypeChart.setData(data);
         }).always( function() {
         });
     }
@@ -154,7 +180,6 @@ $(function() {
 
     function updateLogs( orgId, groupId ) {
         var url = '/getRealTimeLogs?limit=5';
-
         var activities = [];
         $( ".activity" ).each(function( idx, obj ) {
             if ( $( obj ).is(":checked") ) {
@@ -163,8 +188,10 @@ $(function() {
         });
 
         if ( activities.length < 1 ) {
+            console.log(1);
             $( "#table-ipaslogs" ).bootstrapTable( "removeAll" );
         } else {
+            console.log(3);
             var urlSuffix = "";
             if ( orgId > 0 ) {
                 urlSuffix += "&org_id=" + orgId;
