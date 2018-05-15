@@ -2,6 +2,7 @@
 
 {{define "css"}}
 <link href="/static/modules/{{.ctrl}}/dashboard.css" rel="stylesheet" type="text/css" />
+<link href="/static/plugins/morris.js/morris.css" rel="stylesheet" type="text/css" />
 {{end}}
 
 {{define "contents"}}
@@ -27,7 +28,7 @@
                             <option value="-1/-1">{{i18n .Lang "select all"}}</option>
                         </select>
 
-                        <button class="btn default btn-start"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
+                        <button type="button" class="btn default btn-start"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
                         <span class="text-updated font-red hide ml10">Updated</span>
                     </div>
                 </div>
@@ -45,9 +46,26 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <p>PT tag: <span class="count-pt"></span></p>
-                <p>VT tag: <span class="count-vt"></span></p>
-                <p>ZT tag: <span class="count-zt"></span></p>
+                <div class="row">
+                    <div  class="col-xs-6">
+                        <h1 class="count-total-tags bold font-grey-mint"></h1>
+                        Total
+                    </div>
+                    <div  class="col-xs-6">
+                        <h1 class="count-pt grey-salsa"></h1>
+                        Pedestrian Tag
+                    </div>
+                </div>
+                <div class="row">
+                    <div  class="col-xs-6">
+                        <h1 class="count-zt"></h1>
+                        Zone tag
+                    </div>
+                    <div  class="col-xs-6">
+                        <h1 class="count-vt"></h1>
+                        Vehicle tag
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -60,10 +78,11 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <p>Startup: <span class="count-startup"></span></p>
-                <p>Shock: <span class="count-shock"></span></p>
-                <p>Speeding: <span class="count-speeding"></span></p>
-                <p>Proximity: <span class="count-proximity"></span></p>
+                <div id="chart-eventType" class="p0" style="height: 200px; margin: -100px 0px -50px 0px;"></div>
+                {{/*<p>Startup: <span class="count-startup"></span></p>*/}}
+                {{/*<p>Shock: <span class="count-shock"></span></p>*/}}
+                {{/*<p>Speeding: <span class="count-speeding"></span></p>*/}}
+                {{/*<p>Proximity: <span class="count-proximity"></span></p>*/}}
             </div>
         </div>
     </div>
@@ -75,7 +94,7 @@
                     <i class="icon-info"></i> {{i18n .Lang "activities"}}
                 </div>
                 <div class="pull-right">
-                    <div class="mt-checkbox-inline">
+                    <div class="mt-checkbox-inline p0">
                         <label class="mt-checkbox mt-checkbox-outline">
                             <input type="checkbox" class="activity" name="startupEvent" value="1"> {{i18n .Lang "startup"}}
                             <span></span>
@@ -343,6 +362,8 @@
 {{define "javascript"}}
     {{template "ipaslog/ipas_log_on_modal.tpl" .}}
     {{template "ipasreport/ipasreport.tpl" .}}
+    <script src="/static/plugins/morris.js/morris.min.js"></script>
+    <script src="/static/plugins/raphael/raphael.min.js"></script>
     <script src="/static/modules/{{.ctrl}}/dashboard.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}

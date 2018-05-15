@@ -2,11 +2,16 @@
  *
  */
 
-// Ajax
+// Events
 var StartupEvent = 1,
     ShockEvent = 2,
     SpeedingEvent = 3,
     ProximityEvent = 4;
+
+// Tags
+var PT = 1, // Pedestrian tag
+    ZT = 2, // Zone tag
+    VT = 4; // Vehicle tag
 
 $.ajaxSetup({ cache:false });
 var ajax = $.ajax;
