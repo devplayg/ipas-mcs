@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <div id="chart-eventType" class="p0" style="height: 200px; margin: -100px 0px -50px 0px;"></div>
+                <div id="chart-eventType" class="p0" style="height: 180px; margin: -100px 0px -50px 0px;"></div>
                 {{/*<p>Startup: <span class="count-startup"></span></p>*/}}
                 {{/*<p>Shock: <span class="count-shock"></span></p>*/}}
                 {{/*<p>Speeding: <span class="count-speeding"></span></p>*/}}
