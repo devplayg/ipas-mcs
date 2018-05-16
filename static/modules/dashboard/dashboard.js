@@ -153,6 +153,7 @@ $(function() {
             $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
 
             var  data = [
+                {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
                 {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
                 {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
                 {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
