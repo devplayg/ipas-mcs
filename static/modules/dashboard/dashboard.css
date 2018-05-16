@@ -19,3 +19,6 @@
 .portlet.light > .portlet-title > .caption {
     padding-top: 5px;
 }
+.b {
+    border: 1px dashed #acacac;
+}
