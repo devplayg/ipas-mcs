@@ -24,9 +24,7 @@ $(function() {
         element: 'chart-eventType',
         resize: true,
         data: [
-            {value: 1, label: 'SHOCK'},
-            {value: 1, label: 'SPD'},
-            {value: 1, label: 'PRXY'},
+            { label: "N/A", value: 0 }
         ],
         formatter: function (x) { return x + ""}
     }).on('click', function(i, row){
@@ -131,7 +129,6 @@ $(function() {
         updateSummary( orgId, groupId );
         updateRankings( orgId, groupId );
         updateLogs( orgId, groupId );
-        // updateCharts( orgId, groupId );
 
         $( ".text-updated" ).removeClass( "hide" );
         setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
@@ -155,13 +152,18 @@ $(function() {
             $( ".count-vt" ).text( r.equipCountByType[VT] );
             $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
 
-            var  data= [
+            var  data = [
                 {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
                 {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
                 {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
             ];
 
-            eventTypeChart.setData(data);
+            var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+            if ( total > 0 ) {
+                eventTypeChart.setData( data );
+            } else {
+                eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
+            }
         }).always( function() {
         });
     }
@@ -188,10 +190,8 @@ $(function() {
         });
 
         if ( activities.length < 1 ) {
-            console.log(1);
             $( "#table-ipaslogs" ).bootstrapTable( "removeAll" );
         } else {
-            console.log(3);
             var urlSuffix = "";
             if ( orgId > 0 ) {
                 urlSuffix += "&org_id=" + orgId;

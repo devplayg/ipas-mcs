@@ -47,22 +47,22 @@
             </div>
             <div class="portlet-body pt0 mh">
                 <div class="row">
-                    <div  class="col-xs-6">
-                        <h1 class="count-total-tags bold font-grey-mint"></h1>
+                    <div class="col-xs-6">
+                        <h1 class="count-total-tags mt10 font-grey-mint bold"></h1>
                         Total
                     </div>
-                    <div  class="col-xs-6">
-                        <h1 class="count-pt grey-salsa"></h1>
+                    <div class="col-xs-6">
+                        <h1 class="count-pt mt10 grey-salsa"></h1>
                         Pedestrian Tag
                     </div>
                 </div>
                 <div class="row">
-                    <div  class="col-xs-6">
-                        <h1 class="count-zt"></h1>
+                    <div class="col-xs-6">
+                        <h1 class="count-zt mt10"></h1>
                         Zone tag
                     </div>
-                    <div  class="col-xs-6">
-                        <h1 class="count-vt"></h1>
+                    <div class="col-xs-6">
+                        <h1 class="count-vt mt10"></h1>
                         Vehicle tag
                     </div>
                 </div>
