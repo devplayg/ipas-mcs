@@ -117,7 +117,6 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 }
 
 func (c *IpaslogController) DisplayRealTimeLogs() {
-	//c.Data["daummap"] = beego.AppConfig.DefaultString("daummap", "IPAS-MCS")
 	c.setTpl("realtime_log.tpl")
 }
 

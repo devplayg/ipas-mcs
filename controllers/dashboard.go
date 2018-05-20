@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"time"
@@ -21,12 +20,17 @@ func (c *DashboardController) CtrlPrepare() {
 }
 
 func (c *DashboardController) Display() {
-	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
-
 	filter := c.getFilter()
 	c.Data["filter"] = filter
 
 	c.setTpl("dashboard.tpl")
+}
+
+func (c *DashboardController) DisplayDarkboard() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+
+	c.setTpl("darkboard.tpl")
 }
 
 func (c *DashboardController) getFilter() *objs.IpasFilter {
