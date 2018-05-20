@@ -224,7 +224,10 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/dashboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}}</span></a>
+                                    <a href="/dashboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} I</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/darkboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} II</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/realtimelogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>

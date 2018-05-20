@@ -150,3 +150,21 @@ func (c *StatsController) getEquipCountByType(filter *objs.StatsFilter) map[int]
 	}
 	return tags
 }
+
+
+func (c *StatsController) getActiveEquip(filter *objs.StatsFilter) map[int]int {
+	tags := map[int]int{
+		1: 0,
+		2: 0,
+		4: 0,
+	}
+	rows, err := models.GetEquipCountByType(c.member, filter)
+	if err != nil {
+		log.Error(err)
+	}
+
+	for _, r := range rows {
+		tags[r.EquipType] += r.Count
+	}
+	return tags
+}

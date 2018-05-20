@@ -1,0 +1,18 @@
+.page-bar, .page-content {
+    background-color: #252C36 !important;
+}
+
+.page-content-white .page-content .page-bar {
+    border-bottom: 1px solid #252C36;
+}
+
+.panel-dark {
+    background-color: #2B3440;
+    color: #fff !important;
+}
+
+.panel-box {
+    margin-bottom: 25px;
+    padding: 10px 0px 10px 10px;
+    /*border: 1px solid red;*/
+}
