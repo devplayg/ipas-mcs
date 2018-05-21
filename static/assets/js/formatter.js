@@ -24,7 +24,8 @@ function int2ipFormatter( val, row, idx ) {
 
 function dateFormatter( val, row, idx ) {
     var m = moment( val );
-    return '<span class="">' + m.format( "MMMM D YYYY, hh:mm:ss" ) + '</span>';
+    // return '<span class="">' + m.format( "MMMM D YYYY, hh:mm:ss" ) + '</span>';
+    return '<span class="">' + m.format() + '</span>';
 }
 
 function shortDateFormatter( val, row, idx ) {

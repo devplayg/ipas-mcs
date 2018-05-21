@@ -41,6 +41,31 @@ func (c *StatsController) getFilter() *objs.StatsFilter {
 	return &filter
 }
 
+func (c *StatsController) GetTimeline() {
+	filter := c.getFilter()
+	rows := c.getStatsByOrgGroup(filter, "timeline2")
+
+	timeline := make(map[string]map[int]int)
+	for _, r := range rows {
+		if _, ok := timeline[r.Item]; !ok {
+			timeline[r.Item] = map[int]int{
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+			}
+		}
+		timeline[r.Item][objs.StartEvent] += r.StartupCount
+		timeline[r.Item][objs.ShockEvent] += r.ShockCount
+		timeline[r.Item][objs.SpeedingEvent] += r.SpeedingCount
+		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
+	}
+
+	c.Data["json"] = timeline
+
+	c.ServeJSON()
+}
+
 func (c *StatsController) GetStatsBy() {
 	//http://127.0.0.1/stats/evt1/by/equip/org/-1/group/-1
 	//http://127.0.0.1/stats/evt1/by/equip/org/1/group/-1
@@ -108,8 +133,9 @@ func (c *StatsController) updateItemText(rows []objs.Stats) {
 func (c *StatsController) GetSummary() {
 	filter := c.getFilter()
 	c.Data["json"] = map[string]interface{}{
-		"eventTypes":        c.getEventTypes(filter),
+		"eventTypes":       c.getEventTypes(filter),
 		"equipCountByType": c.getEquipCountByType(filter),
+		"activated":        c.getStatsByOrgGroup(filter, "activated"),
 	}
 	c.ServeJSON()
 }
@@ -123,7 +149,7 @@ func (c *StatsController) getEventTypes(filter *objs.StatsFilter) map[int]int {
 	}
 	filter.StatsType = "evt"
 	filter.Top = 99999
-	rows, _, err := models.GetStats(c.member, filter)
+	rows, _, err := models.GetStatsByAssetId(c.member, filter)
 	if err != nil {
 		log.Error(err)
 	}
@@ -140,31 +166,37 @@ func (c *StatsController) getEquipCountByType(filter *objs.StatsFilter) map[int]
 		2: 0,
 		4: 0,
 	}
-	rows, err := models.GetEquipCountByType(c.member, filter)
-	if err != nil {
-		log.Error(err)
-	}
+	rows := c.getStatsByOrgGroup(filter, "equip_count")
 
 	for _, r := range rows {
-		tags[r.EquipType] += r.Count
+		equipType, _ := strconv.Atoi(r.Item)
+		tags[equipType] += r.Count
 	}
 	return tags
 }
 
-
-func (c *StatsController) getActiveEquip(filter *objs.StatsFilter) map[int]int {
-	tags := map[int]int{
-		1: 0,
-		2: 0,
-		4: 0,
-	}
-	rows, err := models.GetEquipCountByType(c.member, filter)
+func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType string) []objs.Stats {
+	filter.StatsType = statsType
+	rows, err := models.GetStatsByOrgGroup(c.member, filter)
 	if err != nil {
 		log.Error(err)
 	}
 
-	for _, r := range rows {
-		tags[r.EquipType] += r.Count
+	for i, r := range rows {
+		orgAsset, ok := assetMap.Load(r.OrgId)
+		if ok {
+			rows[i].OrgName = orgAsset.(objs.Asset).Name
+		} else {
+			rows[i].OrgName = strconv.Itoa(r.OrgId)
+		}
+
+		groupAsset, ok := assetMap.Load(r.GroupId)
+		if ok {
+			rows[i].GroupName += groupAsset.(objs.Asset).Name
+		} else {
+			rows[i].GroupName += strconv.Itoa(r.GroupId)
+		}
 	}
-	return tags
+
+	return rows
 }

@@ -4,6 +4,13 @@ import (
 	"time"
 )
 
+const (
+	StartEvent     = 1 // 시동
+	ShockEvent     = 2 // 충격
+	SpeedingEvent  = 3 // 과속
+	ProximityEvent = 4 // 근접
+)
+
 type IpasLog struct {
 	Date      time.Time `json:"date"`
 	OrgId     int       `json:"org_id"`
