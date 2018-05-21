@@ -1,6 +1,6 @@
 $(function() {
     var dom = document.getElementById( "chart-tags" );
-    var myChart = echarts.init( dom );
+    var equipChart = echarts.init( dom );
     // var scaleData = [
     //     {
     //         'name': '工程建设',
@@ -38,7 +38,7 @@ $(function() {
     };
 
     window.onresize = function() {
-        myChart.resize();
+        equipChart.resize();
     };
 
 
@@ -198,30 +198,27 @@ $(function() {
             console.log(r);
 
             updateTagsChart( r.equipCountByType );
-
+            
+            // 이벤트 타입 통계
             $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
             $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
             $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
             $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
 
+            // 자산 통계
             $( ".count-pt" ).text( r.equipCountByType[PT] );
             $( ".count-zt" ).text( r.equipCountByType[ZT] );
             $( ".count-vt" ).text( r.equipCountByType[VT] );
             $( ".count-total-equips" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
 
-    //         var  data = [
-    //             {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
-    //             {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
-    //             {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
-    //             {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
-    //         ];
-    //
-    //         var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
-    //         if ( total > 0 ) {
-    //             eventTypeChart.setData( data );
-    //         } else {
-    //             eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
-    //         }
+            //
+
+            //
+            var activated = 0;
+            $.each(r.activated, function(i, r) {
+                activated += r.count;
+            });
+            $( ".count-activated" ).text( activated );
         }).always( function() {
         });
     }
@@ -232,17 +229,17 @@ $(function() {
         $.each( rawData, function( tagType, v ) {
             var name;
             if ( tagType == PT ) {
-                name = "Pedestrian";
+                name = "PT";
             } else if ( tagType == ZT ) {
-                name = "Zone";
+                name = "ZT";
             } else if ( tagType == VT ) {
-                name = "Vehicle";
+                name = "VT";
             } else {
                 name = "Unknown";
             }
             scaleData.push( { name: name, value: v } );
         });
-        console.log( scaleData );
+        // console.log( scaleData );
 
         var data = [];
         for (var i = 0; i < scaleData.length; i++) {
@@ -318,7 +315,7 @@ $(function() {
         }
 
         if (option && typeof option === "object") {
-            myChart.setOption(option, true);
+            equipChart.setOption(option, true);
         }
     }
 

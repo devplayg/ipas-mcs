@@ -39,16 +39,26 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div id="chart-tags" class="panel-dark" style="min-height: 250px;"  style="background-color: #2B3440"></div>
+        <div id="chart-tags" class="panel-dark" style="min-height: 250px;"></div>
+    </div>
+    <div class="col-md-8">
+        <div id="chart-trend" class="panel-dark" style="min-height: 250px;"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
     </div>
     <div class="col-md-8">
         <div class="row">
             <div class="col-md-3">
                 <div class="panel-box panel-dark">
                     <div class="">
-                        <span class="count-active s28 bold"></span> / <span class="count-total-equips s28 bold"></span>
+                        <span class="count-activated s28 "></span>
+                        <span class="activated s20 mlr5">/</span>
+                        <span class="count-total-equips s20 "></span>
                     </div>
-                    <span class="">{{i18n .Lang "monitoring.shock event"}}</span>
+                    <span class="">Active / Total</span>
                 </div>
             </div>
 

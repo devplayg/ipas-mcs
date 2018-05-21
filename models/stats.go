@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// 통계 검색 by 기관, 그룹, 장비(stats_evt?_by_(group|equip)
+// 순위통계 검색 by 기관, 그룹, 장비(stats_evt?_by_(group|equip)
 func GetStatsBy(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, int64, error) {
 	var where string
 	var args []interface{}
@@ -66,8 +66,8 @@ func GetStatsBy(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, in
 	return rows, total, err
 }
 
-// stats_evt
-func GetStats(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, int64, error) {
+// 자산ID를 기준으로 순위통계 검색
+func GetStatsByAssetId(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, int64, error) {
 	var where string
 	var args []interface{}
 	var assetId int
@@ -131,15 +131,60 @@ func GetStats(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, int6
 	return rows, total, err
 }
 
-func GetEquipCountByType(member *objs.Member, filter *objs.StatsFilter) ([]objs.TagCount, error) {
+//
+//func GetEquipCountByType(member *objs.Member, filter *objs.StatsFilter) ([]objs.TagCount, error) {
+//	var where string
+//	var args []interface{}
+//	query := `
+//        select equip_type, count(*) count
+//        from ast_ipas
+//        where true %s
+//        group by equip_type
+//    `
+//	if filter.OrgId < 1 { // 전체통계 요청 시
+//		if member.Position >= objs.Administrator { // 관리자 세션이면 허용
+//		} else { // 일반사용자 세션이면 접근제어
+//			where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"
+//			args = append(args, member.MemberId)
+//		}
+//	} else { // 기관통계 요청 시
+//		if filter.GroupId < 0 { // 기관 전체통계 요청 시
+//			if member.Position >= objs.Administrator { // 관리자 세션이면 허용
+//				where += " and org_id = ?"
+//				args = append(args, filter.OrgId)
+//			} else { // 일반사용자 세션이면 접근제어
+//				where += " and org_id = ? and group_id in (select asset_id from mbr_asset where member_id = ?)"
+//				args = append(args, filter.OrgId, member.MemberId)
+//			}
+//		} else { // 특정 그룹통계 요청 시
+//			if member.Position >= objs.Administrator { // 관리자 세션이면 허용
+//				where += " and org_id = ? and group_id = ?"
+//				args = append(args, filter.OrgId, filter.GroupId)
+//			} else { // 일반사용자 세션이면 접근제어
+//				where += " and org_id = ? and group_id = ? and group_id in (select asset_id from mbr_asset where member_id = ?)"
+//				args = append(args, filter.OrgId, filter.GroupId, member.MemberId)
+//			}
+//		}
+//	}
+//
+//	var rows []objs.TagCount
+//	o := orm.NewOrm()
+//	query = fmt.Sprintf(query, where)
+//	_, err := o.Raw(query, args).QueryRows(&rows)
+//	return rows, err
+//}
+
+// 순위 없는 통계데이터 요청 시
+func GetStatsByOrgGroup(member *objs.Member, filter *objs.StatsFilter) ([]objs.Stats, error) {
 	var where string
 	var args []interface{}
 	query := `
-        select equip_type, count(*) count
-        from ast_ipas
-        where true %s
-        group by equip_type
+        select *
+        from stats_%s
+        where date = (select value_s from sys_config where section = ? and keyword = ?) %s
     `
+	args = append(args, "stats", "last_updated")
+
 	if filter.OrgId < 1 { // 전체통계 요청 시
 		if member.Position >= objs.Administrator { // 관리자 세션이면 허용
 		} else { // 일반사용자 세션이면 접근제어
@@ -166,9 +211,9 @@ func GetEquipCountByType(member *objs.Member, filter *objs.StatsFilter) ([]objs.
 		}
 	}
 
-	var rows []objs.TagCount
+	var rows []objs.Stats
 	o := orm.NewOrm()
-	query = fmt.Sprintf(query, where)
+	query = fmt.Sprintf(query, filter.StatsType, where)
 	_, err := o.Raw(query, args).QueryRows(&rows)
 	return rows, err
 }

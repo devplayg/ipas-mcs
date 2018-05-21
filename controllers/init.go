@@ -13,6 +13,7 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -240,4 +241,25 @@ func CheckError(err error) {
 	if err != nil {
 		log.Error(err)
 	}
+}
+
+func GetOrgGroupName(orgId, groupId int) (string, string) {
+	var orgName string
+	var groupName string
+
+	if v, ok := assetMap.Load(orgId); ok {
+		orgName = v.(objs.Asset).Name
+	} else {
+		orgName = strconv.Itoa(orgId)
+	}
+	if v, ok := assetMap.Load(groupId); ok {
+		groupName = v.(objs.Asset).Name
+	} else {
+		if groupId == 0 {
+			groupName = "N/A"
+		} else {
+			groupName = strconv.Itoa(groupId)
+		}
+	}
+	return orgName, groupName
 }

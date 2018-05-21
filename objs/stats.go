@@ -3,14 +3,26 @@ package objs
 import "time"
 
 type Stats struct {
-	Date      time.Time `json:"date"`
+	Date      time.Time `json:"-"`
 	AssetId   int       `json:"asset_id"`
+	OrgId     int       `json:"org_id"`
+	GroupId   int       `json:"group_id"`
 	Item      string    `json:"item"`
 	Count     int       `json:"count"`
 	Rank      int       `json:"rank"`
 	OrgName   string    `json:"org_name"`
 	GroupName string    `json:"group_name"`
+
+	// Timeline
+	StartupCount   int `json:"startup_count"`
+	ShockCount     int `json:"shock_count"`
+	SpeedingCount  int `json:"speeding_count"`
+	ProximityCount int `json:"proximity_count"`
 }
+//
+//type StatsTimeline struct {
+//	Stats
+//}
 
 type StatsFilter struct {
 	StartDate string `form:"startDate"`

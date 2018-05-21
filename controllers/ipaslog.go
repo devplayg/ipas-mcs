@@ -5,7 +5,6 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
-	"strconv"
 	"time"
 )
 
@@ -47,16 +46,7 @@ func (c *IpaslogController) GetLogs() {
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
 		logs[idx].No = filter.PagingFilter.Offset + int64(idx) + 1
-		if v, ok := assetMap.Load(a.OrgId); ok {
-			logs[idx].OrgName = v.(objs.Asset).Name
-		} else {
-			logs[idx].OrgName = strconv.Itoa(a.OrgId)
-		}
-		if v, ok := assetMap.Load(a.GroupId); ok {
-			logs[idx].GroupName = v.(objs.Asset).Name
-		} else {
-			logs[idx].GroupName = strconv.Itoa(a.GroupId)
-		}
+		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
 	}
 
 	c.serveResultJson(logs, total, err, filter.FastPaging)
@@ -133,16 +123,8 @@ func (c *IpaslogController) GetRealTimeLogs() {
 
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
-		if v, ok := assetMap.Load(a.OrgId); ok {
-			logs[idx].OrgName = v.(objs.Asset).Name
-		} else {
-			logs[idx].OrgName = strconv.Itoa(a.OrgId)
-		}
-		if v, ok := assetMap.Load(a.GroupId); ok {
-			logs[idx].GroupName = v.(objs.Asset).Name
-		} else {
-			logs[idx].GroupName = strconv.Itoa(a.GroupId)
-		}
+		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
+
 	}
 
 	c.serveResultJson(logs, total, err, filter.FastPaging)
