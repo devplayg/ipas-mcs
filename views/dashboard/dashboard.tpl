@@ -115,17 +115,25 @@
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <table id="table-ipaslogs" class="table"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false">
-                    <thead>
-                    <tr>
-                        <th data-field="description" data-formatter="dashboardEventDescriptionFormatter" data-sortable="true">{{i18n .Lang "description"}}</th>
-                    </tr>
-                    </thead>
-                </table>
+
+
+                <div class="scroller" style="height: 150px;" data-always-visible="1" data-rail-visible="0">
+                    <ul class="feeds">
+                        <table id="table-ipaslogs" class="table"
+                               data-classes="table-condensed table-no-bordered"
+                               data-toggle="table"
+                               data-cache="false"
+                               data-show-header="false">
+                            <thead>
+                            <tr>
+                                <th data-field="description" data-formatter="dashboardEventDescriptionFormatter" data-sortable="true">{{i18n .Lang "description"}}</th>
+                                <th data-field="date_ago" data-formatter="dashboardDateAgoFormatter" data-align="right"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>

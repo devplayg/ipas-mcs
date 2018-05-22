@@ -8,6 +8,11 @@ var StartupEvent = 1,
     SpeedingEvent = 3,
     ProximityEvent = 4;
 
+var StartupColor = "#2C3E50", // blue-chambray
+    ShockColor = "#3598DC", // blue
+    SpeedingColor = "#32C5D2", // green
+    ProximityColor = "#E7505A"; // red
+
 // Tags
 var PT = 1, // Pedestrian tag
     ZT = 2, // Zone tag

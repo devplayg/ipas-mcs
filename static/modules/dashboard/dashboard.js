@@ -182,7 +182,7 @@ $(function() {
 
 
     function updateLogs( orgId, groupId ) {
-        var url = '/getRealTimeLogs?limit=5';
+        var url = '/getRealTimeLogs?limit=100';
         var activities = [];
         $( ".activity" ).each(function( idx, obj ) {
             if ( $( obj ).is(":checked") ) {

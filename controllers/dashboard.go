@@ -33,6 +33,13 @@ func (c *DashboardController) DisplayDarkboard() {
 	c.setTpl("darkboard.tpl")
 }
 
+func (c *DashboardController) DisplayDetailboard() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+
+	c.setTpl("detailboard.tpl")
+}
+
 func (c *DashboardController) getFilter() *objs.IpasFilter {
 
 	// 요청값 분류

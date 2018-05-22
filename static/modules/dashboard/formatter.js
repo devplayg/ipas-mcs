@@ -103,36 +103,44 @@ function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
 
 function dashboardEventDescriptionFormatter( val, row, idx ) {
     var eventName,
-        eventIcon,
+        // eventIcon,
+        lineIcon,
         prefix = "<span>",
-        suffix = "</span>",
-        lineIcon = '<i class="icon-info"></i>';
+        suffix = "</span>";
+        // lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bell-o"></i></div>';
 
     if ( row.event_type === StartupEvent ) {
+        // lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bell-o"></i></div>';
         eventName = felang.startup;
-        eventIcon = '<i class="icon-power"></i>';
+        lineIcon = '<div class="label label-sm label-success"><i class="icon-power"></i></div>';
 
     } else if ( row.event_type === ShockEvent ) {
+        // lineIcon = '<i class="fa fa-warning"></i>';
         eventName = felang.shock;
-        eventIcon = '<i class="fa fa-bolt"></i>';
+        lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bolt"></i></div>';
 
     } else if ( row.event_type === SpeedingEvent ) {
         eventName = felang.speeding;
-        eventIcon = '<i class="icon-speedometer"></i>';
+        lineIcon = '<div class="label label-sm label-success"><i class="icon-speedometer"></i></div>';
 
     } else if ( row.event_type === ProximityEvent ) {
         eventName = felang.proximity;
-        eventIcon = '<i class="icon-size-actual"></i>';
+        lineIcon = '<div class="label label-sm label-danger"><i class="icon-size-actual"></i></div>';
         prefix = '<span class="font-red">';
 
     } else {
         eventName = "Unknown";
-        eventIcon = '<i class="icon-info"></i>';
+        lineIcon = '<i class="icon-info"></i>';
     }
 
     if ( lang === "ko-kr" ){
-        return prefix + lineIcon + " <i>" + row.org_name + "</i> 의 <i>" + row.group_name + "</i> 에서 " + eventIcon + " " + eventName + " 이벤트가 발생하였습니다" + suffix;
+        return prefix + lineIcon + " <i>" + row.org_name + "</i> 의 <i>" + row.group_name + "</i> 에서 " + " " + eventName + " 이벤트가 발생하였습니다" + suffix;
     } else {
         return prefix + lineIcon + " " + eventName + " event in <i>" + row.group_name + ", " + row.org_name + "</i>" + suffix;
     }
+}
+
+
+function dashboardDateAgoFormatter( val, row, idx ) {
+    return '<span class="s12"><i>' + val + '</i></span>';
 }
