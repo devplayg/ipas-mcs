@@ -6,6 +6,7 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"time"
+	"github.com/dustin/go-humanize"
 )
 
 type IpaslogController struct {
@@ -124,6 +125,7 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
 		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
+		logs[idx].DateAgo = humanize.Time(logs[idx].Date)
 
 	}
 

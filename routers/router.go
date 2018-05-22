@@ -9,6 +9,7 @@ func init() {
 
 	// 대시보드
 	beego.Router(`/dashboard`, &controllers.DashboardController{}, "get:Display")
+	beego.Router(`/detailboard`, &controllers.DashboardController{}, "get:DisplayDetailboard")
 	beego.Router(`/darkboard`, &controllers.DashboardController{}, "get:DisplayDarkboard")
 
 	// IPAS 로그
