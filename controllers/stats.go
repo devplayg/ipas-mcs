@@ -3,9 +3,11 @@ package controllers
 import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
+	"github.com/devplayg/ipas-server"
 	log "github.com/sirupsen/logrus"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type StatsController struct {
@@ -45,6 +47,7 @@ func (c *StatsController) GetTimeline() {
 	filter := c.getFilter()
 	rows := c.getStatsByOrgGroup(filter, "timeline2")
 
+	// Case 1
 	timeline := make(map[string]map[int]int)
 	for _, r := range rows {
 		if _, ok := timeline[r.Item]; !ok {
@@ -61,8 +64,59 @@ func (c *StatsController) GetTimeline() {
 		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
 	}
 
-	c.Data["json"] = timeline
+	//timelineByType :=
+	//c.Data["json"] = timeline
 
+	//// Case 2
+	type val struct {
+		name  string
+		Value [2]int64 `json:"value"`
+		Text  string   `json:"text"`
+	}
+	//timelineByType := map[string]map[string][]val{
+	//	"startup":   make(map[string][]val),
+	//	"shock":     make(map[string][]val),
+	//	"speeding":  make(map[string][]val),
+	//	"proximity": make(map[string][]val),
+	//}
+	timelineByType := map[string][]val{
+		"startup":   make([]val, 0),
+		"shock":     make([]val, 0),
+		"speeding":  make([]val, 0),
+		"proximity": make([]val, 0),
+	}
+
+	for date, m := range timeline {
+		d := date[0:19]
+		t, _ := time.Parse(ipasserver.DateDefault, d)
+		timelineByType["startup"] = append(timelineByType["startup"], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartEvent])}, date})
+		timelineByType["shock"] = append(timelineByType["shock"], val{"shock", [2]int64{t.Unix() * 1000, int64(m[objs.ShockEvent])}, date})
+		timelineByType["speeding"] = append(timelineByType["speeding"], val{"speeding", [2]int64{t.Unix() * 1000, int64(m[objs.SpeedingEvent])}, date})
+		timelineByType["proximity"] = append(timelineByType["proximity"], val{"proximity", [2]int64{t.Unix() * 1000, int64(m[objs.ProximityEvent])}, date})
+
+		//if _, ok := timelineByType["startup"][d]; !ok {
+		//	timelineByType["startup"][d] = make([]val, 0)
+		//	timelineByType["shock"][d] = make([]val, 0)
+		//	timelineByType["speeding"][d] = make([]val, 0)
+		//	timelineByType["proximity"][d] = make([]val, 0)
+		//}
+		////	timeLine["proximity"][r.Item] =
+		//
+		//timelineByType["startup"][d] = append(timelineByType["startup"][d], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartEvent])}})
+		//timelineByType["shock"][d] = append(timelineByType["shock"][d], val{"shock", [2]int64{t.Unix() * 1000, int64(m[objs.ShockEvent])}})
+		//timelineByType["speeding"][d] = append(timelineByType["speeding"][d], val{"speeding", [2]int64{t.Unix() * 1000, int64(m[objs.SpeedingEvent])}})
+		//timelineByType["proximity"][d] = append(timelineByType["proximity"][d], val{"proximity", [2]int64{t.Unix() * 1000, int64(m[objs.ProximityEvent])}})
+
+		//	//timeLine["shock"] = append(timeLine["shock"], val{"shock", [2]int64{t.Unix() * 1000,int64(r.ShockCount)}})
+		//	//timeLine["speeding"] = append(timeLine["speeding"], val{"speeding", [2]int64{t.Unix() * 1000,int64(r.SpeedingCount)}})
+		//	//timeLine["proximity"] = append(timeLine["proximity"], val{"proximity", [2]int64{t.Unix() * 1000,int64(r.ProximityCount)}})
+		//	//timeLine["startup"] = append(timeLine["startup"], val{t.Unix() * 1000,int64(r.StartupCount)})
+		//	//timeLine["shock"] = append(timeLine["shock"], val{t.Unix() * 1000,int64(r.ShockCount)})
+		//	//timeLine["speeding"] = append(timeLine["speeding"], val{t.Unix() * 1000,int64(r.SpeedingCount)})
+		//	//timeLine["proximity"] = append(timeLine["proximity"], val{t.Unix() * 1000,int64(r.ProximityCount)})
+	}
+	//
+	c.Data["json"] = timelineByType
 	c.ServeJSON()
 }
 
