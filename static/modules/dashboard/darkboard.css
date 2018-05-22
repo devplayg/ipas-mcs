@@ -1,22 +1,35 @@
-.page-bar, .page-content {
-    background-color: #252C36 !important;
+.mh {
+    min-height: 250px !important;
 }
 
-.page-content-white .page-content .page-bar {
-    border-bottom: 1px solid #252C36;
+.step-title {
+    /*font-size: px;*/
 }
 
-.panel-dark {
-    background-color: #2B3440;
-    color: #fff !important;
+.step-value {
+    font-size: 24px;
 }
 
-.panel-box {
-    margin-bottom: 25px;
-    padding: 10px 0px 10px 10px;
-    /*border: 1px solid red;*/
-}
+/*.page-bar, .page-content {*/
+    /*background-color: #252C36 !important;*/
+/*}*/
 
-.font-myyellow {
-    color: #f6a821 !important;
-}
+/*.page-content-white .page-content .page-bar {*/
+    /*border-bottom: 1px solid #252C36;*/
+/*}*/
+
+/*.panel-dark {*/
+    /*background-color: #555555;*/
+    /*!*background-color: #2B3440;*!*/
+    /*color: #fff !important;*/
+/*}*/
+
+/*.panel-box {*/
+    /*margin-bottom: 25px;*/
+    /*padding: 10px 0px 10px 10px;*/
+    /*!*border: 1px solid red;*!*/
+/*}*/
+
+/*.font-myyellow {*/
+    /*color: #f6a821 !important;*/
+/*}*/

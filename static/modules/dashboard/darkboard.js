@@ -1,44 +1,9 @@
 $(function() {
-    var dom = document.getElementById( "chart-tags" );
-    var equipChart = echarts.init( dom );
-    // var scaleData = [
-    //     {
-    //         'name': '工程建设',
-    //         'value': 10
-    //     },
-    //     {
-    //         'name': '土地交易',
-    //         'value': 20
-    //     },
-    //     {
-    //         'name': '其他交易',
-    //         'value': 27
-    //     },
-    // ];
-    // console.log(scaleData);
-    var rich = {
-        white: {
-            color: '#ddd',
-            align: 'center',
-            padding: [5, 0]
-        }
-    };
-    var placeHolderStyle = {
-        normal: {
-            label: {
-                show: false
-            },
-            labelLine: {
-                show: false
-            },
-            color: 'rgba(0, 0, 0, 0)',
-            borderColor: 'rgba(0, 0, 0, 0)',
-            borderWidth: 0
-        }
-    };
-
+    var equipChart = echarts.init( document.getElementById( "chart-tags" ) ),
+        trendChart = echarts.init( document.getElementById( "chart-trend" ) );
     window.onresize = function() {
         equipChart.resize();
+        trendChart.resize();
     };
 
 
@@ -161,6 +126,7 @@ $(function() {
             groupId = asset[1];
 
         updateSummary( orgId, groupId );
+
     //     updateRankings( orgId, groupId );
     //     updateLogs( orgId, groupId );
     //
@@ -170,34 +136,15 @@ $(function() {
 
 
     function updateSummary( orgId, groupId ) {
-
-        // var scaleData = [
-        //     {
-        //         'name': '工程建设',
-        //         'value': 10
-        //     },
-        //     {
-        //         'name': '土地交易',
-        //         'value': 20
-        //     },
-        //     {
-        //         'name': '其他交易',
-        //         'value': 27
-        //     },
-        // ];
-
-
-
-
         var url = "/stats/summary/org/" + orgId + "/group/" + groupId;
         $.ajax({
             type  : "GET",
             async : true,
             url   : url
         }).done( function( r ) {
-            console.log(r);
+            // console.log(r);
 
-            updateTagsChart( r.equipCountByType );
+            updateEquipChart( r.equipCountByType );
             
             // 이벤트 타입 통계
             $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
@@ -221,10 +168,178 @@ $(function() {
             $( ".count-activated" ).text( activated );
         }).always( function() {
         });
+
+
+        updateTrendChart( orgId, groupId );
     }
 
 
-    function updateTagsChart( rawData ) {
+    function updateTrendChart( orgId, groupId ) {
+        // var itemStyle = {
+        //     normal: {
+        //     },
+        //     emphasis: {
+        //         barBorderWidth: 1,
+        //         shadowBlur: 10,
+        //         shadowOffsetX:0,
+        //         shadowOffsetY: 0,
+        //         shadowColor: 'rgba(0,0,0,0.5)'
+        //     }
+        // };
+
+
+        var url = "/stats/timeline/org/" + orgId + "/group/" + groupId;
+        $.ajax({
+            type  : "GET",
+            async : true,
+            url   : url
+        }).done( function( r ) {
+            // console.log(r);
+            option = {
+                useUTC: true,
+                textStyle: {
+                    // color: "#ccc",
+                    // fontSize: 10
+                },
+                grid: {
+                    top:    50,
+                    bottom: 30,
+                    left:   '5%',
+                    right:  '5%',
+                },
+                // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                color: ['#e35b5a', '#4b77be','#2ab4c0', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                // backgroundColor: '#eee',
+                legend: {
+                    // data: ['Shock', 'Speeding', 'Proximity'],
+                    top: 5,
+                    textStyle: {
+                        // color: "#ccc",
+                        // fontSize: 10
+                    },
+                    align: 'left',
+                    left: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    // axisPointer: {
+                    //     type: 'cross'
+                    // },
+                    // backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                    borderWidth: 1,
+                    borderColor: '#777',
+                    padding: 5,
+                    // textStyle: {
+                    //     color: '#000'
+                    // },
+                },
+                xAxis: {
+                    // data: xAxisData,
+                    boundaryGap : true,
+                    // interval: 3600 * 1000,
+                    // name: 'X Axis',
+                    type : 'time',
+                    // silent: true,
+                    // offset: 100,
+                    axisLine: {onZero: false},
+                    splitLine: {show: false},
+                    splitArea: {show: false},
+                    axisLabel: {
+                        showMinLabel: false,
+                        showMaxLabel: false,
+                        formatter: function(value, index) {
+                            var d = moment( value ).utc();
+                            // console.log(d.format("MMM D, HH"));
+                            return d.format("MMM D, HH");
+                            // console.log(value);
+                            // return value;
+                            // return 3;
+                        },
+                        rich: {
+                            table: {
+                                lineHeight: 20,
+                                align: 'center'
+                            }
+                        }
+                    }
+                },
+                yAxis: {
+                    splitLine: {
+                        show: true,
+                        color: '#777',
+                        lineStyle: {
+                            type: "dotted"
+                        }
+                    },
+                    // splitArea: {show: false},
+                    // axisTick: {
+                        // Interval: 11
+
+                    // }
+                    // inverse: true,
+                    // splitArea: {show: false}
+                },
+                // grid: {
+//        left: 100
+//        containLabel: true
+//                 },
+//    visualMap: {
+//        type: 'continuous',
+//        dimension: 1,
+//        text: ['High', 'Low'],
+//        inverse: true,
+//        itemHeight: 200,
+//        calculable: true,
+//        min: -2,
+//        max: 6,
+//        top: 60,
+//        left: 10,
+//        inRange: {
+//            colorLightness: [0.4, 0.8]
+//        },
+//        outOfRange: {
+//            color: '#bbb'
+//        },
+//        controller: {
+//            inRange: {
+//                color: '#2f4554'
+//            }
+//        }
+//    },
+                series: [
+                    {
+                        name: 'Shock',
+                        type: 'bar',
+                        stack: 'event',
+                        barMaxWidth: '30px',
+                        // itemStyle: itemStyle,
+                        data: r.shock,
+                    },
+                    {
+                        name: 'Speeding',
+                        type: 'bar',
+                        stack: 'event',
+                        // itemStyle: itemStyle,
+                        data: r.speeding
+                    },
+                    {
+                        name: 'Proximity',
+                        type: 'bar',
+                        stack: 'event',
+                        // itemStyle: itemStyle,
+                        data: r.proximity
+                    }
+                ]
+            };
+
+            trendChart.setOption(option, true);
+        }).always( function() {
+        });
+
+    }
+
+
+    function updateEquipChart( rawData ) {
         var scaleData = [];
         $.each( rawData, function( tagType, v ) {
             var name;
@@ -248,7 +363,7 @@ $(function() {
                 name: scaleData[i].name,
                 itemStyle: {
                     normal: {
-                        borderWidth: 5,
+                        borderWidth: 8,
                         shadowBlur: 30,
                         borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
                             offset: 0,
@@ -263,7 +378,19 @@ $(function() {
             }, {
                 value: 4,
                 name: '',
-                itemStyle: placeHolderStyle
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        color: 'rgba(0, 0, 0, 0)',
+                        borderColor: 'rgba(0, 0, 0, 0)',
+                        borderWidth: 0
+                    }
+                }
             });
         }
         var seriesObj = [{
@@ -277,8 +404,10 @@ $(function() {
                     label: {
                         show: true,
                         position: 'outside',
-                        color: '#ddd',
-                        formatter: function(params) {
+                        color: '#333',
+                        fontSize:18,
+                        fontWeight: "bold",
+                        formatter: function (params) {
                             // var percent = 0;
                             var total = 0;
                             for (var i = 0; i < scaleData.length; i++) {
@@ -291,7 +420,13 @@ $(function() {
                                 return '';
                             }
                         },
-                        rich: rich
+                        rich: {
+                            white: {
+                                color: '#333',
+                                align: 'center',
+                                padding: [5, 0]
+                            }
+                        }
                     },
                     labelLine: {
                         show: false
@@ -300,6 +435,28 @@ $(function() {
             },
             data: data
         }];
+
+        // var rich = {
+        //     white: {
+        //         color: '#ddd',
+        //         align: 'center',
+        //         padding: [5, 0]
+        //     }
+        // };
+        // var placeHolderStyle = {
+        //     normal: {
+        //         label: {
+        //             show: false
+        //         },
+        //         labelLine: {
+        //             show: false
+        //         },
+        //         color: 'rgba(0, 0, 0, 0)',
+        //         borderColor: 'rgba(0, 0, 0, 0)',
+        //         borderWidth: 0
+        //     }
+        // };
+
         var option = {
             // backgroundColor: '#04243E',
             tooltip: {
