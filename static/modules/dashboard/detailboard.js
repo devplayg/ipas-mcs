@@ -33,6 +33,8 @@ $(function() {
         console.log(i, row);
     });
 
+    var trendChart = echarts.init( document.getElementById( "chart-trend" ) );
+
     initializeAssets();
     updateStats();
     // startTimer();
@@ -129,6 +131,7 @@ $(function() {
 
         updateSummary( orgId, groupId );
         updateEventTags( orgId, groupId );
+        updateTrendChart( orgId, groupId );
     //     updateRankings( orgId, groupId );
     //     updateLogs( orgId, groupId );
     //
@@ -144,6 +147,7 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
+            console.log(r);
             $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
             $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
             $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
@@ -152,7 +156,7 @@ $(function() {
             $( ".count-pt" ).text( r.equipCountByType[PT] );
             $( ".count-zt" ).text( r.equipCountByType[ZT] );
             $( ".count-vt" ).text( r.equipCountByType[VT] );
-            // $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
+            $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
     //
             var  data = [
                 {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
@@ -173,6 +177,9 @@ $(function() {
             } else {
                 eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
             }
+
+            // Update activated equipments
+            $( "#table-activated" ).bootstrapTable( "load", r.activated );
         }).always( function() {
         });
     }
@@ -201,7 +208,7 @@ $(function() {
             }
         }
         url += $.param( param );
-        console.log(url);
+        // console.log(url);
 
         var tags = '';
         $.ajax({
@@ -210,14 +217,205 @@ $(function() {
             url   : url
         }).done( function( rows ) {
             $.each( rows, function( i, r ) {
-                tags += '<div class="label label-default label-sm" style="display: block; display: inline-block; margin-right: 5px;">';
+                // console.log(r);
+                var btnCss,
+                    icon;
+                if ( r.event_type === StartupEvent ) {
+                    icon = "icon-power";
+                    btnCss = "default"
+
+                } else if ( r.event_type === ShockEvent ) {
+                    icon = "fa fa-bolt";
+                    btnCss = "blue";
+
+                } else if ( r.event_type === SpeedingEvent ) {
+                    icon = "icon-speedometer";
+                    btnCss = "green";
+
+                } else if ( r.event_type === ProximityEvent ) {
+                    icon = "icon-size-actual";
+                    btnCss = "red-haze";
+                } else {
+                    icon = "icon-question";
+                    btnCss = "yellow-gold"
+                }
+
+                // tags += '<div class="label label-' + labelSuffix + ' uppercase" style="display: block; display: inline-block; margin-right: 5px;">';
+                // tags += r.equip_id;
+                // tags += '</div>';
+                tags += '<div class="col-sm-4 mb5"><button type="button" class=" btn ' + btnCss + ' btn-block btn-xs mr5"><i class="' + icon + '"></i> ';
                 tags += r.equip_id;
-                tags += '</div>';
+                tags += '</button></div>';
             });
 
         }).always( function() {
             $( "#event-tags" ).html( tags );
         });
+    }
+
+
+    function updateTrendChart( orgId, groupId ) {
+        // var itemStyle = {
+        //     normal: {
+        //     },
+        //     emphasis: {
+        //         barBorderWidth: 1,
+        //         shadowBlur: 10,
+        //         shadowOffsetX:0,
+        //         shadowOffsetY: 0,
+        //         shadowColor: 'rgba(0,0,0,0.5)'
+        //     }
+        // };
+
+
+        var url = "/stats/timeline/org/" + orgId + "/group/" + groupId;
+        $.ajax({
+            type  : "GET",
+            async : true,
+            url   : url
+        }).done( function( r ) {
+            // console.log(r);
+            option = {
+                useUTC: true,
+                textStyle: {
+                    // color: "#ccc",
+                    // fontSize: 10
+                },
+                grid: {
+                    top:    50,
+                    bottom: 30,
+                    left:   '5%',
+                    right:  '5%',
+                },
+                // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                color: ['#e35b5a', '#4b77be','#2ab4c0', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                // backgroundColor: '#eee',
+                legend: {
+                    // data: ['Shock', 'Speeding', 'Proximity'],
+                    top: 5,
+                    textStyle: {
+                        // color: "#ccc",
+                        // fontSize: 10
+                    },
+                    align: 'left',
+                    left: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    // axisPointer: {
+                    //     type: 'cross'
+                    // },
+                    // backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                    borderWidth: 1,
+                    borderColor: '#777',
+                    padding: 5,
+                    // textStyle: {
+                    //     color: '#000'
+                    // },
+                },
+                xAxis: {
+                    // data: xAxisData,
+                    boundaryGap : true,
+                    // interval: 3600 * 1000,
+                    // name: 'X Axis',
+                    type : 'time',
+                    // silent: true,
+                    // offset: 100,
+                    axisLine: {onZero: false},
+                    splitLine: {show: false},
+                    splitArea: {show: false},
+                    axisLabel: {
+                        showMinLabel: false,
+                        showMaxLabel: false,
+                        formatter: function(value, index) {
+                            var d = moment( value ).utc();
+                            // console.log(d.format("MMM D, HH"));
+                            return d.format("MMM D, HH");
+                            // console.log(value);
+                            // return value;
+                            // return 3;
+                        },
+                        rich: {
+                            table: {
+                                lineHeight: 20,
+                                align: 'center'
+                            }
+                        }
+                    }
+                },
+                yAxis: {
+                    splitLine: {
+                        show: true,
+                        color: '#777',
+                        lineStyle: {
+                            type: "dotted"
+                        }
+                    },
+                    // splitArea: {show: false},
+                    // axisTick: {
+                    // Interval: 11
+
+                    // }
+                    // inverse: true,
+                    // splitArea: {show: false}
+                },
+                // grid: {
+//        left: 100
+//        containLabel: true
+//                 },
+//    visualMap: {
+//        type: 'continuous',
+//        dimension: 1,
+//        text: ['High', 'Low'],
+//        inverse: true,
+//        itemHeight: 200,
+//        calculable: true,
+//        min: -2,
+//        max: 6,
+//        top: 60,
+//        left: 10,
+//        inRange: {
+//            colorLightness: [0.4, 0.8]
+//        },
+//        outOfRange: {
+//            color: '#bbb'
+//        },
+//        controller: {
+//            inRange: {
+//                color: '#2f4554'
+//            }
+//        }
+//    },
+                series: [
+                    {
+                        name: 'Shock',
+                        type: 'bar',
+                        stack: 'event',
+                        barMaxWidth: '30px',
+                        // itemStyle: itemStyle,
+                        data: r.shock,
+                    },
+                    {
+                        name: 'Speeding',
+                        type: 'bar',
+                        stack: 'event',
+                        // itemStyle: itemStyle,
+                        data: r.speeding
+                    },
+                    {
+                        name: 'Proximity',
+                        type: 'bar',
+                        stack: 'event',
+                        // itemStyle: itemStyle,
+                        data: r.proximity
+                    }
+                ]
+            };
+
+            trendChart.setOption(option, true);
+        }).always( function() {
+        });
+
     }
 
 });
