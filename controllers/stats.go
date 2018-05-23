@@ -237,19 +237,7 @@ func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType
 	}
 
 	for i, r := range rows {
-		orgAsset, ok := assetMap.Load(r.OrgId)
-		if ok {
-			rows[i].OrgName = orgAsset.(objs.Asset).Name
-		} else {
-			rows[i].OrgName = strconv.Itoa(r.OrgId)
-		}
-
-		groupAsset, ok := assetMap.Load(r.GroupId)
-		if ok {
-			rows[i].GroupName += groupAsset.(objs.Asset).Name
-		} else {
-			rows[i].GroupName += strconv.Itoa(r.GroupId)
-		}
+		rows[i].OrgName, rows[i].GroupName = GetOrgGroupName(r.OrgId, r.GroupId)
 	}
 
 	return rows
