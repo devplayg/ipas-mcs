@@ -6,6 +6,14 @@
 {{end}}
 
 {{define "contents"}}
+<div class="row">
+    <div class="col-md-8">
+
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
 <div class="portlet light bordered pt0 pb10 ">
     <div class="portlet-body">
         <form id="form-filter" role="form" method="post">
@@ -81,6 +89,78 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default mh">
+            <div class="panel-heading">
+                <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6 text-center">
+                        <h1 class="count-total-tags mt0 font-grey-mint bold"></h1>
+                        Total
+                    </div>
+                    <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
+                        <h1 class="count-pt mt0 grey-salsa"></h1>
+                        Pedestrian Tag
+                    </div>
+                </div>
+                <div class="row" style="border-top: 1px dashed #acacac; margin: 15px 0px 15px 0px;"></div>
+                <div class="row" style="margin: 15px 0px 0px 0px;">
+                    <div class="col-xs-6 text-center">
+                        <h1 class="count-zt mt0"></h1>
+                        Zone tag
+                    </div>
+                    <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
+                        <h1 class="count-vt mt0"></h1>
+                        Vehicle tag
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default mh" >
+            <div class="panel-heading">
+                <h3 class="panel-title s14 bold">{{i18n .Lang "activities"}}</h3>
+            </div>
+            <div class="panel-body">
+                <div id="event-tags" class="scroller" data-always-visible="1" data-rail-visible="0" style="line-height: 180%; height: 170px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
+            </div>
+            <div class="panel-body">
+                <div id="chart-trend" style="height: 220px; border:1px dashed #ccc;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
+            </div>
+            <div class="panel-body" id="panel-shocklinks">
+                <div id="chart-shocklinks" class="p0" style="margin-top: -50px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
 
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -106,72 +186,9 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default mh">
-                    <div class="panel-heading">
-                        <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-6 text-center">
-                                <h1 class="count-total-tags mt0 font-grey-mint bold"></h1>
-                                Total
-                            </div>
-                            <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
-                                <h1 class="count-pt mt0 grey-salsa"></h1>
-                                Pedestrian Tag
-                            </div>
-                        </div>
-                        <div class="row" style="border-top: 1px dashed #acacac; margin: 15px 0px 15px 0px;"></div>
-                        <div class="row" style="margin: 15px 0px 0px 0px;">
-                            <div class="col-xs-6 text-center">
-                                <h1 class="count-zt mt0"></h1>
-                                Zone tag
-                            </div>
-                            <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
-                                <h1 class="count-vt mt0"></h1>
-                                Vehicle tag
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default mh" >
-                    <div class="panel-heading">
-                        <h3 class="panel-title s14 bold">{{i18n .Lang "activities"}}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="event-tags" class="scroller" data-always-visible="1" data-rail-visible="0" style="line-height: 180%; height: 170px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
-            </div>
-            <div class="panel-body">
-                <div id="chart-trend" style="height: 220px; border:1px dashed #ccc;"></div>
-            </div>
-        </div>
-
-    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
-    </div>
 
-    <div class="col-md-4">
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-4">
@@ -191,6 +208,7 @@
     <script src="/static/plugins/morris.js/morris.min.js"></script>
     <script src="/static/plugins/raphael/raphael.min.js"></script>
     <script src="/static/plugins/echarts/echarts.min.js"></script>
+    <script src="/static/plugins/d3/d3.v4.min.js"></script>
     <script src="/static/modules/{{.ctrl}}/detailboard.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
 {{end}}

@@ -244,22 +244,29 @@ func CheckError(err error) {
 }
 
 func GetOrgGroupName(orgId, groupId int) (string, string) {
-	var orgName string
-	var groupName string
+	return GetOrgName(orgId), GetGroupName(groupId)
+}
 
+func GetOrgName(orgId int) string {
 	if v, ok := assetMap.Load(orgId); ok {
-		orgName = v.(objs.Asset).Name
+		return v.(objs.Asset).Name
 	} else {
-		orgName = strconv.Itoa(orgId)
+		return strconv.Itoa(orgId)
 	}
+}
+
+func GetGroupName(groupId int) string {
 	if v, ok := assetMap.Load(groupId); ok {
-		groupName = v.(objs.Asset).Name
+		return v.(objs.Asset).Name
 	} else {
-		if groupId == 0 {
-			groupName = "N/A"
-		} else {
-			groupName = strconv.Itoa(groupId)
-		}
+		return "N/A (" + strconv.Itoa(groupId) + ")"
 	}
-	return orgName, groupName
+}
+
+func GetOrgCode(orgId int) string {
+	if v, ok := assetMap.Load(orgId); ok {
+		return v.(objs.Asset).Code
+	} else {
+		return strconv.Itoa(orgId)
+	}
 }
