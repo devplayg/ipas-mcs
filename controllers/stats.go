@@ -10,6 +10,12 @@ import (
 	"time"
 )
 
+type node struct {
+	Name    string   `json:"name"`
+	Size    int      `json:"size"`
+	Imports []string `json:"imports"`
+}
+
 type StatsController struct {
 	baseController
 }
@@ -190,6 +196,7 @@ func (c *StatsController) GetSummary() {
 		"eventTypes":       c.getEventTypes(filter),
 		"equipCountByType": c.getEquipCountByType(filter),
 		"activated":        c.getStatsByOrgGroup(filter, "activated"),
+		"shocklinks":       c.getShockLinks(filter),
 	}
 	c.ServeJSON()
 }
@@ -241,4 +248,40 @@ func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType
 	}
 
 	return rows
+}
+
+func (c *StatsController) getShockLinks(filter *objs.StatsFilter) []*node {
+	m := make(map[string]*node)
+	//nodes := make([]node, 0)
+	rows := c.getStatsByOrgGroup(filter, "shocklinks")
+
+	//arr := make([]string, 0)
+	for _, r := range rows {
+		code := GetOrgCode(r.OrgId)
+		arr := strings.Split(r.Item, ",")
+		for _, a := range arr {
+			p := strings.SplitN(a, "/", 2)
+			src, dst := code+"."+p[0], code+"."+p[1]
+
+			// Left side
+			if _, ok := m[src]; !ok {
+				m[src] = &node{src, 1, []string{dst}}
+			} else {
+				m[src].Imports = append(m[src].Imports, dst)
+			}
+
+			// Right side
+			if _, ok := m[dst]; !ok {
+				m[dst] = &node{dst, 1, []string{src}}
+			} else {
+				m[dst].Imports = append(m[dst].Imports, src)
+			}
+		}
+	}
+	nodes := make([]*node, 0, len(m))
+	for _, value := range m {
+		nodes = append(nodes, value)
+	}
+
+	return nodes
 }
