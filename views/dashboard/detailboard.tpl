@@ -7,7 +7,7 @@
 
 {{define "contents"}}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-4">
 
     </div>
     <div class="col-md-4">
@@ -144,29 +144,12 @@
                 <div id="chart-trend" style="height: 220px; border:1px dashed #ccc;"></div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
             </div>
             <div class="panel-body" id="panel-shocklinks">
-                <div id="chart-shocklinks" class="p0" style="margin-top: -50px"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-4">
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title s14 bold">{{i18n .Lang "activated"}}</h3>
-            </div>
-            <div class="panel-body">
                 <table id="table-activated" class="table"
                        data-classes="table-condensed table-no-bordered"
                        data-toggle="table"
@@ -186,9 +169,19 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title s14 bold">{{i18n .Lang "event type"}}</h3>
+            </div>
+            <div class="panel-body" id="panel-shocklinks" style="height: 500px;">
+                <div id="chart-shocklinks" class="p0" style="margin: -50px 0px 0px -40px"></div>
+            </div>
+        </div>
+
+    </div>
 </div>
-
-
 
 <div class="row">
     <div class="col-md-4">
