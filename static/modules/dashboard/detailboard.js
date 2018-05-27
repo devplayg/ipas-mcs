@@ -344,8 +344,9 @@ $(function() {
             groupId = asset[1];
 
         updateSummary( orgId, groupId );
-        updateEventTags( orgId, groupId );
+        // updateEventTags( orgId, groupId );
         updateTrendChart( orgId, groupId );
+        updateLogs( orgId, groupId );
     //     updateRankings( orgId, groupId );
     //     updateLogs( orgId, groupId );
     //
@@ -399,6 +400,32 @@ $(function() {
         }).always( function() {
         });
     }
+
+
+    function updateLogs( orgId, groupId ) {
+        var url = '/getRealTimeLogs?limit=100';
+        var activities = [ ShockEvent, SpeedingEvent, ProximityEvent ];
+        $.each(activities, function( idx, val ) {
+            activities.push( "event_type=" + val );
+        });
+
+        if ( activities.length < 1 ) {
+            $( "#table-ipaslogs" ).bootstrapTable( "removeAll" );
+        } else {
+            var urlSuffix = "";
+            if ( orgId > 0 ) {
+                urlSuffix += "&org_id=" + orgId;
+                if ( groupId > 0 ) {
+                    urlSuffix += "&group_id=" + groupId;
+                }
+            }
+            $( "#table-ipaslogs" ).bootstrapTable( "refresh", {
+                url: url + "&" + activities.join( "&" ) + urlSuffix,
+                silent: true
+            });
+        }
+    }
+
     //
     //
     // function updateRankings( orgId, groupId ) {
@@ -412,62 +439,62 @@ $(function() {
     // }
     //
     //
-    function updateEventTags( orgId, groupId ) {
-        var url = '/getRealTimeLogs?',
-            param = {
-                limit: 30
-            };
-        if ( orgId > 1 ) {
-            param.org_id = orgId;
-            if ( groupId > 1 ) {
-                param.group_id = groupId;
-            }
-        }
-        url += $.param( param );
-        // console.log(url);
-
-        var tags = '';
-        $.ajax({
-            type  : "GET",
-            async : true,
-            url   : url
-        }).done( function( rows ) {
-            $.each( rows, function( i, r ) {
-                // console.log(r);
-                var btnCss,
-                    icon;
-                if ( r.event_type === StartupEvent ) {
-                    icon = "icon-power";
-                    btnCss = "default"
-
-                } else if ( r.event_type === ShockEvent ) {
-                    icon = "fa fa-bolt";
-                    btnCss = "blue";
-
-                } else if ( r.event_type === SpeedingEvent ) {
-                    icon = "icon-speedometer";
-                    btnCss = "green";
-
-                } else if ( r.event_type === ProximityEvent ) {
-                    icon = "icon-size-actual";
-                    btnCss = "red-haze";
-                } else {
-                    icon = "icon-question";
-                    btnCss = "yellow-gold"
-                }
-
-                // tags += '<div class="label label-' + labelSuffix + ' uppercase" style="display: block; display: inline-block; margin-right: 5px;">';
-                // tags += r.equip_id;
-                // tags += '</div>';
-                tags += '<div class="col-sm-4 mb5"><button type="button" class=" btn ' + btnCss + ' btn-block btn-xs mr5"><i class="' + icon + '"></i> ';
-                tags += r.equip_id;
-                tags += '</button></div>';
-            });
-
-        }).always( function() {
-            $( "#event-tags" ).html( tags );
-        });
-    }
+    // function updateEventTags( orgId, groupId ) {
+    //     var url = '/getRealTimeLogs?',
+    //         param = {
+    //             limit: 30
+    //         };
+    //     if ( orgId > 1 ) {
+    //         param.org_id = orgId;
+    //         if ( groupId > 1 ) {
+    //             param.group_id = groupId;
+    //         }
+    //     }
+    //     url += $.param( param );
+    //     // console.log(url);
+    //
+    //     var tags = '';
+    //     $.ajax({
+    //         type  : "GET",
+    //         async : true,
+    //         url   : url
+    //     }).done( function( rows ) {
+    //         $.each( rows, function( i, r ) {
+    //             // console.log(r);
+    //             var btnCss,
+    //                 icon;
+    //             if ( r.event_type === StartupEvent ) {
+    //                 icon = "icon-power";
+    //                 btnCss = "default"
+    //
+    //             } else if ( r.event_type === ShockEvent ) {
+    //                 icon = "fa fa-bolt";
+    //                 btnCss = "blue";
+    //
+    //             } else if ( r.event_type === SpeedingEvent ) {
+    //                 icon = "icon-speedometer";
+    //                 btnCss = "green";
+    //
+    //             } else if ( r.event_type === ProximityEvent ) {
+    //                 icon = "icon-size-actual";
+    //                 btnCss = "red-haze";
+    //             } else {
+    //                 icon = "icon-question";
+    //                 btnCss = "yellow-gold"
+    //             }
+    //
+    //             // tags += '<div class="label label-' + labelSuffix + ' uppercase" style="display: block; display: inline-block; margin-right: 5px;">';
+    //             // tags += r.equip_id;
+    //             // tags += '</div>';
+    //             tags += '<div class="col-sm-4 mb5"><button type="button" class=" btn ' + btnCss + ' btn-block btn-xs mr5"><i class="' + icon + '"></i> ';
+    //             tags += r.equip_id;
+    //             tags += '</button></div>';
+    //         });
+    //
+    //     }).always( function() {
+    //         $( "#event-tags" ).html( tags );
+    //     });
+    // }
 
 
     function updateTrendChart( orgId, groupId ) {
@@ -631,7 +658,6 @@ $(function() {
             trendChart.setOption(option, true);
         }).always( function() {
         });
-
     }
 
 });

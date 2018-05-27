@@ -6,8 +6,8 @@
 {{end}}
 
 {{define "contents"}}
-<div class="portlet light bordered pt0 pb10 bred">
-    <div class="portlet-body ">
+<div class="portlet light bordered pt0 pb10 ">
+    <div class="portlet-body">
         <form id="form-filter" role="form" method="post">
             <div class="form-body">
                 <div class="form-inline">
