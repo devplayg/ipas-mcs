@@ -139,7 +139,7 @@ $(function() {
         // console.log(a.width());
         // console.log($("#chart-shocklinks").parent().width());
 
-        var diameter = 760,
+        var diameter = 550,
             radius = diameter / 2,
             innerRadius = radius - 120;
 
@@ -152,10 +152,10 @@ $(function() {
             .angle(function(d) { return d.x / 180 * Math.PI; });
 
         $( "#chart-shocklinks" ).empty();
-        var  svg = d3.select( "#chart-shocklinks" ).append( "svg" )
+        var svg = d3.select( "#chart-shocklinks" ).append( "svg" )
                 .attr( "width", diameter )
                 .attr( "height", diameter )
-                // .attr( "viewBox", "0 0 960 960")
+                // .attr( "viewBox", "0 0 600 600")
                 // .attr( "preserveAspectRatio", "xMidYMid meet")
                 .append( "g" )
                 .attr( "transform", "translate(" + radius + "," + radius + ")" );
@@ -246,6 +246,9 @@ $(function() {
 
     // Initialize
     var trendChart = echarts.init( document.getElementById( "chart-trend" ) );
+    window.onresize = function() {
+        trendChart.resize();
+    };
     initializeAssets();
     updateStats();
     // startTimer();
@@ -497,7 +500,7 @@ $(function() {
                 grid: {
                     top:    50,
                     bottom: 30,
-                    left:   '5%',
+                    left:   '8%',
                     right:  '5%',
                 },
                 // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],

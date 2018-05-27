@@ -299,21 +299,17 @@
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li>
-                                        <a href="#">
-                                            <i class="icon-bell"></i> Action</a>
+                                        <a href="#"><i class="icon-bell"></i> Action</a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="icon-shield"></i> Another action</a>
+                                        <a href="#"><i class="icon-shield"></i> Another action</a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="icon-user"></i> Something else here</a>
+                                        <a href="#"><i class="icon-user"></i> Something else here</a>
                                     </li>
                                     <li class="divider"> </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="icon-bag"></i> Separated link</a>
+                                        <a href="#"><i class="icon-bag"></i> Separated link</a>
                                     </li>
                                 </ul>
                             </div>
