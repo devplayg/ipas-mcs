@@ -112,20 +112,20 @@ function dashboardEventDescriptionFormatter( val, row, idx ) {
     if ( row.event_type === StartupEvent ) {
         // lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bell-o"></i></div>';
         eventName = felang.startup;
-        lineIcon = '<div class="label label-sm label-success"><i class="icon-power"></i></div>';
+        lineIcon = '<div class="label label-sm label-success"><i class="icon-power label-icon-w"></i></div>';
 
     } else if ( row.event_type === ShockEvent ) {
         // lineIcon = '<i class="fa fa-warning"></i>';
         eventName = felang.shock;
-        lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bolt"></i></div>';
+        lineIcon = '<div class="label label-sm label-primary" ><i class="fa fa-bolt label-icon-w"></i></div>';
 
     } else if ( row.event_type === SpeedingEvent ) {
         eventName = felang.speeding;
-        lineIcon = '<div class="label label-sm label-success"><i class="icon-speedometer"></i></div>';
+        lineIcon = '<div class="label label-sm label-success"><i class="icon-speedometer label-icon-w"></i></div>';
 
     } else if ( row.event_type === ProximityEvent ) {
         eventName = felang.proximity;
-        lineIcon = '<div class="label label-sm label-danger"><i class="icon-size-actual"></i></div>';
+        lineIcon = '<div class="label label-sm label-danger"><i class="icon-size-actual label-icon-w"></i></div>';
         prefix = '<span class="font-red">';
 
     } else {
