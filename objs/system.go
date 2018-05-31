@@ -32,6 +32,7 @@ const (
 
 const (
 	DefaultDateFormat = "2006-01-02 15:04:05"
+	SearchTimeFormat = "2006-01-02 15:04"
 )
 
 // System configuration

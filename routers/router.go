@@ -17,6 +17,7 @@ func init() {
 	beego.Router(`/getIpasLogs`, &controllers.IpaslogController{}, "get:GetLogs")
 	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get,post:DisplayRealTimeLogs")
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
+	beego.Router(`/getLogForCharting`, &controllers.IpaslogController{}, "get:GetLogForCharting")
 
 	// Sample
 	beego.Router(`/samplelogs`, &controllers.SamplelogController{})

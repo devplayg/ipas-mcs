@@ -19,10 +19,6 @@ type Stats struct {
 	SpeedingCount  int `json:"speeding_count"`
 	ProximityCount int `json:"proximity_count"`
 }
-//
-//type StatsTimeline struct {
-//	Stats
-//}
 
 type StatsFilter struct {
 	StartDate string `form:"startDate"`
@@ -37,4 +33,10 @@ type StatsFilter struct {
 type TagCount struct {
 	EquipType int `json:"equip_type"`
 	Count     int `json:"count"`
+}
+
+type StatsByEventType struct {
+	Date      time.Time `json:"date"`
+	EventType int       `json:"event_type"`
+	Count     int       `json:"count"`
 }

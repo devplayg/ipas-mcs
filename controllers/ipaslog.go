@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
+	"github.com/dustin/go-humanize"
 	log "github.com/sirupsen/logrus"
 	"time"
-	"github.com/dustin/go-humanize"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type IpaslogController struct {
@@ -41,7 +41,6 @@ func (c *IpaslogController) Display() {
 
 func (c *IpaslogController) GetLogs() {
 	filter := c.getFilter()
-	spew.Dump(filter)
 	logs, total, err := models.GetIpaslog(filter, c.member)
 
 	// 기관/그룹코드를 이름과 맵핑
@@ -126,8 +125,55 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	for idx, a := range logs {
 		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
 		logs[idx].DateAgo = humanize.Time(logs[idx].Date)
-
 	}
 
 	c.serveResultJson(logs, total, err, filter.FastPaging)
+}
+
+func (c *IpaslogController) GetLogForCharting() { // ipaslog/
+
+	filter := c.getFilter()
+	spew.Dump(filter)
+
+	// 차트 초기화
+	from, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.StartDate, c.member.Location)
+	to, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.EndDate, c.member.Location)
+	shockChartData := objs.NewChartData(from, to, 3600, c.member.Location)
+	speedingChartData := objs.NewChartData(from, to, 3600, c.member.Location)
+	proximityChartData := objs.NewChartData(from, to, 3600, c.member.Location)
+
+	// 통계정보 입력
+	rows, _, err := models.GetLogForCharting(filter, c.member)
+	if err != nil {
+		log.Error(err)
+	}
+	//loc, _ := time.LoadLocation(c.member.Location)
+	for _, r := range rows {
+		t := r.Date.In(c.member.Location).Unix()
+
+		if r.EventType == objs.ShockEvent {
+			if _, ok := shockChartData.TimeMap[r.Date.Unix()]; ok {
+				shockChartData.TimeMap[t] += r.Count
+			}
+		} else if r.EventType == objs.SpeedingEvent {
+			if _, ok := speedingChartData.TimeMap[r.Date.Unix()]; ok {
+				speedingChartData.TimeMap[t] += r.Count
+			}
+		} else if r.EventType == objs.ProximityEvent {
+			if _, ok := proximityChartData.TimeMap[r.Date.Unix()]; ok {
+				proximityChartData.TimeMap[t] += r.Count
+			}
+		}
+	}
+
+	shockChartData.Sort()
+	speedingChartData.Sort()
+	proximityChartData.Sort()
+
+	c.Data["json"] = map[string]*objs.ChartData{
+		"shock":     shockChartData,
+		"speeding":  speedingChartData,
+		"proximity": proximityChartData,
+	}
+	c.ServeJSON()
 }
