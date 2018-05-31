@@ -90,6 +90,206 @@ $(function() {
     // 필터상태 업데이트
     updateFilterStatus();
 
+    // Update chart
+    updateChart();
+
+
+    Highcharts.setOptions({
+        global: {
+            useUTC: false,
+            style: {
+                fontFamily: 'Nanum Gothic'
+            }
+        }
+    });
+    // #006999
+    // #009de6
+    // #004666
+    // #003443
+    var trendChart = new Highcharts.Chart({
+        colors: [ "#003443", "#009de6", "#006999" ],
+        chart: {
+            renderTo: "chart-trend",
+            type: "column",
+            height: 180,
+            // mar  gin: [0, 0, 0, 0],
+        },
+        title: {
+            text: null
+        },
+        xAxis: {
+            type: "datetime",
+            // labels: {
+            //     enabled: true,
+            //     format: "{value:%H}"
+            // }
+        },
+        yAxis: {
+            title: {
+                text: null
+            },
+            min: 0,
+            gridLineDashStyle: 'dash',
+            stackLabels: {
+                enabled: false,
+                style: {
+                    fontWeight: 'bold',
+                    color:'gray'
+                }
+            }
+        },
+        legend: {
+            align: 'left',
+            // x: -30,
+            verticalAlign: 'top',
+            // y: -25,
+            floating: true,
+
+            // backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            // borderColor: '#CCC',
+            // borderWidth: 1,
+            // shadow: false
+        },
+        // tooltip: {
+        //     crosshairs: {
+        //         color: 'red',
+        //         dashStyle: 'solid'
+        //     },
+        //     xDateFormat: '<b>%Y-%m-%d %H:%M</b>',
+        //     shared: true
+        // },
+        tooltip: {
+            xDateFormat: '%b %e, %y, %H:%M:%S',
+            formatter: function () {
+                var s = '<b>' + moment.unix(this.x / 1000).format("ddd, MMM D, YYYY, h:mm:ss a") + '</b>';
+                $.each(this.points, function () {
+                    s += '<br/><span style="color:' + this.series.color + '">\u25CF</span> ' + this.series.name + ': <b>' + Math.abs(this.y) + "</b>";
+                });
+                return s;
+            },
+            shared: true
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    fillColor: '#FFFFFF',
+                    lineWidth: 2,
+                    lineColor: '#999999'
+                },
+                fillOpacity: 0.2,
+                lineWidth: 3
+            },
+            column: {
+                stacking: 'normal',
+                pointPadding: 0,
+                borderWidth: 0
+                // dataLabels: {
+                //     enabled: true,
+                //     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                // }
+            }
+
+        },
+        // plotOptions: {
+        //     column: {
+        //         stacking: 'normal',
+        //         dataLabels: {
+        //             enabled: true,
+        //             color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+        //         }
+        //     },
+        //     series: {
+        //         stacking: 'normal',
+        //         borderColor: 'transparent',
+        //         pointWidth: 30
+        //     }
+        // },
+        // series: [{
+        //     name: felang.shock,
+        //     data: [5, 3, 4, 7, 2]
+        // }, {
+        //     name: felang.speeding,
+        //     data: [2, 2, 3, 2, 1]
+        // }, {
+        //     name: felang.proximity,
+        //     data: [3, 4, 4, 2, 5]
+        // }]
+        tooltip: {
+            xDateFormat: '%b %e, %y, %H:%M:%S',
+            formatter: function () {
+                var s = '<b>' + moment.unix(this.x / 1000).format("ddd, MMM D, YYYY, h:mm:ss a") + '</b>';
+                $.each(this.points, function () {
+                    s += '<br/><span style="color:' + this.series.color + '">\u25CF</span> ' + this.series.name + ': <b>' + Math.abs(this.y) + "</b>";
+                });
+                return s;
+            },
+            shared: true
+        },
+        series: [{
+            name: felang.shock,
+        }, {
+            name: felang.speeding,
+        }, {
+            name: felang.proximity,
+        }]
+        // series: []
+        // series: [{
+        //     type: 'area',
+        //     name: 'USD to EUR',
+        //     // data: data
+        // }]
+        // series: [
+        //     {  name: 'shock', color: '#009de6' },
+        //     {  name: 'speeding', color: '#006999' },
+        //     {  name: 'proximity', color: '#003443'}
+        // ]
+    });
+
+    function updateChart() {
+        console.log("/getLogForCharting?" + filterUrl);
+        $.ajax({
+            type:  "GET",
+            async: true,
+            url:   "/getLogForCharting?" + filterUrl
+        }).done( function( result ) {
+            // trendChart.addSeries()
+            // console.log( result.shock );
+            // 1527594370706
+            // 1526947200000
+            // trendChart.series[0].setData( {
+            //         name: "adsf"`   `,
+            //         data: [5, 3, 4, 7, 2]
+            //     }
+            //
+            // );
+            // console.log(result.shock.pointStart);
+            trendChart.series[0].update({
+                pointStart: result.shock.pointStart,
+                pointInterval: result.shock.pointInterval,
+                data: result.shock.data
+            });
+            trendChart.series[1].update({
+                pointStart: result.shock.pointStart,
+                pointInterval: result.shock.pointInterval,
+                data: result.speeding.data
+            });
+            trendChart.series[2].update({
+                pointStart: result.shock.pointStart,
+                pointInterval: result.shock.pointInterval,
+                data: result.proximity.data
+            });
+            // console.log( result.shock );
+            // logs = result || []; // 값이 null 이면 크기0의 배열을 할당
+            // console.log(logs);
+            // showTableData( $table, logs, paging );
+            // updatePagingNavButtons();
+        });
+        // http://127.0.0.1/
+    }
+    // #006999
+    // #009de6
+    // #004666
+    // #003443
 
 
     /**
@@ -330,6 +530,16 @@ $(function() {
             }
         });
     }
+
+
+
+    function bytesToSize( bytes ) {
+        var sizes = [ 'Bytes', 'KB', 'MB', 'GB', 'TB' ];
+        if (bytes == 0) return 'n/a';
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        if (i == 0) return bytes + ' ' + sizes[i];
+        return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+    };
 
 });
 

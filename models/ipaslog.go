@@ -10,6 +10,7 @@ import (
 
 var RegexFoundRows = regexp.MustCompile(`(?i)SELECT(\s+)SQL_CALC_FOUND_ROWS`)
 
+// GetLogForCharting 함수와 같이 수정해야함
 func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, int64, error) {
 	var where string
 	var rows []objs.IpasLog
@@ -76,6 +77,58 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 			total = dbResult.Total
 		}
 	}
+	return rows, total, err
+}
+
+
+func GetLogForCharting(filter *objs.IpasFilter, member *objs.Member) ([]objs.StatsByEventType, int64, error) {
+	var where string
+	var rows []objs.StatsByEventType
+
+	// 조건 설정
+	args := make([]interface{}, 0)
+	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
+
+	if member.Position < objs.Administrator {
+		where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"
+		args = append(args, member.MemberId)
+	}
+
+	if len(filter.OrgId) > 0 {
+		where += fmt.Sprintf(" and org_id in (%s)", libs.JoinInt(filter.OrgId, ","))
+	}
+
+	if len(filter.GroupId) > 0 {
+		where += fmt.Sprintf(" and group_id in (%s)", libs.JoinInt(filter.GroupId, ","))
+	}
+
+	if len(filter.EventType) > 0 {
+		where += fmt.Sprintf(" and event_type in (%s)", libs.JoinInt(filter.EventType, ","))
+	}
+
+	// 장비 태크 검색
+	if len(filter.TagPattern) > 0 {
+		where += " and (equip_id like ? or targets like ?)"
+		cond := "%"+filter.TagPattern+"%"
+		args = append(args, cond, cond)
+	}
+	if len(filter.EquipId) > 0 {
+		where += " and equip_id = ?"
+		cond := filter.EquipId
+		args = append(args, cond)
+	}
+
+	// Set query
+	query := `
+		select concat(substr(date, 1, 15), '0:00') date, event_type, count(*) count
+		from log_ipas_event
+		where date >= ? and date <= ? %s
+		group by substr(date, 1, 15), event_type
+	`
+	query = fmt.Sprintf(query, where)
+
+	o := orm.NewOrm()
+	total, err := o.Raw(query, args).QueryRows(&rows)
 	return rows, total, err
 }
 

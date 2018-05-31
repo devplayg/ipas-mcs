@@ -77,7 +77,7 @@ func (c *StatsController) GetTimeline() {
 	type val struct {
 		name  string
 		Value [2]int64 `json:"value"`
-		Text  string   `json:"text"`
+		Text  string   `json:"-"`
 	}
 	//timelineByType := map[string]map[string][]val{
 	//	"startup":   make(map[string][]val),

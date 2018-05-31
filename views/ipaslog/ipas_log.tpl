@@ -15,6 +15,13 @@
         group_id={{range .filter.GroupId}}{{.}}{{end}}
         {{.Lang}}
     </pre>
+
+     <div class="panel panel-default">
+         <div class="panel-body">
+            <div id="chart-trend"></div>
+         </div>
+     </div>
+
     <div class="portlet light bordered">
         <div class="portlet-body pt0">
             <div id="toolbar-log">
@@ -161,4 +168,9 @@
     {{template "ipasreport/ipasreport.tpl" .}}
     <script src="/static/modules/{{.ctrl}}/ipas_log.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
+    <script src="/static/plugins/highcharts/highcharts.js"></script>
+    <script>
+        var filterUrl = "start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging=on&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}";
+        // console.log(url);
+    </script>
 {{end}}
