@@ -50,9 +50,13 @@ function ipasEquipIdFormatter( val, row, idx ) {
     return header + body + footer;
 }
 
+function orgNameFormatter( val, row, idx ) {
+    return row.org_name;
+}
+
 function groupNameFormatter( val, row, idx ) {
     if ( row.group_id == 0 ) {
         return;
     }
-    return val;
+    return row.group_name;
 }

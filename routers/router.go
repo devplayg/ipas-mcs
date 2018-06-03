@@ -17,6 +17,7 @@ func init() {
 	beego.Router(`/getIpasLogs`, &controllers.IpaslogController{}, "get:GetLogs")
 	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get,post:DisplayRealTimeLogs")
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
+	beego.Router(`/trend`, &controllers.IpaslogController{}, "get,post:DisplayTrend")
 	beego.Router(`/getLogForCharting`, &controllers.IpaslogController{}, "get:GetLogForCharting")
 
 	// Sample
@@ -49,6 +50,8 @@ func init() {
 	beego.Router(`/stats/:statsType/by/:assetType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStatsBy")
 	beego.Router(`/stats/summary/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetSummary")
 	beego.Router(`/stats/timeline/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetTimeline")
+
+
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})

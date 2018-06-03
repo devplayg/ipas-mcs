@@ -248,6 +248,9 @@
                                 <li class="nav-item">
                                     <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/trend" class="nav-link"><span class="title">{{i18n .Lang "trend"}}</span></a>
+                                </li>
                                 {{/*<li class="nav-item ">*/}}
                                     {{/*<a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>*/}}
                                 {{/*</li>*/}}

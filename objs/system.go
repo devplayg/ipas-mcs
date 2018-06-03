@@ -1,6 +1,8 @@
 package objs
 
-import "sync"
+import (
+	"sync"
+)
 
 const (
 	User = 1 << iota
@@ -15,6 +17,7 @@ const (
 	Administrator // 512
 	Superman      // 1024
 )
+
 
 type ByteSize float64
 
