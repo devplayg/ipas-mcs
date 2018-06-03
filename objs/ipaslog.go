@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	StartEvent     = 1 // 시동
+	StartupEvent   = 1 // 시동
 	ShockEvent     = 2 // 충격
 	SpeedingEvent  = 3 // 과속
 	ProximityEvent = 4 // 근접

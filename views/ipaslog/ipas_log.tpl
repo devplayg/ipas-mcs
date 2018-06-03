@@ -16,12 +16,6 @@
         {{.Lang}}
     </pre>
 
-     <div class="panel panel-default">
-         <div class="panel-body">
-            <div id="chart-trend"></div>
-         </div>
-     </div>
-
     <div class="portlet light bordered">
         <div class="portlet-body pt0">
             <div id="toolbar-log">
@@ -83,7 +77,7 @@
                                         <div class="col-sm-6 form-group ">
                                             <label class="control-label">{{i18n .Lang "event type"}}</label>
                                             <select name="event_type" class="selectpicker" data-width="100%" data-size="5" multiple title="{{i18n .Lang "event type"}}">
-                                                <option value="1">{{i18n .Lang "ipas.start"}}</option>
+                                                <option value="1">{{i18n .Lang "startup"}}</option>
                                                 <option value="2">{{i18n .Lang "shock"}}</option>
                                                 <option value="3">{{i18n .Lang "speeding"}}</option>
                                                 <option value="4">{{i18n .Lang "proximity"}}</option>
@@ -142,8 +136,8 @@
                 <thead>
                 <tr>
                     <th data-field="date" data-sortable="true" data-formatter="dateFormatter">{{i18n .Lang "occurrence date"}}</th>
-                    <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
-                    <th data-field="group_name" data-sortable="true" data-formatter="groupNameFormatter">{{i18n .Lang "group"}}</th>
+                    <th data-field="org_id" data-sortable="true" data-formatter="orgNameFormatter">{{i18n .Lang "org"}}</th>
+                    <th data-field="group_id" data-sortable="true" data-formatter="groupNameFormatter">{{i18n .Lang "group"}}</th>
                     <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
                     <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
                     <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>
@@ -168,7 +162,6 @@
     {{template "ipasreport/ipasreport.tpl" .}}
     <script src="/static/modules/{{.ctrl}}/ipas_log.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
-    <script src="/static/plugins/highcharts/highcharts.js"></script>
     <script>
         var filterUrl = "start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging=on&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}";
         // console.log(url);

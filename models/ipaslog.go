@@ -120,10 +120,10 @@ func GetLogForCharting(filter *objs.IpasFilter, member *objs.Member) ([]objs.Sta
 
 	// Set query
 	query := `
-		select concat(substr(date, 1, 15), '0:00') date, event_type, count(*) count
+		select concat(substr(date, 1, 13), ':00:00') date, event_type, count(*) count
 		from log_ipas_event
 		where date >= ? and date <= ? %s
-		group by substr(date, 1, 15), event_type
+		group by substr(date, 1, 13), event_type
 	`
 	query = fmt.Sprintf(query, where)
 

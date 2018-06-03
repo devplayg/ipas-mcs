@@ -64,7 +64,7 @@ func (c *StatsController) GetTimeline() {
 				4: 0,
 			}
 		}
-		timeline[r.Item][objs.StartEvent] += r.StartupCount
+		timeline[r.Item][objs.StartupEvent] += r.StartupCount
 		timeline[r.Item][objs.ShockEvent] += r.ShockCount
 		timeline[r.Item][objs.SpeedingEvent] += r.SpeedingCount
 		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
@@ -95,7 +95,7 @@ func (c *StatsController) GetTimeline() {
 	for date, m := range timeline {
 		d := date[0:19]
 		t, _ := time.Parse(ipasserver.DateDefault, d)
-		timelineByType["startup"] = append(timelineByType["startup"], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartEvent])}, date})
+		timelineByType["startup"] = append(timelineByType["startup"], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartupEvent])}, date})
 		timelineByType["shock"] = append(timelineByType["shock"], val{"shock", [2]int64{t.Unix() * 1000, int64(m[objs.ShockEvent])}, date})
 		timelineByType["speeding"] = append(timelineByType["speeding"], val{"speeding", [2]int64{t.Unix() * 1000, int64(m[objs.SpeedingEvent])}, date})
 		timelineByType["proximity"] = append(timelineByType["proximity"], val{"proximity", [2]int64{t.Unix() * 1000, int64(m[objs.ProximityEvent])}, date})

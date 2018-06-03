@@ -5,6 +5,7 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/dustin/go-humanize"
 	log "github.com/sirupsen/logrus"
+	"sort"
 	"time"
 	"github.com/davecgh/go-spew/spew"
 )
@@ -130,50 +131,174 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	c.serveResultJson(logs, total, err, filter.FastPaging)
 }
 
-func (c *IpaslogController) GetLogForCharting() { // ipaslog/
+// For highcharts
+//func (c *IpaslogController) GetLogForCharting() { // ipaslog/
+//
+//	filter := c.getFilter()
+//	spew.Dump(filter)
+//
+//	// 차트 초기화
+//	from, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.StartDate, c.member.Location)
+//	to, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.EndDate, c.member.Location)
+//	shockChartData := objs.NewHighchartsData(from, to, 3600, c.member.Location)
+//	speedingChartData := objs.NewHighchartsData(from, to, 3600, c.member.Location)
+//	proximityChartData := objs.NewHighchartsData(from, to, 3600, c.member.Location)
+//
+//	// 통계정보 입력
+//	rows, _, err := models.GetLogForCharting(filter, c.member)
+//	if err != nil {
+//		log.Error(err)
+//	}
+//	//loc, _ := time.LoadLocation(c.member.Location)
+//	for _, r := range rows {
+//		t := r.Date.In(c.member.Location).Unix()
+//
+//		if r.EventType == objs.ShockEvent {
+//			if _, ok := shockChartData.TimeMap[r.Date.Unix()]; ok {
+//				shockChartData.TimeMap[t] += r.Count
+//			}
+//		} else if r.EventType == objs.SpeedingEvent {
+//			if _, ok := speedingChartData.TimeMap[r.Date.Unix()]; ok {
+//				speedingChartData.TimeMap[t] += r.Count
+//			}
+//		} else if r.EventType == objs.ProximityEvent {
+//			if _, ok := proximityChartData.TimeMap[r.Date.Unix()]; ok {
+//				proximityChartData.TimeMap[t] += r.Count
+//			}
+//		}
+//	}
+//
+//	shockChartData.Sort()
+//	speedingChartData.Sort()
+//	proximityChartData.Sort()
+//
+//	c.Data["json"] = map[string]*objs.ChartData{
+//		"shock":     shockChartData,
+//		"speeding":  speedingChartData,
+//		"proximity": proximityChartData,
+//	}
+//	c.ServeJSON()
+//}
 
+// Echarts
+func (c *IpaslogController) GetLogForCharting() { // ipaslog
 	filter := c.getFilter()
 	spew.Dump(filter)
 
-	// 차트 초기화
-	from, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.StartDate, c.member.Location)
-	to, _ := time.ParseInLocation(objs.SearchTimeFormat, filter.EndDate, c.member.Location)
-	shockChartData := objs.NewChartData(from, to, 3600, c.member.Location)
-	speedingChartData := objs.NewChartData(from, to, 3600, c.member.Location)
-	proximityChartData := objs.NewChartData(from, to, 3600, c.member.Location)
+	// 차트 데이터 초기화
+	from, _ := time.ParseInLocation(objs.DefaultDateFormat, filter.StartDate+":00", time.Local)
+	to, _ := time.ParseInLocation(objs.DefaultDateFormat, filter.EndDate+":59", time.Local)
+
+	startupChartData := objs.NewTimeLineData(from, to, 3600)
+	shockChartData := objs.NewTimeLineData(from, to, 3600)
+	speedingChartData := objs.NewTimeLineData(from, to, 3600)
+	proximityChartData := objs.NewTimeLineData(from, to, 3600)
 
 	// 통계정보 입력
 	rows, _, err := models.GetLogForCharting(filter, c.member)
 	if err != nil {
 		log.Error(err)
 	}
-	//loc, _ := time.LoadLocation(c.member.Location)
 	for _, r := range rows {
-		t := r.Date.In(c.member.Location).Unix()
+		t := r.Date.Unix()
 
-		if r.EventType == objs.ShockEvent {
-			if _, ok := shockChartData.TimeMap[r.Date.Unix()]; ok {
-				shockChartData.TimeMap[t] += r.Count
+		if r.EventType == objs.StartupEvent {
+			if _, ok := startupChartData[r.Date.Unix()]; ok {
+				startupChartData[t] += r.Count
+			}
+		} else if r.EventType == objs.ShockEvent {
+			if _, ok := shockChartData[r.Date.Unix()]; ok {
+				shockChartData[t] += r.Count
 			}
 		} else if r.EventType == objs.SpeedingEvent {
-			if _, ok := speedingChartData.TimeMap[r.Date.Unix()]; ok {
-				speedingChartData.TimeMap[t] += r.Count
+			if _, ok := speedingChartData[r.Date.Unix()]; ok {
+				speedingChartData[t] += r.Count
 			}
 		} else if r.EventType == objs.ProximityEvent {
-			if _, ok := proximityChartData.TimeMap[r.Date.Unix()]; ok {
-				proximityChartData.TimeMap[t] += r.Count
+			if _, ok := proximityChartData[r.Date.Unix()]; ok {
+				proximityChartData[t] += r.Count
 			}
 		}
 	}
 
-	shockChartData.Sort()
-	speedingChartData.Sort()
-	proximityChartData.Sort()
-
-	c.Data["json"] = map[string]*objs.ChartData{
-		"shock":     shockChartData,
-		"speeding":  speedingChartData,
-		"proximity": proximityChartData,
+	// 시간 정렬
+	timeLines := make(objs.Int64Slice, 0)
+	for t := range shockChartData {
+		timeLines = append(timeLines, t)
 	}
+	sort.Sort(timeLines)
+
+	// 차트 데이터 생성
+	type timeData map[string][2]int64
+	result := map[string][]timeData{
+		"startup":     make([]timeData, 0),
+		"shock":     make([]timeData, 0),
+		"speeding":  make([]timeData, 0),
+		"proximity": make([]timeData, 0),
+	}
+	for _, t := range timeLines {
+		result["startup"] = append(result["startup"], timeData{"value": [2]int64{t * 1000, int64(startupChartData[t])}})
+		result["shock"] = append(result["shock"], timeData{"value": [2]int64{t * 1000, int64(shockChartData[t])}})
+		result["speeding"] = append(result["speeding"], timeData{"value": [2]int64{t * 1000, int64(speedingChartData[t])}})
+		result["proximity"] = append(result["proximity"], timeData{"value": [2]int64{t * 1000, int64(proximityChartData[t])}})
+	}
+	c.Data["json"] = result
+	//{
+	//	"proximity": [
+	//	{
+	//	"value": [
+	//	1527415200000,
+	//	182
+	//	]
+	//	},
+	//	{
+	//	"value": [
+	//	1527418800000,
+	//	536
+	//	]
+	//	}
+	//],
+	//speedingChartData := objs.NewTimeLineData(from, to, 3600, c.member.Location)
+	//proximityChartData := objs.NewTimeLineData(from, to, 3600, c.member.Location)
+	//
+	//// 통계정보 입력
+	//rows, _, err := models.GetLogForCharting(filter, c.member)
+	//if err != nil {
+	//	log.Error(err)
+	//}
+	////loc, _ := time.LoadLocation(c.member.Location)
+	//for _, r := range rows {
+	//	t := r.Date.In(c.member.Location).Unix()
+	//
+	//	if r.EventType == objs.ShockEvent {
+	//		if _, ok := shockChartData.TimeMap[r.Date.Unix()]; ok {
+	//			shockChartData.TimeMap[t] += r.Count
+	//		}
+	//	} else if r.EventType == objs.SpeedingEvent {
+	//		if _, ok := speedingChartData.TimeMap[r.Date.Unix()]; ok {
+	//			speedingChartData.TimeMap[t] += r.Count
+	//		}
+	//	} else if r.EventType == objs.ProximityEvent {
+	//		if _, ok := proximityChartData.TimeMap[r.Date.Unix()]; ok {
+	//			proximityChartData.TimeMap[t] += r.Count
+	//		}
+	//	}
+	//}
+	//
+	//shockChartData.Sort()
+	//speedingChartData.Sort()
+	//proximityChartData.Sort()
+	//
+	//c.Data["json"] = map[string]*objs.ChartData{
+	//	"shock":     shockChartData,
+	//	"speeding":  speedingChartData,
+	//	"proximity": proximityChartData,
+	//}
 	c.ServeJSON()
+}
+
+func (c *IpaslogController) DisplayTrend() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+	c.setTpl("trend.tpl")
 }
