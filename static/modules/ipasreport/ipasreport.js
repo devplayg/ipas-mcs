@@ -5,8 +5,10 @@ $( "#modal-ipas-report" )
         var encoded = $( e.relatedTarget ).data( "encoded" ),
             log = JSON.parse( decodeURI( encoded ) );
 
-        $( ".ipasreport-equip-id" ).text( log.equip_id );
-        console.log( log );
+        showReport( log.org_id, log.equip_id, log    );
+        // console.log(333);
+        // $( ".ipasreport-equip-id" ).text( log.equip_id );
+        // console.log( log );
             // encData =link.data( "encoded" )
         // log = JSON.parse( decodeURI( encData ) );
         // console.log(encoded);
@@ -14,6 +16,18 @@ $( "#modal-ipas-report" )
     .on( "hidden.bs.modal", function (e) {
         clearIpasReport();
     });
+
+http://127.0.0.1
+
+function showReport( orgId, equipId, log ) {
+    $.ajax({
+        type:  "GET",
+        async: true,
+        url:  "/evtreport/" + equipId + "/org/" + orgId + "/since/20"
+    }).done( function( rpt ) {
+        console.log(rpt);
+    });
+}
 
 
 $( "#modal-ipas-map" ).on( "shown.bs.modal", function (e) {

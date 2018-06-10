@@ -51,7 +51,8 @@ function ipasEquipIdFormatter( val, row, idx ) {
 }
 
 function orgNameFormatter( val, row, idx ) {
-    return row.org_name;
+    // return '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + row.org_id + '">' + row.org_name + '</span>'
+    return '<span class="tooltips" title="Org ID: ' + row.org_id + '">' + row.org_name + '</span>'
 }
 
 function groupNameFormatter( val, row, idx ) {

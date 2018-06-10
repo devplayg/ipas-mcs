@@ -217,3 +217,23 @@ func GetStatsByOrgGroup(member *objs.Member, filter *objs.StatsFilter) ([]objs.S
 	_, err := o.Raw(query, args).QueryRows(&rows)
 	return rows, err
 }
+
+func GetEquipStats(member *objs.Member, filter objs.StatsFilter) ([]objs.Stats, error) {
+	var where string
+	var args []interface{}
+	query := `
+        select *
+        from stats_%s
+        where date >= ? and date <= ? and org_id = ? and equip_id = ? %s
+    `
+	args = append(args, filter.StartDate+":00", filter.EndDate+":59", filter.OrgId, filter.EquipIp)
+	if member.Position < objs.Administrator {
+		where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"
+		args = append(args, member.MemberId)
+	}
+	var rows []objs.Stats
+	o := orm.NewOrm()
+	query = fmt.Sprintf(query, filter.StatsType, where)
+	_, err := o.Raw(query, args).QueryRows(&rows)
+	return rows, err
+}

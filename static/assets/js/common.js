@@ -2,21 +2,23 @@
  *
  */
 
-// Events
+// Event types
 var StartupEvent = 1,
     ShockEvent = 2,
     SpeedingEvent = 3,
     ProximityEvent = 4;
 
+// Equipment types
+var PedestrianTag = 1, // Pedestrian tag
+    ZoneTag = 2, // Zone tag
+    VehicleTagT = 4; // Vehicle tag
+
+// Colors
 var StartupColor = "#2C3E50", // blue-chambray
     ShockColor = "#3598DC", // blue
     SpeedingColor = "#32C5D2", // green
     ProximityColor = "#E7505A"; // red
 
-// Tags
-var PT = 1, // Pedestrian tag
-    ZT = 2, // Zone tag
-    VT = 4; // Vehicle tag
 
 $.ajaxSetup({ cache:false });
 var ajax = $.ajax;
@@ -66,8 +68,13 @@ $( ".lang-changed" ).click( function() {
 Layout.setSidebarMenuActiveLink( "match" )
 
 // Selected menu
-
 updateNavText();
+
+//
+
+/**
+ * Functions
+ */
 
 function updateNavText() {
     var menu = $( ".page-sidebar-menu" ),
@@ -88,11 +95,6 @@ function updateNavText() {
     $( ".menu-depth1-text" ).text( depth1 );
     $( ".menu-depth2-text" ).text( depth2 );
 }
-
-
-/**
- * Functions
- */
 function inet_aton(dot) {
     var d = dot.split( "." );
     return ((((((+d[0])*256)+(+d[1]))*256)+(+d[2]))*256)+(+d[3]);
@@ -162,19 +164,23 @@ function captureTableColumns( table, key ) {
 //  테이블 컬럼 복구
 function restoreTableColumns( table, key ) {
     if ( $.cookie( key ) !== undefined ) {
-        var h = {};
-        $.map(  $.cookie( key ).split( "," ), function( col, i ) {
-            h[ col ] = true;
-            $( table ).bootstrapTable( "showColumn", col );
-        });
+        try {
+            var h = {};
+            $.map($.cookie(key).split(","), function (col, i) {
+                h[col] = true;
+                $(table).bootstrapTable("showColumn", col);
+            });
 
-        $( table ).find( "th" ).each(function( i, th ) {
-            var col = $( th ).data( "field" );
-            if ( h[ col ] ) {
-                $( table ).bootstrapTable( "showColumn", col );
-            } else {
-                $( table ).bootstrapTable( "hideColumn", col );
-            }
-        });
+            $(table).find("th").each(function (i, th) {
+                var col = $(th).data("field");
+                if (h[col]) {
+                    $(table).bootstrapTable("showColumn", col);
+                } else {
+                    $(table).bootstrapTable("hideColumn", col);
+                }
+            });
+        } catch(err) {
+            console.log( err );
+        }
     }
 }
