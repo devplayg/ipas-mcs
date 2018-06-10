@@ -22,7 +22,7 @@
                         data-show-export="true"
                         data-export-types="['csv', 'excel']"
                         {*Row강조*}
-                        data-row-style="rowStyle"
+                        data-row-style="ipasEventRowStyle"
                         {* 정렬 *}
                         data-sort-name="date"
                         data-sort-order="desc"

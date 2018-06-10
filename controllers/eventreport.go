@@ -51,7 +51,7 @@ func (c *EventReportController) GetReportData() {
 	c.ServeJSON()
 }
 
-func (c * EventReportController) getTracksAndEvents(filter *objs.ReportFilter) ([]objs.LocTrack, []objs.IpasLog) {
+func (c *EventReportController) getEvents(filter *objs.ReportFilter) []objs.IpasLog {
 	logFilter := objs.IpasFilter{}
 	logFilter.StartDate = filter.StartDate
 	logFilter.EndDate = filter.EndDate
@@ -59,36 +59,31 @@ func (c * EventReportController) getTracksAndEvents(filter *objs.ReportFilter) (
 	logFilter.EquipId = filter.EquipId
 	logFilter.FastPaging = "on"
 	logFilter.Sort = "date"
-	logFilter.Order = "asc"
-	logFilter.Limit = 99999
+	logFilter.Order = "desc"
+	logFilter.Limit = 9999
 
 	rows, _, err := models.GetIpaslog(&logFilter, c.member)
 	if err != nil {
 		log.Error(err)
 	}
 
-	tracks := make([]objs.LocTrack, len(rows))
-	size := 10 // 최근 10개 이벤트 조회
-	events := make([]objs.IpasLog, size)
-	for idx, r := range rows {
-		if idx <size {
-			events[idx] = rows[len(rows)-1-idx]
-		}
-		tracks[idx] = objs.LocTrack{r.Date, r.Latitude, r.Longitude}
-	}
-	return tracks, events
+	return rows
 }
 
 func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{} {
 	m := make(map[string]interface{})
+
+	// 기간
+	m["date"] = map[string]string{
+		"from": filter.StartDate,
+		"to": filter.EndDate,
+	}
 
 	// IPAS 정보
 	ipas, err := models.GetIpas(filter.OrgId, filter.EquipId)
 	if err != nil {
 		log.Error(err)
 	}
-	
-	// IPAS 정보
 	ipas.OrgName, _ = GetOrgGroupName(filter.OrgId, filter.GroupId)
 	m["ipas"] = ipas
 
@@ -96,7 +91,7 @@ func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{}
 	m["counts"] = c.getCounts(filter)
 
 	// 트랙 및 이벤트 정보
-	m["tracks"], m["events"] = c.getTracksAndEvents(filter)
+	m["events"] = c.getEvents(filter)
 
 	return m
 }

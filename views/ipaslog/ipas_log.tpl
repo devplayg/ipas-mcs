@@ -117,7 +117,7 @@
                     data-show-export="true"
                     data-export-types="['csv', 'excel']"
                     {*Row강조*}
-                    data-row-style="rowStyle"
+                    data-row-style="ipasEventRowStyle"
                     {* 정렬 *}
                     data-sort-name="{{.filter.Sort}}"
                     data-sort-order="{{.filter.Order}}"
@@ -147,7 +147,7 @@
                     <th data-field="distance" data-sortable="true" data-formatter="ipaslogDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
                     <th data-field="speed" data-sortable="true" data-formatter="ipaslogSpeedingFormatter">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
                     <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR&nbsp;&nbsp;</th>
-                    <th data-field="usim" data-sortable="true">USIM</th>
+                    <th data-field="usim" data-sortable="true" data-visible="false">USIM</th>
                     <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter" data-visible="false">IP</th>
                     <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received date"}}</th>
                 </tr>

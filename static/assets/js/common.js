@@ -11,7 +11,7 @@ var StartupEvent = 1,
 // Equipment types
 var PedestrianTag = 1, // Pedestrian tag
     ZoneTag = 2, // Zone tag
-    VehicleTagT = 4; // Vehicle tag
+    VehicleTag = 4; // Vehicle tag
 
 // Colors
 var StartupColor = "#2C3E50", // blue-chambray
