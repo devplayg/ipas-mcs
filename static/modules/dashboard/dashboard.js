@@ -147,10 +147,10 @@ $(function() {
             $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
             $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
 
-            $( ".count-pt" ).text( r.equipCountByType[PT] );
-            $( ".count-zt" ).text( r.equipCountByType[ZT] );
-            $( ".count-vt" ).text( r.equipCountByType[VT] );
-            $( ".count-total-tags" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
+            $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
+            $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
+            $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
+            $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
 
             var  data = [
                 {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},

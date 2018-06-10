@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type node struct {
@@ -51,10 +52,11 @@ func (c *StatsController) getFilter() *objs.StatsFilter {
 
 func (c *StatsController) GetTimeline() {
 	filter := c.getFilter()
-	rows := c.getStatsByOrgGroup(filter, "timeline2")
+	rows := c.getStatsByOrgGroup(filter, "timeline")
 
 	// Case 1
 	timeline := make(map[string]map[int]int)
+
 	for _, r := range rows {
 		if _, ok := timeline[r.Item]; !ok {
 			timeline[r.Item] = map[int]int{
@@ -69,11 +71,11 @@ func (c *StatsController) GetTimeline() {
 		timeline[r.Item][objs.SpeedingEvent] += r.SpeedingCount
 		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
 	}
-
+	spew.Dump(timeline)
 	//timelineByType :=
 	//c.Data["json"] = timeline
 
-	//// Case 2
+	// Case 2
 	type val struct {
 		name  string
 		Value [2]int64 `json:"value"`
@@ -195,7 +197,7 @@ func (c *StatsController) GetSummary() {
 	c.Data["json"] = map[string]interface{}{
 		"eventTypes":       c.getEventTypes(filter),
 		"equipCountByType": c.getEquipCountByType(filter),
-		"activated":        c.getStatsByOrgGroup(filter, "activated"),
+		"activated":        c.getStatsByOrgGroup(filter, "activated_group"),
 		"shocklinks":       c.getShockLinks(filter),
 	}
 	c.ServeJSON()

@@ -153,10 +153,10 @@ $(function() {
             $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
 
             // 자산 통계
-            $( ".count-pt" ).text( r.equipCountByType[PT] );
-            $( ".count-zt" ).text( r.equipCountByType[ZT] );
-            $( ".count-vt" ).text( r.equipCountByType[VT] );
-            $( ".count-total-equips" ).text( r.equipCountByType[PT] + r.equipCountByType[ZT] + r.equipCountByType[VT] );
+            $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
+            $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
+            $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
+            $( ".count-total-equips" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
 
             //
 
@@ -343,11 +343,11 @@ $(function() {
         var scaleData = [];
         $.each( rawData, function( tagType, v ) {
             var name;
-            if ( tagType == PT ) {
+            if ( tagType == PedestrianTag ) {
                 name = "PT";
-            } else if ( tagType == ZT ) {
+            } else if ( tagType == ZoneTag ) {
                 name = "ZT";
-            } else if ( tagType == VT ) {
+            } else if ( tagType == VehicleTag ) {
                 name = "VT";
             } else {
                 name = "Unknown";
