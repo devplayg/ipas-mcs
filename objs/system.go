@@ -18,7 +18,6 @@ const (
 	Superman      // 1024
 )
 
-
 type ByteSize float64
 
 const (
@@ -35,7 +34,8 @@ const (
 
 const (
 	DefaultDateFormat = "2006-01-02 15:04:05"
-	SearchTimeFormat = "2006-01-02 15:04"
+	SearchTimeFormat  = "2006-01-02 15:04"
+	DateOnlyFormat    = "2006-01-02"
 )
 
 // System configuration

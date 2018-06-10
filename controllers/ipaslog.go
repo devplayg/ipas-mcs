@@ -1,13 +1,13 @@
 package controllers
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/dustin/go-humanize"
 	log "github.com/sirupsen/logrus"
 	"sort"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type IpaslogController struct {
@@ -64,8 +64,8 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if !filter.StatsMode { // 일반적으로 로그를 조회하는 경우
 		if filter.StartDate == "" || filter.EndDate == "" {
 			t := time.Now()
-			filter.StartDate = t.AddDate(0, 0, -7).Format("2006-01-02") + " 00:00"
-			filter.EndDate = t.Format("2006-01-02") + " 23:59"
+			filter.StartDate = t.AddDate(0, 0, -7).Format(objs.DateOnlyFormat) + " 00:00"
+			filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 		}
 	} else { // 통계 근거로그를 조회하는 경우
 		if len(filter.StartDate) > 0 || len(filter.EndDate) > 0 {
@@ -84,8 +84,8 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 				filter.EndDate = rs[0].ValueS[0:10] + " 23:59"
 			} else {
 				t := time.Now()
-				filter.StartDate = t.Format("2006-01-02") + " 00:00"
-				filter.EndDate = t.Format("2006-01-02") + " 23:59"
+				filter.StartDate = t.Format(objs.DateOnlyFormat) + " 00:00"
+				filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 			}
 		}
 	}
@@ -231,7 +231,7 @@ func (c *IpaslogController) GetLogForCharting() { // ipaslog
 	// 차트 데이터 생성
 	type timeData map[string][2]int64
 	result := map[string][]timeData{
-		"startup":     make([]timeData, 0),
+		"startup":   make([]timeData, 0),
 		"shock":     make([]timeData, 0),
 		"speeding":  make([]timeData, 0),
 		"proximity": make([]timeData, 0),
@@ -243,57 +243,6 @@ func (c *IpaslogController) GetLogForCharting() { // ipaslog
 		result["proximity"] = append(result["proximity"], timeData{"value": [2]int64{t * 1000, int64(proximityChartData[t])}})
 	}
 	c.Data["json"] = result
-	//{
-	//	"proximity": [
-	//	{
-	//	"value": [
-	//	1527415200000,
-	//	182
-	//	]
-	//	},
-	//	{
-	//	"value": [
-	//	1527418800000,
-	//	536
-	//	]
-	//	}
-	//],
-	//speedingChartData := objs.NewTimeLineData(from, to, 3600, c.member.Location)
-	//proximityChartData := objs.NewTimeLineData(from, to, 3600, c.member.Location)
-	//
-	//// 통계정보 입력
-	//rows, _, err := models.GetLogForCharting(filter, c.member)
-	//if err != nil {
-	//	log.Error(err)
-	//}
-	////loc, _ := time.LoadLocation(c.member.Location)
-	//for _, r := range rows {
-	//	t := r.Date.In(c.member.Location).Unix()
-	//
-	//	if r.EventType == objs.ShockEvent {
-	//		if _, ok := shockChartData.TimeMap[r.Date.Unix()]; ok {
-	//			shockChartData.TimeMap[t] += r.Count
-	//		}
-	//	} else if r.EventType == objs.SpeedingEvent {
-	//		if _, ok := speedingChartData.TimeMap[r.Date.Unix()]; ok {
-	//			speedingChartData.TimeMap[t] += r.Count
-	//		}
-	//	} else if r.EventType == objs.ProximityEvent {
-	//		if _, ok := proximityChartData.TimeMap[r.Date.Unix()]; ok {
-	//			proximityChartData.TimeMap[t] += r.Count
-	//		}
-	//	}
-	//}
-	//
-	//shockChartData.Sort()
-	//speedingChartData.Sort()
-	//proximityChartData.Sort()
-	//
-	//c.Data["json"] = map[string]*objs.ChartData{
-	//	"shock":     shockChartData,
-	//	"speeding":  speedingChartData,
-	//	"proximity": proximityChartData,
-	//}
 	c.ServeJSON()
 }
 
@@ -302,3 +251,4 @@ func (c *IpaslogController) DisplayTrend() {
 	c.Data["filter"] = filter
 	c.setTpl("trend.tpl")
 }
+

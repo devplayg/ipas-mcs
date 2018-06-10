@@ -1,4 +1,4 @@
-function shockCountFormatter(val, row, idx) {
+function shockCountFormatter( val, row, idx ) {
     if ( row.shock_count >= 10 ) {
         return '<button class="btn red btn-xs">' +  val + '</button>';
 
@@ -9,8 +9,8 @@ function shockCountFormatter(val, row, idx) {
 
 
 
-function rowStyle(row, idx) {
-    if ( row.event_type == 4 ) {
+function rowStyle( row, idx ) {
+    if ( row.event_type == ProximityEvent ) {
         return {
             classes: "row-danger"
         };
@@ -51,17 +51,17 @@ function ipaslogLocationFormatter(val, row, idx) {
 
 
 function ipaslogEventTypeFormatter(val, row, idx) {
-    if (val === 1) {
-        return felang[ "ipas.start" ] + ' <span class="pull-right"><i class="icon-power"></i></span>';
+    if ( val === StartupEvent ) {
+        return felang[ "startup" ] + ' <span class="pull-right"><i class="icon-power"></i></span>';
 
-    } else if (val === 2) {
+    } else if ( val === ShockEvent ) {
         return felang[ "shock" ] + ' <span class="pull-right"><i class="fa fa-bolt"></i></span></span>';
 
-    } else if (val === 3) {
+    } else if ( val === SpeedingEvent ) {
         return felang[ "speeding" ] + ' <span class="pull-right"><i class="icon-speedometer"></i></span>';
         // return felang[ "speeding" ] + ' <span class="pull-right"><i class="fa fa-long-arrow-up"></i></span>';
 
-    } else if (val === 4) {
+    } else if ( val === ProximityEvent) {
         // return felang[ "proximity" ] + ' <span class="pull-right"><i class="fa fa-warning font-red"></i></span>';
         return felang[ "proximity" ] + ' <span class="pull-right"><i class="icon-size-actual"></i></span>';
     }

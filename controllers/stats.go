@@ -252,10 +252,8 @@ func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType
 
 func (c *StatsController) getShockLinks(filter *objs.StatsFilter) []*node {
 	m := make(map[string]*node)
-	//nodes := make([]node, 0)
 	rows := c.getStatsByOrgGroup(filter, "shocklinks")
 
-	//arr := make([]string, 0)
 	for _, r := range rows {
 		code := GetOrgCode(r.OrgId)
 		arr := strings.Split(r.Item, ",")

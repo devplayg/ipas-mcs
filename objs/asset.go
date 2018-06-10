@@ -10,13 +10,11 @@ type Ipas struct {
 	EquipId   string  `json:"equip_id"`
 	GroupId   int     `json:"group_id"`
 	EquipType int     `json:"equip_type"`
-	Speed     int     `json:"spped"`
+	Speed     int     `json:"speed"`
 	Snr       int     `json:"snr"`
 	Usim      string  `json:"usim"`
 	Latitude  float32 `json:"latitude"`
 	Longitude float32 `json:"longitude"`
-	//SpeedingCount int       `json:"speeding_count"`
-	//ShockCount    int       `json:"shock_count"`
 	Created   time.Time `json:"created"`
 	Updated   time.Time `json:"updated"`
 	OrgName   string    `json:"org_name"`

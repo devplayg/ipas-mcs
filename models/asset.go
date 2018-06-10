@@ -88,7 +88,6 @@ func AddAsset(asset objs.Asset) (sql.Result, error) {
 		}
 	}
 
-
 	o.Commit()
 	return rs, err
 
@@ -172,4 +171,18 @@ func JoinInt(a []int, delim string) string {
 	return strings.Trim(strings.Replace(fmt.Sprint(a), " ", delim, -1), "[]")
 	//return strings.Trim(strings.Join(strings.Split(fmt.Sprint(a), " "), delim), "[]")
 	//return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(a)), delim), "[]")
+}
+
+
+
+func GetIpas(orgId int, equipId string) (objs.Ipas, error) {
+	var ipas objs.Ipas
+	query := `
+		select org_id, equip_id, group_id, equip_type, latitude, longitude, speed, snr, usim, name, ip, created, updated
+		from ast_ipas
+		where org_id = ? and equip_id = ?
+	`
+	o := orm.NewOrm()
+	err := o.Raw(query, orgId, equipId).QueryRow(&ipas)
+	return ipas, err
 }

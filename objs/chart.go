@@ -2,7 +2,6 @@ package objs
 
 import (
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type HighchartData struct {
@@ -73,9 +72,6 @@ func NewTimeLineData(from, to time.Time, pointInterval int) map[int64]int {
 	for i := from; i.Before(to); i = i.Add(time.Duration(pointInterval) * time.Second) {
 		m[i.Unix()] = 0
 	}
-	spew.Dump(from)
-	spew.Dump(to)
-	spew.Dump(m)
 	return m
 }
 
