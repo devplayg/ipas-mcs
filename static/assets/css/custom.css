@@ -26,6 +26,21 @@ body {
     background: #fff3e2;
 }
 
+.icon-width {
+    width: 18px;
+}
+
+/* Report */
+.reportBox {
+    padding: 5px 15px 5px 15px;
+    background: rgba(229, 229, 229, 0.8) !important;
+    margin-top: 10px;
+    font-weight: bold;
+    border-radius: 3px !important;
+}
+
+
+
 /* Table */
 .fixed-table-container {
   position: relative;

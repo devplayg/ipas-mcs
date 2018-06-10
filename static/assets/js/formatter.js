@@ -61,3 +61,24 @@ function groupNameFormatter( val, row, idx ) {
     }
     return row.group_name;
 }
+
+
+
+function ipasEventRowStyle( row, idx ) {
+    if ( row.event_type == ProximityEvent ) {
+        return {
+            classes: "row-danger"
+        };
+    }
+    // if ( row.shock_count >= 10 ) {
+    //     return {
+    //         classes: "row-danger"
+    //     };
+    // } else if ( row.shock_count >= 8 ) {
+    //     return {
+    //         classes: "row-warning"
+    //     };
+    // }
+
+    return {};
+}

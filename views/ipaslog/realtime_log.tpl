@@ -80,7 +80,7 @@
                         data-show-refresh="true"
                         data-show-columns="true"
                         {*Row강조*}
-                        data-row-style="rowStyle"
+                        data-row-style="ipasEventRowStyle"
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}
@@ -128,7 +128,7 @@
                         data-show-refresh="true"
                         data-show-columns="true"
                         {*Row강조*}
-                        data-row-style="rowStyle"
+                        data-row-style="ipasEventRowStyle"
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}
@@ -175,7 +175,7 @@
                         data-show-refresh="true"
                         data-show-columns="true"
                         {*Row강조*}
-                        data-row-style="rowStyle"
+                        data-row-style="ipasEventRowStyle"
                         {* 페이지 크기*}
                         data-page-size="{{.filter.Limit}}"
                         {* 정렬 *}

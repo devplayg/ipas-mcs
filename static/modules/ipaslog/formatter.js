@@ -7,27 +7,6 @@ function shockCountFormatter( val, row, idx ) {
     }
 }
 
-
-
-function rowStyle( row, idx ) {
-    if ( row.event_type == ProximityEvent ) {
-        return {
-            classes: "row-danger"
-        };
-    }
-    // if ( row.shock_count >= 10 ) {
-    //     return {
-    //         classes: "row-danger"
-    //     };
-    // } else if ( row.shock_count >= 8 ) {
-    //     return {
-    //         classes: "row-warning"
-    //     };
-    // }
-
-    return {};
-}
-
 function snrFormatter(val, row, idx) {
     var c  = '\u2759',
         color = ['red-mint', 'red-mint', 'yellow-crusta', 'yellow-crusta', 'blue', 'blue'],
