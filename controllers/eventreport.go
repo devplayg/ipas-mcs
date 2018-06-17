@@ -21,6 +21,42 @@ func (c *EventReportController) CtrlPrepare() {
 	c.grant(objs.User)
 }
 
+func (c *EventReportController) GetReportData() {
+	filter := c.getFilter()
+	c.Data["json"] = c.getReport(filter)
+	c.ServeJSON()
+}
+
+func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{} {
+	m := make(map[string]interface{})
+
+	// 기간
+	m["date"] = map[string]string{
+		"from": filter.StartDate,
+		"to": filter.EndDate,
+		"today": time.Now().Format(time.RFC3339),
+	}
+
+	// IPAS 정보
+	ipas, err := models.GetIpas(filter.OrgId, filter.EquipId)
+	if err != nil {
+		log.Error(err)
+	}
+	ipas.OrgName, _ = GetOrgGroupName(filter.OrgId, filter.GroupId)
+	m["ipas"] = ipas
+
+	// 건수 정보
+	m["counts"] = c.getCounts(filter)
+
+	// 이벤트 정보
+	m["events"] = c.getEvents(filter)
+
+	// 상태 정보
+	m["status"] = c.getTracks(filter)
+
+	return m
+}
+
 func (c *EventReportController) getFilter() *objs.ReportFilter {
 	filter := objs.ReportFilter{}
 	if err := c.ParseForm(&filter); err != nil {
@@ -28,27 +64,22 @@ func (c *EventReportController) getFilter() *objs.ReportFilter {
 	}
 	filter.OrgId, _ = strconv.Atoi(c.Ctx.Input.Param(":orgId"))
 	filter.EquipId = c.Ctx.Input.Param(":equipId")
-	filter.SinceDays, _ = strconv.Atoi(c.Ctx.Input.Param(":sinceDays"))
 
-	t := time.Now()
-	if filter.SinceDays == 0 {
+	t,err := time.Parse(time.RFC3339, filter.Date)
+	if err != nil {
+		t = time.Now()
+	}
+
+	if filter.PastDays == 0 {
 		filter.StartDate = t.Format(objs.DateOnlyFormat) + " 00:00"
 		filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 	} else {
-		//t.Add(filter.SinceDays * time.Hour * 24)
-		//dur := time.Duration(24 * 24 * 60 * filter.SinceDays * time.Second * -1)
-		//dur := time.Duration(filter.SinceDays)*time.Second*24 * 24 * 60*-1
-		dur := time.Hour * time.Duration(24*filter.SinceDays*-1)
+		dur := time.Hour * time.Duration(24*filter.PastDays*-1)
 		filter.StartDate = t.Add(dur).Format(objs.DateOnlyFormat) + " 00:00"
 		filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 	}
 
 	return &filter
-}
-func (c *EventReportController) GetReportData() {
-	filter := c.getFilter()
-	c.Data["json"] = c.getReport(filter)
-	c.ServeJSON()
 }
 
 func (c *EventReportController) getEvents(filter *objs.ReportFilter) []objs.IpasLog {
@@ -70,31 +101,26 @@ func (c *EventReportController) getEvents(filter *objs.ReportFilter) []objs.Ipas
 	return rows
 }
 
-func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{} {
-	m := make(map[string]interface{})
 
-	// 기간
-	m["date"] = map[string]string{
-		"from": filter.StartDate,
-		"to": filter.EndDate,
-	}
+func (c *EventReportController) getTracks(filter *objs.ReportFilter) []objs.IpasLog {
+	logFilter := objs.IpasFilter{}
+	logFilter.StartDate = filter.StartDate
+	logFilter.EndDate = filter.EndDate
+	logFilter.OrgId = []int{filter.OrgId}
+	logFilter.EquipId = filter.EquipId
+	logFilter.FastPaging = "on"
+	logFilter.Sort = "date"
+	logFilter.Order = "desc"
+	logFilter.Limit = 9999
 
-	// IPAS 정보
-	ipas, err := models.GetIpas(filter.OrgId, filter.EquipId)
+	rows, _, err := models.GetIpasStatusLog(&logFilter, c.member)
 	if err != nil {
 		log.Error(err)
 	}
-	ipas.OrgName, _ = GetOrgGroupName(filter.OrgId, filter.GroupId)
-	m["ipas"] = ipas
 
-	// 건수 정보
-	m["counts"] = c.getCounts(filter)
-
-	// 트랙 및 이벤트 정보
-	m["events"] = c.getEvents(filter)
-
-	return m
+	return rows
 }
+
 
 func (c *EventReportController) getCounts(filter *objs.ReportFilter) map[string]int {
 	// 추이정보

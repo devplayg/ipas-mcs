@@ -52,7 +52,8 @@ func init() {
 	beego.Router(`/stats/timeline/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetTimeline")
 
 	// 보고서
-	beego.Router(`/evtreport/:equipId:string/org/:orgId:int/since/:sinceDays:int`, &controllers.EventReportController{}, "Get:GetReportData")
+	//beego.Router(`/evtreport/:equipId:string/org/:orgId:int/since/:sinceDays:int`, &controllers.EventReportController{}, "Get:GetReportData")
+	beego.Router(`/report/evt/org/:orgId:int/eqid/:equipId:string`, &controllers.EventReportController{}, "Get:GetReportData")
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})

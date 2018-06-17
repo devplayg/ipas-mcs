@@ -1,41 +1,75 @@
+<link href="/static/modules/ipasreport/ipasreport.css" rel="stylesheet" type="text/css" />
+<style>
+    .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+    .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+    .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+    .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+    .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+</style>
+
 <div class="modal fade" id="modal-ipas-report" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    IPAS Report - <i><span class="rpt-data rpt-ipas-equipType bold font-blue-steel"></span></i>
+                    <div class="caption pull-left">
+                        <span class="caption-subject font-blue-sharp bold uppercas mr5">IPAS Report</span>
+                    </div>
                     <div class="pull-right">
-                        <button class="btn default btn-sm btn-rpt-period" data-period="0">Today</button>
-                        <button class="btn default btn-sm btn-rpt-period" data-period="1">1D</button>
-                        <button class="btn default btn-sm btn-rpt-period" data-period="3">3D</button>
-                        <button class="btn default btn-sm btn-rpt-period" data-period="7">1W</button>
-                        <button class="btn default btn-sm btn-rpt-period" data-period="14">2W</button>
-                        <button class="btn default btn-sm btn-rpt-period" data-period="30">1M</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-today" data-period="0" >Today</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-theday hide" data-period="0"></button>
+                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 day" data-period="1">1D</button>
+                        <button class="btn default btn-sm btn-rpt-period" title="Last 3 days" data-period="3">3D</button>
+                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 week" data-period="7">1W</button>
+                        <button class="btn default btn-sm btn-rpt-period" title="Last 2 weeks" data-period="14">2W</button>
+                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 month" data-period="30">1M</button>
                     </div>
                 </h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-3 text-center">
-                        <div class="rpt-equip-type">
+                    <div class="col-sm-3">
+                        <div class="rpt-equip-type text-center">
                             <img id="rpt-img-equipType" src="" alt="" />
                         </div>
-                        <div class="">
+                        <div class="text-center hide">
                             <button class="btn default btn-xs rpt-data rpt-ipas-orgName"></button>
                             <span class="rpt-data rpt-ipas-equipId"></span>
                         </div>
+                        <div class="text-center">
+                            <div>
+                                <span class="rpt-data rpt-ipas-equipId s20 bold"></span>
+                            </div>
+                            <span class="rpt-data rpt-ipas-equipType s14 bold"></span>
+                        </div>
+
+                        <p>
+                            <div class="bold mb5">{{i18n .Lang "tag type"}}</div>
+                            <pre class="mt-code"><span class="rpt-data rpt-ipas-equipType"></span></pre>
+                        </p>
+                        <p>
+                            <div class="bold mb5">USIM</div>
+                            <pre class="mt-code"><span class="rpt-data rpt-ipas-usim"></span></pre>
+                        </p>
+                        <p>
+                            <div class="bold mb5">{{i18n .Lang "ipas.first registered"}}</div>
+                            <pre class="mt-code"><span class="rpt-data rpt-ipas-created"></span></pre>
+                        </p>
+                        <p>
+                            <div class="bold mb5">{{i18n .Lang "ipas.last used"}}</div>
+                            <pre class="mt-code"><span class="rpt-data rpt-ipas-updated"></span></pre>
+                        </p>
                     </div>
                     <div class="col-sm-9 " style="line-height: 200%; border-left: 1px dashed #acacac;">
                         <div>
-                            <span class="rpt-startDate"></span> ~
-                            <span class="rpt-endDate"></span>
+                            <label class="label label-default mr5">{{i18n .Lang "search period"}}</label>
+                            <i>
+                                <span class="rpt-startDate"></span> ~
+                                <span class="rpt-endDate"></span>
+                            </i>
                         </div>
                         <div class="row">
                             <div class="col-sm-5">
-                                <div class="reportBox">
-                                    <span class=""><i class="icon-power icon-width"></i> {{i18n .Lang "startup"}}</span>
-                                    <span class="rpt-data rpt-counts-startup s24 font-grey-mint pull-right "></span>
-                                </div>
                                 <div class="reportBox">
                                     <span class=""><i class="fa fa-bolt icon-width"></i> {{i18n .Lang "shock"}}</span>
                                     <span class="rpt-data rpt-counts-shock s24 font-grey-mint pull-right "></span>
@@ -50,32 +84,40 @@
                                 </div>
                             </div>
                             <div class="col-sm-7">
-                                <div class="clear mt10">
-                                    <span><i class="fa fa-square-o"></i> {{i18n .Lang "tag"}}</span>
+                                <div class="mt10">
+                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "tag"}}</span>
                                     <span class="rpt-data rpt-ipas-tag pull-right"></span>
                                 </div>
-                                <div class="clear mt10">
-                                    <span><i class="fa fa-square-o"></i> USIM</span>
-                                    <span class="rpt-data rpt-ipas-usim pull-right"></span>
+                                <div class="rpt-log mt5">
+                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "event type"}}</span>
+                                    <span class="rpt-log-eventType pull-right"></span>
                                 </div>
-                                <div class="clear mt10">
-                                    <span><i class="fa fa-square-o"></i> {{i18n .Lang "last location"}}</span>
-                                    <span class="rpt-data rpt-ipas-location pull-right"></span>
+                                <div class="rpt-log mt5">
+                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "location"}} (Lat./Lng.)</span>
+                                    <span class="rpt-log-location pull-right"></span>
                                 </div>
-                                <div class="clear mt10">
-                                <span><i class="fa fa-square-o"></i> {{i18n .Lang "ipas.first registered"}}</span>
-                                <span class="rpt-data rpt-ipas-created pull-right"></span>
-                            </div>
-                                <div class="clear mt10">
-                                    <span><i class="fa fa-square-o"></i> {{i18n .Lang "ipas.last used"}}</span>
-                                    <span class="rpt-data rpt-ipas-updated pull-right"></span>
+                                <div class="rpt-log mt5">
+                                    <span><i class="fa fa-square-o mr5"></i> SNR</span>
+                                    <span class="pull-right">
+                                        <span class="rpt-log-snr-value mr10"></span>
+                                        <span class="rpt-log-snr"></span>
+                                    </span>
+                                </div>
+                                <div class="rpt-log mt5">
+                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "speed"}}</span>
+                                    <span class="pull-right">
+                                        <span class="rpt-log-speed"></span> km/h
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="map-rpt-ipas" class="hide mt20" style="width:100%;height:350px;"></div>
+                        <div id="map-rpt-ipas" class="rpt-log hide mt20" style="width:100%;height:350px;"></div>
+
+                        <div id="toolbar-rpt-events">{{i18n .Lang "events"}}</div>
                         <table  id="table-rpt-events"
-                                class="table-condensed hide"
+                                class="table-condensed hide rpt-log"
+                                data-toolbar="#toolbar-rpt-events"
                                 data-toggle="table"
                                 data-show-columns="true"
                                 {*Row강조*}

@@ -13,11 +13,12 @@ var PedestrianTag = 1, // Pedestrian tag
     ZoneTag = 2, // Zone tag
     VehicleTag = 4; // Vehicle tag
 
-// Colors
-var StartupColor = "#2C3E50", // blue-chambray
+var StartupColor = "#e1e5ec", // blue-chambray
     ShockColor = "#3598DC", // blue
-    SpeedingColor = "#32C5D2", // green
+    SpeedingColor = "#f4902f", // warning(yellow) // #f4902f
     ProximityColor = "#E7505A"; // red
+// Colors
+
 
 
 $.ajaxSetup({ cache:false });

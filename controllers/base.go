@@ -229,7 +229,7 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 
 func (c *baseController) loadFrontLang() {
 	c.langMap = make(map[string]string)
-	c.addToFrontLang("yes,no,msg.confirm_delete,startup,shock,speeding,proximity")
+	c.addToFrontLang("yes,no,msg.confirm_delete,startup,shock,speeding,proximity,search period")
 	c.Data["frontLang"] = c.langMap
 }
 

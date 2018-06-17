@@ -135,6 +135,9 @@ $(function() {
     }
 
     function updateShockLinks(list) {
+        console.log(list);
+
+
         // var a = $("#chart-shocklinks").parent();
         // console.log(a.width());
         // console.log($("#chart-shocklinks").parent().width());
@@ -290,39 +293,39 @@ $(function() {
      *
      */
 
-        // 자산 초기화
-        function initializeAssets() {
-            $.ajax({
-                type  : "GET",
-                async : true,
-                url   : "/userassetclass/1/children"
-            }).done( function( result ) {
-                // 기관
-                $.each( result, function( idx, org ) {
+    // 자산 초기화
+    function initializeAssets() {
+        $.ajax({
+            type  : "GET",
+            async : true,
+            url   : "/userassetclass/1/children"
+        }).done( function( result ) {
+            // 기관
+            $.each( result, function( idx, org ) {
+                $( "#select-assets" ).append(
+                    $( "<option>", {
+                        value: org.asset_id + "/-1",
+                        text: org.name
+                    })
+                );
+
+                // 그룹
+                $.each( org.children, function( i, group ) {
                     $( "#select-assets" ).append(
                         $( "<option>", {
-                            value: org.asset_id + "/-1",
-                            text: org.name
+                            value: org.asset_id + "/" + group.asset_id,
+                            text: "- " + group.name,
+                            class: "ml20"
                         })
                     );
-
-                    // 그룹
-                    $.each( org.children, function( i, group ) {
-                        $( "#select-assets" ).append(
-                            $( "<option>", {
-                                value: org.asset_id + "/" + group.asset_id,
-                                text: "- " + group.name,
-                                class: "ml20"
-                            })
-                        );
-                    });
                 });
-
-
-            }).always( function() {
-                $( "#select-assets" ).selectpicker( "refresh" );
             });
-        }
+
+
+        }).always( function() {
+            $( "#select-assets" ).selectpicker( "refresh" );
+        });
+    }
 
     // function startTimer() {  // use a one-off timer
     //     $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
@@ -373,30 +376,37 @@ $(function() {
             $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
             $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
     //
-            var  data = [
-                {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
-                {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
-                {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
-            ];
 
-            var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
-            if ( total === 0 ) {
-                total = 1;
-            }
-            $( "#pgb-shock" ).css( "width", (r.eventTypes[ShockEvent] / total * 100) + "%" );
-            $( "#pgb-speeding" ).css( "width", (r.eventTypes[SpeedingEvent] / total * 100) + "%" );
-            $( "#pgb-proximity" ).css( "width", (r.eventTypes[ProximityEvent] / total * 100) + "%" );
-            // $('#progress-upload .progress-bar').css('width', progress + '%');
+            var data = null,
+                total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
             if ( total > 0 ) {
+                data = [
+                    {value: r.eventTypes[ShockEvent], label: 'SHOCK'},
+                    {value: r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
+                    {value: r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
+                ];
+                $( "#pgb-shock" ).css( "width", (r.eventTypes[ShockEvent] / total * 100) + "%" );
+                $( "#pgb-speeding" ).css( "width", (r.eventTypes[SpeedingEvent] / total * 100) + "%" );
+                $( "#pgb-proximity" ).css( "width", (r.eventTypes[ProximityEvent] / total * 100) + "%" );
                 eventTypeChart.setData( data );
             } else {
+                // total = 1;
                 eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
-            }
 
+            }
+            if (total === 0) {
+            }
+            // $('#progress-upload .progress-bar').css('width', progress + '%');
+            if ( total > 0 ) {
+            } else {
+            }
             // Update activated equipments
             $( "#table-activated" ).bootstrapTable( "load", r.activated );
 
-            updateShockLinks( r.shocklinks );
+            if ( r.shocklinks.length > 0 ) {
+            //     console.log("###");
+                updateShockLinks(r.shocklinks);
+            }
         }).always( function() {
         });
     }
@@ -517,7 +527,6 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
-            console.log(r);
             option = {
                 useUTC: true,
                 textStyle: {
@@ -531,8 +540,9 @@ $(function() {
                     right:  '5%',
                 },
                 // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
-                color: ['#e35b5a', '#4b77be','#2ab4c0', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                // color: ['#e35b5a', '#4b77be','#2ab4c0', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
                 // backgroundColor: '#eee',
+                color: [ ShockColor,SpeedingColor, ProximityColor ],
                 legend: {
                     // data: ['Shock', 'Speeding', 'Proximity'],
                     top: 5,

@@ -1,0 +1,8 @@
+.markerimg {
+    background: url("https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/images/markers-matte.png") no-repeat;
+}
+.markerimg.red    {width: 36px; height: 46px;background-position: 0 0;}
+.markerimg.yellow {width: 36px; height: 46px;background-position: -36px 0;}
+.markerimg.green  {width: 36px; height: 46px;background-position: -72px 0;}
+.markerimg.blue   {width: 36px; height: 46px;background-position: -108px 0;}
+.markerimg.pink   {width: 36px; height: 46px;background-position: -144px 0;}

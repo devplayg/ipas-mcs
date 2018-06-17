@@ -197,7 +197,7 @@ $(function() {
                     right:  '2%',
                 },
                 // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
-                color: ['#f7ca18', '#4b77be','#2ab4c0', '#e35b5a', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+                color: [StartupColor, ShockColor,SpeedingColor, ProximityColor],
                 // backgroundColor: '#eee',
                 legend: {
                     // data: ['Shock', 'Speeding', 'Proximity'],

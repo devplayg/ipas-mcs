@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type node struct {
@@ -71,7 +70,7 @@ func (c *StatsController) GetTimeline() {
 		timeline[r.Item][objs.SpeedingEvent] += r.SpeedingCount
 		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
 	}
-	spew.Dump(timeline)
+	//spew.Dump(timeline)
 	//timelineByType :=
 	//c.Data["json"] = timeline
 
@@ -245,8 +244,12 @@ func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType
 		log.Error(err)
 	}
 
-	for i, r := range rows {
-		rows[i].OrgName, rows[i].GroupName = GetOrgGroupName(r.OrgId, r.GroupId)
+	if (len(rows) > 0) {
+		for i, r := range rows {
+			rows[i].OrgName, rows[i].GroupName = GetOrgGroupName(r.OrgId, r.GroupId)
+		}
+	} else {
+		rows = make([]objs.Stats, 0)
 	}
 
 	return rows
