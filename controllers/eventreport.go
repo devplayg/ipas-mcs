@@ -14,9 +14,6 @@ type EventReportController struct {
 }
 
 func (c *EventReportController) CtrlPrepare() {
-	//추가 언어 키워드
-	//c.addToFrontLang("ipas.start,shock,speeding,proximity")
-
 	// 권한 부여
 	c.grant(objs.User)
 }
@@ -32,8 +29,8 @@ func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{}
 
 	// 기간
 	m["date"] = map[string]string{
-		"from": filter.StartDate,
-		"to": filter.EndDate,
+		"from":  filter.StartDate,
+		"to":    filter.EndDate,
 		"today": time.Now().Format(time.RFC3339),
 	}
 
@@ -65,7 +62,7 @@ func (c *EventReportController) getFilter() *objs.ReportFilter {
 	filter.OrgId, _ = strconv.Atoi(c.Ctx.Input.Param(":orgId"))
 	filter.EquipId = c.Ctx.Input.Param(":equipId")
 
-	t,err := time.Parse(time.RFC3339, filter.Date)
+	t, err := time.Parse(time.RFC3339, filter.Date)
 	if err != nil {
 		t = time.Now()
 	}
@@ -101,7 +98,6 @@ func (c *EventReportController) getEvents(filter *objs.ReportFilter) []objs.Ipas
 	return rows
 }
 
-
 func (c *EventReportController) getTracks(filter *objs.ReportFilter) []objs.IpasLog {
 	logFilter := objs.IpasFilter{}
 	logFilter.StartDate = filter.StartDate
@@ -120,7 +116,6 @@ func (c *EventReportController) getTracks(filter *objs.ReportFilter) []objs.Ipas
 
 	return rows
 }
-
 
 func (c *EventReportController) getCounts(filter *objs.ReportFilter) map[string]int {
 	// 추이정보

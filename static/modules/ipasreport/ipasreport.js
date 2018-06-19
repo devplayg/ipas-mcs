@@ -5,13 +5,6 @@ var mapIpas = document.getElementById( "map-ipas" ),
     ipasReportLog = null, // 로그 객체
     ipasReportDate = null, // 검색 기준 날짜
     ipasReportPastDays = 0; // 검색 시작 날짜
-// var content = '<div class="customoverlay">' +
-//     '  <a href="http://map.daum.net/link/map/11394059" target="_blank">' +
-//     '    <span class="title">구의야구공원</span>' +
-//     '  </a>' +
-//     '</div>';
-
-
 
 $( "#modal-ipas-report" )
     .on( "shown.bs.modal", function (e) { // 로그 화면에서 진입할 경우
@@ -19,8 +12,8 @@ $( "#modal-ipas-report" )
         var encoded = $( e.relatedTarget ).data( "encoded" ),
             log = JSON.parse( decodeURI( encoded ) );
 
-        ipasReportOrgId = log.org_id;
-        ipasReportEquipId = log.equip_id;
+        ipasReportOrgId = $( e.relatedTarget ).data( "org-id" );
+        ipasReportEquipId = $( e.relatedTarget ).data( "equip-id" );
         ipasReportLog = log;
         if ( ipasReportLog.date !== undefined ) {
             ipasReportDate = ipasReportLog.date;
@@ -59,15 +52,12 @@ function showReport( orgId, equipId ) {
         async: true,
         url:  url
     }).done( function( rpt ) {
-        console.log(rpt);
+        // console.log(rpt);
         $( ".btn-rpt-today" ).data( "date", rpt.date.today );
         $( ".rpt-startDate" ).text( moment( rpt.date.from ).format("lll") );
         $( ".rpt-endDate" ).text( moment( rpt.date.to ).format("lll") );
 
         var a = moment( rpt.date.from ).format("lll");
-        console.log(a);
-
-        // console.log(rpt);
         var equipTypeImg = "",
             equipType = "";
 
@@ -219,9 +209,6 @@ function updateTracks( eventTracks, statusTracks ) {
         });
     }
 
-
-
-
     // 확대 & 축소 컨트럴 추가
     var zoomControl = new daum.maps.ZoomControl();
     map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
@@ -271,7 +258,6 @@ $( "#modal-ipas-map" ).on( "shown.bs.modal", function (e) {
 
     $( ".latitude", $modal ).text( latitude );
     $( ".longitude", $modal ).text( longitude );
-    // console.log(latitude + "/" + longitude);
 
     var options = {
         center: new daum.maps.LatLng( latitude, longitude ),

@@ -65,7 +65,7 @@ func (c *StatsController) GetTimeline() {
 				4: 0,
 			}
 		}
-		timeline[r.Item][objs.StartupEvent] += r.StartupCount
+		//timeline[r.Item][objs.StartupEvent] += r.StartupCount
 		timeline[r.Item][objs.ShockEvent] += r.ShockCount
 		timeline[r.Item][objs.SpeedingEvent] += r.SpeedingCount
 		timeline[r.Item][objs.ProximityEvent] += r.ProximityCount
@@ -87,7 +87,7 @@ func (c *StatsController) GetTimeline() {
 	//	"proximity": make(map[string][]val),
 	//}
 	timelineByType := map[string][]val{
-		"startup":   make([]val, 0),
+		//"startup":   make([]val, 0),
 		"shock":     make([]val, 0),
 		"speeding":  make([]val, 0),
 		"proximity": make([]val, 0),
@@ -96,7 +96,7 @@ func (c *StatsController) GetTimeline() {
 	for date, m := range timeline {
 		d := date[0:19]
 		t, _ := time.Parse(ipasserver.DateDefault, d)
-		timelineByType["startup"] = append(timelineByType["startup"], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartupEvent])}, date})
+		//timelineByType["startup"] = append(timelineByType["startup"], val{"startup", [2]int64{t.Unix() * 1000, int64(m[objs.StartupEvent])}, date})
 		timelineByType["shock"] = append(timelineByType["shock"], val{"shock", [2]int64{t.Unix() * 1000, int64(m[objs.ShockEvent])}, date})
 		timelineByType["speeding"] = append(timelineByType["speeding"], val{"speeding", [2]int64{t.Unix() * 1000, int64(m[objs.SpeedingEvent])}, date})
 		timelineByType["proximity"] = append(timelineByType["proximity"], val{"proximity", [2]int64{t.Unix() * 1000, int64(m[objs.ProximityEvent])}, date})
@@ -244,7 +244,7 @@ func (c *StatsController) getStatsByOrgGroup(filter *objs.StatsFilter, statsType
 		log.Error(err)
 	}
 
-	if (len(rows) > 0) {
+	if len(rows) > 0 {
 		for i, r := range rows {
 			rows[i].OrgName, rows[i].GroupName = GetOrgGroupName(r.OrgId, r.GroupId)
 		}
@@ -287,4 +287,12 @@ func (c *StatsController) getShockLinks(filter *objs.StatsFilter) []*node {
 	}
 
 	return nodes
+}
+
+
+func (c *StatsController) GetActivatedGroup() {
+	filter := c.getFilter()
+	rows := c.getStatsByOrgGroup(filter, "activated_group")
+	c.Data["json"] = rows
+	c.ServeJSON()
 }

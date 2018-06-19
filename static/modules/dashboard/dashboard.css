@@ -1,3 +1,36 @@
+
+.progress-bar-danger {
+    background-color: #e7505a !important;
+}
+.progress-bar-warning {
+    background-color: #f4902f !important;
+}
+.progress-bar-info {
+    background-color: #3598DC !important;
+}
+
+.nbox {
+    height: 90px;
+    font-weight: bold;
+    padding: 0px 0px 0px 15px;
+}
+.nbox .number {
+    font-size: 36px;
+}
+.nbox.grey {
+    border-left: 5px solid #acacac;
+}
+.nbox.red {
+    border-left: 5px solid #e7505a;
+}
+.nbox.yellow {
+    border-left: 5px solid #f4902f;
+}
+.nbox.blue {
+    border-left: 5px solid #3598DC;
+}
+
+
 .label-icon-w {
     width: 16px;
 }

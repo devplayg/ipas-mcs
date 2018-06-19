@@ -17,7 +17,7 @@ type Member struct {
 	PasswordConfirm  string         `json:"-" form:"password_confirm"`
 	Salt             string         `json:"-"`
 	Name             string         `json:"name" form:"name"`
-	Position         uint           `json:"position"`
+	Position         int            `json:"position"`
 	Timezone         string         `json:"timezone" form:"timezone"`
 	Location         *time.Location `json:"-"`
 	SessionId        string         `json:"-"`

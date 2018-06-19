@@ -49,6 +49,7 @@ func init() {
 	//beego.Router(`/stats/:statsType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStats")
 	beego.Router(`/stats/:statsType/by/:assetType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStatsBy")
 	beego.Router(`/stats/summary/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetSummary")
+	beego.Router(`/stats/activatedGroup/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetActivatedGroup")
 	beego.Router(`/stats/timeline/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetTimeline")
 
 	// 보고서

@@ -34,7 +34,7 @@ $(function() {
     initializeAssets();
     updateStats();
     startTimer();
-    // $( "#modal-ipaslog" ).modal( "show" );
+
 
     /**
      * 2. 이벤트
@@ -142,10 +142,27 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
-            $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
+            // $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
             $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
             $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
             $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
+
+            // 비율
+            var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+            if ( total === 0 ) {
+                total = 1;
+            }
+            var shockRate = (r.eventTypes[ShockEvent] / total * 100).toFixed(1),
+                speedingRate = (r.eventTypes[SpeedingEvent] / total * 100).toFixed(1),
+                proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
+
+            $( ".rate-shock" ).text( shockRate + "%" );
+            $( ".rate-speeding" ).text( speedingRate + "%" );
+            $( ".rate-proximity" ).text( proximityRate + "%" );
+
+            $( "#pgb-shock" ).css( "width",shockRate + "%" );
+            $( "#pgb-speeding" ).css( "width",speedingRate + "%" );
+            $( "#pgb-proximity" ).css( "width",proximityRate + "%" );
 
             $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
             $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
@@ -153,7 +170,7 @@ $(function() {
             $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
 
             var  data = [
-                {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
+                // {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
                 {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
                 {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
                 {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},

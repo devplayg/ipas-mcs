@@ -24,7 +24,7 @@ type baseController struct {
 	beego.Controller              // 메인 구조체 임베딩
 	i18n.Locale                   // 다국어
 	isLoginRequired  bool         // 로그인 필수 여부
-	acl              uint         // 권한
+	acl              int          // 권한
 	member           *objs.Member // 사용자 정보
 	isLogged         bool         // 로그인 상태
 	ctrlName         string       // Controller 이름
@@ -91,6 +91,7 @@ func (c *baseController) Prepare() {
 	c.Data["ctrl"] = c.ctrlName
 	c.Data["act"] = c.actName
 	c.Data["member"] = c.member
+	c.Data["Administrator"] = objs.Administrator
 	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
 	//c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "KYUNGWOO")
 	//c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
@@ -160,7 +161,7 @@ func (c *baseController) setTpl(tplName string) {
 	c.TplName = c.ctrlName + "/" + tplName
 }
 
-func (c *baseController) grant(auth ...uint) {
+func (c *baseController) grant(auth ...int) {
 	for _, n := range auth {
 		c.acl |= n
 	}

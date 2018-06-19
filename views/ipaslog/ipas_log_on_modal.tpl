@@ -70,17 +70,17 @@
             blockIndexJustBefore:   -1,     // 블럭 인덱스 (이전)
             urlPrefix:              "",     // 검색 URL
             size:                   15,     // 페이지 크기
-            blockSize:              5,      // 블럭 크기 (값이 3이면, 서버로부터 ipasLogPaging.size x 3 만큼 데이터를 미리 조회),
+            blockSize:              20,      // 블럭 크기 (값이 3이면, 서버로부터 ipasLogPaging.size x 3 만큼 데이터를 미리 조회),
             sortBy:                 "date", // 정렬 기준
             orderBy:                "desc", // 정렬 순서
         };
+    // restoreTableColumns( $ipasLogTable, ipasTableKey );
 
     $ipasLogTable.on( "column-switch.bs.table", function( e, field, checked ) { // 테이블 컬럼 보기/숨기기 속성이 변경되는 경우
         captureTableColumns( $( this ), ipasTableKey );
     });
-    // restoreTableColumns( $ipasLogTable, ipasTableKey );
 
-        // 근거 로그 조회
+    // 근거 로그 조회
     $( document ).on( "click", ".btn-show-ipaslog-on-modal", function() {
         var query = $( this ).data( "query" );
         ipasLogPaging.urlPrefix = "/getIpasLogs?" + query;
@@ -97,7 +97,7 @@
 
     $( "#modal-ipaslog" )
         .on( "shown.bs.modal", function( e ) {
-            // restoreTableColumns( $ipasLogTable, ipasTableKey );
+            restoreTableColumns( $ipasLogTable, ipasTableKey );
         })
         .on( "hidden.bs.modal", function() {
             ipasLogPaging.no = 0;
@@ -105,7 +105,8 @@
             ipasLogPaging.blockIndexJustBefore = -1;
             ipasLogPaging.urlPrefix = "";
 
-            $( this ).bootstrapTable( "removeAll" );
+            // $( this ).bootstrapTable( "removeAll" );
+            $( this ).bootstrapTable( "load", [] );
         });
 
 

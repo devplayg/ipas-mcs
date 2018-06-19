@@ -256,6 +256,7 @@
                                 {{/*</li>*/}}
                             </ul>
                         </li>
+                        {{if ge .member.Position .Administrator}}
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
@@ -280,7 +281,40 @@
                                 </li>
                             </ul>
                         </li>
+                        {{end}}
                     </ul>
+
+                    <div id="system-status">
+                        <div class="plr20 mt30">
+                            <div class="progress mb5" style="height: 8px;">
+                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                            </div>
+                            <div class="font-white s12 clear">
+                                <span class="">CPU</span>
+                                <span class="pull-right">38%</span>
+                            </div>
+                        </div>
+
+                        <div class="plr20 mt15">
+                            <div class="progress mb5" style="height: 8px;">
+                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                            </div>
+                            <div class="font-white s12  clear">
+                                <span class="">MEM</span>
+                                <span class="pull-right">38%</span>
+                            </div>
+                        </div>
+
+                        <div class="plr20 mt15">
+                            <div class="progress mb5" style="height: 8px;">
+                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                            </div>
+                            <div class="font-white s12 ">
+                                <span class="">DISK</span>
+                                <span class="pull-right">38%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="page-content-wrapper">

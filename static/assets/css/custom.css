@@ -2,6 +2,10 @@ body {
     padding: 20px;
 }
 
+.bg-orange {
+  background-color: #f4902f !important;
+}
+
 .bred {
     border: 1px solid red;
 }

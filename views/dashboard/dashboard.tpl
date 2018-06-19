@@ -6,47 +6,42 @@
 {{end}}
 
 {{define "contents"}}
-<div class="portlet light bordered pt0 pb10 ">
-    <div class="portlet-body">
-        <form id="form-filter" role="form" method="post">
-            <div class="form-body">
-                <div class="form-inline">
-                    <div class="form-group">
-                        <!-- 검색 시작날짜 -->
-                        <div class="input-group date datetime hide" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                            <input id="start_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}" disabled>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                        </div>
-
-                        <!-- 검색 끝날짜 -->
-                        <div class="input-group date datetime hide">
-                            <input id="end_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}" disabled>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                        </div>
-
-                        <select id="select-assets" name="org_id" class="selectpicker" data-size="10" data-selected-text-format="count > 2">
-                            <option value="-1/-1">{{i18n .Lang "select all"}}</option>
-                        </select>
-
-                        <button type="button" class="btn default btn-start"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
-                        <span class="text-updated font-red hide ml10">Updated</span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-4 col-md-6">
         <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
+            <div class="portlet-title hide">
                 <div class="caption">
                     <i class="icon-grid"></i> {{i18n .Lang "summary"}}
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
-                <div class="row">
+                <form id="form-filter" role="form" method="post">
+                    <div class="form-body">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <!-- 검색 시작날짜 -->
+                                <div class="input-group date datetime hide" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
+                                    <input id="start_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}" disabled>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+
+                                <!-- 검색 끝날짜 -->
+                                <div class="input-group date datetime hide">
+                                    <input id="end_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}" disabled>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+
+                                <select id="select-assets" name="org_id" class="selectpicker" data-size="10" data-selected-text-format="count > 2">
+                                    <option value="-1/-1">{{i18n .Lang "total assets"}}</option>
+                                </select>
+
+                                <button type="button" class="btn default btn-start"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
+                                <span class="text-updated font-red hide ml10">Updated</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row mt15">
                     <div class="col-xs-6 text-center">
                         <h1 class="count-total-tags mt0 mb5 font-grey-mint bold"></h1>
                         Total
@@ -71,217 +66,166 @@
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-grid"></i> {{i18n .Lang "event type"}}
-                </div>
-            </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="portlet light bordered mh-rank pb0">
             <div class="portlet-body pt0 mh">
-                <div id="chart-eventType" class="p0" style="height: 180px; margin: -100px 0px -50px 0px;"></div>
-                {{/*<p>Startup: <span class="count-startup"></span></p>*/}}
-                {{/*<p>Shock: <span class="count-shock"></span></p>*/}}
-                {{/*<p>Speeding: <span class="count-speeding"></span></p>*/}}
-                {{/*<p>Proximity: <span class="count-proximity"></span></p>*/}}
+                <table class="" width="100%">
+                    <tr>
+                        <td width="40%" align="center">
+                            <div id="chart-eventType" class="mt10" style="height: 180px; width: 180px;"></div>
+                        </td>
+                        <td width="60%">
+                            <div class="portlet-title mb5 mt10">
+                                <div class="caption mb20 s16 pl10">
+                                    <i class="icon-grid"></i> {{i18n .Lang "event type"}}
+                                </div>
+                            </div>
+                            <div class="plr10 mt5">
+                                <div class="progress mb5">
+                                    <span id="pgb-shock" class="progress-bar progress-bar-info" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                </div>
+                                <div class="s12 ">
+                                    {{i18n .Lang "shock"}} (<span class="count-shock"></span>)
+                                    <span class="rate-shock pull-right">%</span>
+                                </div>
+                            </div>
+
+                            <div class="plr10 mt10">
+                                <div class="progress mb5">
+                                    <span id="pgb-speeding" class="progress-bar progress-bar-warning" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                </div>
+                                <div class="s12 ">
+                                    {{i18n .Lang "speeding"}} (<span class="count-speeding"></span>)
+                                    <span class="rate-speeding pull-right">%</span>
+                                </div>
+                            </div>
+
+                            <div class="plr10 mt10">
+                                <div class="progress mb5">
+                                    <span id="pgb-proximity" class="progress-bar progress-bar-danger" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                </div>
+                                <div class="s12 ">
+                                    {{i18n .Lang "proximity"}} (<span class="count-proximity"></span>)
+                                    <span class="rate-proximity pull-right">%</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-lg-4 col-md-12">
         <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
+            <div class="portlet-title hide">
                 <div class="caption">
-                    <i class="icon-info"></i> {{i18n .Lang "activities"}}
+                    <i class="icon-grid"></i> {{i18n .Lang "summary"}}
                 </div>
-                <div class="pull-right">
-                    <div class="mt-checkbox-inline p0">
-                        <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" class="activity" name="startupEvent" value="1"> {{i18n .Lang "startup"}}
-                            <span></span>
-                        </label>
-                        <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" class="activity" name="shockEvent" value="2" checked="checked"> {{i18n .Lang "shock"}}
-                            <span></span>
-                        </label>
-                        <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" class="activity" name="speedingEvent" value="3" checked="checked"> {{i18n .Lang "speeding"}}
-                            <span></span>
-                        </label>
-                        <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" class="activity" name="proximityEvent " value="4" checked="checked"> {{i18n .Lang "proximity"}}
-                            <span></span>
-                        </label>
+            </div>
+
+            <div class="portlet-body pt0 mh">
+                <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
+                    <table class="table table-ranking"
+                           data-classes="table-condensed table-no-bordered"
+                           data-toggle="table"
+                           data-cache="false"
+                           data-sort-name="count"
+                           data-sort-order="desc"
+                           data-show-header="true"
+                           data-query="/stats/activatedGroup">
+                        <thead>
+                        <tr>
+                            <th data-field="org_name" data-formatter="orgGroupNameFormatter">{{i18n .Lang "group"}}</th>
+                            <th data-field="count" data-sortable="true" data-formatter="numberFormatter" data-align="right">사용 횟수</th>
+                            <th data-field="uptime" data-sortable="true" data-formatter="numberFormatter" data-align="right">Uptime</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-body pt0 mh">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="nbox grey">
+                            <div class="number"><span class="count-pt"></span></div>
+                            <div class="desc">
+                                <div>PT</div>
+                                <div><span class="uppercase s10">Pedestrian Tags</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="nbox grey">
+                            <div class="number"><span class="count-vt"></span></div>
+                            <div class="desc">
+                                <div>PT</div>
+                                <div><span class="uppercase s10">Vehicle Tags</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="nbox grey">
+                            <div class="number"><span class="count-zt"></span></div>
+                            <div class="desc">
+                                <div>PT</div>
+                                <div><span class="uppercase s10">Zone Tags</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="portlet-body pt0 mh">
-
-
-                <div class="scroller" style="height: 150px;" data-always-visible="1" data-rail-visible="0">
-                    <ul class="feeds">
-                        <table id="table-ipaslogs" class="table"
-                               data-classes="table-condensed table-no-bordered"
-                               data-toggle="table"
-                               data-cache="false"
-                               data-show-header="false">
-                            <thead>
-                            <tr>
-                                <th data-field="description" data-formatter="dashboardEventDescriptionFormatter" data-sortable="true">{{i18n .Lang "description"}}</th>
-                                <th data-field="date_ago" data-formatter="dashboardDateAgoFormatter" data-align="right"></th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </ul>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-body pt0">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="nbox blue">
+                            <div class="number">
+                                <a href="#"></a>
+                                <span class="count-shock"></span>
+                            </div>
+                            <div class="desc">
+                                <div>{{i18n .Lang "monitoring.shock event"}}</div>
+                                {{if eq .Lang  "ko-kr"}}<div><span class="uppercase s10">Shock events</span></div>{{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="nbox yellow">
+                            <div class="number"><span class="count-speeding"></span></div>
+                            <div class="desc">
+                                <div>{{i18n .Lang "monitoring.speeding event"}}</div>
+                                {{if eq .Lang  "ko-kr"}}<div><span class="uppercase s10">Speeding events</span></div>{{end}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="nbox red">
+                            <div class="number"><span class="count-proximity"></span></div>
+                            <div class="desc">
+                                <div>{{i18n .Lang "monitoring.proximity event"}}</div>
+                                {{if eq .Lang  "ko-kr"}}<div><span class="uppercase s10">Proximity events</span></div>{{end}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-power"></i> {{i18n .Lang "monitoring.startup event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
-                </div>
-            </div>
-            <div class="portlet-body pt0 mh">
-                <table class="table table-ranking"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false"
-                       data-query="/stats/evt1/by/group">
-                    <thead>
-                    <tr>
-                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfStartupEventFormatter"></th>
-                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
-                </div>
-            </div>
-            <div class="portlet-body pt0 mh">
-                <table class="table table-ranking"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false"
-                       data-query="/stats/evt2/by/group">
-                    <thead>
-                    <tr>
-                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfShockEventFormatter"></th>
-                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
-                </div>
-            </div>
-            <div class="portlet-body pt0 mh">
-                <table class="table table-ranking"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false"
-                       data-query="/stats/evt3/by/group">
-                    <thead>
-                    <tr>
-                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfSpeedingEventFormatter"></th>
-                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
-                </div>
-            </div>
-            <div class="portlet-body pt0 mh">
-                <table class="table table-ranking"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false"
-                       data-query="/stats/evt4/by/group">
-                    <thead>
-                    <tr>
-                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfProximityEventFormatter"></th>
-                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-<div class="row">
-
-    <div class="col-md-3">
-        <div class="portlet light bordered mh-rank">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-power"></i> {{i18n .Lang "monitoring.startup event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
-                </div>
-            </div>
-            <div class="portlet-body pt0 mh">
-                <table class="table table-ranking"
-                       data-classes="table-condensed table-no-bordered"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-show-header="false"
-                       data-query="/stats/evt1/by/equip">
-                    <thead>
-                    <tr>
-                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
-                        <th data-field="item" data-formatter="dashboardIpasEquipIdOfStartupEventFormatter"></th>
-                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3">
+    <div class="col-lg-3 col-md-6">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
@@ -308,7 +252,85 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-lg-3 col-md-6">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
+                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <table class="table table-ranking"
+                       data-classes="table-condensed table-no-bordered"
+                       data-toggle="table"
+                       data-cache="false"
+                       data-show-header="false"
+                       data-query="/stats/evt2/by/group">
+                    <thead>
+                    <tr>
+                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
+                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfShockEventFormatter"></th>
+                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-info"></i> {{i18n .Lang "activities"}}
+                </div>
+                <div class="pull-right">
+                    <div class="mt-checkbox-inline p0">
+                        <label class="mt-checkbox mt-checkbox-outline hide">
+                            <input type="checkbox" class="activity" name="startupEvent" value="1"> {{i18n .Lang "startup"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" class="activity" name="shockEvent" value="2" checked="checked"> {{i18n .Lang "shock"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" class="activity" name="speedingEvent" value="3" checked="checked"> {{i18n .Lang "speeding"}}
+                            <span></span>
+                        </label>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" class="activity" name="proximityEvent " value="4" checked="checked"> {{i18n .Lang "proximity"}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <div class="scroller" style="height: 150px;" data-always-visible="1" data-rail-visible="0">
+                    <ul class="feeds">
+                        <table id="table-ipaslogs" class="table"
+                               data-classes="table-condensed table-no-bordered"
+                               data-toggle="table"
+                               data-cache="false"
+                               data-show-header="false">
+                            <thead>
+                            <tr>
+                                <th data-field="description" data-formatter="dashboardEventDescriptionFormatter" data-sortable="true">{{i18n .Lang "description"}}</th>
+                                <th data-field="date_ago" data-formatter="dashboardDateAgoFormatter" data-align="right"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-3 col-md-6">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
@@ -334,8 +356,34 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
+                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <table class="table table-ranking"
+                       data-classes="table-condensed table-no-bordered"
+                       data-toggle="table"
+                       data-cache="false"
+                       data-show-header="false"
+                       data-query="/stats/evt3/by/group">
+                    <thead>
+                    <tr>
+                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
+                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfSpeedingEventFormatter"></th>
+                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <div class="col-md-3">
+    <div class="col-lg-3 col-md-6">
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
@@ -361,6 +409,35 @@
             </div>
         </div>
     </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="portlet light bordered mh-rank">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
+                    <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
+                </div>
+            </div>
+            <div class="portlet-body pt0 mh">
+                <table class="table table-ranking"
+                       data-classes="table-condensed table-no-bordered"
+                       data-toggle="table"
+                       data-cache="false"
+                       data-show-header="false"
+                       data-query="/stats/evt4/by/group">
+                    <thead>
+                    <tr>
+                        <th data-field="rank" data-width="15%" data-formatter="rankFormatter"></th>
+                        <th data-field="org_name" data-formatter="dashboardOrgGroupNameOfProximityEventFormatter"></th>
+                        <th data-field="count" data-formatter="numberFormatter" data-align="right"></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 

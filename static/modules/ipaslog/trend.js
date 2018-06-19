@@ -111,6 +111,7 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
+            // console.log(r);
             option = {
                 useUTC: false,
                 height: 120,
@@ -197,7 +198,7 @@ $(function() {
                     right:  '2%',
                 },
                 // color: ['#e7505a','#3598dc', '#32c5d2', '#f7ca18', '#8e44ad',           '#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
-                color: [StartupColor, ShockColor,SpeedingColor, ProximityColor],
+                color: [ShockColor,SpeedingColor, ProximityColor],
                 // backgroundColor: '#eee',
                 legend: {
                     // data: ['Shock', 'Speeding', 'Proximity'],
@@ -251,13 +252,13 @@ $(function() {
 //        }
 //    },
                 series: [
-                    {
-                        name: felang.startup,
-                        type: 'bar',
-                        stack: 'event',
-                        data: r.startup,
-
-                    },
+                    // {
+                    //     name: felang.startup,
+                    //     type: 'bar',
+                    //     stack: 'event',
+                    //     data: r.startup,
+                    //
+                    // },
                     {
                         name: felang.shock,
                         type: 'bar',

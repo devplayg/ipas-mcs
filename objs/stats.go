@@ -20,6 +20,8 @@ type Stats struct {
 	ShockCount     int `json:"shock_count"`
 	SpeedingCount  int `json:"speeding_count"`
 	ProximityCount int `json:"proximity_count"`
+
+	Uptime  int       `json:"uptime"`
 }
 
 type StatsFilter struct {

@@ -215,7 +215,7 @@ func LoginFailed(username string, lastFailedLogin bool) error {
 	return err
 }
 
-func RemoveMember(memberId int, adminPosition uint) (sql.Result, error) {
+func RemoveMember(memberId int, adminPosition int) (sql.Result, error) {
 	query := "delete from mbr_member where member_id = ? and position < ?" // 삭제수행 주체보다 하위 권한만 삭제 가능
 
 	o := orm.NewOrm()

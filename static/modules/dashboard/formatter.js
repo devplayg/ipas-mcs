@@ -7,106 +7,98 @@ function rankFormatter( val, row, idx ) {
     return '<button class="btn ' + btn_class + ' btn-xs">' + val + '</button>';
 }
 
+
 function dashboardOrgGroupNameOfStartupEventFormatter( val, row, idx ) {
-    return dashboardOrgGroupNameFormatter( val, row, StartupEvent );
+    return dashboardOrgGroupNameFormatter( row, StartupEvent );
 }
+
 
 function dashboardOrgGroupNameOfShockEventFormatter( val, row, idx ) {
-    return dashboardOrgGroupNameFormatter( val, row, ShockEvent );
+    return dashboardOrgGroupNameFormatter( row, ShockEvent );
 }
+
 
 function dashboardOrgGroupNameOfSpeedingEventFormatter( val, row, idx ) {
-    return dashboardOrgGroupNameFormatter( val, row, SpeedingEvent );
+    return dashboardOrgGroupNameFormatter( row, SpeedingEvent );
 }
+
 
 function dashboardOrgGroupNameOfProximityEventFormatter( val, row, idx ) {
-    return dashboardOrgGroupNameFormatter( val, row, ProximityEvent );
+    return dashboardOrgGroupNameFormatter( row, ProximityEvent );
 }
 
-function dashboardOrgGroupNameFormatter( val, row, eventType ) {
-    var groupName = row.group_name;
+
+function dashboardOrgGroupNameFormatter( row, eventType ) {
+    var asset = row.item.split( "/", 2 ),
+        groupName = row.group_name;
     if ( row.item.endsWith( "/0" ) ) {
         groupName = '<span class="font-grey-silver">Default</span>';
     }
-
-    var asset = row.item.split( "/", 2 ),
-        param = {
-            stats_mode:  true,
-            fast_paging: "on",
-            org_id:      asset[0],
-            group_id:    asset[1],
-            start_date:  null,
-            end_date:    null,
-            event_type:  eventType
-        };
-
-
-    if ( $("#start_date").val() !== undefined && ! $("#start_date").prop( "disabled" ) ) {
-        param.start_date = $("#start_date").val();
-
-        // 검색 시작날짜가 설정된 경우
-        if ( $("#end_date").val() !== undefined && ! $("#end_date").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
-            param.end_date = $("#end_date").val();
-        } else { // 시작 날짜만 설졍된 경우 (특정 날짜를 검색하는 경우)
-
-        }
-    }
-    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
-        suffix = '</a>';
-    return prefix + row.org_name + '<i class="fa fa-angle-right mlr10"></i>' + groupName + suffix;
+    var attr =  getIpasLogLinkAttr({
+        stats_mode:  true,
+        org_id: asset[0],
+        group_id: asset[1],
+        event_type: eventType,
+    });
+    return '<a href="#" style="color: #555555" ' + attr + '>' +  '<span class="s12">' + row.org_name + '</span>' + '<i class="fa fa-angle-right mlr5"></i>' + groupName + '</a>';
 }
-
 
 
 function dashboardIpasEquipIdOfStartupEventFormatter( val, row, idx ) {
-    return dashboardIpasEquipIdFormatter( val, row, StartupEvent );
+    var attr =  getIpasLogLinkAttr({
+        stats_mode:  true,
+        equip_id: val,
+        event_type: StartupEvent
+    });
+    return '<a href="#"' + attr + '>' +  getIpasTag( val ) + '</a>';
 }
+
 
 function dashboardIpasEquipIdOfShockEventFormatter( val, row, idx ) {
-    return dashboardIpasEquipIdFormatter( val, row, ShockEvent );
+    var attr = getIpasLogLinkAttr({
+        stats_mode:  true,
+        equip_id: val,
+        event_type: ShockEvent
+    });
+    var a = '<a href="#"' + attr + '>' +  getIpasTag( val ) + '</a>';
+    return a;
 }
+
 
 function dashboardIpasEquipIdOfSpeedingEventFormatter( val, row, idx ) {
-    return dashboardIpasEquipIdFormatter( val, row, SpeedingEvent );
+    var attr = getIpasLogLinkAttr({
+        stats_mode:  true,
+        equip_id: val,
+        event_type: SpeedingEvent
+    });
+    return '<a href="#"' + attr + '>' +  getIpasTag( val ) + '</a>';
 }
+
 
 function dashboardIpasEquipIdOfProximityEventFormatter( val, row, idx ) {
-    return dashboardIpasEquipIdFormatter( val, row, ProximityEvent );
-}
-
-function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
-    var param = {
+    var attr = getIpasLogLinkAttr({
         stats_mode:  true,
-        fast_paging: "on",
-        equip_id:    equipId,
-        start_date:  null,
-        end_date:    null,
-        event_type:  eventType
-    };
-    // console.log(param);
-
-    if ( $("#start_date").val() !== undefined && ! $("#start_date").prop( "disabled" ) ) {
-        param.start_date = $("#start_date").val();
-
-        // 검색 시작날짜가 설정된 경우
-        if ( $("#end_date").val() !== undefined && ! $("#end_date").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
-            param.end_date = $("#end_date").val();
-        } else { // 시작 날짜만 설졍된 경우 (특정 날짜를 검색하는 경우)
-
-        }
-    }
-
-    var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
-        suffix = '</a>';
-    return prefix + getIpasTag( equipId ) + suffix;
+        equip_id: val,
+        event_type: ProximityEvent
+    });
+    return '<a href="#"' + attr + '>' +  getIpasTag( val ) + '</a>';
 }
+
+
+function getIpasLogLinkAttr( req ) {
+    req.fast_paging = "on";
+    var attr = ' class="btn-show-ipaslog-on-modal" data-query="'+ $.param( req ) + '" ';
+    return attr
+}
+
 
 function dashboardEventDescriptionFormatter( val, row, idx ) {
     var eventName,
         // eventIcon,
         lineIcon,
-        prefix = "<span>",
-        suffix = "</span>";
+
+        prefix = '<a href="#" data-toggle="modal" data-target="#modal-ipas-report" data-org-id="' + row.org_id + '" data-equip-id="' + row.equip_id + '" data-encoded="' + encodeURI( JSON.stringify( row ) ) + '" ><span>';
+        suffix = "</a>";
         // lineIcon = '<div class="label label-sm label-success"><i class="fa fa-bell-o"></i></div>';
 
     if ( row.event_type === StartupEvent ) {
@@ -121,12 +113,12 @@ function dashboardEventDescriptionFormatter( val, row, idx ) {
 
     } else if ( row.event_type === SpeedingEvent ) {
         eventName = felang.speeding;
-        lineIcon = '<div class="label label-sm label-success"><i class="icon-speedometer label-icon-w"></i></div>';
+        lineIcon = '<div class="label label-sm label-warning bg-orange"><i class="icon-speedometer label-icon-w"></i></div>';
 
     } else if ( row.event_type === ProximityEvent ) {
         eventName = felang.proximity;
-        lineIcon = '<div class="label label-sm label-danger"><i class="icon-size-actual label-icon-w"></i></div>';
-        prefix = '<span class="font-red">';
+        lineIcon = '<div class="label label-sm label-danger bg-red"><i class="icon-size-actual label-icon-w"></i></div>';
+        prefix += '<span class="font-red">';
 
     } else {
         eventName = "Unknown";
@@ -144,3 +136,31 @@ function dashboardEventDescriptionFormatter( val, row, idx ) {
 function dashboardDateAgoFormatter( val, row, idx ) {
     return '<span class="s12"><i>' + val + '</i></span>';
 }
+
+
+
+// function dashboardIpasEquipIdFormatter( equipId, row, eventType ) {
+//     var param = {
+//         stats_mode:  true,
+//         fast_paging: "on",
+//         equip_id:    equipId,
+//         start_date:  null,
+//         end_date:    null,
+//         event_type:  eventType
+//     };
+//
+//     if ( $("#start_date").val() !== undefined && ! $("#start_date").prop( "disabled" ) ) {
+//         param.start_date = $("#start_date").val();
+//
+//         // 검색 시작날짜가 설정된 경우
+//         if ( $("#end_date").val() !== undefined && ! $("#end_date").prop( "disabled" ) ) { // 시작/종료 날짜가 설정된 경우(기간 검색인 경우)
+//             param.end_date = $("#end_date").val();
+//         } else { // 시작 날짜만 설졍된 경우 (특정 날짜를 검색하는 경우)
+//
+//         }
+//     }
+//
+//     var prefix = '<a href="#" class="btn-show-ipaslog-on-modal" style="color: inherit; " data-query="'+ $.param( param ) + '">',
+//         suffix = '</a>';
+//     return prefix + getIpasTag( equipId ) + suffix;
+// }

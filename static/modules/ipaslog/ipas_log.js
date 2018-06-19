@@ -15,7 +15,7 @@ $(function() {
         size:                  $table.data( "page-size" ), // 페이지 크기
         blockIndex:            0,                          // 블럭 인덱스 (현재)
         blockIndexJustBefore: -1,                          // 블럭 인덱스 (이전)
-        blockSize:             3                           // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 미리 조회)
+        blockSize:             20                          // 블럭 크기 (값이 3이면, 서버로부터 paging.size x 3 만큼 데이터를 미리 조회)
     };
 
     // 날짜

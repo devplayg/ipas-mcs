@@ -7,18 +7,6 @@ function shockCountFormatter( val, row, idx ) {
     }
 }
 
-function snrFormatter(val, row, idx) {
-    var c  = '\u2759',
-        color = ['red-mint', 'red-mint', 'yellow-crusta', 'yellow-crusta', 'blue', 'blue'],
-        level = Math.ceil(val / 2);
-
-    if ( level > 6 ) {
-        level = 6;
-    }
-
-    return '<span class="font-' + color[level-1] + '">' + c.repeat( level ) + '</span>';
-}
-
 
 function ipaslogLocationFormatter(val, row, idx) {
     var loc = '';
