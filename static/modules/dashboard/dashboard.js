@@ -11,12 +11,12 @@ $(function() {
 
     // 날짜
     $( ".datetime" ).datetimepicker({
-        format: "yyyy-mm-dd",
-        pickerPosition : "bottom-left",
-        todayHighlight : 1,
-        minView: 2,
-        maxView: 4,
-        autoclose: true
+        format:         "yyyy-mm-dd",
+        pickerPosition: "bottom-left",
+        todayHighlight: 1,
+        minView:        2,
+        maxView:        4,
+        autoclose:      true
     });
 
     // Chart - 이벤트 유형
@@ -26,8 +26,8 @@ $(function() {
         data: [
             { label: "N/A", value: 0 }
         ],
-        formatter: function (x) { return x + ""}
-    }).on('click', function(i, row){
+        formatter: function (x) { return x + "" }
+    }).on('click', function( i, row ){
         console.log(i, row);
     });
 

@@ -167,46 +167,40 @@ function updateTracks( eventTracks, statusTracks ) {
     var map = new daum.maps.Map( ipasReportMap, mapOption );
 
     // 상태 자취 표시
-    for ( var i=0; i<statusTracks.length; i++ ) {
-        var marker = new daum.maps.Marker({
-            map: map, // 마커를 표시할 지도
-            position: new daum.maps.LatLng( statusTracks[i].latitude+0.003, statusTracks[i].longitude+0.003 ),
-            title : statusTracks[i].date,
-            // image: markerImage
-        });
+    if ( statusTracks !== null ) {
+        for (var i = 0; i < statusTracks.length; i++) {
+            var marker = new daum.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: new daum.maps.LatLng(statusTracks[i].latitude + 0.003, statusTracks[i].longitude + 0.003),
+                title: statusTracks[i].date,
+                // image: markerImage
+            });
+        }
     }
 
     // 이벤트 자취 표시
-    for ( var i=0; i<eventTracks.length; i++ ) {
-        // var marker = new daum.maps.Marker({
-        //     map: map, // 마커를 표시할 지도
-        //     position: new daum.maps.LatLng( eventTracks[i].latitude, eventTracks[i].longitude ),
-        //     title : eventTracks[i].date,
-        //     // image: markerImage
-        // });
-        var content = '';
-        if ( eventTracks[i].event_type == ShockEvent ) {
-            content = '<div class="markerimg blue"></div><button class="btn blue btn-xs"><i class="fa fa-bolt"></i> ' + felang.shock + '</button>';
-        } else if ( eventTracks[i].event_type == SpeedingEvent ) {
-            content = '<div class="markerimg yellow"></div><button class="btn btn-warning btn-xs" style="background-color: #f4902f"><i class="icon-speedometer"></i> ' + felang.speeding + '</button>';
-        } else if ( eventTracks[i].event_type == ProximityEvent ) {
-            content = '<div class="markerimg red"></div><button class="btn red btn-xs"><i class="icon-size-actual"></i> ' + felang.proximity + '</button>';
+    if ( eventTracks !== null ) {
+        for (var i = 0; i < eventTracks.length; i++) {
+            var content = '';
+            if (eventTracks[i].event_type == ShockEvent) {
+                content = '<div class="markerimg blue"></div><button class="btn blue btn-xs"><i class="fa fa-bolt"></i> ' + felang.shock + '</button>';
+            } else if (eventTracks[i].event_type == SpeedingEvent) {
+                content = '<div class="markerimg yellow"></div><button class="btn btn-warning btn-xs" style="background-color: #f4902f"><i class="icon-speedometer"></i> ' + felang.speeding + '</button>';
+            } else if (eventTracks[i].event_type == ProximityEvent) {
+                content = '<div class="markerimg red"></div><button class="btn red btn-xs"><i class="icon-size-actual"></i> ' + felang.proximity + '</button>';
+            }
+
+            var customOverlay = new daum.maps.CustomOverlay({
+                map: map, // 마커를 표시할 지도
+                position: new daum.maps.LatLng(eventTracks[i].latitude, eventTracks[i].longitude),
+                title: eventTracks[i].date,
+                // content: '<div class="customoverlay"><a href="#"><span class="title">' + eventTracks[i].event_type + '</span></a></div>',
+                content: content,
+                // xAnchor: 0.3,
+                yAnchor: 1.00,
+                image: markerImage
+            });
         }
-        // content += '<div class="markerimg red"></div>';
-
-        // content = '<span class="fa-stack fa-lg font-red-haze"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-map-marker fa-stack-1x fa-inverse"></i></span> ';
-        // <span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-map-marker fa-stack-1x fa-inverse"></i></span>
-
-        var customOverlay = new daum.maps.CustomOverlay({
-            map: map, // 마커를 표시할 지도
-            position: new daum.maps.LatLng( eventTracks[i].latitude, eventTracks[i].longitude ),
-            title : eventTracks[i].date,
-            // content: '<div class="customoverlay"><a href="#"><span class="title">' + eventTracks[i].event_type + '</span></a></div>',
-            content: content,
-            // xAnchor: 0.3,
-            yAnchor: 1.00,
-            image: markerImage
-        });
     }
 
     // 확대 & 축소 컨트럴 추가

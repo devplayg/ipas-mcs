@@ -83,6 +83,21 @@
     // 근거 로그 조회
     $( document ).on( "click", ".btn-show-ipaslog-on-modal", function() {
         var query = $( this ).data( "query" );
+
+        var asset = $( "#select-assets" ).val();
+        if ( asset !== undefined ) {
+            var arr = asset.split( "/" ),
+                param = {};
+
+            if ( arr[0] > 0 ) {
+                param.org_id = arr[0];
+            }
+            if ( arr[1] > 0 ) {
+                param.group_id = arr[1];
+            }
+            query += '&' + $.param( param );
+        }
+        console.log(query);
         ipasLogPaging.urlPrefix = "/getIpasLogs?" + query;
         movePage( +1, ipasLogStorage, ipasLogPaging, $ipasLogModal, false );
         $ipasLogModal.modal( "show" );

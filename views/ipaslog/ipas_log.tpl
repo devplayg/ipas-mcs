@@ -1,7 +1,7 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-     <pre class="hide">
+     <pre class="">
         start_date={{.filter.StartDate}}
         end_date={{.filter.EndDate}}
         equip_id={{.filter.EquipId}}
@@ -11,7 +11,7 @@
         sort={{.filter.Sort}}
         order={{.filter.Order}}
         event_type={{range .filter.EventType}}{{.}}{{end}}
-        org_id={{range .filter.OrgId}}{{.}}{{end}}
+        org_id={{range .filter.OrgId}}{{.}},{{end}}
         group_id={{range .filter.GroupId}}{{.}}{{end}}
         {{.Lang}}
     </pre>

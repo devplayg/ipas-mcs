@@ -93,7 +93,7 @@ func (c *baseController) Prepare() {
 	c.Data["member"] = c.member
 	c.Data["Administrator"] = objs.Administrator
 	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
-	//c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "KYUNGWOO")
+	c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "DeveloperPlayGround")
 	//c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
 	//c.Data["product_version"] = beego.AppConfig.DefaultString("product_version", "")
 	c.Data["reqVars"] = c.Input()

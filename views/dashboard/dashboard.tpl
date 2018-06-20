@@ -21,13 +21,13 @@
                             <div class="form-group">
                                 <!-- 검색 시작날짜 -->
                                 <div class="input-group date datetime hide" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                                    <input id="start_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}" disabled>
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}" disabled>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 
                                 <!-- 검색 끝날짜 -->
                                 <div class="input-group date datetime hide">
-                                    <input id="end_date" class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}" disabled>
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}" disabled>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 
@@ -191,8 +191,9 @@
                     <div class="col-sm-4">
                         <div class="nbox blue">
                             <div class="number">
-                                <a href="#"></a>
-                                <span class="count-shock"></span>
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=2&fast_paging=on">
+                                    <span class="count-shock"></span>
+                                </a>
                             </div>
                             <div class="desc">
                                 <div>{{i18n .Lang "monitoring.shock event"}}</div>
@@ -202,7 +203,11 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="nbox yellow">
-                            <div class="number"><span class="count-speeding"></span></div>
+                            <div class="number">
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=3&fast_paging=on">
+                                    <span class="count-speeding"></span>
+                                </a>
+                            </div>
                             <div class="desc">
                                 <div>{{i18n .Lang "monitoring.speeding event"}}</div>
                                 {{if eq .Lang  "ko-kr"}}<div><span class="uppercase s10">Speeding events</span></div>{{end}}
@@ -211,7 +216,11 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="nbox red">
-                            <div class="number"><span class="count-proximity"></span></div>
+                            <div class="number">
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=4&fast_paging=on">
+                                    <span class="count-proximity"></span>
+                                </a>
+                            </div>
                             <div class="desc">
                                 <div>{{i18n .Lang "monitoring.proximity event"}}</div>
                                 {{if eq .Lang  "ko-kr"}}<div><span class="uppercase s10">Proximity events</span></div>{{end}}
