@@ -1,7 +1,7 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-     <pre class="">
+     <pre class="hide">
         start_date={{.filter.StartDate}}
         end_date={{.filter.EndDate}}
         equip_id={{.filter.EquipId}}

@@ -146,7 +146,7 @@ function getTableKey( $table, ctrl ) {
 }
 
 // 테이블 데이터 디스플레이
-function showTableData($t, logs, paging) {
+function showTableData($t, paging, logs) {
     var offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
     $t.bootstrapTable( "load", logs.slice( offset, offset + paging.size ) );
     //console.log(offset + " ~ " + ( offset + paging.size ) );
@@ -185,3 +185,21 @@ function restoreTableColumns( table, key ) {
         }
     }
 }
+
+// 네비게이션 버튼 상태변경(고속 페이징)
+function updateToolbarNav( $table, paging, logLength ) {
+    var $toolbar = $( $table.data( "toolbar" ) ),
+        offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
+    if ( logLength - offset < paging.size ) {
+        $( ".btn-next", $toolbar ).prop( "disabled", true );
+    } else {
+        $( ".btn-next", $toolbar ).prop( "disabled", false );
+    }
+
+    if ( paging.no == 1 ) {
+        $( ".btn-prev", $toolbar ).prop( "disabled", true );
+    } else {
+        $( ".btn-prev", $toolbar ).prop( "disabled", false );
+    }
+}
+

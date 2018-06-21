@@ -55,7 +55,9 @@
                 <div class="row" style="margin: 10px 0px 0px 0px;">
                     <div class="col-xs-6 text-center">
                         <h1 class="count-zt mt0 mb5"></h1>
-                        Zone tag
+                        <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint">
+                            Zone tag
+                        </a>
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
                         <h1 class="count-vt mt0 mb5"></h1>
@@ -69,18 +71,18 @@
     <div class="col-lg-4 col-md-6">
         <div class="portlet light bordered mh-rank pb0">
             <div class="portlet-body pt0 mh">
-                <table class="" width="100%">
+                <table width="100%">
                     <tr>
                         <td width="40%" align="center">
                             <div id="chart-eventType" class="mt10" style="height: 180px; width: 180px;"></div>
                         </td>
                         <td width="60%">
-                            <div class="portlet-title mb5 mt10">
+                            <div class="portlet-title mt5">
                                 <div class="caption mb20 s16 pl10">
                                     <i class="icon-grid"></i> {{i18n .Lang "event type"}}
                                 </div>
                             </div>
-                            <div class="plr10 mt5">
+                            <div class="plr10">
                                 <div class="progress mb5">
                                     <span id="pgb-shock" class="progress-bar progress-bar-info" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                                 </div>
@@ -166,7 +168,7 @@
                         <div class="nbox grey">
                             <div class="number"><span class="count-vt"></span></div>
                             <div class="desc">
-                                <div>PT</div>
+                                <div>VT</div>
                                 <div><span class="uppercase s10">Vehicle Tags</span></div>
                             </div>
                         </div>
@@ -175,7 +177,7 @@
                         <div class="nbox grey">
                             <div class="number"><span class="count-zt"></span></div>
                             <div class="desc">
-                                <div>PT</div>
+                                <div>ZT</div>
                                 <div><span class="uppercase s10">Zone Tags</span></div>
                             </div>
                         </div>
@@ -445,17 +447,12 @@
             </div>
         </div>
     </div>
-
-
 </div>
-
-
 {{end}}
-
-
 
 {{define "javascript"}}
     {{template "ipaslog/ipas_log_on_modal.tpl" .}}
+    {{template "ipasstatus/ipas_status_on_modal.tpl" .}}
     {{template "ipasreport/ipasreport.tpl" .}}
     <script src="/static/plugins/morris.js/morris.min.js"></script>
     <script src="/static/plugins/raphael/raphael.min.js"></script>

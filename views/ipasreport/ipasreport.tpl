@@ -112,9 +112,8 @@
                             </div>
                         </div>
 
-                        <div id="map-rpt-ipas" class="rpt-log hide mt20" style="width:100%;height:350px;"></div>
-
-                        <div id="toolbar-rpt-events">{{i18n .Lang "events"}}</div>
+                        <div id="map-rpt-ipas" class="rpt-log hide mt20 mb20" style="width:100%;height:350px;"></div>
+                        <div id="toolbar-rpt-events" class="s14"><i class="icon-clock"></i> {{i18n .Lang "recent events"}}</div>
                         <table  id="table-rpt-events"
                                 class="table-condensed hide rpt-log"
                                 data-toolbar="#toolbar-rpt-events"

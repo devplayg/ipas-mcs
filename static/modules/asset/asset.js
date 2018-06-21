@@ -50,16 +50,18 @@ $(function() {
 
 
     $ipasTable.on('check.bs.table', function (e, row) {
-        updateTableButtons( $(this) );
+        updateTableButtons( $( this ) );
 
     }).on('uncheck.bs.table', function (e, row) {
-        updateTableButtons( $(this) );
+        updateTableButtons( $( this ) );
 
     }).on('check-all.bs.table', function (e) {
-        updateTableButtons( $(this) );
+        updateTableButtons( $( this ) );
 
     }).on('uncheck-all.bs.table', function (e) {
-        updateTableButtons( $(this) );
+        updateTableButtons( $( this ) );
+    }).on( "refresh.bs.table", function() {
+        updateTableButtons( $ipasTable );
 
     });
 
@@ -106,24 +108,26 @@ $(function() {
     }
 
     $( document ).on( "click",".btn-asset-tag", function(e) {
-        var group_id = $( this ).data( "id" ),
-            selected = $ipasTable.bootstrapTable( "getSelections" );
+        console.log(3);
+        var group_id = $( this ).data( "id" );
+            // selected = $ipasTable.bootstrapTable( "getSelections" );
 
         var list = $ipasTable.bootstrapTable( "getSelections" ).map(function(r) {
             return r.org_id + "/" + r.equip_id;
         });
+        console.log(list);
 
         $.ajax({
-            type: "PATCH",
+            type:  "PATCH",
             async: true,
-            url: "/ipasgroup/" + group_id,
+            url:   "/ipasgroup/" + group_id,
             data: {
                 list: list
             }
         }).done( function( result ) {
             if ( result.state ) {
                 $ipasTable.bootstrapTable( "removeAll" );
-                updateTableButtons( $ipasTable );
+                // updateTableButtons( $ipasTable );
                 $ipasTable.bootstrapTable( "refresh" );
             }
         });
@@ -139,6 +143,7 @@ $(function() {
     $( ".btn-tree-refresh" ).click( function( e ) {
         $tree.jstree( true ).refresh( -1 );
     });
+
     $( ".btn-tree-expand" ).click( function( e ) {
         var root = $tree.jstree( true ).get_node("j1_1").state;
         if ( root.opened ) {
@@ -147,6 +152,7 @@ $(function() {
             $tree.jstree( "open_all" );
         }
     });
+
     $( ".btn-tree-collapse" ).click( function( e ) {
         $tree.jstree( "close_all" );
     });
@@ -194,7 +200,7 @@ $(function() {
         $( "#form-asset-add .target" ).html( target );
         $( "#form-asset-add .name" ).html(
             node.original.name.length > 0 ? '<i class="fa fa-chevron-left"1></i> <label class="label label-info">' + node.original.name + '</label>'
-                                          : ""
+                                      : ""
         );
 
         $( "#modal-asset-add" ).modal( "show" );
@@ -285,7 +291,7 @@ $(function() {
                     }
                 }).always(function() {
                     $ipasTable.bootstrapTable( "removeAll" );
-                    updateTableButtons( $ipasTable );
+                    // updateTableButtons( $ipasTable );
                     $ipasTable.bootstrapTable( "refresh" );
                 });
             }
@@ -350,18 +356,19 @@ $(function() {
 
         if ( selected.original.type == Root ) {
             url = "/ipasorg/0";
+
         } else if ( selected.original.type == Org ) {
             url = "/ipasorg/" + selected.id;
+
         } else if ( selected.original.type == Group ) {
             url = "/ipasgroup/" + selected.id;
         }
 
         $ipasTable.bootstrapTable( "removeAll" );
-        updateTableButtons( $ipasTable );
-        $ipasTable.bootstrapTable('selectPage', 1);
-        $ipasTable.bootstrapTable( "refresh", { url: url });
+        // updateTableButtons( $ipasTable );
+        // $ipasTable.bootstrapTable('selectPage', 1);
+        $ipasTable.bootstrapTable( "refresh", { url: url,  pageNumber: 1 });
     }
 
 
 });
-

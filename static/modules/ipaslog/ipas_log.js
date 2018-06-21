@@ -186,12 +186,12 @@ $(function() {
             }).done( function( result ) {
                 logs = result || []; // 값이 null 이면 크기0의 배열을 할당
                 // console.log(logs);
-                showTableData( $table, logs, paging );
-                updatePagingNavButtons();
+                showTableData( $table, paging, logs );
+                updateToolbarNav( $table, paging, logs.length );
             });
         } else {
-            showTableData( $table, logs, paging );
-            updatePagingNavButtons();
+            showTableData( $table, paging, logs );
+            updateToolbarNav( $table, paging, logs.length );
         }
 
         paging.blockIndexJustBefore = paging.blockIndex;
@@ -199,20 +199,20 @@ $(function() {
 
 
     // 네비게이션 버튼 상태변경(고속 페이징)
-    function updatePagingNavButtons() {
-        var offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
-        if ( logs.length - offset < paging.size ) {
-            $( ".btn-next" ).prop( "disabled", true );
-        } else {
-            $( ".btn-next" ).prop( "disabled", false );
-        }
-
-        if ( paging.no == 1 ) {
-            $( ".btn-prev" ).prop( "disabled", true );
-        } else {
-            $( ".btn-prev" ).prop( "disabled", false );
-        }
-    }
+    // function updatePagingNavButtons() {
+    //     var offset = (( paging.no - 1 ) % paging.blockSize ) * paging.size;
+    //     if ( logs.length - offset < paging.size ) {
+    //         $( ".btn-next" ).prop( "disabled", true );
+    //     } else {
+    //         $( ".btn-next" ).prop( "disabled", false );
+    //     }
+    //
+    //     if ( paging.no == 1 ) {
+    //         $( ".btn-prev" ).prop( "disabled", true );
+    //     } else {
+    //         $( ".btn-prev" ).prop( "disabled", false );
+    //     }
+    // }
 
     // 필터 상태
     function updateFilterStatus() {

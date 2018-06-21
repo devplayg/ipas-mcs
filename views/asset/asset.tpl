@@ -59,7 +59,6 @@
                        data-toolbar="#toolbar-ipas"
                        data-show-refresh="true"
                        data-show-columns="true"
-                       data-click-to-select="true"
                        {* 내보내기 *}
                        data-show-export="true"
                        data-export-types="['csv', 'excel']"
@@ -72,6 +71,7 @@
                        data-sort-order="asc"
                        {* 서버사이드 페이징*}
                        data-pagination="true"
+                       data-pagination-v-align="both"
                        data-side-pagination="server"
                        data-pagination-loop="false"
                 >
@@ -167,13 +167,14 @@
 {{end}}
 
 {{define "javascript"}}
-<!-- jstree -->
-<script src="/static/plugins/jstree/dist/jstree.js" type="text/javascript"></script>
-<!-- Module -->
-<script src="/static/modules/{{.ctrl}}/formatter.js"></script>
-<script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
-<script>
-    felang[ "org" ] = {{i18n .Lang "org" }};
-    felang[ "group" ] = {{i18n .Lang "group" }};
-</script>
+    {{template "ipasreport/ipasreport.tpl" .}}
+    <!-- jstree -->
+    <script src="/static/plugins/jstree/dist/jstree.js" type="text/javascript"></script>
+    <!-- Module -->
+    <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
+    <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
+    <script>
+        felang[ "org" ] = {{i18n .Lang "org" }};
+        felang[ "group" ] = {{i18n .Lang "group" }};
+    </script>
 {{end}}

@@ -15,27 +15,13 @@ type IpaslistController struct {
 func (c *IpaslistController) GetIpasInOrg() {
 	filter := c.getFilter()
 	logs, total, err := models.GetIpaslist(filter)
-	//if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-	//	//filter := c.getFilter()
-	//	//logs, total, err := models.GetSamplelog(filter)
 	c.serveResultJson(logs, total, err, filter.FastPaging)
-	//} else { // Ajax 외 요청이면 HTML 리턴
-	//	//c.Data["filter"] = filter
-	//	c.setTpl("asset.tpl")
-	//}
 }
 
 func (c *IpaslistController) GetIpasInGroup() {
 	filter := c.getFilter()
 	logs, total, err := models.GetIpaslist(filter)
-	//if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
-	//	//filter := c.getFilter()
-	//	//logs, total, err := models.GetSamplelog(filter)
 	c.serveResultJson(logs, total, err, filter.FastPaging)
-	//} else { // Ajax 외 요청이면 HTML 리턴
-	//	//c.Data["filter"] = filter
-	//	c.setTpl("asset.tpl")
-	//}
 }
 
 func (c *IpaslistController) getFilter() *objs.IpasFilter {
