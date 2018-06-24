@@ -44,24 +44,30 @@
                 <div class="row mt15">
                     <div class="col-xs-6 text-center">
                         <h1 class="count-total-tags mt0 mb5 font-grey-mint bold"></h1>
-                        Total
+                        Total tags
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
-                        <h1 class="count-pt mt0 mb5 grey-salsa"></h1>
-                        Pedestrian Tag
+                        <h1 class="count-events mt0 mb5 grey-salsa"></h1>
+                        Total events
                     </div>
                 </div>
                 <div class="row" style="border-top: 1px dashed #acacac; margin: 10px 0px 5px 0px;"></div>
                 <div class="row" style="margin: 10px 0px 0px 0px;">
                     <div class="col-xs-6 text-center">
-                        <h1 class="count-zt mt0 mb5"></h1>
+                        <h1 class="mt0 mb5">
+                            <span class="count-optime"></span>
+                        </h1>
                         <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.ZoneTag}}">
-                            Zone tag
+                            Operating time
                         </a>
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
-                        <h1 class="count-vt mt0 mb5"></h1>
-                        Vehicle tag
+                        <h1 class="mt0 mb5">
+                            <div class="s28">
+                                <span class="what-time"></span>
+                            </div>
+                        </h1>
+                        <span class="what-date"></span>
                     </div>
                 </div>
             </div>
@@ -253,7 +259,9 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
-                    <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
+                </div>
+                <div class="pull-right">
+                    <button class="btn default btn-xs mt5">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
             <div class="portlet-body pt0 mh">
@@ -280,6 +288,8 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-bolt"></i> {{i18n .Lang "monitoring.shock event"}}
+                </div>
+                <div class="pull-right">
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -358,6 +368,8 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
+                </div>
+                <div class="pull-right">
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
@@ -384,6 +396,8 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-speedometer"></i> {{i18n .Lang "monitoring.speeding event"}}
+                </div>
+                <div class="pull-right">
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>
@@ -411,6 +425,8 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
+                </div>
+                <div class="pull-right">
                     <button class="btn default btn-xs">{{i18n .Lang "tag"}} Top</button>
                 </div>
             </div>
@@ -438,6 +454,8 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-size-actual"></i> {{i18n .Lang "monitoring.proximity event"}}
+                </div>
+                <div class="pull-right">
                     <button class="btn default btn-xs">{{i18n .Lang "group"}} Top</button>
                 </div>
             </div>

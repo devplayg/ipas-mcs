@@ -148,13 +148,17 @@ $(function() {
             $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
 
             // 비율
-            var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
-            if ( total === 0 ) {
+            var totalEvents = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+            var total = totalEvents;
+            if ( totalEvents === 0 ) {
                 total = 1;
             }
             var shockRate = (r.eventTypes[ShockEvent] / total * 100).toFixed(1),
                 speedingRate = (r.eventTypes[SpeedingEvent] / total * 100).toFixed(1),
                 proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
+
+            $( ".count-events" ).text( totalEvents );
+            $( ".count-optime" ).text( r.operatingTIme );
 
             $( ".rate-shock" ).text( shockRate + "%" );
             $( ".rate-speeding" ).text( speedingRate + "%" );
@@ -182,6 +186,12 @@ $(function() {
             } else {
                 eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
             }
+
+            // time
+            var time = moment(r.time);
+            $( ".what-time" ).text( time.format("LT") );
+            $( ".what-date" ).text( time.format("ll") );
+
         }).always( function() {
         });
     }

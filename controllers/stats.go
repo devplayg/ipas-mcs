@@ -198,8 +198,20 @@ func (c *StatsController) GetSummary() {
 		"equipCountByType": c.getEquipCountByType(filter),
 		"activated":        c.getStatsByOrgGroup(filter, "activated_group"),
 		"shocklinks":       c.getShockLinks(filter),
+		"operatingTIme":    c.getOperatingTime(filter),
+		"time":             time.Now().Format(time.RFC3339),
 	}
 	c.ServeJSON()
+}
+
+func (c *StatsController) getOperatingTime(filter *objs.StatsFilter) int {
+	var time int
+	rows := c.getStatsByOrgGroup(filter, "activated_group")
+
+	for _, r := range rows {
+		time += r.Uptime
+	}
+	return time
 }
 
 func (c *StatsController) getEventTypes(filter *objs.StatsFilter) map[int]int {
@@ -288,7 +300,6 @@ func (c *StatsController) getShockLinks(filter *objs.StatsFilter) []*node {
 
 	return nodes
 }
-
 
 func (c *StatsController) GetActivatedGroup() {
 	filter := c.getFilter()
