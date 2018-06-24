@@ -189,7 +189,7 @@ $(function() {
 
             // time
             var time = moment(r.time);
-            $( ".what-time" ).text( time.format("LT") );
+            $( ".what-time" ).text( time.format("HH:mm") );
             $( ".what-date" ).text( time.format("ll") );
 
         }).always( function() {

@@ -39,19 +39,19 @@
                             <div class="rpt-data rpt-ipas-equipId s20 bold"></div>
                         </div>
                         <div class="mb10 mt20">
-                            <div class="bold">{{i18n .Lang "tag type"}}</div>
+                            <div class="bold mb3">{{i18n .Lang "tag type"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-equipType"></span></pre>
                         </div>
                         <div class="mb10">
-                            <div class="bold">USIM</div>
+                            <div class="bold mb3">USIM</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-usim"></span></pre>
                         </div>
                         <div class="mb10">
-                            <div class="bold">{{i18n .Lang "ipas.first registered"}}</div>
+                            <div class="bold mb3">{{i18n .Lang "ipas.first registered"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-created"></span></pre>
                         </div>
                         <div class="mb10">
-                            <div class="bold mb5">{{i18n .Lang "ipas.last used"}}</div>
+                            <div class="bold mb3">{{i18n .Lang "ipas.last used"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-updated"></span></pre>
                         </div>
                     </div>

@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
                         <h1 class="mt0 mb5">
-                            <div class="s28">
+                            <div class="">
                                 <span class="what-time"></span>
                             </div>
                         </h1>
