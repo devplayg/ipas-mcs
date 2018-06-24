@@ -15,15 +15,18 @@ $( "#modal-ipas-report" )
         ipasReportOrgId = $( e.relatedTarget ).data( "org-id" );
         ipasReportEquipId = $( e.relatedTarget ).data( "equip-id" );
         ipasReportLog = log;
-        if ( ipasReportLog.date !== undefined ) {
+
+        if ( ipasReportLog.date !== undefined ) { // 이벤트(발생일시 정보가 있는) 로그 보고서이면
             ipasReportDate = ipasReportLog.date;
             $( ".btn-rpt-theday" )
                 .removeClass( "hide" )
                 .text( ipasReportDate.substr(0, 10) )
-                .data( "date", ipasReportDate );
-            $( ".btn-rpt-theday" ).removeClass( "default" ).addClass( "green" );
-        } else {
-            $( ".btn-rpt-theday" ).removeClass( "green" ).addClass( "default" );
+                .data( "date", ipasReportDate )
+                .removeClass( "default" )
+                .addClass( "blue" );
+
+        } else { // 상태정보(발생일시 정보가 없는) 보고서이면
+            $( ".btn-rpt-theday" ).removeClass( "blue" ).addClass( "default" );
         }
         showReport( ipasReportOrgId, ipasReportEquipId );
     })
@@ -52,12 +55,14 @@ function showReport( orgId, equipId ) {
         async: true,
         url:  url
     }).done( function( rpt ) {
-        // console.log(rpt);
-        $( ".btn-rpt-today" ).data( "date", rpt.date.today );
+        if ( ipasReportDate !== null ) {
+            $( ".btn-rpt-theday" ).removeClass( "default" ).addClass( "blue" );
+        }
+        // $( ".btn-rpt-today" ).data( "date", rpt.date.today );
         $( ".rpt-startDate" ).text( moment( rpt.date.from ).format("lll") );
         $( ".rpt-endDate" ).text( moment( rpt.date.to ).format("lll") );
 
-        var a = moment( rpt.date.from ).format("lll");
+        // var a = moment( rpt.date.from ).format("lll");
         var equipTypeImg = "",
             equipType = "";
 
@@ -109,10 +114,14 @@ function showReport( orgId, equipId ) {
             // map.setCenter( new daum.maps.LatLng(33.452613, 126.570888) );
 
             $( "#table-rpt-events" ).bootstrapTable( "load", rpt.events );
-            $( "#table-rpt-events" ).removeClass( "hide" );
-;       }
+            // $( "#table-rpt-events" ).removeClass( "hide" );
+        } else {
+            $( "#map-rpt-ipas" ).addClass( "hide" );
+        }
 
-        if ( ipasReportLog !== null ) { // 로그 정보
+        if ( ipasReportLog !== null && ipasReportLog.date !== undefined ) { // 로그 정보
+            console.log(ipasReportLog);
+            // console.log(ipasReportLog.date);
             var eventType = "";
             if ( ipasReportLog.event_type === StartupEvent ) {
                 eventType = felang.startup;
@@ -134,7 +143,7 @@ function showReport( orgId, equipId ) {
             $( ".rpt-log-snr" ).html( snrFormatter( ipasReportLog.snr, null, null ) );
             $( ".rpt-log-snr-value" ).html( ipasReportLog.snr );
             $( ".rpt-log-speed" ).text( ipasReportLog.speed );
-
+            $( ".rpt-log-eventDate" ).text( ipasReportLog.date );
             $( ".rpt-log" ).removeClass( "hide" );
         }
 
@@ -220,30 +229,42 @@ $( ".btn-rpt-period" ).click(function(e) {
     e.preventDefault();
 
     // 기간 설정
+    console.log(ipasReportDate);
     ipasReportPastDays = $( this ).data( "period" );
+
     clearIpasReport();
     showReport( ipasReportOrgId, ipasReportEquipId );
 });
 
 
-$( ".btn-rpt-date" ).click(function(e) {
+$( ".btn-rpt-theday" ).click(function(e) {
     e.preventDefault();
+    var $btn = $( this ),
+        date = $btn.data( "date" );
 
-    // 기간 설정
-    var date = $( this ).data( "date" );
+    if ( ipasReportDate === null ) {
         ipasReportDate = date;
-    $( ".btn-rpt-date" ).each(function( i, b ) {
-        var $btn = $( this );
-        if ( $btn.data("date").substr( 0, 10 ) === date.substr( 0, 10 ) ) {
-            $btn.removeClass( "default" ).addClass( "green" );
-        } else {
-            $btn.removeClass( "green" ).addClass( "default" );
-        }
-    });
-
+    } else {
+        ipasReportDate = null;
+    }
+    $btn.removeClass( "default" ).addClass( "blue" );
+    clearIpasReport();
     showReport( ipasReportOrgId, ipasReportEquipId );
 });
-
+//
+// $( ".btn-rpt-today" ).click(function(e) {
+//     e.preventDefault();
+//     var $btn = $( this ),
+//         date = $btn.data( "date" );
+//
+//     ipasReportDate = null;
+//
+//     $( ".btn-rpt-theday" ).removeClass( "blue" ).addClass( "default" );
+//     $btn.removeClass( "default" ).addClass( "blue" );
+//     clearIpasReport();
+//     showReport( ipasReportOrgId, ipasReportEquipId );
+// });
+//
 
 $( "#modal-ipas-map" ).on( "shown.bs.modal", function (e) {
     var latitude = $( e.relatedTarget ).data( "latitude" ),
@@ -275,15 +296,14 @@ $( "#modal-ipas-map" ).on( "shown.bs.modal", function (e) {
 });
 
 function clearIpasReport() {
-    $( ".rpt-data" ).empty();
-    $( ".rpt-log" ).addClass( "hide" );
+    $( ".rpt-data" ).empty(); // 데이터
+    $( ".rpt-log" ).addClass( "hide" ); // 클릭 시 해당 라인 정보
     $( "#rpt-img-equipType" ).attr( "src", "" );
-    $( ".btn-rpt-period" ).removeClass( "blue" ).addClass( "default" );
+    $( ".btn-rpt-date" ).removeClass( "blue" ).addClass( "default" );
 
     // 지도 감추기
-    $( "#map-rpt-ipas" ).empty();
+    $( "#map-rpt-ipas" ).empty().addClass("hide");
 
     // 로그 감추기
     $( "#table-rpt-events" ).bootstrapTable( "removeAll" );
-    // $( "#table-rpt-events" ).addClass( "hide" );
 }

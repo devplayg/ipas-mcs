@@ -40,7 +40,6 @@ func (c *IpaslistController) getFilter() *objs.IpasFilter {
 	if groupId > 0 {
 		filter.GroupId = append(filter.GroupId, groupId)
 	}
-	//logrus.Debug(assetId)
 
 	// 페이징 처리
 	if filter.Sort == "" {

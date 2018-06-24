@@ -79,24 +79,46 @@ func (c *baseController) Prepare() {
 		//spew.Dump(c.Ctx.Request.Header.Get("User-Agent"))
 	}
 
+	// 템플릿 변수 설정
+	c.setTemplateVars()
+
 	// 접근 제한
 	c.checkAccessPermission()
 
-	// 기본 템플릿 변수 설정
-	c.Data["title"] = beego.BConfig.AppName
-	//c.Data["member"] = c.GetMember()
-	//c.Data["IsLogged"] = c.IsLogged
-	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	c.Data["xsrf_token"] = c.XSRFToken()
-	c.Data["ctrl"] = c.ctrlName
-	c.Data["act"] = c.actName
-	c.Data["member"] = c.member
-	c.Data["Administrator"] = objs.Administrator
+}
+
+func (c *baseController) setTemplateVars() {
+	// 제품 정보
+	c.Data["title"] = beego.BConfig.AppName // 제품명
 	c.Data["daumMapKey"] = beego.AppConfig.DefaultString("daummapkey", "IPAS-MCS")
 	c.Data["company_name"] = beego.AppConfig.DefaultString("company_name", "DeveloperPlayGround")
 	//c.Data["product_name"] = beego.AppConfig.DefaultString("product_name", "IPAS-MCS")
 	//c.Data["product_version"] = beego.AppConfig.DefaultString("product_version", "")
+
+	//사용자 정보
+	c.Data["member"] = c.member // 사용자 정보
+	//c.Data["IsLogged"] = c.IsLogged
+
+	// 보아 정보
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["xsrf_token"] = c.XSRFToken()
+
+	// 시스템 정보
+	c.Data["ctrl"] = c.ctrlName // 컨트롤러 이름
+	c.Data["act"] = c.actName   // 액션 이름
 	c.Data["reqVars"] = c.Input()
+
+	// 태그
+	c.Data["Administrator"] = objs.Administrator
+	c.Data["PedestrianTag"] = objs.PedestrianTag
+	c.Data["ZoneTag"] = objs.ZoneTag
+	c.Data["VehicleTag"] = objs.VehicleTag
+
+	// 이벤트 종류
+	c.Data["StartupEvent"] = objs.StartupEvent
+	c.Data["ShockEvent"] = objs.ShockEvent
+	c.Data["SpeedingEvent"] = objs.SpeedingEvent
+	c.Data["Proximity"] = objs.ProximityEvent
 }
 
 func (c *baseController) loginRequired(required bool) {

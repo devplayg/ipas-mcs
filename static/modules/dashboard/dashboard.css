@@ -18,16 +18,16 @@
     font-size: 36px;
 }
 .nbox.grey {
-    border-left: 5px solid #acacac;
+    border-left: 7px solid #acacac;
 }
 .nbox.red {
-    border-left: 5px solid #e7505a;
+    border-left: 7px solid #e7505a;
 }
 .nbox.yellow {
-    border-left: 5px solid #f4902f;
+    border-left: 7px solid #f4902f;
 }
 .nbox.blue {
-    border-left: 5px solid #3598DC;
+    border-left: 7px solid #3598DC;
 }
 
 

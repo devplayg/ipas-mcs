@@ -55,7 +55,7 @@
                 <div class="row" style="margin: 10px 0px 0px 0px;">
                     <div class="col-xs-6 text-center">
                         <h1 class="count-zt mt0 mb5"></h1>
-                        <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint">
+                        <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.ZoneTag}}">
                             Zone tag
                         </a>
                     </div>
@@ -157,7 +157,11 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="nbox grey">
-                            <div class="number"><span class="count-pt"></span></div>
+                            <div class="number">
+                                <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.PedestrianTag}}">
+                                    <span class="count-pt"></span>
+                                </a>
+                            </div>
                             <div class="desc">
                                 <div>PT</div>
                                 <div><span class="uppercase s10">Pedestrian Tags</span></div>
@@ -166,7 +170,11 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="nbox grey">
-                            <div class="number"><span class="count-vt"></span></div>
+                            <div class="number">
+                                <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.VehicleTag}}">
+                                    <span class="count-vt"></span>
+                                </a>
+                            </div>
                             <div class="desc">
                                 <div>VT</div>
                                 <div><span class="uppercase s10">Vehicle Tags</span></div>
@@ -175,7 +183,11 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="nbox grey">
-                            <div class="number"><span class="count-zt"></span></div>
+                            <div class="number">
+                                <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.ZoneTag}}">
+                                    <span class="count-zt"></span>
+                                </a>
+                            </div>
                             <div class="desc">
                                 <div>ZT</div>
                                 <div><span class="uppercase s10">Zone Tags</span></div>
@@ -193,7 +205,7 @@
                     <div class="col-sm-4">
                         <div class="nbox blue">
                             <div class="number">
-                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=2&fast_paging=on">
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1&event_type={{.ShockEvent}}">
                                     <span class="count-shock"></span>
                                 </a>
                             </div>
@@ -206,7 +218,7 @@
                     <div class="col-sm-4">
                         <div class="nbox yellow">
                             <div class="number">
-                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=3&fast_paging=on">
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1&event_type={{.SpeedingEvent}}">
                                     <span class="count-speeding"></span>
                                 </a>
                             </div>
@@ -219,7 +231,7 @@
                     <div class="col-sm-4">
                         <div class="nbox red">
                             <div class="number">
-                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="?stats_mode=1&event_type=4&fast_paging=on">
+                                <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1&event_type={{.ProximityEvent}}">
                                     <span class="count-proximity"></span>
                                 </a>
                             </div>

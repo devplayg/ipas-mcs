@@ -597,6 +597,10 @@
             var daumMapKey = {{.daumMapKey}},
                 felang = {{.frontLang}}, // front-end languages
                 lang = {{.Lang}};
+
+            var PedestrianTag = {{.PedestrianTag}},
+                ZoneTag = {{.ZoneTag}},
+                VehicleTag = {{.VehicleTag}};
         </script>
 
         <!-- Javascript -->

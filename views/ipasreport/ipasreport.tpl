@@ -16,13 +16,12 @@
                         <span class="caption-subject font-blue-sharp bold uppercas mr5">IPAS Report</span>
                     </div>
                     <div class="pull-right">
-                        <button class="btn default btn-sm btn-rpt-date btn-rpt-today" data-period="0" >Today</button>
-                        <button class="btn default btn-sm btn-rpt-date btn-rpt-theday hide" data-period="0"></button>
-                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 day" data-period="1">1D</button>
-                        <button class="btn default btn-sm btn-rpt-period" title="Last 3 days" data-period="3">3D</button>
-                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 week" data-period="7">1W</button>
-                        <button class="btn default btn-sm btn-rpt-period" title="Last 2 weeks" data-period="14">2W</button>
-                        <button class="btn default btn-sm btn-rpt-period" title="Last 1 month" data-period="30">1M</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-theday hide"                 data-period="0"></button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-period" data-period="0">{{i18n .Lang "report.day"}}</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-period" data-period="3">{{i18n .Lang "past 3 days"}}</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-period" data-period="7">{{i18n .Lang "past 1 week"}}</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-period" data-period="14">{{i18n .Lang "past 2 weeks"}}</button>
+                        <button class="btn default btn-sm btn-rpt-date btn-rpt-period" data-period="30">{{i18n .Lang "past 1 month"}}</button>
                     </div>
                 </h4>
             </div>
@@ -37,32 +36,28 @@
                             <span class="rpt-data rpt-ipas-equipId"></span>
                         </div>
                         <div class="text-center">
-                            <div>
-                                <span class="rpt-data rpt-ipas-equipId s20 bold"></span>
-                            </div>
-                            <span class="rpt-data rpt-ipas-equipType s14 bold"></span>
+                            <div class="rpt-data rpt-ipas-equipId s20 bold"></div>
                         </div>
-
-                        <p>
-                            <div class="bold mb5">{{i18n .Lang "tag type"}}</div>
+                        <div class="mb10 mt20">
+                            <div class="bold">{{i18n .Lang "tag type"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-equipType"></span></pre>
-                        </p>
-                        <p>
-                            <div class="bold mb5">USIM</div>
+                        </div>
+                        <div class="mb10">
+                            <div class="bold">USIM</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-usim"></span></pre>
-                        </p>
-                        <p>
-                            <div class="bold mb5">{{i18n .Lang "ipas.first registered"}}</div>
+                        </div>
+                        <div class="mb10">
+                            <div class="bold">{{i18n .Lang "ipas.first registered"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-created"></span></pre>
-                        </p>
-                        <p>
+                        </div>
+                        <div class="mb10">
                             <div class="bold mb5">{{i18n .Lang "ipas.last used"}}</div>
                             <pre class="mt-code"><span class="rpt-data rpt-ipas-updated"></span></pre>
-                        </p>
+                        </div>
                     </div>
                     <div class="col-sm-9 " style="line-height: 200%; border-left: 1px dashed #acacac;">
                         <div>
-                            <label class="label label-default mr5">{{i18n .Lang "search period"}}</label>
+                            <label class="label label-success mr5">{{i18n .Lang "search period"}}</label>
                             <i>
                                 <span class="rpt-startDate"></span> ~
                                 <span class="rpt-endDate"></span>
@@ -84,38 +79,44 @@
                                 </div>
                             </div>
                             <div class="col-sm-7">
-                                <div class="mt10">
-                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "tag"}}</span>
-                                    <span class="rpt-data rpt-ipas-tag pull-right"></span>
-                                </div>
-                                <div class="rpt-log mt5">
-                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "event type"}}</span>
-                                    <span class="rpt-log-eventType pull-right"></span>
-                                </div>
-                                <div class="rpt-log mt5">
-                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "location"}} (Lat./Lng.)</span>
-                                    <span class="rpt-log-location pull-right"></span>
-                                </div>
-                                <div class="rpt-log mt5">
-                                    <span><i class="fa fa-square-o mr5"></i> SNR</span>
-                                    <span class="pull-right">
-                                        <span class="rpt-log-snr-value mr10"></span>
-                                        <span class="rpt-log-snr"></span>
-                                    </span>
-                                </div>
-                                <div class="rpt-log mt5">
-                                    <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "speed"}}</span>
-                                    <span class="pull-right">
-                                        <span class="rpt-log-speed"></span> km/h
-                                    </span>
+                                <div class="rpt-log hide">
+                                    <div class="">
+                                        <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "occurrence date"}}</span>
+                                        <span class="rpt-data rpt-log-eventDate pull-right"></span>
+                                    </div>
+                                    <div class="mt5">
+                                        <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "tag"}}</span>
+                                        <span class="rpt-data rpt-ipas-tag pull-right"></span>
+                                    </div>
+                                    <div class="mt5">
+                                        <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "event type"}}</span>
+                                        <span class="rpt-log-eventType pull-right"></span>
+                                    </div>
+                                    <div class="mt5">
+                                        <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "location"}} (Lat./Lng.)</span>
+                                        <span class="rpt-log-location pull-right"></span>
+                                    </div>
+                                    <div class="mt5">
+                                        <span><i class="fa fa-square-o mr5"></i> SNR</span>
+                                        <span class="pull-right">
+                                            <span class="rpt-log-snr-value mr10"></span>
+                                            <span class="rpt-log-snr"></span>
+                                        </span>
+                                    </div>
+                                    <div class="mt5">
+                                        <span><i class="fa fa-square-o mr5"></i> {{i18n .Lang "speed"}}</span>
+                                        <span class="pull-right">
+                                            <span class="rpt-log-speed"></span> km/h
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="map-rpt-ipas" class="rpt-log hide mt20 mb20" style="width:100%;height:350px;"></div>
-                        <div id="toolbar-rpt-events" class="s14"><i class="icon-clock"></i> {{i18n .Lang "recent events"}}</div>
+                        <div id="map-rpt-ipas" class="table-rpt-events hide mt20 mb20" style="width:100%;height:350px;"></div>
+                        <div id="toolbar-rpt-events" class="table-rpt-events s14"><i class="icon-clock"></i> {{i18n .Lang "recent events"}}</div>
                         <table  id="table-rpt-events"
-                                class="table-condensed hide rpt-log"
+                                class="table-condensed"
                                 data-toolbar="#toolbar-rpt-events"
                                 data-toggle="table"
                                 data-show-columns="true"

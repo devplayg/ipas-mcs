@@ -50,6 +50,10 @@ func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 	if len(filter.GroupId) > 0 {
 		where += fmt.Sprintf(" and t.group_id in (%s)", JoinInt(filter.GroupId, ","))
 	}
+	if filter.EquipType > 0 {
+		where += " and t.equip_type = ?"
+		args = append(args, filter.EquipType)
+	}
 
 	// 페이징 모드(고속/일반)
 	if filter.FastPaging == "off" {
@@ -57,7 +61,6 @@ func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 	}
 
 	// Set query
-
 	query := `
 		select %s org_id, equip_id, group_id, equip_type, latitude, longitude, speed, snr, usim, t.created, t.updated, t1.name org_name, t2.name group_name
 		from ast_ipas t

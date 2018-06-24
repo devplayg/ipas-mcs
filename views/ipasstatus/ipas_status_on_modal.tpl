@@ -31,22 +31,11 @@
                 >
                     <thead>
                     <tr>
-                        <th data-field="no">No</th>
-                        <th data-field="date" data-formatter="dateFormatter">{{i18n .Lang "occurrence date"}}</th>
                         <th data-field="org_name">{{i18n .Lang "org"}}</th>
                         <th data-field="group_name" data-formatter="groupNameFormatter">{{i18n .Lang "group"}}</th>
-                        <th data-field="event_type" data-formatter="ipasstatusEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
-                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter">{{i18n .Lang "tag"}}</th>
-                        <th data-field="targets" data-formatter="ipasstatusTargetsFormatter">{{i18n .Lang "ipas.target"}}</th>
-                        <th data-field="location" data-formatter="ipasstatusLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
-                        <th data-field="latitude">{{i18n .Lang "latitude"}}</th>
-                        <th data-field="longitude">{{i18n .Lang "longitude"}}</th>
-                        <th data-field="distance" data-formatter="ipasstatusDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
-                        <th data-field="speed" data-formatter="ipasstatusSpeedingFormatter">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
-                        <th data-field="snr" data-formatter="snrFormatter">SNR&nbsp;&nbsp;</th>
-                        <th data-field="usim" data-visible="false">USIM</th>
-                        <th data-field="ip" data-formatter="int2ipFormatter" data-visible="false">IP</th>
-                        <th data-field="recv_date" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "receiv  ed date"}}</th>
+                        <th data-field="equip_type" data-formatter="ipasEquipTypeFormatter" data-sortable="true">{{i18n .Lang "equip type"}}</th>
+                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
+                        <th data-field="usim" data-visible="true">USIM</th>
                     </tr>
                     </thead>
                 </table>
@@ -57,7 +46,7 @@
         </div>
     </div>
 </div> <!-- #modal-filter -->
-<script src="/static/modules/ipasstatus/formatter.js"></script>
+{{/*<script src="/static/modules/ipasstatus/formatter.js"></script>*/}}
 
 <script>
     var $ipasStatusModal  = $( "#modal-ipasstatus" ), // Modal
@@ -80,19 +69,23 @@
 
     // 근거 로그 조회
     $( document ).on( "click", ".btn-show-ipasstatus-on-modal", function() {
-        var asset = $( "#select-assets" ).val();
+        // var asset = $( "#select-assets" ).val();
+        var query = $( this ).data( "query" ),
+            asset = $( "#select-assets" ).val();
+
         if ( asset !== undefined ) {
-            var arr = asset.split( "/" );
+            var arr = asset.split( "/" ).map( function(x) { return parseInt(x) } );
 
             if ( arr[0] > 0 ) { // 기관 조회
                 if ( arr[1] > 0 ) { // 그룹 조회
-                    ipasStatusPaging.urlPrefix = "/ipasorg/" + arr[0] + "?fast_paging=on";
+                    ipasStatusPaging.urlPrefix = "/ipasgroup/" + arr[1];
                 } else { // 기관 조회
-                    ipasStatusPaging.urlPrefix = "/ipasorg/" + arr[1] + "?fast_paging=on";
+                    ipasStatusPaging.urlPrefix = "/ipasorg/" + arr[0];
                 }
             } else { // 전체 조회
-                ipasStatusPaging.urlPrefix = "/ipasorg/0?fast_paging=on";
+                ipasStatusPaging.urlPrefix = "/ipasorg/0";
             }
+            ipasStatusPaging.urlPrefix += "?fast_paging=on&" + query;
 
         //             param = {};
         //
@@ -160,7 +153,7 @@
                 order : paging.orderBy
             };
             var url = paging.urlPrefix + "&" + $.param( param );
-            console.log(url);
+            // console.log(url);
             // 데이터 조회
             $.ajax({
                 type:  "GET",
@@ -168,7 +161,6 @@
                 url:   url
             }).done( function( result ) {
                 ipasStatusStorage = result || []; // 값이 null 이면 크기0의 배열을 할당
-                console.log(ipasStatusStorage);
                 showTableData( $table, paging, ipasStatusStorage );
                 updateToolbarNav( $table, paging, ipasStatusStorage.length );
             });

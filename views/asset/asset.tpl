@@ -81,9 +81,9 @@
                         <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
                         <th data-field="group_name" data-sortable="true">{{i18n .Lang "group"}}</th>
                         {{/*<th data-field="org_id" data-sortable="true">org_id</th>*/}}
-                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
                         {{/*<th data-field="group_id" data-sortable="true">group_id</th>*/}}
-                        {{/*<th data-field="equip_type" data-sortable="true">equip_type</th>*/}}
+                        <th data-field="equip_type" data-formatter="ipasEquipTypeFormatter" data-sortable="true">{{i18n .Lang "equip type"}}</th>
+                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
                         <th data-field="latitude" data-sortable="true">{{i18n .Lang "latitude"}}</th>
                         <th data-field="longitude" data-sortable="true">{{i18n .Lang "longitude"}}</th>
                         <th data-field="speed" data-sortable="true">{{i18n .Lang "speed"}}</th>

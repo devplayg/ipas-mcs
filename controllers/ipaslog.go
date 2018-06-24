@@ -60,6 +60,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if err := c.ParseForm(&filter); err != nil {
 		log.Error(err)
 	}
+
 	// 날짜 설정
 	if !filter.StatsMode { // 일반적으로 로그를 조회하는 경우
 		if filter.StartDate == "" || filter.EndDate == "" {
@@ -103,7 +104,7 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if filter.FastPaging == "" {
 		filter.FastPaging = "off"
 	}
-
+	spew.Dump(filter)
 	return &filter
 }
 

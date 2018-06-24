@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type EventReportController struct {
@@ -25,6 +26,7 @@ func (c *EventReportController) GetReportData() {
 }
 
 func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{} {
+	spew.Dump(filter)
 	m := make(map[string]interface{})
 
 	// 기간

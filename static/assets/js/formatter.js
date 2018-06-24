@@ -172,3 +172,17 @@ function ipaslogSpeedingFormatter( val, row, idx ) {
     }
 }
 
+function ipasEquipTypeFormatter( val, row, idx ) {
+    if ( val === PedestrianTag ) {
+        return "PT";
+
+    } else if ( val === ZoneTag ) {
+        return "ZT";
+
+    } else if ( val === VehicleTag ) {
+        return "VT";
+
+    } else {
+        return val;
+    }
+}
