@@ -167,17 +167,17 @@ function restoreTableColumns( table, key ) {
     if ( $.cookie( key ) !== undefined ) {
         try {
             var h = {};
-            $.map($.cookie(key).split(","), function (col, i) {
+            $.map( $.cookie( key ).split( "," ), function ( col, i ) {
                 h[col] = true;
-                $(table).bootstrapTable("showColumn", col);
+                $( table ).bootstrapTable("showColumn", col);
             });
 
             $(table).find("th").each(function (i, th) {
-                var col = $(th).data("field");
-                if (h[col]) {
-                    $(table).bootstrapTable("showColumn", col);
+                var col = $( th ).data("field");
+                if ( h[col] ) {
+                    $( table ).bootstrapTable("showColumn", col);
                 } else {
-                    $(table).bootstrapTable("hideColumn", col);
+                    $( table ).bootstrapTable("hideColumn", col);
                 }
             });
         } catch(err) {

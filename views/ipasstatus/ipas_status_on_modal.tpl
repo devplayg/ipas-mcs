@@ -98,7 +98,7 @@
         //     query += '&' + $.param( param );
             // console.log(query);
             // ipasStatusPaging.urlPrefix = "/getIpasLogs?" + query;
-            movePage( +1, ipasStatusStorage, ipasStatusPaging, $ipasStatusModal, false );
+            moveIpasStatusPage( +1, ipasStatusStorage, ipasStatusPaging, $ipasStatusModal, false );
             $ipasStatusModal.modal( "show" );
         }
     });
@@ -107,7 +107,7 @@
     $( ".btn-move-page", $ipasStatusModal ).click(function( e ) {
         e.preventDefault();
         var direction = $( this ).data( "direction" );
-        movePage( direction, ipasStatusStorage, ipasStatusPaging, $ipasStatusModal, false );
+        moveIpasStatusPage( direction, ipasStatusStorage, ipasStatusPaging, $ipasStatusModal, false );
     });
 
     $( "#modal-ipasstatus" )
@@ -131,7 +131,7 @@
      */
 
     // 페이지 이동(고속페이징)
-    function movePage( direction, logs, paging, $modal, isRefresh ) {
+    function moveIpasStatusPage( direction, logs, paging, $modal, isRefresh ) {
         // 검색할 페이지 설정
         paging.no += direction;
         if (paging.no < 1) {
@@ -153,7 +153,7 @@
                 order : paging.orderBy
             };
             var url = paging.urlPrefix + "&" + $.param( param );
-            // console.log(url);
+
             // 데이터 조회
             $.ajax({
                 type:  "GET",

@@ -118,7 +118,7 @@ func (c *baseController) setTemplateVars() {
 	c.Data["StartupEvent"] = objs.StartupEvent
 	c.Data["ShockEvent"] = objs.ShockEvent
 	c.Data["SpeedingEvent"] = objs.SpeedingEvent
-	c.Data["Proximity"] = objs.ProximityEvent
+	c.Data["ProximityEvent"] = objs.ProximityEvent
 }
 
 func (c *baseController) loginRequired(required bool) {

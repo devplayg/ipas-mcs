@@ -43,17 +43,25 @@
                 </form>
                 <div class="row mt15">
                     <div class="col-xs-6 text-center">
-                        <h1 class="count-total-tags mt0 mb5 font-grey-mint bold"></h1>
+                        <h1 class="mt0 mb5 font-grey-mint bold">
+                            <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="    ">
+                                <span class="count-total-tags"></span>
+                            </a>
+                        </h1>
                         Total tags
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
-                        <h1 class="count-events mt0 mb5 grey-salsa"></h1>
+                        <h1 class="mt0 mb5 grey-salsa">
+                            <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1">
+                                <span class="count-events"></span>
+                            </a>
+                        </h1>
                         Total events
                     </div>
                 </div>
                 <div class="row" style="border-top: 1px dashed #acacac; margin: 10px 0px 5px 0px;"></div>
                 <div class="row" style="margin: 10px 0px 0px 0px;">
-                    <div class="col-xs-6 text-center">
+                    <div class="col-xs-12 text-center">
                         <h1 class="mt0 mb5">
                             <span class="count-optime"></span>
                         </h1>
@@ -61,7 +69,7 @@
                             Operating time
                         </a>
                     </div>
-                    <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
+                    <div class="col-xs-6 hide text-center" style="border-left: 1px dashed #acacac;">
                         <h1 class="mt0 mb5">
                             <div class="">
                                 <span class="what-time"></span>
