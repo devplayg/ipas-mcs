@@ -209,7 +209,7 @@ func (c *StatsController) getOperatingTime(filter *objs.StatsFilter) int {
 	rows := c.getStatsByOrgGroup(filter, "activated_group")
 
 	for _, r := range rows {
-		time += r.Uptime
+		time += r.OpTime
 	}
 	return time
 }

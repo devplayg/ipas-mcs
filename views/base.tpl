@@ -226,7 +226,7 @@
                                 <li class="nav-item">
                                     <a href="/dashboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} I</span></a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item hide">
                                     <a href="/detailboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} II</span></a>
                                 </li>
                                 <li class="nav-item">

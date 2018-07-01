@@ -134,12 +134,6 @@
 
     <div class="col-lg-4 col-md-12">
         <div class="portlet light bordered mh-rank">
-            <div class="portlet-title hide">
-                <div class="caption">
-                    <i class="icon-grid"></i> {{i18n .Lang "summary"}}
-                </div>
-            </div>
-
             <div class="portlet-body pt0 mh">
                 <div class="scroller" style="height: 200px;" data-always-visible="1" data-rail-visible="0">
                     <table class="table table-ranking"
@@ -152,9 +146,9 @@
                            data-query="/stats/activatedGroup">
                         <thead>
                         <tr>
-                            <th data-field="org_name" data-formatter="orgGroupNameFormatter">{{i18n .Lang "group"}}</th>
+                            <th data-field="org_name" data-formatter="orgGroupNameFormatter">{{i18n .Lang "operating info"}}</th>
                             <th data-field="count" data-sortable="true" data-formatter="numberFormatter" data-align="right">사용 횟수</th>
-                            <th data-field="uptime" data-sortable="true" data-formatter="numberFormatter" data-align="right">Uptime</th>
+                            <th data-field="optime" data-sortable="true" data-formatter="numberFormatter" data-align="right">{{i18n .Lang "operating time"}}</th>
                         </tr>
                         </thead>
                     </table>

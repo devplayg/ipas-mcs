@@ -67,7 +67,8 @@ function groupNameFormatter( val, row, idx ) {
 function orgGroupNameFormatter( val, row, idx ) {
     var orgName = orgNameFormatter( row.org_id, row, null );
     if ( row.group_id == 0 ) {
-        return;
+        return row.org_name + ' / <span class="font-grey-silver">Default</span>';
+
     }
     return orgName + " / " + row.group_name;
 }

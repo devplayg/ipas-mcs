@@ -21,7 +21,7 @@ type Stats struct {
 	SpeedingCount  int `json:"speeding_count"`
 	ProximityCount int `json:"proximity_count"`
 
-	Uptime  int       `json:"uptime"`
+	OpTime  int       `json:"optime"`
 }
 
 type StatsFilter struct {
