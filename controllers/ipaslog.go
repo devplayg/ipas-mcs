@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/davecgh/go-spew/spew"
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/dustin/go-humanize"
@@ -104,7 +103,6 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	if filter.FastPaging == "" {
 		filter.FastPaging = "off"
 	}
-	spew.Dump(filter)
 	return &filter
 }
 
@@ -184,7 +182,6 @@ func (c *IpaslogController) GetRealTimeLogs() {
 // Echarts
 func (c *IpaslogController) GetLogForCharting() { // ipaslog
 	filter := c.getFilter()
-	spew.Dump(filter)
 
 	// 차트 데이터 초기화
 	from, _ := time.ParseInLocation(objs.DefaultDateFormat, filter.StartDate+":00", time.Local)

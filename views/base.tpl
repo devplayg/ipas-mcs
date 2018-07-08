@@ -65,6 +65,9 @@
                 </a>
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown dropdown-quick-sidebar-toggler hidden-xs">
+                            <div class="system-clock"></div>
+                        </li>
                         <li class="hidden dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <i class="icon-bell"></i>
@@ -287,31 +290,31 @@
                     <div id="system-status">
                         <div class="plr20 mt30">
                             <div class="progress mb5" style="height: 8px;">
-                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                                <span id="pgb-cpu" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                             </div>
                             <div class="font-white s12 clear">
                                 <span class="">CPU</span>
-                                <span class="pull-right">38%</span>
+                                <span class="usage-cpu pull-right">0%</span>
                             </div>
                         </div>
 
                         <div class="plr20 mt15">
                             <div class="progress mb5" style="height: 8px;">
-                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                                <span id="pgb-mem" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                             </div>
-                            <div class="font-white s12  clear">
+                            <div class="font-white s12 clear">
                                 <span class="">MEM</span>
-                                <span class="pull-right">38%</span>
+                                <span class="usage-mem pull-right">0%</span>
                             </div>
                         </div>
 
                         <div class="plr20 mt15">
                             <div class="progress mb5" style="height: 8px;">
-                                <span style="width: 40%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></span>
+                                <span  id="pgb-disk"style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                             </div>
-                            <div class="font-white s12 ">
+                            <div class="font-white s12">
                                 <span class="">DISK</span>
-                                <span class="pull-right">38%</span>
+                                <span class="usage-disk pull-right">0%</span>
                             </div>
                         </div>
                     </div>

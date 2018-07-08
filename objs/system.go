@@ -73,3 +73,19 @@ type PagingFilter struct {
 	Order string `form:"order"`
 	Sort  string `form:"sort"`
 }
+
+type Server struct {
+	ID          int     `json:"-"`
+	Category1   int     `json:"-"`
+	Category2   int     `json:"-"`
+	Hostname    string  `json:"-"`
+	Port        int     `json:"-"`
+	CpuUsage    float64 `json:"cpu_usage"`
+	MemTotal    uint64 `json:"mem_total"`
+	MemUsed     uint64 `json:"mem_used"`
+	DiskTotal   uint64 `json:"disk_total"`
+	DiskUsed    uint64 `json:"disk_used"`
+	CpuComment  string `json:"-"`
+	DiskComment string `json:"-"`
+	MemComment  string `json:"-"`
+}

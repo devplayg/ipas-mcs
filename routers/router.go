@@ -58,6 +58,9 @@ func init() {
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})
+	
+	// 시스템
+	beego.Router(`/news`, &controllers.SystemController{}, "get:GetNews")
 
 	// 로그인
 	beego.Router("/", &controllers.LoginController{}, "get:Get")

@@ -318,7 +318,7 @@
         <div class="portlet light bordered mh-rank">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-info"></i> {{i18n .Lang "activities"}}
+                    <i class="icon-info"></i> {{i18n .Lang "real-time activities"}}
                 </div>
                 <div class="pull-right">
                     <div class="mt-checkbox-inline p0">

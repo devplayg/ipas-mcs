@@ -380,4 +380,8 @@ body {
   margin: 0px 20px  0px 20px;
 }
 
-
+.system-clock {
+    color: #ccc;
+    padding-top: 15px;
+  font-style: italic;
+}

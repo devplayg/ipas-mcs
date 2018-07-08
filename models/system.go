@@ -92,3 +92,30 @@ func Audit(log *objs.AuditMsg) error {
 
 	return nil
 }
+
+func GetServer(s objs.Server) (*objs.Server, error ){
+	query := "select * from ast_server where true"
+	var where string
+	args := make([]interface{}, 0)
+
+	if s.ID > 0 {
+		where += " and server_id = ?"
+		args = append(args, s.ID)
+	}
+
+	if s.Category1 > 0 {
+		where += " and category1 = ?"
+		args = append(args, s.Category1)
+	}
+
+	if s.Category2 > 0 {
+		where += " and category2 = ?"
+		args = append(args, s.Category2)
+	}
+
+	var server objs.Server
+
+	o := orm.NewOrm()
+	err := o.Raw(query + where, args).QueryRow(&server)
+	return &server, err
+}

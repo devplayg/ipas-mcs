@@ -19,6 +19,15 @@ var StartupColor = "#e1e5ec", // blue-chambray
     ProximityColor = "#E7505A"; // red
 // Colors
 
+updateNews();
+var timer = setTimeout(function() {
+    try {
+        updateNews();
+    } catch(err) {
+        console.log( err );
+    }
+}, 60 * 1000);
+
 
 
 $.ajaxSetup({ cache:false });
@@ -203,3 +212,28 @@ function updateToolbarNav( $table, paging, logLength ) {
     }
 }
 
+function updateNews() {
+    $( "#pgb" ).css( "width", 11 );
+    $.ajax({
+        type: "GET",
+        async: true,
+        url:   "/news"
+    }).done( function( res ) {
+        // CPU
+        $( "#pgb-cpu" ).css( "width", res.resource.cpu_usage );
+        $( ".usage-cpu" ).text( res.resource.cpu_usage + "%" );
+
+        // Memory
+        var memUsage = res.resource.mem_used / res.resource.mem_total * 100;
+        $( "#pgb-mem" ).css( "width", memUsage.toFixed(1) );
+        $( ".usage-mem" ).text( memUsage.toFixed(1) + "%" );
+
+        // Disk
+        var diskUsage = res.resource.disk_used / res.resource.disk_total * 100;
+        $( "#pgb-disk" ).css( "width", diskUsage );
+        $( ".usage-disk" ).text( diskUsage.toFixed(1) + "%" );
+
+        // Clock
+        $( ".system-clock" ).text( moment( res.time ).format( "LLL" ) );
+    });
+}
