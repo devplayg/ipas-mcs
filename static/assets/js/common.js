@@ -20,7 +20,7 @@ var StartupColor = "#e1e5ec", // blue-chambray
 // Colors
 
 updateNews();
-var timer = setTimeout(function() {
+var timer = setInterval(function() {
     try {
         updateNews();
     } catch(err) {
