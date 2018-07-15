@@ -20,6 +20,9 @@ func init() {
 	beego.Router(`/trend`, &controllers.IpaslogController{}, "get,post:DisplayTrend")
 	beego.Router(`/getLogForCharting`, &controllers.IpaslogController{}, "get:GetLogForCharting")
 
+	// 보안
+	beego.Router(`/security/log`, &controllers.SecurityController{}, "get,post:DisplaySecurityLogs")
+
 	// Sample
 	beego.Router(`/samplelogs`, &controllers.SamplelogController{})
 

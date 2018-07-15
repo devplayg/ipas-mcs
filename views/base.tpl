@@ -262,9 +262,9 @@
                             </ul>
                         </li>
                         {{if ge .member.Position .Administrator}}
-                        <li class="nav-item hide">
+                        <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
+                                <i class="icon-camrecorder"></i>
                                 <span class="title">{{i18n .Lang "security"}}</span>
                                 <span class="arrow open"></span>
                             </a>
@@ -274,7 +274,7 @@
                                         <span class="title">{{i18n .Lang "security log"}}</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item hide">
                                     <a href="/security/file" class="nav-link">
                                         <span class="title">{{i18n .Lang "file integrity"}}</span>
                                     </a>

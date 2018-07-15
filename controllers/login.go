@@ -54,6 +54,7 @@ func (c *LoginController) Post() {
 	if err != nil {
 		log.Error(err)
 		result.Message = c.Tr("msg.fail_to_request_open") + " (-3)"
+		c.audit("signin_failed", map[string]string{"username": username, "message": err.Error()}, nil)
 		c.Data["json"] = result
 		c.ServeJSON()
 		return
@@ -103,8 +104,9 @@ func (c *LoginController) Post() {
 		result.Data = map[string]string{
 			"redirectUrl": redirectUri,
 		}
+		c.audit("signin", map[string]string{"username": username}, nil)
 	} else {
-		c.audit("signin_failed", map[string]string{"username": username, "message": "wrong password"}, nil)
+		c.audit("signin_failed", map[string]string{"username": username, "message":"wrong password"}, nil)
 		models.LoginFailed(username, true)
 		result.Message = c.Tr("msg.fail_to_request_open") + " (-5)" // 비밀번호 오류
 	}
@@ -126,7 +128,7 @@ func (c *LoginController) GetPasswordSalt() {
 		if err != orm.ErrNoRows { // 예상되지 않은 에러이면 출력
 			log.Error(err)
 		}
-		c.audit("signin_failed", map[string]string{"username": username, "message": "user not found"}, nil)
+		c.audit("signin_failed", map[string]string{"username": username, "message": "invalid username"}, nil)
 		result.Message = c.Tr("msg.fail_to_request_open") + " (-1)"
 		c.Data["json"] = result
 		c.ServeJSON()

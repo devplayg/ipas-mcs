@@ -246,7 +246,7 @@ func (c *baseController) audit(category string, message interface{}, detail inte
 	if c.member != nil {
 		memberId = c.member.MemberId
 	}
-	err := models.Audit(&objs.AuditMsg{memberId, "signin_failed", c.Ctx.Input.IP(), message, detail})
+	err := models.Audit(&objs.AuditMsg{memberId, category, c.Ctx.Input.IP(), message, detail})
 	return err
 }
 

@@ -36,8 +36,5 @@
 
 {{define "javascript"}}
     <!-- Module -->
-    <script>
-        var config = {{.config}};
-    </script>
     <script src="/static/modules/{{.ctrl}}/{{.ctrl}}.js"></script>
 {{end}}
