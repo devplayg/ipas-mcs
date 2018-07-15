@@ -31,7 +31,9 @@
         <link href="/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+        <link href="/static/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
         {{/*<link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />*/}}
+
         <link href="/static/plugins/waitMe/waitMe.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/flag-icon-css/css/flag-icon.css" rel="stylesheet" type="text/css" />
         <link href="/static/assets/css/custom.css" rel="stylesheet" type="text/css" />
@@ -285,39 +287,45 @@
                             </ul>
                         </li>
                         {{end}}
+
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle p0">
+                                <div id="system-status" class="title">
+                                    <div class="plr20 mt30">
+                                        <div class="progress mb5" style="height: 8px;">
+                                            <span id="pgb-cpu" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                        </div>
+                                        <div class="font-white s12 clear">
+                                            <span class="">CPU</span>
+                                            <span class="usage-cpu pull-right">0%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="plr20 mt15">
+                                        <div class="progress mb5" style="height: 8px;">
+                                            <span id="pgb-mem" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                        </div>
+                                        <div class="font-white s12 clear">
+                                            <span class="">MEM</span>
+                                            <span class="usage-mem pull-right">0%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="plr20 mt15">
+                                        <div class="progress mb5" style="height: 8px;">
+                                            <span  id="pgb-disk"style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                        </div>
+                                        <div class="font-white s12">
+                                            <span class="">DISK</span>
+                                            <span class="usage-disk pull-right">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </li>
                     </ul>
 
-                    <div id="system-status">
-                        <div class="plr20 mt30">
-                            <div class="progress mb5" style="height: 8px;">
-                                <span id="pgb-cpu" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
-                            </div>
-                            <div class="font-white s12 clear">
-                                <span class="">CPU</span>
-                                <span class="usage-cpu pull-right">0%</span>
-                            </div>
-                        </div>
-
-                        <div class="plr20 mt15">
-                            <div class="progress mb5" style="height: 8px;">
-                                <span id="pgb-mem" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
-                            </div>
-                            <div class="font-white s12 clear">
-                                <span class="">MEM</span>
-                                <span class="usage-mem pull-right">0%</span>
-                            </div>
-                        </div>
-
-                        <div class="plr20 mt15">
-                            <div class="progress mb5" style="height: 8px;">
-                                <span  id="pgb-disk"style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
-                            </div>
-                            <div class="font-white s12">
-                                <span class="">DISK</span>
-                                <span class="usage-disk pull-right">0%</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="page-content-wrapper">
@@ -584,6 +592,7 @@
         <script src="/static/plugins/jquery-base64/jquery.base64.min.js"></script>
         <script src="/static/plugins/moment/moment.min.js" type="text/javascript"></script>
         <script src="/static/plugins/waitMe/waitMe.min.js" type="text/javascript"></script>
+        <script src="/static/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
         <script src="/static/assets/js/jquery.cookie.js" type="text/javascript"></script>
         <script src="/static/assets/js/common.js" type="text/javascript"></script>
         <script src="/static/assets/js/formatter.js" type="text/javascript"></script>
@@ -604,6 +613,7 @@
             var PedestrianTag = {{.PedestrianTag}},
                 ZoneTag = {{.ZoneTag}},
                 VehicleTag = {{.VehicleTag}};
+
         </script>
 
         <!-- Javascript -->

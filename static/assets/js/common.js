@@ -17,7 +17,25 @@ var StartupColor = "#e1e5ec", // blue-chambray
     ShockColor = "#3598DC", // blue
     SpeedingColor = "#f4902f", // warning(yellow) // #f4902f
     ProximityColor = "#E7505A"; // red
-// Colors
+
+// Notification
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "10000",
+    "extendedTimeOut": "10000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
 
 updateNews();
 var timer = setInterval(function() {
@@ -58,6 +76,21 @@ jQuery.fn.addHidden = function (name, value) {
         $( this ).append( $( input ) );
     });
 };
+
+// btn-global-message
+
+$( document ).on('click', '.toast', function(){
+    var a = $( this ).find( "a:first" ),
+        messageId = a.data( "message-id" );
+
+    $.ajax({
+        type: "GET",
+        async: true,
+        url:   "/message/gotit/" + messageId
+    }).done( function() {
+
+    });
+});
 
 // Mask
 $( ".mask-yyyymmddhhii" ).mask( "0000-00-00 00:00" );
@@ -218,22 +251,39 @@ function updateNews() {
         type: "GET",
         async: true,
         url:   "/news"
-    }).done( function( res ) {
+    }).done( function( news ) {
+
+        // Message
+
+        $.each( news.message, function( i, r ) {
+            // console.log(r);
+            var msgHeader = '<a href="#" class="btn-global-message" data-message-id="' + r.message_id + '">',
+                msgFooter = '</a>',
+                timeInfo = '<div class="text-right small">' + moment(r.date).format("lll") + '</div>';
+            if ( r.priority === 1 ) { // Info
+                toastr.info( msgHeader + r.message + msgFooter + timeInfo, "INFORMATION" );
+            } else if ( r.priority === 3 ) { // Warning
+                 toastr.warning( msgHeader + r.message + msgFooter + timeInfo, "WARNING" );
+            } else if ( r.priority === 5 ) { // Danger
+                toastr.error( msgHeader + r.message + msgFooter + timeInfo, "ERROR" );
+            }
+        });
+
         // CPU
-        $( "#pgb-cpu" ).css( "width", res.resource.cpu_usage );
-        $( ".usage-cpu" ).text( res.resource.cpu_usage + "%" );
+        $( "#pgb-cpu" ).css( "width", news.resource.cpu_usage );
+        $( ".usage-cpu" ).text( news.resource.cpu_usage + "%" );
 
         // Memory
-        var memUsage = res.resource.mem_used / res.resource.mem_total * 100;
+        var memUsage = news.resource.mem_used / news.resource.mem_total * 100;
         $( "#pgb-mem" ).css( "width", memUsage.toFixed(1) );
         $( ".usage-mem" ).text( memUsage.toFixed(1) + "%" );
 
         // Disk
-        var diskUsage = res.resource.disk_used / res.resource.disk_total * 100;
+        var diskUsage = news.resource.disk_used / news.resource.disk_total * 100;
         $( "#pgb-disk" ).css( "width", diskUsage );
         $( ".usage-disk" ).text( diskUsage.toFixed(1) + "%" );
 
         // Clock
-        $( ".system-clock" ).text( moment( res.time ).format( "LLL" ) );
+        $( ".system-clock" ).text( moment( news.time ).format( "LLL" ) );
     });
 }

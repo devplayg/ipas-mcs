@@ -62,6 +62,11 @@ func init() {
 	// 시스템
 	beego.Router(`/news`, &controllers.SystemController{}, "get:GetNews")
 
+	// 메시지
+	beego.Router(`/message`, &controllers.MessageController{}, "get:GetMessage")
+	beego.Router(`/message/unread`, &controllers.MessageController{}, "get:GetUnreadMessage")
+	beego.Router(`/message/gotit/:messageId:int`, &controllers.MessageController{}, "get:GotIt")
+
 	// 로그인
 	beego.Router("/", &controllers.LoginController{}, "get:Get")
 	beego.Router(`/signin`, &controllers.LoginController{})

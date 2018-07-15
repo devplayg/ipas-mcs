@@ -234,6 +234,7 @@ $(function() {
         }
     }
 
+
     function sec2humanReadable(duration) {
         var hour = 0;
         var min = 0;

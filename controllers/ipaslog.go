@@ -115,8 +115,9 @@ func (c *IpaslogController) GetRealTimeLogs() {
 
 	// 필터 제거
 	t := time.Now()
-	filter.StartDate = t.Format("2006-01-02") + " 00:00"
-	filter.EndDate = t.Format("2006-01-02") + " 23:59"
+
+	filter.EndDate = t.Format(objs.DefaultDateFormat)
+	filter.StartDate = t.Add(86400*time.Second).Format(objs.DefaultDateFormat)
 	filter.FastPaging = "on"
 
 	logs, total, err := models.GetIpaslog(filter, c.member)
