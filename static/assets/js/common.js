@@ -275,14 +275,23 @@ function updateNews() {
         $( ".usage-cpu" ).text( news.resource.cpu_usage + "%" );
 
         // Memory
-        var memUsage = news.resource.mem_used / news.resource.mem_total * 100;
+        var memUsage = news.resource.mem_used / news.resource.mem_total * 100,
+            memTotal = news.resource.mem_total / 1024 / 1024 / 1024,
+            memUsed = news.resource.mem_used / 1024 / 1024 / 1024;
         $( "#pgb-mem" ).css( "width", memUsage.toFixed(1) );
         $( ".usage-mem" ).text( memUsage.toFixed(1) + "%" );
+        $( ".used-mem" ).text( memUsed.toFixed(1) + " GB" );
+        $( ".total-mem" ).text( memTotal.toFixed(1) + " GB" );
+
 
         // Disk
-        var diskUsage = news.resource.disk_used / news.resource.disk_total * 100;
+        var diskUsage = news.resource.disk_used / news.resource.disk_total * 100,
+            diskTotal = news.resource.disk_total / 1024 / 1024 / 1024,
+            diskUsed = news.resource.disk_used / 1024 / 1024 / 1024;
         $( "#pgb-disk" ).css( "width", diskUsage );
         $( ".usage-disk" ).text( diskUsage.toFixed(1) + "%" );
+        $( ".used-disk" ).text( diskUsed.toFixed(1) + " GB" );
+        $( ".total-disk" ).text( diskTotal.toFixed(1) + " GB" );
 
         // Clock
         $( ".system-clock" ).text( moment( news.time ).format( "LLL" ) );

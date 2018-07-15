@@ -310,35 +310,43 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle p0">
                                 <div id="system-status" class="title">
-                                    <div class="plr20 mt30">
-                                        <div class="progress mb5" style="height: 8px;">
-                                            <span id="pgb-cpu" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
-                                        </div>
-                                        <div class="font-white s12 clear">
-                                            <span class="">CPU</span>
-                                            <span class="usage-cpu pull-right">0%</span>
-                                        </div>
-                                    </div>
 
-                                    <div class="plr20 mt15">
-                                        <div class="progress mb5" style="height: 8px;">
-                                            <span id="pgb-mem" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
-                                        </div>
-                                        <div class="font-white s12 clear">
-                                            <span class="">MEM</span>
+                                    <div class="plr20 mt30">
+                                        <div class="font-white s12 mb3">
+                                            <i class="fa fa-server"></i> Memory
                                             <span class="usage-mem pull-right">0%</span>
                                         </div>
+                                        <div class="progress mb3" style="height: 8px;">
+                                            <span id="pgb-mem" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                        </div>
+                                        <div class="text-center">
+                                            <span class="used-mem small"></span> / <span class="total-mem small"></span>
+                                        </div>
                                     </div>
 
                                     <div class="plr20 mt15">
+                                        <div class="font-white s12 mb3">
+                                            <i class="fa fa-hdd-o"></i> Disk space
+                                            <span class="usage-disk pull-right">0%</span>
+                                        </div>
                                         <div class="progress mb5" style="height: 8px;">
                                             <span  id="pgb-disk"style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                                         </div>
-                                        <div class="font-white s12">
-                                            <span class="">DISK</span>
-                                            <span class="usage-disk pull-right">0%</span>
+                                        <div class="text-center">
+                                            <span class="used-disk small"></span> / <span class="total-disk small"></span>
                                         </div>
                                     </div>
+
+                                    <div class="plr20 mt5">
+                                        <div class="font-white s12 mb3">
+                                            <i class="fa fa-square-o"></i> CPU
+                                            <span class="usage-cpu pull-right">0%</span>
+                                        </div>
+                                        <div class="progress mb5" style="height: 8px;">
+                                            <span id="pgb-cpu" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </a>
 
