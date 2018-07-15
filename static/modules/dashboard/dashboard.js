@@ -142,6 +142,7 @@ $(function() {
             async : true,
             url   : url
         }).done( function( r ) {
+            // console.log(r.operatingTime);
             // $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
             $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
             $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
@@ -158,7 +159,7 @@ $(function() {
                 proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
 
             $( ".count-events" ).text( totalEvents );
-            $( ".count-optime" ).text( sec2humanReadable( r.operatingTIme ) );
+            $( ".count-optime" ).text( sec2humanReadable( r.operatingTime ) );
 
             $( ".rate-shock" ).text( shockRate + "%" );
             $( ".rate-speeding" ).text( speedingRate + "%" );
@@ -240,24 +241,31 @@ $(function() {
         var min = 0;
         var sec = 0;
 
-        if (duration){
-            if (duration >= 60){
+        if (duration) {
+            if (duration >= 60) {
                 min = Math.floor(duration / 60);
                 sec = duration % 60;
             }
-            else{
+            else {
                 sec = duration;
             }
 
-            if (min >= 60){
+            if (min >= 60) {
                 hour = Math.floor(min / 60);
                 min = min - hour * 60;
             }
 
-            if ( hour < 10 ){ hour = '0'+hour; }
-            if ( min < 10 ){ min = '0'+min; }
-            if ( sec < 10 ){ sec = '0'+sec; }
+            if (hour < 10) {
+                hour = '0' + hour;
+            }
+            if (min < 10) {
+                min = '0' + min;
+            }
+            if (sec < 10) {
+                sec = '0' + sec;
+            }
         }
+
         return hour +":"+ min +":"+ sec;
     }
 

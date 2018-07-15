@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-xs-6 text-center" style="border-left: 1px dashed #acacac;">
                         <h1 class="mt0 mb5 grey-salsa">
-                            <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1">
+                            <a href="#" class="btn-show-ipaslog-on-modal font-grey-mint" data-query="stats_mode=1&event_type={{.ShockEvent}}&event_type={{.SpeedingEvent}}&event_type={{.ProximityEvent}}">
                                 <span class="count-events"></span>
                             </a>
                         </h1>
@@ -66,7 +66,7 @@
                             <span class="count-optime"></span>
                         </h1>
                         <a href="#" class="btn-show-ipasstatus-on-modal font-grey-mint" data-query="equip_type={{.ZoneTag}}">
-                            Operating time
+                            Operating time / <span class="small">h:m:s</span>
                         </a>
                     </div>
                     <div class="col-xs-6 hide text-center" style="border-left: 1px dashed #acacac;">
@@ -148,7 +148,7 @@
                         <tr>
                             <th data-field="org_name" data-formatter="orgGroupNameFormatter">{{i18n .Lang "operating info"}}</th>
                             <th data-field="count" data-sortable="true" data-formatter="numberFormatter" data-align="right">사용 횟수</th>
-                            <th data-field="optime" data-sortable="true" data-formatter="numberFormatter" data-align="right">{{i18n .Lang "operating time"}}</th>
+                            <th data-field="optime" data-sortable="true" data-formatter="optimeFormatter" data-align="right">{{i18n .Lang "operating time"}} <span class="small">h:m:s</span></th>
                         </tr>
                         </thead>
                     </table>

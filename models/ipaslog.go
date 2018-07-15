@@ -69,7 +69,6 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 	o.Begin()
 	defer o.Commit()
 	total, err := o.Raw(query, args).QueryRows(&rows)
-
 	if filter.FastPaging == "off" {
 		if RegexFoundRows.MatchString(query) {
 			dbResult := objs.NewDbResult()

@@ -4,7 +4,7 @@ $(function() {
      * 1. 초기화
      *
      */
-    var interval = 7000,
+    var interval = 10 * 1000,
         timer = null,
         extraQuery = '';
 
@@ -15,7 +15,7 @@ $(function() {
     });
 
     updateAllRanks();
-    startTimer();
+    // startTimer();
 
 
     /**

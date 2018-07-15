@@ -42,6 +42,9 @@ func (c *IpaslogController) Display() {
 func (c *IpaslogController) GetLogs() {
 	filter := c.getFilter()
 	logs, total, err := models.GetIpaslog(filter, c.member)
+	if err != nil {
+		log.Error(err)
+	}
 
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
@@ -61,12 +64,15 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	}
 
 	// 날짜 설정
+
 	if !filter.StatsMode { // 일반적으로 로그를 조회하는 경우
 		if filter.StartDate == "" || filter.EndDate == "" {
 			t := time.Now()
-			filter.StartDate = t.AddDate(0, 0, -7).Format(objs.DateOnlyFormat) + " 00:00"
+			//filter.StartDate = t.AddDate(0, 0, -7).Format(objs.DateOnlyFormat) + " 00:00"
+			filter.StartDate = t.Add(-86400*7*time.Second).Format(objs.DateOnlyFormat) + " 00:00"
 			filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 		}
+
 	} else { // 통계 근거로그를 조회하는 경우
 		if len(filter.StartDate) > 0 || len(filter.EndDate) > 0 {
 			filter.StartDate = filter.StartDate + " 00:00"
@@ -114,13 +120,11 @@ func (c *IpaslogController) GetRealTimeLogs() {
 	filter := c.getFilter()
 
 	// 필터 제거
-	t := time.Now()
-
-	filter.EndDate = t.Format(objs.DefaultDateFormat)
-	filter.StartDate = t.Add(86400*time.Second).Format(objs.DefaultDateFormat)
 	filter.FastPaging = "on"
-
 	logs, total, err := models.GetIpaslog(filter, c.member)
+	if err != nil {
+		log.Error(err)
+	}
 
 	// 기관/그룹코드를 이름과 맵핑
 	for idx, a := range logs {
@@ -250,4 +254,3 @@ func (c *IpaslogController) DisplayTrend() {
 	c.Data["filter"] = filter
 	c.setTpl("trend.tpl")
 }
-

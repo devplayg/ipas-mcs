@@ -198,7 +198,7 @@ func (c *StatsController) GetSummary() {
 		"equipCountByType": c.getEquipCountByType(filter),
 		"activated":        c.getStatsByOrgGroup(filter, "activated_group"),
 		"shocklinks":       c.getShockLinks(filter),
-		"operatingTIme":    c.getOperatingTime(filter),
+		"operatingTime":    c.getOperatingTime(filter),
 		"time":             time.Now().Format(time.RFC3339),
 	}
 	c.ServeJSON()
@@ -207,9 +207,8 @@ func (c *StatsController) GetSummary() {
 func (c *StatsController) getOperatingTime(filter *objs.StatsFilter) int {
 	var time int
 	rows := c.getStatsByOrgGroup(filter, "activated_group")
-
 	for _, r := range rows {
-		time += r.OpTime
+		time += r.Optime
 	}
 	return time
 }
