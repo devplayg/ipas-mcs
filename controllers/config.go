@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
+	"github.com/sirupsen/logrus"
 )
 
 type ConfigController struct {
@@ -10,22 +11,14 @@ type ConfigController struct {
 }
 
 func (c *ConfigController) Get() {
-	var config = make(map[string]map[string]objs.MultiValue)
 	rows, err := models.GetAllSystemConfig()
 	if err == nil {
 		for _, r := range rows {
-			if m, ok := config[r.Section]; ok {
-			} else {
-				m = make(map[string]objs.MultiValue)
-				config[r.Section] = m
-			}
-
-			config[r.Section][r.Keyword] = objs.MultiValue{r.ValueS, r.ValueN}
+			c.Data[r.Section+"_"+r.Keyword] = objs.MultiValue{r.ValueS, r.ValueN}
+			logrus.Info(r.Section + "_" + r.Keyword)
 		}
 	}
-	c.Data["config"] = config
 	c.setTpl("config.tpl")
-
 }
 
 func (c *ConfigController) Patch() {
@@ -39,11 +32,6 @@ func (c *ConfigController) Patch() {
 			"data_retention_days",
 			objs.MultiValue{"", filter.DataRetentionDays},
 		})
-	config = append(config, objs.SysConfig{
-		"system",
-		"use_namecard",
-		objs.MultiValue{filter.UseNameCard, 0},
-	})
 
 	// 로그인
 	config = append(config, objs.SysConfig{
@@ -53,8 +41,8 @@ func (c *ConfigController) Patch() {
 	})
 	config = append(config, objs.SysConfig{
 		"login",
-		"allow_multiple_login",
-		objs.MultiValue{filter.AllowMultipleLogin, 0},
+		"failure_block_time",
+		objs.MultiValue{"", filter.LoginFailureBlockTime},
 	})
 	err := models.UpdateSystemConfig(config)
 

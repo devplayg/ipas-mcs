@@ -5,49 +5,27 @@
     <div class="portlet-body">
         <form id="form-config">
             {{ .xsrfdata }}
+            <div class="row">
+                <div class="col-xs-4">
+                    <h4 class="form-section">{{i18n .Lang "system"}}</h4>
+                    <hr>
+                    <div class="form-group">
+                        <label class="control-label">{{i18n .Lang "data retention period"}}</label>
+                            <input type="text" class="form-control mask-0999" name="data_retention_days" value="{{.system_data_retention_days.ValueN}}" />
+                    </div>
+                </div>
+                <div class="col-xs-offset-2 col-xs-4">
+                    <h4 class="form-section">{{i18n .Lang "signin"}}</h4>
+                    <hr>
 
-            <div class="table-custom">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#tab-system" data-toggle="tab"> System </a>
-                    </li>
-                    <li>
-                        <a href="#tab-members" data-toggle="tab"> Members </a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane fade active in" id="tab-system">
-                        <div class="row">
-                            <div class="col-md-4 col-xs-6">
-                                <div class="form-group">
-                                    <label class="control-label">Data retention days</label>
-                                    <input type="text" class="form-control mask-0999" name="data_retention_days" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Show IP card</label>
-                                    <div>
-                                        <input type="checkbox" class="form-control make-switch" name="use_namecard" data-size="small" data-on-color="success" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Allow multiple login</label>
-                                    <div>
-                                        <input type="checkbox" class="form-control make-switch" name="allow_multiple_login" data-size="small" data-on-color="success" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- #tab-system -->
-
-                    <div class="tab-pane fade" id="tab-members">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 form-group">
-                                <label class="control-label">Max failed login attempts</label>
-                                <input type="text" class="form-control mask-099" name="max_failed_login_attempts">
-                            </div>
-                        </div>
-                    </div> <!-- #tab-members -->
+                    <div class="form-group">
+                        <label class="control-label">{{i18n .Lang "max failed login attempts"}}</label>
+                        <input type="text" class="form-control mask-099" name="max_failed_login_attempts" value="{{.login_max_failed_login_attempts.ValueN}}">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">{{i18n .Lang "login failure block time"}}</label>
+                        <input type="text" class="form-control mask-099" name="login_failure_block_time" value="{{.login_failure_block_time.ValueN}}">
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>

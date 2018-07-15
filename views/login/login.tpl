@@ -39,7 +39,7 @@
                 <button type="submit" class="btn green uppercase">{{i18n .Lang "signin"}}</button>
                 <div class="pull-right mt10 font-lg">
                     <a href="javascript:;" data-lang="en-us" class="lang-changed"><span class="flag-icon flag-icon-us flag-border"></span></a>
-                    <a href="javascript:;" data-lang="ja-jp" class="lang-changed"><span class="flag-icon flag-icon-jp flag-border"></span></a>
+                    <a href="javascript:;" data-lang="ja-jp" class="lang-changed hide"><span class="flag-icon flag-icon-jp flag-border"></span></a>
                     <a href="javascript:;" data-lang="ko-kr" class="lang-changed"><span class="flag-icon flag-icon-kr flag-border"></span></a>
                 </div>
                 <!--

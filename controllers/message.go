@@ -75,10 +75,16 @@ func (c *MessageController) getFilter() objs.MessageFilter {
 }
 
 func (c *MessageController) GotIt() {
-
 	messageId, _ := strconv.Atoi(c.Ctx.Input.Param(":messageId"))
-
 	err := models.MarkMessageAsRead(messageId, c.member)
+	if err != nil {
+		log.Error(err)
+	}
+	c.ServeJSON()
+}
+
+func (c *MessageController) MarkAllAsRead() {
+	err := models.MarkAllMessageAsRead(c.member)
 	if err != nil {
 		log.Error(err)
 	}

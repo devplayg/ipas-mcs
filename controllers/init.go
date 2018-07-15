@@ -88,11 +88,11 @@ func initFramework() {
 func loadGlobalConfig() error {
 
 	// 기본값  설정
-	objs.GlobalConfig.Store("login_allow_multiple_login", objs.MultiValue{"on", 0})
-	objs.GlobalConfig.Store("login_block_seconds", objs.MultiValue{"", 60})
+	//objs.GlobalConfig.Store("login_allow_multiple_login", objs.MultiValue{"on", 0})
+	objs.GlobalConfig.Store("login_failure_block_time", objs.MultiValue{"", 60})
 	objs.GlobalConfig.Store("login_max_failed_login_attempts", objs.MultiValue{"", 5})
-	objs.GlobalConfig.Store("system_data_retention_days", objs.MultiValue{"", 365})
-	objs.GlobalConfig.Store("system_use_namecard", objs.MultiValue{"on", 0})
+	//objs.GlobalConfig.Store("system_data_retention_days", objs.MultiValue{"", 365})
+	//objs.GlobalConfig.Store("system_use_namecard", objs.MultiValue{"on", 0})
 
 	// DB 값 조회
 	rows, err := models.GetAllSystemConfig()

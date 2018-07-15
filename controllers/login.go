@@ -63,9 +63,9 @@ func (c *LoginController) Post() {
 	// 마지막 로그인 시도 이후 x초 이내이면 접속시도 제한
 	v1, _ := objs.GlobalConfig.Load("login_max_failed_login_attempts")
 	maxFailedLoginAttempts := v1.(objs.MultiValue)
-	v2, _ := objs.GlobalConfig.Load("login_block_seconds")
+	v2, _ := objs.GlobalConfig.Load("login_failure_block_time")
 	loginBlockedTime := v2.(objs.MultiValue)
-	if maxFailedLoginAttempts.ValueN > 0 && int(member.FailedLoginCount) > maxFailedLoginAttempts.ValueN { // 로그인 시도회수 초과
+	if maxFailedLoginAttempts.ValueN > 0 && member.FailedLoginCount > maxFailedLoginAttempts.ValueN { // 로그인 시도회수 초과
 		elapsedTime := time.Now().Sub(member.LastFailedLogin).Seconds()
 		if elapsedTime < float64(loginBlockedTime.ValueN) { // 로그인 제한시간 이내이면
 			models.LoginFailed(username, false)

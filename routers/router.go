@@ -66,6 +66,7 @@ func init() {
 	beego.Router(`/message`, &controllers.MessageController{}, "get:GetMessage")
 	beego.Router(`/message/unread`, &controllers.MessageController{}, "get:GetUnreadMessage")
 	beego.Router(`/message/gotit/:messageId:int`, &controllers.MessageController{}, "get:GotIt")
+	beego.Router(`/message/markAll`, &controllers.MessageController{}, "get:MarkAllAsRead")
 
 	// 로그인
 	beego.Router("/", &controllers.LoginController{}, "get:Get")

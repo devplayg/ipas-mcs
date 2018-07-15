@@ -67,7 +67,7 @@
                 </a>
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
-                        <li class="dropdown dropdown-quick-sidebar-toggler hidden-xs">
+                        <li class="dropdown dropdown-quick-sidebar-toggler hidden-xs mr10">
                             <div class="system-clock"></div>
                         </li>
                         <li class="hidden dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
@@ -169,19 +169,6 @@
                         </li>
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="/static/assets/img/won.png" />
-                                <span class="username username-hide-on-mobile"> {{.member.Username}} {{.IsLogged}}</span>
-                                <i class="fa fa-angle-down"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-default">
-                                <li>
-                                    <a href="/signout">
-                                        <i class="icon-key"></i> {{i18n .Lang "signout"}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-user">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <span class="username username-hide-on-mobile"> {{.CurLang}}</span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
@@ -196,7 +183,20 @@
                                 {{end}}
                             </ul>
                         </li>
-                        <li class="dropdown dropdown-quick-sidebar-toggler">
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <img alt="" class="img-circle" src="/static/assets/img/won.png" />
+                                <span class="username username-hide-on-mobile"> {{.member.Username}} {{.IsLogged}}</span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="/signout">
+                                        <i class="icon-key"></i> {{i18n .Lang "signout"}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-quick-sidebar-toggler hide">
                             <a href="javascript:;" class="dropdown-toggle">
                                 <i class="icon-logout"></i>
                             </a>
@@ -229,7 +229,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/dashboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} I</span></a>
+                                    <a href="/dashboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}}</span></a>
                                 </li>
                                 <li class="nav-item hide">
                                     <a href="/detailboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} II</span></a>
@@ -262,6 +262,25 @@
                             </ul>
                         </li>
                         {{if ge .member.Position .Administrator}}
+                        <li class="nav-item hide">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-settings"></i>
+                                <span class="title">{{i18n .Lang "security"}}</span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item">
+                                    <a href="/security/log" class="nav-link">
+                                        <span class="title">{{i18n .Lang "security log"}}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/security/file" class="nav-link">
+                                        <span class="title">{{i18n .Lang "file integrity"}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
@@ -340,7 +359,7 @@
                                 <span class="menu-depth2-text">{{i18n .Lang "menu.ipas event"}}</span>
                             </li>
                         </ul>
-                        <div class="page-toolbar">
+                        <div class="page-toolbar hide">
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown"> Actions
                                     <i class="fa fa-angle-down"></i>

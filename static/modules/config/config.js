@@ -4,16 +4,17 @@ $(function() {
      * 1. Initialize
      *
      */
-    console.log(config);
-    var $form = $( "#form-config" );
-    try {
-        $( "input[name=data_retention_days]", $form ).val( config.system.data_retention_days.value_n )
-        $( "input[name=max_failed_login_attempts]", $form ).val( config.login.max_failed_login_attempts.value_n )
-        $( "input[name=use_namecard]", $form ).bootstrapSwitch( "state", config.system.use_namecard.value_s == "on" ? true : false );
-        $( "input[name=allow_multiple_login]", $form ).bootstrapSwitch( "state", config.login.allow_multiple_login.value_s == "on" ? true : false );
-    } catch(err) {
-        console.log( err );
-    }
+    // console.log(config);
+    // var $form = $( "#form-config" );
+    // try {
+    //     $( "input[name=data_retention_days]", $form ).val( config.system.data_retention_days.value_n )
+    //     $( "input[name=max_failed_login_attempts]", $form ).val( config.login.max_failed_login_attempts.value_n )
+    //     $( "input[name=max_failed_login_attempts]", $form ).val( config.login.max_failed_login_attempts.value_n )
+    //     // $( "input[name=use_namecard]", $form ).bootstrapSwitch( "state", config.system.use_namecard.value_s == "on" ? true : false );
+    //     // $( "input[name=allow_multiple_login]", $form ).bootstrapSwitch( "state", config.login.allow_multiple_login.value_s == "on" ? true : false );
+    // } catch(err) {
+    //     console.log( err );
+    // }
 
 
     /**

@@ -4,6 +4,7 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func GetMessage(filter objs.MessageFilter, member *objs.Member) ([]objs.Message, int64, error) {
@@ -36,7 +37,6 @@ func GetMessage(filter objs.MessageFilter, member *objs.Member) ([]objs.Message,
 	query = fmt.Sprintf(query, filter.FoundRows, where, filter.Sort, filter.Order)
 	args = append(args, filter.Offset, filter.Limit)
 
-	//spew.Printf("### %s ~ %s\n", filter.StartDate, filter.EndDate)
 	o := orm.NewOrm()
 	o.Begin()
 	defer o.Commit()
@@ -59,5 +59,14 @@ func MarkMessageAsRead(messageId int, member *objs.Member) error {
 
 	o := orm.NewOrm()
 	_, err := o.Raw(query, args).Exec()
+	return err
+}
+
+func MarkAllMessageAsRead(member *objs.Member) error {
+	query := "update log_message set status = 2 where date >= date_add(now(), interval -7 day) and receiver_id = ?"
+	o := orm.NewOrm()
+	_, err := o.Raw(query, member.MemberId).Exec()
+	spew.Dump(query)
+	spew.Dump(member.MemberId)
 	return err
 }

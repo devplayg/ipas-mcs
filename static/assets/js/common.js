@@ -22,7 +22,7 @@ var StartupColor = "#e1e5ec", // blue-chambray
 toastr.options = {
     "closeButton": true,
     "debug": false,
-    "newestOnTop": true,
+    "newestOnTop": false,
     "progressBar": false,
     "positionClass": "toast-top-right",
     "preventDuplicates": true,
@@ -82,14 +82,13 @@ jQuery.fn.addHidden = function (name, value) {
 $( document ).on('click', '.toast', function(){
     var a = $( this ).find( "a:first" ),
         messageId = a.data( "message-id" );
+    console.log(messageId);
 
-    $.ajax({
-        type: "GET",
-        async: true,
-        url:   "/message/gotit/" + messageId
-    }).done( function() {
-
-    });
+    if ( messageId > 0 ) { // 메시지 1건에 대한 마킹 처리 시
+        $.get( "/message/gotit/" + messageId );
+    } else {
+        $.get( "/message/markAll" );
+    }
 });
 
 // Mask
@@ -254,9 +253,11 @@ function updateNews() {
     }).done( function( news ) {
 
         // Message
+        if ( news.message !== null && news.message.length > 0 ) {
+            toastr.success( '<a href="#" class="btn-global-message" data-message-id="0">', "Mark all as read" );
 
+        }
         $.each( news.message, function( i, r ) {
-            // console.log(r);
             var msgHeader = '<a href="#" class="btn-global-message" data-message-id="' + r.message_id + '">',
                 msgFooter = '</a>',
                 timeInfo = '<div class="text-right small">' + moment(r.date).format("lll") + '</div>';

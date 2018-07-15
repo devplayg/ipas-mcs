@@ -8,8 +8,7 @@
     <div class="portlet light bordered pt0">
         <div class="portlet-body">
             <div id="toolbar-member">
-                <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> Add</button>
-                <button type="button" class="btn red btn-member-remove">Delete</button>
+                <button type="button" class="btn blue btn-member-add" data-toggle="modal" data-target="#modal-member-add"><i class="fa fa-plus"></i> {{i18n .Lang "registration"}}</button>
             </div>
 
             <table  id="table-member"
