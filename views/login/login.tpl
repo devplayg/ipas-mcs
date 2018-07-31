@@ -27,11 +27,11 @@
             <h3 class="form-title font-green">Sign In</h3>
             <div class="form-group">
                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                <label class="control-label visible-ie8 visible-ie9">Username</label>
-                <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" /> </div>
+                <label class="control-label visible-ie8 visible-ie9">{{i18n .Lang "username"}}</label>
+                <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="{{i18n .Lang "username"}}" name="username" /> </div>
             <div class="form-group">
-                <label class="control-label visible-ie8 visible-ie9">Password</label>
-                <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
+                <label class="control-label visible-ie8 visible-ie9">{{i18n .Lang "password"}}</label>
+                <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="{{i18n .Lang "password"}}" name="password" /> </div>
 
             <div class="note note-danger hidden"></div>
 

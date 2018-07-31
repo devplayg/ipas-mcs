@@ -212,7 +212,7 @@ func (c *baseController) setLangVer() {
 	}
 
 	if len(lang) == 0 {
-		lang = "en-us"
+		lang = "ko-kr"
 	}
 
 	curLang := langType{

@@ -235,7 +235,7 @@
                                     <a href="/detailboard" class="nav-link"><span class="title">{{i18n .Lang "dashboard"}} II</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/realtimelogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>
+                                    <a href="/realtimelogs" class="nav-link"><span class="title">{{i18n .Lang "monitoring"}}</span></a>
                                 </li>
 
                             {{/*<li class="nav-item ">*/}}
@@ -246,15 +246,18 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-list"></i>
-                                <span class="title">{{i18n .Lang "log"}}</span>
+                                <span class="title">{{i18n .Lang "ipas log"}}</span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "menu.ipas event"}}</span></a>
+                                    <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "events"}}</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/trend" class="nav-link"><span class="title">{{i18n .Lang "trend"}}</span></a>
+                                    <a href="/trend" class="nav-link"><span class="title">{{i18n .Lang "event trend"}}</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/log/ipasstatus" class="nav-link"><span class="title">{{i18n .Lang "equip status"}}</span></a>
                                 </li>
                                 {{/*<li class="nav-item ">*/}}
                                     {{/*<a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>*/}}

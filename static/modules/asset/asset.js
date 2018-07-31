@@ -27,7 +27,7 @@ $(function() {
             "data" : {
                 "url" : "/assetclass/1/root/0",
             },
-            "multiple": false
+            "multiple": false,
         },
         "types" : {
             1: {
@@ -221,7 +221,7 @@ $(function() {
                 $( "#modal-asset-add" ).modal( "hide" );
                 $tree.jstree( true ).refresh( -1 );
             } else {
-                swal(result.message, "", "error");
+                swal( result.message, "", "error" );
             }
         });
     });
@@ -241,7 +241,7 @@ $(function() {
             url: "/assets/" + node.original.asset_id,
         }).done( function( result ) {
             if ( result.state ) {
-                var target ;
+                var target;
                 if ( node.original.type === Org ) {
                     target = '<i class="fa fa-building-o"></i> ' + felang[ "org" ];
                     $( ".form-option-org" ).removeClass( "hide" );
@@ -259,7 +259,7 @@ $(function() {
                 $( "#modal-asset-edit" ).modal( "show" );
 
             } else {
-                swal(result.message, "", "error");
+                swal( result.message, "", "error" );
             }
         });
     });
@@ -330,6 +330,7 @@ $(function() {
         var selected = $tree.jstree( true ).get_selected();
         if ( selected.length < 1 ) {
             $( ".btn-asset-manage" ).addClass( "hide" );
+
         } else if ( selected.length == 1 ) {
             $( ".btn-asset-manage" ).addClass( "hide" );
             var node =  $tree.jstree( true ).get_node( selected[0] );

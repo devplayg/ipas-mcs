@@ -179,7 +179,6 @@
                 <div id="map-ipas" style="width:570px;height:400px;"></div>
             </div><!-- modal-body -->
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">{{i18n .Lang "save"}}</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{i18n .Lang "close"}}</button>
             </div>
         </div><!-- /.modal-content -->

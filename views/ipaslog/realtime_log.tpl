@@ -162,9 +162,9 @@
                 <div id="toolbar-event1">
                     <div class="caption s16 bold">
                         <i class="icon-power"></i>
-                        <span class="caption-subject uppercase"> {{i18n .Lang "monitoring.startup event"}}</span>
+                        <span class="caption-subject uppercase"> {{i18n .Lang "equip status"}}</span>
                         <span class="caption-helper s13 font-grey-salsa">
-                        {{if ne .Lang "en-us" }}Startup  events{{end}}
+                        {{if ne .Lang "en-us" }}Equipment status{{end}}
                         </span>
                     </div>
                 </div>
@@ -182,13 +182,12 @@
                         data-sort-name="{{.filter.Sort}}"
                         data-sort-order="{{.filter.Order}}"
                         data-side-pagination="client"
-                        data-url="/getRealTimeLogs?limit=9&event_type=1">
+                        data-url="/getStatusLogs?limit=9&fast_paging=on">
                     <thead>
                     <tr>
                         <th data-field="date" data-width="10%" data-sortable="true" data-formatter="shortDateFormatter">{{i18n .Lang "occurrence date"}}</th>
                         <th data-field="org_name" data-sortable="true">{{i18n .Lang "org"}}</th>
                         <th data-field="group_name" data-sortable="true" data-visible="false">{{i18n .Lang "group"}}</th>
-                        <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
                         <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
                         <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
                         <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>

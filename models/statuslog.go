@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/devplayg/ipas-mcs/objs"
 	"fmt"
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/astaxie/beego/orm"
+	"github.com/devplayg/ipas-mcs/objs"
 )
 
 func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, int64, error) {
@@ -28,15 +28,11 @@ func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.Ipas
 		where += fmt.Sprintf(" and group_id in (%s)", libs.JoinInt(filter.GroupId, ","))
 	}
 
-	if len(filter.EventType) > 0 {
-		where += fmt.Sprintf(" and event_type in (%s)", libs.JoinInt(filter.EventType, ","))
-	}
-
 	// 장비 태크 검색
 	if len(filter.TagPattern) > 0 {
-		where += " and (equip_id like ? or targets like ?)"
+		where += " and (equip_id like ?)"
 		cond := "%"+filter.TagPattern+"%"
-		args = append(args, cond, cond)
+		args = append(args, cond)
 	}
 	if len(filter.EquipId) > 0 {
 		where += " and equip_id = ?"
@@ -51,7 +47,8 @@ func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.Ipas
 
 	// Set query
 	query := `
-		SELECT 	%s date, org_id, group_id, session_id, equip_id, latitude, longitude, speed, snr, usim, ip, recv_date
+		SELECT 	%s date, org_id, group_id, session_id, equip_id, latitude, longitude, speed
+				, snr, usim, ip, recv_date
 		from log_ipas_status
 		where date >= ? and date <= ? %s
 		order by %s %s
@@ -64,7 +61,6 @@ func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.Ipas
 	o.Begin()
 	defer o.Commit()
 	total, err := o.Raw(query, args).QueryRows(&rows)
-
 	if filter.FastPaging == "off" {
 		if RegexFoundRows.MatchString(query) {
 			dbResult := objs.NewDbResult()
