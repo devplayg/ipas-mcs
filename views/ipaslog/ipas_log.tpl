@@ -44,7 +44,7 @@
                                 <select id="select-groups" name="group_id" class="selectpicker" multiple title="{{i18n .Lang "group"}}"  data-size="10" data-selected-text-format="count > 2"></select>
 
                                 <!-- Buttons -->
-                                <button type="submit" class="btn blue"/>{{i18n .Lang "search"}}</button>
+                                <button type="submit" class="btn blue">{{i18n .Lang "search"}}</button>
                                 <a class="btn btn-default" href="">{{i18n .Lang "cancel"}}</a>
 
                             {{if eq .filter.FastPaging "on"}} {{/* 고속 페이징 */}}

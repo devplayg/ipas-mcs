@@ -333,7 +333,7 @@
                                             <span class="usage-disk pull-right">0%</span>
                                         </div>
                                         <div class="progress mb5" style="height: 8px;">
-                                            <span  id="pgb-disk"style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
+                                            <span id="pgb-disk" style="width: 0%;" class="progress-bar progress-sm progress-bar-success" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></span>
                                         </div>
                                         <div class="text-center">
                                             <span class="used-disk small"></span> / <span class="total-disk small"></span>

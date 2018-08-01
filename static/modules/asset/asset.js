@@ -10,7 +10,6 @@ $(function() {
      * 1. 초기화
      *
      */
-
     // Tree
     var $tree = $( "#tree-assets" ),
         Root = 0,
@@ -39,7 +38,6 @@ $(function() {
         },
 
     }).on( "changed.jstree", function( e, obj ) {
-        // console.log(selected);
     }).on( "select_node.jstree", function( e, obj ) {
         updateTreeButtons();
         if ( obj.node.original.type > 0 ) {

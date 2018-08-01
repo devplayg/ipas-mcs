@@ -103,7 +103,12 @@ function snrFormatter(val, row, idx) {
         level = 6;
     }
 
-    return '<span class="font-' + color[level-1] + '">' + c.repeat( level ) + '</span>';
+    var str = "";
+    for (var i=0; i<level; i++) {
+        str += c;
+    }
+
+    return '<span class="font-' + color[level-1] + '">' + str + '</span>';
 }
 
 
