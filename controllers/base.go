@@ -264,6 +264,10 @@ func (c *baseController) addToFrontLang(str string) {
 }
 
 func (c *baseController) serveResultJson(logs interface{}, total int64, err error, fastPaging string) {
+	if err != nil {
+		log.Error(err)
+	}
+
 	if fastPaging == "on" {
 		if total > 0 {
 			c.Data["json"] = logs

@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/devplayg/ipas-mcs/objs"
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/devplayg/ipas-mcs/objs"
 )
 
 func GetMessage(filter objs.MessageFilter, member *objs.Member) ([]objs.Message, int64, error) {
@@ -51,7 +51,6 @@ func GetMessage(filter objs.MessageFilter, member *objs.Member) ([]objs.Message,
 	}
 	return rows, total, err
 }
-
 
 func MarkMessageAsRead(messageId int, member *objs.Member) error {
 	query := "update log_message set status = 2 where message_id = ? and receiver_id = ?"

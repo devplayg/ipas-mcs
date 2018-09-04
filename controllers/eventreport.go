@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type EventReportController struct {
@@ -26,7 +25,6 @@ func (c *EventReportController) GetReportData() {
 }
 
 func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{} {
-	spew.Dump(filter)
 	m := make(map[string]interface{})
 
 	// 기간
@@ -44,14 +42,16 @@ func (c *EventReportController) getReport(filter *objs.ReportFilter) interface{}
 	ipas.OrgName, _ = GetOrgGroupName(filter.OrgId, filter.GroupId)
 	m["ipas"] = ipas
 
-	// 건수 정보
-	m["counts"] = c.getCounts(filter)
+	// 기록 정보
+	m["history"] = c.getCounts(filter)
 
 	// 이벤트 정보
 	m["events"] = c.getEvents(filter)
 
 	// 상태 정보
 	m["status"] = c.getTracks(filter)
+
+	//m["operation"] = c.getOperationInfo(filter)
 
 	return m
 }
@@ -161,6 +161,7 @@ func (c *EventReportController) getCounts(filter *objs.ReportFilter) map[string]
 		"speeding":  counts[objs.SpeedingEvent],
 		"proximity": counts[objs.ProximityEvent],
 		"activated": 0,
+		"optime": 0,
 	}
 
 	// 활성화 정보 조회
@@ -171,7 +172,35 @@ func (c *EventReportController) getCounts(filter *objs.ReportFilter) map[string]
 	}
 	for _, r := range rows {
 		m["activated"] += r.Count
+		m["optime"] += r.Optime
 	}
 
 	return m
 }
+//
+//func (c *EventReportController) getOperationInfo(filter *objs.ReportFilter) map[string]int {
+//	// 추이정보
+//	statsFilter := objs.StatsFilter{
+//		StartDate: filter.StartDate,
+//		EndDate:   filter.EndDate,
+//		OrgId:     filter.OrgId,
+//		EquipIp:   filter.EquipId,
+//	}
+//
+//	statsFilter.StatsType = "activated_equip"
+//	rows, err := models.GetEquipStats(c.member, statsFilter)
+//	if err != nil {
+//		log.Error(err)
+//	}
+//
+//	m := map[string]int{
+//		"count":  0,
+//		"optime": 0,
+//	}
+//	for _, r := range rows {
+//		m["count"] += r.Count
+//		m["optime"] += r.Optime
+//	}
+//
+//	return m
+//}

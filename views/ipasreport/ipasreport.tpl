@@ -67,15 +67,23 @@
                             <div class="col-sm-5">
                                 <div class="reportBox">
                                     <span class=""><i class="fa fa-bolt icon-width"></i> {{i18n .Lang "shock"}}</span>
-                                    <span class="rpt-data rpt-counts-shock s24 font-grey-mint pull-right "></span>
+                                    <span class="rpt-data rpt-history-shock s24 font-grey-mint pull-right"></span>
                                 </div>
                                 <div class="reportBox">
                                     <span class=""><i class="icon-speedometer icon-width"></i> {{i18n .Lang "speeding"}}</span>
-                                    <span class="rpt-data rpt-counts-speeding s24 font-grey-mint pull-right "></span>
+                                    <span class="rpt-data rpt-history-speeding s24 font-grey-mint pull-right"></span>
                                 </div>
                                 <div class="reportBox">
                                     <span class=""><i class="icon-size-actual icon-width"></i> {{i18n .Lang "proximity"}}</span>
-                                    <span class="rpt-data rpt-counts-proximity s24 font-grey-mint pull-right "></span>
+                                    <span class="rpt-data rpt-history-proximity s24 font-grey-mint pull-right"></span>
+                                </div>
+                                <div class="reportBox">
+                                    <span class=""><i class="icon-clock icon-power"></i> {{i18n .Lang "operating count"}}</span>
+                                    <span class="rpt-data rpt-history-operating-count s24 font-grey-mint pull-right"></span>
+                                </div>
+                                <div class="reportBox">
+                                    <span class=""><i class="icon-clock icon-width"></i> {{i18n .Lang "operating time"}}</span>
+                                    <span class="rpt-data rpt-history-operating-time s24 font-grey-mint pull-right"></span>
                                 </div>
                             </div>
                             <div class="col-sm-7">
@@ -114,7 +122,9 @@
                         </div>
 
                         <div id="map-rpt-ipas" class="table-rpt-events hide mt20 mb20" style="width:100%;height:350px;"></div>
+
                         <div id="toolbar-rpt-events" class="table-rpt-events s14"><i class="icon-clock"></i> {{i18n .Lang "recent events"}}</div>
+
                         <table  id="table-rpt-events"
                                 class="table-condensed"
                                 data-toolbar="#toolbar-rpt-events"

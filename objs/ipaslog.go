@@ -69,3 +69,14 @@ type IpasFilter struct {
 	TagPattern string `form:"tag_pattern"`
 	StatsMode  bool   `form:"stats_mode"` // 통계모드
 }
+
+func NewIpasFilter() *IpasFilter {
+	filter := IpasFilter{}
+	filter.FastPaging = "on"
+	filter.Order = "asc"
+	filter.Sort = "equip_id"
+	filter.Limit = 99999
+	filter.Offset = 0
+
+	return &filter
+}

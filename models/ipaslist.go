@@ -36,7 +36,7 @@ func UpdateIpasGroup(groupId int, list []objs.Ipas) (sql.Result, error) {
 	return rs, err
 }
 
-func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
+func GetIpaslist(member *objs.Member, filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 
 	args := make([]interface{}, 0)
 
@@ -53,6 +53,16 @@ func GetIpaslist(filter *objs.IpasFilter) ([]objs.Ipas, int64, error) {
 	if filter.EquipType > 0 {
 		where += " and t.equip_type = ?"
 		args = append(args, filter.EquipType)
+	}
+
+	if member.Position < objs.Administrator {
+		where += `
+			and t.group_id in (
+				select asset_id from ast_asset
+				where asset_id in (select asset_id from mbr_asset where member_id = ?)
+			)
+		`
+		args = append(args, member.MemberId)
 	}
 
 	// 페이징 모드(고속/일반)

@@ -19,7 +19,6 @@
     <div class="portlet light bordered">
         <div class="portlet-body pt0">
             <div id="toolbar-log">
-
                 <form id="form-filter" role="form" method="post">
                 {{ .xsrfdata }}
 

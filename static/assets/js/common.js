@@ -130,6 +130,9 @@ function updateNavText() {
             return;
         }
     });
+    if ( el === null ) {
+        return;
+    }
     var parent = el.closest( "ul" ).parent().find( "a:first" ),
         depth2 = $.trim( el.text() ),
         depth1 = $.trim( parent.text() );

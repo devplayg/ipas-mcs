@@ -14,13 +14,13 @@ type IpaslistController struct {
 
 func (c *IpaslistController) GetIpasInOrg() {
 	filter := c.getFilter()
-	logs, total, err := models.GetIpaslist(filter)
+	logs, total, err := models.GetIpaslist(c.member, filter)
 	c.serveResultJson(logs, total, err, filter.FastPaging)
 }
 
 func (c *IpaslistController) GetIpasInGroup() {
 	filter := c.getFilter()
-	logs, total, err := models.GetIpaslist(filter)
+	logs, total, err := models.GetIpaslist(c.member, filter)
 	c.serveResultJson(logs, total, err, filter.FastPaging)
 }
 

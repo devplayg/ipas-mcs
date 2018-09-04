@@ -48,7 +48,7 @@ function showReport( orgId, equipId ) {
         param.date = ipasReportDate;
         param.past_days = ipasReportPastDays;
     }
-
+console.log(3);
     var url = "/report/evt/org/"+orgId+"/eqid/" + equipId + "?" + $.param(param);
     $.ajax({
         type:  "GET",
@@ -93,10 +93,14 @@ function showReport( orgId, equipId ) {
         $( ".rpt-ipas-location" ).text( rpt.ipas.latitude + " / " + rpt.ipas.longitude );
 
         // 이벤트 발생 수 정보
-        $( ".rpt-counts-startup" ).text( rpt.counts.startup );
-        $( ".rpt-counts-shock" ).text( rpt.counts.shock );
-        $( ".rpt-counts-speeding" ).text( rpt.counts.speeding );
-        $( ".rpt-counts-proximity" ).text( rpt.counts.proximity );
+        $( ".rpt-history-startup" ).text( rpt.history.startup );
+        $( ".rpt-history-shock" ).text( rpt.history.shock );
+        $( ".rpt-history-speeding" ).text( rpt.history.speeding );
+        $( ".rpt-history-proximity" ).text( rpt.history.proximity );
+
+        console.log(rpt.history);
+        $( ".rpt-history-operating-time" ).text( rpt.history.optime );
+        $( ".rpt-history-operating-count" ).text( rpt.history.activated );
 
         // 조회기간 서정
         $( ".btn-rpt-period" ).each(function( i, b ) {
@@ -120,7 +124,7 @@ function showReport( orgId, equipId ) {
         }
 
         if ( ipasReportLog !== null && ipasReportLog.date !== undefined ) { // 로그 정보
-            console.log(ipasReportLog);
+            // console.log(ipasReportLog);
             // console.log(ipasReportLog.date);
             var eventType = "";
             if ( ipasReportLog.event_type === StartupEvent ) {
@@ -229,7 +233,7 @@ $( ".btn-rpt-period" ).click(function(e) {
     e.preventDefault();
 
     // 기간 설정
-    console.log(ipasReportDate);
+    // console.log(ipasReportDate);
     ipasReportPastDays = $( this ).data( "period" );
 
     clearIpasReport();

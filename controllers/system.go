@@ -11,6 +11,11 @@ type SystemController struct {
 	baseController
 }
 
+func (c *SystemController) CtrlPrepare() {
+	c.grant(objs.User)
+}
+
+
 func (c *SystemController) GetNews() {
 
 	t := time.Now()

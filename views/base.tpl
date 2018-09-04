@@ -254,7 +254,7 @@
                                     <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "events"}}</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/trend" class="nav-link"><span class="title">{{i18n .Lang "event trend"}}</span></a>
+                                    <a href="/ipaslogsWithChart" class="nav-link"><span class="title">{{i18n .Lang "event trend"}}</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/log/ipasstatus" class="nav-link"><span class="title">{{i18n .Lang "equip status"}}</span></a>

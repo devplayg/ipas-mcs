@@ -4,6 +4,7 @@ import (
 	"github.com/devplayg/ipas-mcs/models"
 	"github.com/devplayg/ipas-mcs/objs"
 	"strconv"
+	log "github.com/sirupsen/logrus"
 )
 
 type UserassetController struct {
@@ -43,3 +44,37 @@ func getUserassetMapByClassId(class int, member *objs.Member) objs.AssetMap {
 	assetMap := organizeAssets(class, assets)
 	return assetMap
 }
+
+//
+func (c *UserassetController) GetIpasList() {
+	// 요청값 분류
+	filter := c.getIpasFilter()
+	list, total, err := models.GetIpaslist(c.member, filter)
+	c.serveResultJson(list, total, err, filter.FastPaging)
+}
+
+func (c *UserassetController) getIpasFilter() *objs.IpasFilter {
+
+	// 요청값 분류
+	filter := objs.IpasFilter{}
+	if err := c.ParseForm(&filter); err != nil {
+		log.Error(err)
+	}
+
+	// 페이징 처리
+	if filter.Sort == "" {
+		filter.Sort = "equip_id"
+	}
+	if filter.Order == "" {
+		filter.Order = "asc"
+	}
+	if filter.Limit < 1 {
+		filter.Limit = 20
+	}
+	if filter.FastPaging == "" {
+		filter.FastPaging = "on"
+	}
+	return &filter
+}
+
+

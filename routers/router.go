@@ -17,8 +17,11 @@ func init() {
 	beego.Router(`/getIpasLogs`, &controllers.IpaslogController{}, "get:GetLogs")
 	beego.Router(`/realtimelogs`, &controllers.IpaslogController{}, "get,post:DisplayRealTimeLogs")
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
-	beego.Router(`/trend`, &controllers.IpaslogController{}, "get,post:DisplayTrend")
+	beego.Router(`/ipaslogsWithChart`, &controllers.IpaslogController{}, "get,post:DisplayTrend")
 	beego.Router(`/getLogForCharting`, &controllers.IpaslogController{}, "get:GetLogForCharting")
+	
+	// 추적
+	beego.Router(`/tracking`, &controllers.TrackingController{}, "get,post:Display")
 	
 	// IPAS 상태로그
 	beego.Router(`/log/ipasstatus`, &controllers.StatuslogController{})
@@ -48,6 +51,7 @@ func init() {
 
 	// 사용자 자산
 	beego.Router("/userassetclass/:class/children", &controllers.UserassetController{}, "Get:GetChildren")
+	beego.Router("/ipaslist", &controllers.UserassetController{}, "Get:GetIpasList")
 	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Get:GetIpasInGroup")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")

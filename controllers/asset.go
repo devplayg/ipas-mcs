@@ -226,6 +226,10 @@ func organizeAssets(class int, assets []*objs.Asset) objs.AssetMap {
 	return assetMap
 }
 
+func (c *AssetController) GetIpasList() {
+	c.ServeJSON()
+}
+
 //
 //func (this *AssetsController) Patch() {
 //
