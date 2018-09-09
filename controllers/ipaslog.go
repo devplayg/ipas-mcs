@@ -71,8 +71,6 @@ func (c *IpaslogController) GetMapLogs() {
 	}
 
 	mapLogs := make([]objs.IpasMapLog, len(logs))
-	log.Debugf("len #1: %d", len(mapLogs))
-	log.Debugf("len #2: %d", len(logs))
 	for idx, r := range logs {
 		mapLogs[idx].OrgId       = r.OrgId
 		mapLogs[idx].EquipId     = r.EquipId

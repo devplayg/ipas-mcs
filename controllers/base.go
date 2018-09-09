@@ -57,7 +57,6 @@ func (c *baseController) Prepare() {
 
 	// 요청 디버깅 코드
 	if beego.BConfig.RunMode == "dev" {
-
 		log.Debug("=============START=================================")
 		log.Debugf("Method=%s, Ctrl=%s, Act=%s, LoginRequired=%v, ACL=%d, isLogged=%v, isAjax=%v, Path=%s, Ext=%s, route=%s, ReqUrl=%s, remote_addr=%s",
 			c.Ctx.Input.Method(),
