@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"sort"
 	"time"
+	"encoding/json"
 )
 
 type IpaslogController struct {
@@ -53,6 +54,45 @@ func (c *IpaslogController) GetLogs() {
 	}
 
 	c.serveResultJson(logs, total, err, filter.FastPaging)
+}
+
+func (c *IpaslogController) GetMapLogs() {
+	filter := c.getFilter()
+	filter.Limit = 70
+	logs, _, err := models.GetIpaslog(filter, c.member)
+	if err != nil {
+		log.Error(err)
+	}
+
+	// 기관/그룹코드를 이름과 맵핑
+	for idx, a := range logs {
+		logs[idx].No = filter.PagingFilter.Offset + int64(idx) + 1
+		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
+	}
+
+	mapLogs := make([]objs.IpasMapLog, len(logs))
+	log.Debugf("len #1: %d", len(mapLogs))
+	log.Debugf("len #2: %d", len(logs))
+	for idx, r := range logs {
+		mapLogs[idx].OrgId       = r.OrgId
+		mapLogs[idx].EquipId     = r.EquipId
+		mapLogs[idx].GroupId     = r.GroupId
+		mapLogs[idx].EquipType   = r.EquipType
+		mapLogs[idx].Speed       = r.Speed
+		mapLogs[idx].Latitude    = r.Latitude
+		mapLogs[idx].Longitude   = r.Longitude
+		mapLogs[idx].OrgName     = r.OrgName
+		mapLogs[idx].GroupName   = r.GroupName
+		mapLogs[idx].Date        = r.Date
+		mapLogs[idx].EventType   = r.EventType
+		mapLogs[idx].Targets     = r.Targets
+		mapLogs[idx].Distance    = r.Distance
+	}
+	result, err := json.Marshal(mapLogs)
+	if err != nil {
+		log.Error(err)
+	}
+	c.Ctx.ResponseWriter.Write([]byte("mapfeed_callback("+ string(result)+")"))
 }
 
 func (c *IpaslogController) getFilter() *objs.IpasFilter {
@@ -204,6 +244,13 @@ func (c *IpaslogController) DisplayTrend() {
 	filter := c.getFilter()
 	c.Data["filter"] = filter
 	c.setTpl("trend.tpl")
+}
+
+
+func (c *IpaslogController) DisplayMap() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+	c.setTpl("map.tpl")
 }
 
 

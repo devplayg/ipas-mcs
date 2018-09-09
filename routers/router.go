@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/devplayg/ipas-mcs/controllers"
 	"github.com/astaxie/beego"
+	"github.com/devplayg/ipas-mcs/controllers"
 )
 
 func init() {
@@ -19,10 +19,12 @@ func init() {
 	beego.Router(`/getRealTimeLogs`, &controllers.IpaslogController{}, "get:GetRealTimeLogs")
 	beego.Router(`/ipaslogsWithChart`, &controllers.IpaslogController{}, "get,post:DisplayTrend")
 	beego.Router(`/getLogForCharting`, &controllers.IpaslogController{}, "get:GetLogForCharting")
-	
+	beego.Router(`/maplog`, &controllers.IpaslogController{}, "get,post:DisplayMap")
+	beego.Router(`/getMapLogs`, &controllers.IpaslogController{}, "get:GetMapLogs")
+
 	// 추적
 	beego.Router(`/tracking`, &controllers.TrackingController{}, "get,post:Display")
-	
+
 	// IPAS 상태로그
 	beego.Router(`/log/ipasstatus`, &controllers.StatuslogController{})
 	beego.Router(`/getStatusLogs`, &controllers.StatuslogController{}, "get:GetLogs")
@@ -69,7 +71,7 @@ func init() {
 
 	// 환경설정
 	beego.Router(`/config`, &controllers.ConfigController{})
-	
+
 	// 시스템
 	beego.Router(`/news`, &controllers.SystemController{}, "get:GetNews")
 

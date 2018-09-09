@@ -1,0 +1,405 @@
+{{template "base.tpl" .}}
+
+
+
+{{define "contents"}}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="portlet light bordered mb10 p10">
+            <div class="portlet-body pt0 mh">
+                <form id="form-filter" role="form" method="post">
+                    <div class="form-body">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <!-- 검색 시작날짜 -->
+                                <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+
+                                <!-- 검색 끝날짜 -->
+                                <div class="input-group date datetime">
+                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+
+                                <select id="select-assets" name="org_id" class="selectpicker" data-size="10" data-selected-text-format="count > 2">
+
+                                </select>
+
+                                <button type="button" class="btn default btn-start-search"><span class="text"><i class="fa fa-search"></i></span> {{i18n .Lang "search"}}</button>
+                                <button type="button" class="btn default btn-start-monitoring"><span class="text"><i class="fa fa-play"></i></span> {{i18n .Lang "monitoring"}}</button>
+                                <span class="text-updated font-red hide ml10">Updated</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="map" style="width:100%px; height: 400px; border: 1px dashed #acacac"></div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-lg-9">
+        <div class="portlet light bordered mb10 p10">
+            <div class="portlet-body pt0 mh">
+                <table  id="table-log"
+                        class="table-condensed"
+                        data-toggle="table"
+                        data-toolbar="#toolbar-log"
+                        data-show-refresh="true"
+                        data-show-columns="true"
+                        {* 내보내기 *}
+                        data-show-export="true"
+                        data-export-types="['csv', 'excel']"
+                        {*Row강조*}
+                        data-row-style="ipasEventRowStyle"
+                        {* 정렬 *}
+                        data-sort-name="{{.filter.Sort}}"
+                        data-sort-order="{{.filter.Order}}"
+                        {* 페이징 *}
+                        data-page-size="{{.filter.Limit}}"
+                        data-pagination-v-align="top"
+                        data-pagination="true"
+                        data-side-pagination="client"
+                        data-pagination-loop="true"
+                >
+                    <thead>
+                    <tr>
+                        <th data-field="date" data-sortable="true" data-formatter="dateFormatter">{{i18n .Lang "occurrence date"}}</th>
+                        <th data-field="org_id" data-sortable="true" data-formatter="orgNameFormatter">{{i18n .Lang "org"}}</th>
+                        <th data-field="group_id" data-sortable="true" data-formatter="groupNameFormatter">{{i18n .Lang "group"}}</th>
+                        <th data-field="event_type" data-sortable="true" data-formatter="ipaslogEventTypeFormatter">{{i18n .Lang "ipas.action"}}</th>
+                        <th data-field="equip_id" data-formatter="ipasEquipIdFormatter" data-sortable="true">{{i18n .Lang "tag"}}</th>
+                        <th data-field="targets" data-formatter="ipaslogTargetsFormatter" data-sortable="true">{{i18n .Lang "ipas.target"}}</th>
+                        <th data-field="location" data-sortable="true" data-formatter="ipaslogLocationFormatter" data-align="center">{{i18n .Lang "location"}}</th>
+                        <th data-field="latitude" data-sortable="true" data-visible="false">{{i18n .Lang "latitude"}}</th>
+                        <th data-field="longitude" data-sortable="true" data-visible="false">{{i18n .Lang "longitude"}}</th>
+                        <th data-field="distance" data-sortable="true" data-formatter="ipaslogDistanceFormatter">{{i18n .Lang "distance"}} (m)</th>
+                        <th data-field="speed" data-sortable="true" data-formatter="ipaslogSpeedingFormatter">{{i18n .Lang "speed"}} <small>(km/h)</small></th>
+                        <th data-field="snr" data-sortable="true" data-formatter="snrFormatter">SNR</th>
+                        <th data-field="usim" data-sortable="true" data-visible="false">USIM</th>
+                        <th data-field="ip" data-sortable="true" data-formatter="int2ipFormatter" data-visible="false">IP</th>
+                        <th data-field="recv_date" data-sortable="true" data-formatter="dateFormatter" data-visible="false">{{i18n .Lang "received date"}}</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+실시간 이벤트 로그
+기관선택, 날짜선택, 요약
+{{end}}
+
+{{define "javascript"}}
+{{template "ipaslog/ipas_log_on_modal.tpl" .}}
+{{template "ipasreport/ipasreport.tpl" .}}
+<script src="/static/modules/{{.ctrl}}/mapboard.js"></script>
+<script src="/static/modules/{{.ctrl}}/formatter.js"></script>
+<script>
+    function initMap() {
+        // The location of Uluru
+        var uluru = {lat: -25.344, lng: 131.036};
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 10, center: uluru}
+        );
+
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: uluru, map: map});
+    }
+
+    $(function() {
+
+        /**
+         * 1. 초기화
+         *
+         */
+                // 자산 (기관 / 그룹)
+        var assets = { },
+                interval = 5*1000,
+                timer = null;
+
+        // 날짜
+        $( ".datetime" ).datetimepicker({
+            format:         "yyyy-mm-dd hh:ii",
+            pickerPosition: "bottom-left",
+            todayHighlight: 1,
+            minView:        2,
+            maxView:        4,
+            autoclose:      true
+        });
+
+        // 자산정보 로딩 및 모니터링 시작
+        loadAssets( start );
+
+
+
+        /**
+         * 2. 이벤트
+         *
+         */
+
+        // 자산 선택
+        $( "#select-assets" ).on( "change", function() {
+            stop();
+            start();
+        });
+
+
+        $( ".btn-start" ).click( function() {
+            if ( timer === null ) {
+                start();
+            } else {
+                stop();
+            }
+        });
+
+        $( ".activity" ).change( function() {
+            var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+                    orgId = asset[0],
+                    groupId = asset[1];
+            updateLogs( orgId, groupId );
+        });
+
+
+
+
+        /**
+         * 3. 함수
+         *
+         */
+
+        // 자산 초기화
+        function loadAssets( action ) {
+            $.ajax({
+                type  : "GET",
+                async : true,
+                url   : "/userassetclass/1/children"
+            }).done( function( result ) {
+                if ( result !== null && result.length > 0 ) {
+                    $( "#select-assets" ).empty().append(
+                            $( "<option>", {
+                                value: "-1/-1",
+                                text: felang[ "total assets" ]
+                            })
+                    );
+
+                    // 기관
+                    $.each( result, function( idx, org ) {
+                        $( "#select-assets" ).append(
+                                $( "<option>", {
+                                    value: org.asset_id + "/-1",
+                                    text: org.name
+                                })
+                        );
+
+                        // 그룹
+                        $.each( org.children, function( i, group ) {
+                            $( "#select-assets" ).append(
+                                    $( "<option>", {
+                                        value: org.asset_id + "/" + group.asset_id,
+                                        text: "- " + group.name,
+                                        class: "ml20"
+                                    })
+                            );
+                        });
+                    });
+                }
+
+            }).always( function() {
+                $( "#select-assets" ).selectpicker( "refresh" );
+
+                if ( action !== undefined ) {
+                    action();
+                }
+            });
+        }
+
+        function start() {
+            // UI 처리
+            $( ".mask-yyyymmddhhii" ).prop( "readonly", true );
+            $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
+            $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
+
+            // 정보 업데이트
+            updateStats();
+            timer = setInterval(updateStats, interval);
+        }
+
+        function stop() {
+            $( ".mask-yyyymmddhhii" ).prop( "readonly", false );
+            $( ".btn-start" ).removeClass( "blue" ).addClass( "default" );
+            $( ".btn-start .text" ).html( "<i class='fa fa-play'></i>" );
+
+            // 타이머 중지
+            clearTimeout( timer );
+            timer = null;
+        }
+
+        function updateStats() {
+            var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+                    orgId = asset[0],
+                    groupId = asset[1];
+            // console.log(orgId + " / " + groupId);
+
+            // updateSummary( orgId, groupId );
+            // updateRankings( orgId, groupId );
+            // updateLogs( orgId, groupId );
+            //
+            // $( ".text-updated" ).removeClass( "hide" );
+            // setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
+        }
+
+
+        // function updateSummary( orgId, groupId ) {
+        //     var url = "/stats/summary/org/" + orgId + "/group/" + groupId;
+        //     $.ajax({
+        //         type  : "GET",
+        //         async : true,
+        //         url   : url
+        //     }).done( function( r ) {
+        //         // console.log(r.operatingTime);
+        //         // $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
+        //         $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
+        //         $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
+        //         $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
+        //
+        //         // 비율
+        //         var totalEvents = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+        //         var total = totalEvents;
+        //         if ( totalEvents === 0 ) {
+        //             total = 1;
+        //         }
+        //         var shockRate = (r.eventTypes[ShockEvent] / total * 100).toFixed(1),
+        //             speedingRate = (r.eventTypes[SpeedingEvent] / total * 100).toFixed(1),
+        //             proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
+        //
+        //         $( ".count-events" ).text( totalEvents );
+        //         $( ".count-optime" ).text( sec2humanReadable( r.operatingTime ) );
+        //
+        //         $( ".rate-shock" ).text( shockRate + "%" );
+        //         $( ".rate-speeding" ).text( speedingRate + "%" );
+        //         $( ".rate-proximity" ).text( proximityRate + "%" );
+        //
+        //         $( "#pgb-shock" ).css( "width",shockRate + "%" );
+        //         $( "#pgb-speeding" ).css( "width",speedingRate + "%" );
+        //         $( "#pgb-proximity" ).css( "width",proximityRate + "%" );
+        //
+        //         $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
+        //         $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
+        //         $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
+        //         $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
+        //
+        //         var  data = [
+        //             // {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
+        //             {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
+        //             {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
+        //             {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
+        //         ];
+        //
+        //         var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+        //         if ( total > 0 ) {
+        //             eventTypeChart.setData( data );
+        //         } else {
+        //             eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
+        //         }
+        //
+        //         // time
+        //         var time = moment(r.time);
+        //         $( ".what-time" ).text( time.format("HH:mm") );
+        //         $( ".what-date" ).text( time.format("ll") );
+        //
+        //     }).always( function() {
+        //     });
+        // }
+        //
+        //
+        // function updateRankings( orgId, groupId ) {
+        //     $( ".table-ranking" ).each(function( idx, obj ) {
+        //         var url = $( this ).data( "query" ) + "/org/" + orgId + "/group/" + groupId;
+        //         $( this ).bootstrapTable( "refresh", {
+        //             url: url,
+        //             silent: true
+        //         });
+        //     });
+        // }
+
+
+        // function updateLogs( orgId, groupId ) {
+        //     var url = '/getRealTimeLogs?limit=100';
+        //     var activities = [];
+        //     $( ".activity" ).each(function( idx, obj ) {
+        //         if ( $( obj ).is(":checked") ) {
+        //             activities.push( "event_type=" + $( obj ).val() );
+        //         }
+        //     });
+        //
+        //     if ( activities.length < 1 ) {
+        //         $( "#table-ipaslogs" ).bootstrapTable( "removeAll" );
+        //     } else {
+        //         var urlSuffix = "";
+        //         if ( orgId > 0 ) {
+        //             urlSuffix += "&org_id=" + orgId;
+        //             if ( groupId > 0 ) {
+        //                 urlSuffix += "&group_id=" + groupId;
+        //             }
+        //         }
+        //         $( "#table-ipaslogs" ).bootstrapTable( "refresh", {
+        //             url: url + "&" + activities.join( "&" ) + urlSuffix,
+        //             silent: true
+        //         });
+        //     }
+        // }
+
+
+        // function sec2humanReadable(duration) {
+        //     var hour = 0;
+        //     var min = 0;
+        //     var sec = 0;
+        //
+        //     if (duration) {
+        //         if (duration >= 60) {
+        //             min = Math.floor(duration / 60);
+        //             sec = duration % 60;
+        //         }
+        //         else {
+        //             sec = duration;
+        //         }
+        //
+        //         if (min >= 60) {
+        //             hour = Math.floor(min / 60);
+        //             min = min - hour * 60;
+        //         }
+        //
+        //         if (hour < 10) {
+        //             hour = '0' + hour;
+        //         }
+        //         if (min < 10) {
+        //             min = '0' + min;
+        //         }
+        //         if (sec < 10) {
+        //             sec = '0' + sec;
+        //         }
+        //     }
+        //
+        //     return hour +":"+ min +":"+ sec;
+        // }
+
+    });
+
+
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQHrPThkndn-kfySgCUgkZxEbdTU8rrNg&callback=initMap">
+</script>
+{{end}}

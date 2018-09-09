@@ -386,11 +386,11 @@ $(function() {
             }).done( function( result ) {
                 logs = result || []; // 값이 null 이면 크기0의 배열을 할당
                 // console.log(logs);
-                showTableData( $table, logs, paging );
+                showTableData( $table, paging, logs );
                 updatePagingNavButtons();
             });
         } else {
-            showTableData( $table, logs, paging );
+            showTableData( $table, paging, logs );
             updatePagingNavButtons();
         }
 

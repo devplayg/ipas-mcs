@@ -13,7 +13,7 @@ type DashboardController struct {
 
 func (c *DashboardController) CtrlPrepare() {
 	// 추가 언어 키워드
-	c.addToFrontLang("ipas.start,shock,speeding,proximity")
+	c.addToFrontLang("ipas.start,shock,speeding,proximity,total assets")
 
 	// 권한 부여
 	c.grant(objs.User)
@@ -38,6 +38,12 @@ func (c *DashboardController) DisplayDetailboard() {
 	c.Data["filter"] = filter
 
 	c.setTpl("detailboard.tpl")
+}
+
+func (c *DashboardController) DisplayMapBoard() {
+	filter := c.getFilter()
+	c.Data["filter"] = filter
+	c.setTpl("mapboard.tpl")
 }
 
 func (c *DashboardController) getFilter() *objs.IpasFilter {

@@ -23,13 +23,13 @@ toastr.options = {
     "closeButton": true,
     "debug": false,
     "newestOnTop": false,
-    "progressBar": false,
+    "progressBar": true,
     "positionClass": "toast-top-right",
     "preventDuplicates": true,
     "onclick": null,
     "showDuration": "300",
     "hideDuration": "1000",
-    "timeOut": "10000",
+    "timeOut": "20000",
     "extendedTimeOut": "10000",
     "showEasing": "swing",
     "hideEasing": "linear",
@@ -44,7 +44,7 @@ var timer = setInterval(function() {
     } catch(err) {
         console.log( err );
     }
-}, 60 * 1000);
+}, 5 * 1000); // Demo
 
 
 
@@ -82,12 +82,12 @@ jQuery.fn.addHidden = function (name, value) {
 $( document ).on('click', '.toast', function(){
     var a = $( this ).find( "a:first" ),
         messageId = a.data( "message-id" );
-    console.log(messageId);
 
     if ( messageId > 0 ) { // 메시지 1건에 대한 마킹 처리 시
         $.get( "/message/gotit/" + messageId );
-    } else {
+    } else { // Clear all toastr
         $.get( "/message/markAll" );
+        toastr.clear();
     }
 });
 
@@ -160,10 +160,13 @@ function getIpasTag( val ) {
 
     if ( prefix == "VT_" ) {
         tag += '<button class="btn blue-dark btn-xs">';
+
     } else if ( prefix == "ZT_" ) {
         tag += '<button class="btn blue-sharp btn-xs">';
+
     } else if ( prefix == "PT_" ) {
         tag += '<button class="btn green-sharp btn-xs">';
+
     } else {
         tag += '<i class="fa fa-question"> ';
     }
@@ -216,7 +219,7 @@ function restoreTableColumns( table, key ) {
                 $( table ).bootstrapTable("showColumn", col);
             });
 
-            $(table).find("th").each(function (i, th) {
+            $( table ).find( "th" ).each(function (i, th) {
                 var col = $( th ).data("field");
                 if ( h[col] ) {
                     $( table ).bootstrapTable("showColumn", col);
@@ -247,6 +250,38 @@ function updateToolbarNav( $table, paging, logLength ) {
     }
 }
 
+
+function beautifyMessage( obj ) {
+    var r = JSON.parse( obj.message ),
+        m = {
+            title: "",
+            body: ""
+        };
+
+    // console.log( r );
+    var srcEquipType = r.equip_id.substr(0, 2).toLowerCase(),
+        dstEquipType = r.targets.substr(0, 2).toLowerCase();
+    if ( r.event === "speeding" ) {
+        m.title = "SPEED VIOLATION !";
+        if ( srcEquipType === "vt" || srcEquipType === "pt" || srcEquipType === "zt" ) {
+            m.body += "<img src='/static/assets/img/obj/" + srcEquipType + ".png' height='80'>";
+            m.body += r.speed + " km/h";
+        }
+
+    } else if ( r.event === "proximity" ) {
+        m.title = "SHOCK !";
+        if ( srcEquipType === "vt" || srcEquipType === "pt" || srcEquipType === "zt" ) {
+            m.body += "<img src='/static/assets/img/obj/" + srcEquipType + ".png' height='80'>";
+        }
+        m.body += ' <i class="fa fa-caret-left s20"></i> <i class="fa fa-caret-right s20"></i> ';
+        if ( dstEquipType === "vt" || dstEquipType === "pt" || dstEquipType === "zt" ) {
+            m.body += "<img src='/static/assets/img/obj/" + dstEquipType + ".png' height='80'>";
+        }
+    }
+    return m;
+}
+
+
 function updateNews() {
     $( "#pgb" ).css( "width", 11 );
     $.ajax({
@@ -256,20 +291,29 @@ function updateNews() {
     }).done( function( news ) {
 
         // Message
-        if ( news.message !== null && news.message.length > 0 ) {
-            toastr.success( '<a href="#" class="btn-global-message" data-message-id="0">', "Mark all as read" );
-
+        if ( news.message !== null && news.message.length > 0 && $( "#message-id-0" ).length === 0 ) {
+            toastr.success( '<a href="#" id="message-id-0" class="btn-global-message" data-message-id="0">', "Mark all as read", {timeOut: 0, closeButton: false} );
         }
         $.each( news.message, function( i, r ) {
-            var msgHeader = '<a href="#" class="btn-global-message" data-message-id="' + r.message_id + '">',
+            var id = 'message-id-' + r.message_id,
+                len = $( "#" + id ).length;
+            if ( len > 0 ) {
+                return true;
+            }
+
+            var msgHeader = '<a href="#" id="message-id-' + r.message_id + '" class="btn-global-message" data-message-id="' + r.message_id + '">',
                 msgFooter = '</a>',
-                timeInfo = '<div class="text-right small">' + moment(r.date).format("lll") + '</div>';
-            if ( r.priority === 1 ) { // Info
-                toastr.info( msgHeader + r.message + msgFooter + timeInfo, "INFORMATION" );
-            } else if ( r.priority === 3 ) { // Warning
-                 toastr.warning( msgHeader + r.message + msgFooter + timeInfo, "WARNING" );
-            } else if ( r.priority === 5 ) { // Danger
-                toastr.error( msgHeader + r.message + msgFooter + timeInfo, "ERROR" );
+                timeInfo = '<div class="text-right small">' + moment(r.date).format("lll") + '</div>',
+                msg = beautifyMessage( r );
+
+            if ( r.priority === 2 ) { // Warning
+                 toastr.warning( msgHeader + msg.body + msgFooter + timeInfo, msg.title );
+
+            } else if ( r.priority === 4 ) { // Danger
+                toastr.error( msgHeader + msg.body + msgFooter + timeInfo, msg.title );
+
+            } else {
+                toastr.info( msgHeader + msg.body + msgFooter + timeInfo, msg.title );
             }
         });
 
@@ -281,6 +325,7 @@ function updateNews() {
         var memUsage = news.resource.mem_used / news.resource.mem_total * 100,
             memTotal = news.resource.mem_total / 1024 / 1024 / 1024,
             memUsed = news.resource.mem_used / 1024 / 1024 / 1024;
+
         $( "#pgb-mem" ).css( "width", memUsage.toFixed(1) );
         $( ".usage-mem" ).text( memUsage.toFixed(1) + "%" );
         $( ".used-mem" ).text( memUsed.toFixed(1) + " GB" );

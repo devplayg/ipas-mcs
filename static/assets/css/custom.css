@@ -2,6 +2,12 @@ body {
     padding: 20px;
 }
 
+.toast {
+  opacity: 0.9 !important;
+  /*background-color: #364150;*/
+  background-color: #535f6d;
+}
+
 .bg-orange {
   background-color: #f4902f !important;
 }

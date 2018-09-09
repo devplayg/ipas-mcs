@@ -6,7 +6,7 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
-        interval = 211000,
+        interval = 10 * 1000,
         timer = null;
 
     // 날짜
@@ -100,7 +100,6 @@ $(function() {
                     );
                 });
             });
-
 
         }).always( function() {
             $( "#select-assets" ).selectpicker( "refresh" );

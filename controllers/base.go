@@ -257,7 +257,7 @@ func (c *baseController) loadFrontLang() {
 }
 
 func (c *baseController) addToFrontLang(str string) {
-	list := libs.SplitString(str, `[\s|,]+`)
+	list := libs.SplitString(str, `[,]+`)
 	for _, r := range list {
 		c.langMap[r] = c.Tr(r)
 	}

@@ -162,7 +162,6 @@
     <script src="/static/modules/{{.ctrl}}/ipas_log.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
     <script>
-        var filterUrl = "start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging=on&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}";
-        // console.log(url);
+        //var filterUrl = "start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging=on&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}";
     </script>
 {{end}}

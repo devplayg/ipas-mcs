@@ -13,25 +13,31 @@ const (
 
 type IpasLog struct {
 	Ipas
-	Date time.Time `json:"date"`
-	//OrgId     int       `json:"org_id"`
-	//OrgName   string    `json:"org_name"`
-	//GroupId   int       `json:"group_id"`
-	//GroupName string    `json:"group_name"`
-	EventType int    `json:"event_type"`
-	SessionId string `json:"session_id"`
-	//EquipId   string    `json:"equip_id"`
-	Targets string `json:"targets"`
-	//Latitude  float32   `json:"latitude"`
-	//Longitude float32   `json:"longitude"`
-	//Speed     int       `json:"speed"`
-	//Snr       int       `json:"snr"`
-	//Usim      string    `json:"usim"`
-	Distance int       `json:"distance"`
-	Ip       uint32    `json:"ip"`
-	RecvDate time.Time `json:"recv_date"`
-	No       int64     `json:"no"`
-	DateAgo  string    `json:"date_ago"`
+	Date      time.Time `json:"date"`
+	EventType int       `json:"event_type"`
+	SessionId string    `json:"session_id"`
+	Targets   string    `json:"targets"`
+	Distance  int       `json:"distance"`
+	Ip        uint32    `json:"ip"`
+	RecvDate  time.Time `json:"recv_date"`
+	No        int64     `json:"no"`
+	DateAgo   string    `json:"date_ago"`
+}
+
+type IpasMapLog struct {
+	OrgId     int       `json:"org_id"`
+	EquipId   string    `json:"equip_id"`
+	GroupId   int       `json:"group_id"`
+	EquipType int       `json:"equip_type"`
+	Speed     int       `json:"speed"`
+	Latitude  float32   `json:"latitude"`
+	Longitude float32   `json:"longitude"`
+	OrgName   string    `json:"org_name"`
+	GroupName string    `json:"group_name"`
+	Date      time.Time `json:"date"`
+	EventType int       `json:"event_type"`
+	Targets   string    `json:"targets"`
+	Distance  int       `json:"distance"`
 }
 
 type LocTrack struct {
@@ -70,13 +76,14 @@ type IpasFilter struct {
 	StatsMode  bool   `form:"stats_mode"` // 통계모드
 }
 
-func NewIpasFilter() *IpasFilter {
-	filter := IpasFilter{}
-	filter.FastPaging = "on"
-	filter.Order = "asc"
-	filter.Sort = "equip_id"
-	filter.Limit = 99999
-	filter.Offset = 0
-
-	return &filter
-}
+//
+//func NewIpasFilter() *IpasFilter {
+//	filter := IpasFilter{}
+//	filter.FastPaging = "on"
+//	filter.Order = "asc"
+//	filter.Sort = "equip_id"
+//	filter.Limit = 99999
+//	filter.Offset = 0
+//
+//	return &filter
+//}

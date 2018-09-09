@@ -48,7 +48,7 @@ func (c *SystemController) GetNews() {
 	msgFilter.StartDate = t.AddDate(0, 0, -1).Format(objs.SearchTimeFormat)
 	msgFilter.FastPaging = "on"
 	msgFilter.Sort = "date"
-	msgFilter.Order = "desc"
+	msgFilter.Order = "asc"
 	msgFilter.Offset = 0
 	msgFilter.Limit = 5
 	if messages, _, err := models.GetMessage(msgFilter, c.member); err != nil {

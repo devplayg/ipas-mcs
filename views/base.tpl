@@ -31,7 +31,7 @@
         <link href="/static/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
-        <link href="/static/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+        <link href="/static/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
         {{/*<link href="/static/plugins/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />*/}}
 
         <link href="/static/plugins/waitMe/waitMe.min.css" rel="stylesheet" type="text/css" />
@@ -622,7 +622,7 @@
         <script src="/static/plugins/jquery-base64/jquery.base64.min.js"></script>
         <script src="/static/plugins/moment/moment.min.js" type="text/javascript"></script>
         <script src="/static/plugins/waitMe/waitMe.min.js" type="text/javascript"></script>
-        <script src="/static/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+        <script src="/static/plugins/toastr/toastr.min.js" type="text/javascript"></script>
         <script src="/static/assets/js/jquery.cookie.js" type="text/javascript"></script>
         <script src="/static/assets/js/common.js" type="text/javascript"></script>
         <script src="/static/assets/js/formatter.js" type="text/javascript"></script>
