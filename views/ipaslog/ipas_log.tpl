@@ -28,13 +28,13 @@
 
                                 <!-- 검색 시작날짜 -->
                                 <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}">
+                                    <input class="form-control mask-yyyymmddhhii" size="17" type="text" name="start_date" value="{{.filter.StartDate}}">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 
                                 <!-- 검색 끝날짜 -->
                                 <div class="input-group date datetime">
-                                    <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}">
+                                    <input class="form-control mask-yyyymmddhhii" size="17" type="text" name="end_date" value="{{.filter.EndDate}}">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
 

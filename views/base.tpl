@@ -253,11 +253,14 @@
                                 <li class="nav-item">
                                     <a href="/ipaslogs" class="nav-link"><span class="title">{{i18n .Lang "events"}}</span></a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item hide">
                                     <a href="/ipaslogsWithChart" class="nav-link"><span class="title">{{i18n .Lang "event trend"}}</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/log/ipasstatus" class="nav-link"><span class="title">{{i18n .Lang "equip status"}}</span></a>
+                                    <a href="/maplog" class="nav-link"><span class="title">{{i18n .Lang "event map"}}</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/log/ipasstatus" class="nav-link"><span class="title">{{i18n .Lang "status"}}</span></a>
                                 </li>
                                 {{/*<li class="nav-item ">*/}}
                                     {{/*<a href="/samplelogs" class="nav-link"><span class="title">Sample logs</span></a>*/}}

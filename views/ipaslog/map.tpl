@@ -1,14 +1,8 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
-<div class="row">
-    <div class="col-lg-12">
-        <div id="map" style="width:100%px; height:400px; border: 1px dashed #acacac;"></div>
-    </div>
-</div>
-
-<div class="portlet light bordered">
-    <div class="portlet-body pt0">
+<div class="portlet light bordered mb10">
+    <div class="portlet-body pt0 ">
         <div id="toolbar-log">
             <form id="form-filter" role="form" method="post">
             {{ .xsrfdata }}
@@ -19,13 +13,13 @@
 
                             <!-- 검색 시작날짜 -->
                             <div class="input-group date datetime" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy-mm-dd HH:ii" data-link-field="">
-                                <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="start_date" value="{{.filter.StartDate}}">
+                                <input class="form-control mask-yyyymmddhhii" size="17" type="text" name="start_date" value="{{.filter.StartDate}}">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                             </div>
 
                             <!-- 검색 끝날짜 -->
                             <div class="input-group date datetime">
-                                <input class="form-control mask-yyyymmddhhii" size="16" type="text" name="end_date" value="{{.filter.EndDate}}">
+                                <input class="form-control mask-yyyymmddhhii" size="17" type="text" name="end_date" value="{{.filter.EndDate}}">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                             </div>
 
@@ -97,12 +91,17 @@
             </form>
         </div>
 
+        <div id="map" class="mt10" style="width:100%px; height:400px; border: 1px dashed #acacac;"></div>
+    </div>
+</div>
+
+<div class="portlet light bordered">
+    <div class="portlet-body pt0">
         <table  id="table-log"
                 class="table-condensed"
                 data-toggle="table"
-                data-toolbar="#toolbar-log"
-                data-show-refresh="true"
-                data-show-columns="true"
+                data-show-refresh="false"
+                data-show-columns="false"
                 {* 내보내기 *}
                 data-show-export="true"
                 data-export-types="['csv', 'excel']"
@@ -120,7 +119,7 @@
                 data-url="/getIpasLogs?start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}"
                 data-pagination="true"
                 data-side-pagination="server"
-                data-pagination-loop="false"
+                data-pagination-loop="true"
         {{end}}
         >
             <thead>
@@ -155,16 +154,16 @@
             // infoWIndow = null;
         var customLabel = {
             shock: {
-                label: 'SHK'
+                label: 'SH'
             },
             speeding: {
-                label: 'SPD'
+                label: 'SP'
             },
             proximity: {
                 label: 'PX'
             }
         };
-        console.log(lang); // ko-kr, en-us
+        // console.log(lang); // ko-kr, en-us
         function initMap() {
             map = new google.maps.Map( document.getElementById( "map" ), {
                 zoom: 8,
