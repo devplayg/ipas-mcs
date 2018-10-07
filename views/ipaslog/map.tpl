@@ -1,12 +1,14 @@
 {{template "base.tpl" .}}
+{{define "css"}}
+    <link href="/static/modules/{{.ctrl}}/map.css" rel="stylesheet" type="text/css" />
+{{end}}
 
 {{define "contents"}}
 <div class="portlet light bordered mb10">
-    <div class="portlet-body pt0 ">
+    <div class="portlet-body pt0">
         <div id="toolbar-log">
             <form id="form-filter" role="form" method="post">
-            {{ .xsrfdata }}
-
+                {{ .xsrfdata }}
                 <div class="form-body">
                     <div class="form-inline">
                         <div class="form-group">
@@ -90,8 +92,83 @@
                 </div> <!-- #modal-filter -->
             </form>
         </div>
+        <div class="row mt10">
+            <div class="col-lg-9">
+                <div id="map" class="" style=""></div>
+            </div>
 
-        <div id="map" class="mt10" style="width:100%px; height:400px; border: 1px dashed #acacac;"></div>
+            {{/*<div class="col-lg-3">*/}}
+                {{/*<div class="row">*/}}
+                    {{/*<div class="col-sm-6 pb5 pr5 ">*/}}
+                        {{/*<div class="bg-orange mh1">*/}}
+
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
+                    {{/*<div class="col-sm-6 pb5 pl5">*/}}
+                        {{/*<div class="bg-orange mh1">*/}}
+
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
+                {{/*</div>*/}}
+                {{/*<div class="row">*/}}
+                    {{/*<div class="col-sm-6 pt5 pr5">*/}}
+                        {{/*<div class="bg-orange mh1">*/}}
+
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
+                    {{/*<div class="col-sm-6 pt5 pl5">*/}}
+                        {{/*<div class="bg-orange mh1">*/}}
+
+                        {{/*</div>*/}}
+                    {{/*</div>*/}}
+                {{/*</div>*/}}
+            {{/*</div>*/}}
+
+            <div class="col-md-3">
+                <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+                    <div class="visual">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> +
+                            <span data-counter="counterup" data-value="89"></span>% </div>
+                        <div class="desc"> Brand Popularity </div>
+                    </div>
+                </a>
+
+                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                    <div class="visual">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> +
+                            <span data-counter="counterup" data-value="89"></span>% </div>
+                        <div class="desc"> Brand Popularity </div>
+                    </div>
+                </a>
+
+                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                    <div class="visual">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> +
+                            <span data-counter="counterup" data-value="89"></span>% </div>
+                        <div class="desc"> Brand Popularity </div>
+                    </div>
+                </a>
+                <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+                    <div class="visual">
+                        <i class="fa fa-globe"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> +
+                            <span data-counter="counterup" data-value="89"></span>% </div>
+                        <div class="desc"> Brand Popularity </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -163,7 +240,7 @@
                 label: 'PX'
             }
         };
-        // console.log(lang); // ko-kr, en-us
+
         function initMap() {
             map = new google.maps.Map( document.getElementById( "map" ), {
                 zoom: 8,
@@ -178,7 +255,6 @@
             var script = document.createElement('script');
             script.src = '/getMapLogs?start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}&mode=gmimport';
             // script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
-            // console.log(script.src);
             document.getElementsByTagName('head')[0].appendChild(script);
         }
 
@@ -188,24 +264,17 @@
             var infoWindow = new google.maps.InfoWindow;
 
             for (var i = 0; i < events.length; i++) {
-                // console.log(events[i]);
-                // var infowincontent = document.createElement('div');
-                // var strong = document.createElement('strong');
-                // strong.textContent = events[i].org_name + " / " + events[i].equip_id;
-                // infowincontent.appendChild(strong);
-                // infowincontent.appendChild(document.createElement('br'));
-                // var text = document.createElement('text');
-                // text.textContent = events[i].org_name
-                // infowincontent.appendChild(text);
-;
-            //     var coords = results.features[i].geometry.coordinates;
                 var eventType;
                 if ( events[i].event_type === 2 ) {
+                    eventType = "startup";
+                } else if ( events[i].event_type === 2 ) {
                     eventType = "shock";
                 } else if ( events[i].event_type === 3 ) {
                     eventType = "speeding";
                 } else if ( events[i].event_type === 4 ) {
                     eventType = "proximity";
+                } else {
+                    eventType = "unknown";
                 }
                 var infowincontent = '<div class="bold  s16">' + events[i].org_name + ' / ' + events[i].equip_id + '</div>';
                     infowincontent += '<div class="bold s12 mt5 mb10 font-red">' + eventType.toUpperCase() + '</div>';

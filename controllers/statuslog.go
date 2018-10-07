@@ -67,7 +67,8 @@ func (c *StatuslogController) getFilter() *objs.IpasFilter {
 		if filter.StartDate == "" || filter.EndDate == "" {
 			t := time.Now()
 			//filter.StartDate = t.AddDate(0, 0, -7).Format(objs.DateOnlyFormat) + " 00:00"
-			filter.StartDate = t.Add(-86400*7*time.Second).Format(objs.DateOnlyFormat) + " 00:00"
+			//filter.StartDate = t.Add(-86400*7*time.Second).Format(objs.DateOnlyFormat) + " 00:00"
+			filter.StartDate = t.Format(objs.DateOnlyFormat) + " 00:00"
 			filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 		}
 

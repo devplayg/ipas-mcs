@@ -102,12 +102,12 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 	}
 
 	// 날짜 설정
-
 	if !filter.StatsMode { // 일반적으로 로그를 조회하는 경우
 		if filter.StartDate == "" || filter.EndDate == "" {
-			t := time.Now()
+			t := time.Now().In(c.member.Location)
 			//filter.StartDate = t.AddDate(0, 0, -7).Format(objs.DateOnlyFormat) + " 00:00"
-			filter.StartDate = t.Add(-86400*7*time.Second).Format(objs.DateOnlyFormat) + " 00:00"
+			//filter.StartDate = t.Add(-86400*7*time.Second).Format(objs.DateOnlyFormat) + " 00:00"
+			filter.StartDate = t.Format(objs.DateOnlyFormat) + " 00:00"
 			filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 		}
 

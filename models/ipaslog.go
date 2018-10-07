@@ -6,6 +6,8 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	"github.com/devplayg/ipas-mcs/libs"
 	"regexp"
+	"time"
+	"github.com/devplayg/ipas-server"
 )
 
 var RegexFoundRows = regexp.MustCompile(`(?i)SELECT(\s+)SQL_CALC_FOUND_ROWS`)
@@ -17,7 +19,11 @@ func GetIpaslog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, i
 
 	// 조건 설정
 	args := make([]interface{}, 0)
-	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
+
+	// 검색시간 설정
+	startDate, _ := time.ParseInLocation(ipasserver.DateDefault, filter.StartDate+":00", member.Location)
+	endDate, _ := time.ParseInLocation(ipasserver.DateDefault, filter.EndDate+":59", member.Location)
+	args = append(args, startDate.UTC().Format(ipasserver.DateDefault), endDate.UTC().Format(ipasserver.DateDefault))
 
 	if member.Position < objs.Administrator {
 		where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"

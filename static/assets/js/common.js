@@ -44,7 +44,7 @@ var timer = setInterval(function() {
     } catch(err) {
         console.log( err );
     }
-}, 5 * 1000); // Demo
+}, 600 * 1000); // Demo
 
 
 

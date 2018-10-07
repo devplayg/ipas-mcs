@@ -163,7 +163,7 @@ func initDatabase(processName string, encKey []byte) error {
 
 	maxIdle := beego.AppConfig.DefaultInt("db_master::maxidle", 3)
 	maxConn := beego.AppConfig.DefaultInt("db_master::maxopen", 3)
-	connStr := fmt.Sprintf("%s:%s@%s(%s:%s)/%s?charset=%s&loc=%s%s",
+	connStr := fmt.Sprintf("%s:%s@%s(%s:%s)/%s?charset=%s%s",
 		conf["db.username"],
 		conf["db.password"],
 		"tcp",
@@ -171,12 +171,12 @@ func initDatabase(processName string, encKey []byte) error {
 		conf["db.port"],
 		conf["db.database"],
 		"utf8",
-		strings.Replace(beego.AppConfig.DefaultString("timezone", "Asia/Seoul"), "/", "%2F", -1),
+		// &loc=%s ==> strings.Replace(beego.AppConfig.DefaultString("timezone", "Asia/Seoul"), "/", "%2F", -1),
 		"&parseTime=true",
 	)
-	log.Debug("Connection string:", connStr)
-	log.Debug("Max idle connections:", maxIdle)
-	log.Debug("Max open connections:", maxConn)
+	//log.Debug("Connection string:", connStr)
+	//log.Debug("Max idle connections:", maxIdle)
+	//log.Debug("Max open connections:", maxConn)
 	err = orm.RegisterDataBase("default", "mysql", connStr, maxIdle, maxConn)
 	if err != nil {
 		return err

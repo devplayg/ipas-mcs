@@ -16,7 +16,7 @@ func (c *SamplelogController) Get() {
 
 	if c.IsAjax() { // Ajax 요청이면 Json 타입으로 리턴
 		filter := c.getFilter()
-		logs, total, err := models.GetSamplelog(filter)
+		logs, total, err := models.GetSamplelog(filter, c.member)
 		c.serveResultJson(logs, total, err, filter.FastPaging)
 	} else { // Ajax 외 요청이면 HTML 리턴
 		c.Data["filter"] = filter

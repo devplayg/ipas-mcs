@@ -5,6 +5,8 @@ import (
 	"github.com/devplayg/ipas-mcs/libs"
 	"github.com/astaxie/beego/orm"
 	"github.com/devplayg/ipas-mcs/objs"
+	"time"
+	"github.com/devplayg/ipas-server"
 )
 
 func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.IpasLog, int64, error) {
@@ -13,7 +15,11 @@ func GetIpasStatusLog(filter *objs.IpasFilter, member *objs.Member) ([]objs.Ipas
 
 	// 조건 설정
 	args := make([]interface{}, 0)
-	args = append(args, filter.StartDate+":00", filter.EndDate+":59")
+
+	// 시간설정
+	startDate, _ := time.ParseInLocation(ipasserver.DateDefault, filter.StartDate+":00", member.Location)
+	endDate, _ := time.ParseInLocation(ipasserver.DateDefault, filter.EndDate+":59", member.Location)
+	args = append(args, startDate.UTC().Format(ipasserver.DateDefault), endDate.UTC().Format(ipasserver.DateDefault))
 
 	if member.Position < objs.Administrator {
 		where += " and group_id in (select asset_id from mbr_asset where member_id = ?)"

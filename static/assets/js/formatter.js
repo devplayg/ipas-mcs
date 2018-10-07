@@ -32,7 +32,8 @@ function dateFormatter( val, row, idx ) {
 
 function shortDateFormatter( val, row, idx ) {
     var m = moment( val ),
-        prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '" title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '">',
+        // prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '" title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '">',
+        prefix = '<span class="tooltips" data-container="body" data-placement="top" data-original-title="' + m.format( "MMMM D YYYY, h:mm:ss a" ) + '" title="' + m.format() + '">',
         suffix = '</span>';
     return prefix + m.format("HH:mm") + suffix;
 }

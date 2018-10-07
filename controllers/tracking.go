@@ -4,7 +4,6 @@ import (
 	"github.com/devplayg/ipas-mcs/objs"
 	log "github.com/sirupsen/logrus"
 	"time"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type TrackingController struct {
@@ -21,7 +20,6 @@ func (c *TrackingController) CtrlPrepare() {
 
 func (c *TrackingController) Display() {
 	filter := c.getFilter()
-	spew.Dump(filter)
 	c.Data["filter"] = filter
 	c.setTpl("tracking.tpl")
 }
