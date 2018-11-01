@@ -25,22 +25,22 @@ func (c *DashboardController) Display() {
 
 	c.setTpl("dashboard.tpl")
 }
+//
+//func (c *DashboardController) DisplayDarkboard() {
+//	filter := c.getFilter()
+//	c.Data["filter"] = filter
+//
+//	c.setTpl("darkboard.tpl")
+//}
+//
+//func (c *DashboardController) DisplayDetailboard() {
+//	filter := c.getFilter()
+//	c.Data["filter"] = filter
+//
+//	c.setTpl("detailboard.tpl")
+//}
 
-func (c *DashboardController) DisplayDarkboard() {
-	filter := c.getFilter()
-	c.Data["filter"] = filter
-
-	c.setTpl("darkboard.tpl")
-}
-
-func (c *DashboardController) DisplayDetailboard() {
-	filter := c.getFilter()
-	c.Data["filter"] = filter
-
-	c.setTpl("detailboard.tpl")
-}
-
-func (c *DashboardController) DisplayMapBoard() {
+func (c *DashboardController) DisplayMapboard() {
 	filter := c.getFilter()
 	c.Data["filter"] = filter
 	c.setTpl("mapboard.tpl")

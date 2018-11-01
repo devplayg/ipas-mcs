@@ -22,7 +22,7 @@ func (c *SystemController) GetNews() {
 
 	// 뉴스
 	news := map[string]interface{}{
-		"time":     t.Format(time.RFC3339),
+		"time":     t.In(c.member.Location).Format(time.RFC3339),
 		"message":  nil,
 		"resource": nil,
 	}

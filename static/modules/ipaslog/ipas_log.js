@@ -33,6 +33,9 @@ $(function() {
         submitHandler: function( form, e ) {
             e.preventDefault();
 
+            if ( ! $( "input[name=event_map]", form ).is( ":checked" ) ) {
+                $( form ).addHidden( "event_map", "off" );
+            }
             if ( ! $( "input[name=fast_paging]", form ).is( ":checked" ) ) {
                 $( form ).addHidden( "fast_paging", "off" );
             }

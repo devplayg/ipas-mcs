@@ -8,6 +8,7 @@ import (
 	"sort"
 	"time"
 	"encoding/json"
+	"strconv"
 )
 
 type IpaslogController struct {
@@ -56,6 +57,22 @@ func (c *IpaslogController) GetLogs() {
 	c.serveResultJson(logs, total, err, filter.FastPaging)
 }
 
+//func (c *IpaslogController) getLogs() ([]objs.IpasLog, int64){
+//	filter := c.getFilter()
+//	logs, total, err := models.GetIpaslog(filter, c.member)
+//	if err != nil {
+//		log.Error(err)
+//	}
+//
+//	// 기관/그룹코드를 이름과 맵핑
+//	for idx, a := range logs {
+//		logs[idx].No = filter.PagingFilter.Offset + int64(idx) + 1
+//		logs[idx].OrgName, logs[idx].GroupName = GetOrgGroupName(a.OrgId, a.GroupId)
+//	}
+//
+//	return logs, total
+//}
+
 func (c *IpaslogController) GetMapLogs() {
 	filter := c.getFilter()
 	filter.Limit = 70
@@ -77,14 +94,15 @@ func (c *IpaslogController) GetMapLogs() {
 		mapLogs[idx].GroupId     = r.GroupId
 		mapLogs[idx].EquipType   = r.EquipType
 		mapLogs[idx].Speed       = r.Speed
-		mapLogs[idx].Latitude    = r.Latitude
-		mapLogs[idx].Longitude   = r.Longitude
+		mapLogs[idx].Latitude    = FloatToString(r.Latitude)
+		mapLogs[idx].Longitude   = FloatToString(r.Longitude)
 		mapLogs[idx].OrgName     = r.OrgName
 		mapLogs[idx].GroupName   = r.GroupName
 		mapLogs[idx].Date        = r.Date
 		mapLogs[idx].EventType   = r.EventType
 		mapLogs[idx].Targets     = r.Targets
 		mapLogs[idx].Distance    = r.Distance
+		mapLogs[idx].Label    = "dsfasdf"
 	}
 	result, err := json.Marshal(mapLogs)
 	if err != nil {
@@ -132,6 +150,11 @@ func (c *IpaslogController) getFilter() *objs.IpasFilter {
 				filter.EndDate = t.Format(objs.DateOnlyFormat) + " 23:59"
 			}
 		}
+	}
+
+	// 이벤트 맵
+	if filter.EventMap == "" {
+		filter.EventMap = "on"
 	}
 
 	// 페이징 처리
@@ -300,3 +323,10 @@ func (c *IpaslogController) DisplayMap() {
 //	}
 //	c.ServeJSON()
 //}
+
+
+
+func FloatToString(f float32) string {
+	// to convert a float number to a string
+	return strconv.FormatFloat(float64(f), 'f', 6, 64)
+}

@@ -1,6 +1,23 @@
 {{template "base.tpl" .}}
 
 {{define "contents"}}
+        <style>
+            #map {
+                width: 100%;
+                height: 400px;
+                border: 1px dashed #acacac;
+            }
+
+            .dashboard-stat .visual {
+                height: 40px;
+            }
+
+            .dashboard-stat .details .number {
+                height: 40px;
+                padding-top: 0px;
+                font-size: 25px;
+            }
+        </style>
      <pre class="hide">
         start_date={{.filter.StartDate}}
         end_date={{.filter.EndDate}}
@@ -15,7 +32,6 @@
         group_id={{range .filter.GroupId}}{{.}}{{end}}
         {{.Lang}}
     </pre>
-
     <div class="portlet light bordered">
         <div class="portlet-body pt0">
             <div id="toolbar-log">
@@ -85,12 +101,18 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label class="control-label">Page size</label>
+                                            <label class="control-label">{{i18n .Lang "page size"}}</label>
                                             <input type="text" class="form-control mask-09999" name="limit" value="{{.filter.Limit}}">
                                         </div>
                                         <div class="col-sm-4 form-group">
                                             <label class="mt-checkbox mt-checkbox-outline mt30">
                                                 <input type="checkbox" name="fast_paging" {{if eq .filter.FastPaging "on"}}checked{{end}}> {{i18n .Lang "fast_paging"}}
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label class="mt-checkbox mt-checkbox-outline mt30">
+                                                <input type="checkbox" name="event_map" {{if eq .filter.EventMap "on"}}checked{{end}}> {{i18n .Lang "event map"}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -106,12 +128,22 @@
                 </form>
             </div>
 
+            {{if eq .filter.EventMap "on"}}
+            <div class="row mt20 mb20">
+                <div class="col-lg-12">
+                    <div id="map"></div>
+                </div>
+            </div>
+            {{end}}
+
             <table  id="table-log"
                     class="table-condensed"
                     data-toggle="table"
+                    {{if eq .filter.EventMap "off"}}
                     data-toolbar="#toolbar-log"
                     data-show-refresh="true"
                     data-show-columns="true"
+                    {{end}}
                     {* 내보내기 *}
                     data-show-export="true"
                     data-export-types="['csv', 'excel']"
@@ -122,7 +154,7 @@
                     data-sort-order="{{.filter.Order}}"
                     {* 페이징 *}
                     data-page-size="{{.filter.Limit}}"
-                    data-pagination-v-align="both"
+                    {{/*data-pagination-v-align="both"*/}}
                     {{if eq .filter.FastPaging "on"}} {* 고속 페이징 *}
                         data-side-pagination="client"
                     {{else}} {* 일반 페이징 *}
@@ -159,6 +191,103 @@
 
 {{define "javascript"}}
     {{template "ipasreport/ipasreport.tpl" .}}
+    {{if eq .filter.EventMap "on"}}
+        <script>
+            var map = null;
+            // infoWIndow = null;
+            var customLabel = {
+                shock: {
+                    label: 'SH'
+                },
+                speeding: {
+                    label: 'SP'
+                },
+                proximity: {
+                    label: 'PX'
+                }
+            };
+
+            function initMap() {
+                map = new google.maps.Map( document.getElementById( "map" ), {
+                    zoom: 8,
+                    center: new google.maps.LatLng( 37.532600, 127.024612 ), // Seoul
+
+                    // Basic Map Types
+                    //      https://developers.google.com/maps/documentation/javascript/maptypes?hl=ko
+                    mapTypeId: 'roadmap' // roadmap, satellite, hybrid, terrain
+                });
+
+
+                var script = document.createElement('script');
+                script.src = '/getMapLogs?start_date={{.filter.StartDate}}&end_date={{.filter.EndDate}}&fast_paging={{.filter.FastPaging}}&equip_id={{.filter.EquipId}}{{range .filter.EventType}}&event_type={{.}}{{end}}{{range .filter.OrgId}}&org_id={{.}}{{end}}{{range .filter.GroupId}}&group_id={{.}}{{end}}&mode=gmimport';
+                // script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }
+
+            // Loop through the results array and place a marker for each
+            // set of coordinates.
+            window.mapfeed_callback = function( events ) {
+                var infoWindow = new google.maps.InfoWindow;
+                var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+
+                for (var i = 0; i < events.length; i++) {
+                    var eventType;
+                    if ( events[i].event_type === 2 ) {
+                        eventType = "startup";
+                    } else if ( events[i].event_type === 2 ) {
+                        eventType = "shock";
+                    } else if ( events[i].event_type === 3 ) {
+                        eventType = "speeding";
+                    } else if ( events[i].event_type === 4 ) {
+                        eventType = "proximity";
+                    } else {
+                        eventType = "unknown";
+                    }
+                    var infowincontent = '<div class="bold  s16">' + events[i].org_name + ' / ' + events[i].equip_id + '</div>';
+                    infowincontent += '<div class="bold s12 mt5 mb10 font-red">' + eventType.toUpperCase() + '</div>';
+                    infowincontent += '<div>';
+                    infowincontent += '- Event type: ' + eventType + '<br>';
+                    infowincontent += '- Time: ' + events[i].date + '<br>';
+                    infowincontent += '- Latitude: ' + events[i].latitude + '<br>';
+                    infowincontent += '- Longitude: ' + events[i].longitude + '<br>';
+                    infowincontent += '</div>';
+
+                    var icon = customLabel[ eventType ] || {};
+
+                    var latLng = new google.maps.LatLng( events[i].latitude, events[i].longitude );
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        title: events[i].org_name + " / " + events[i].equip_id,
+                        label:  {
+                            text: ""+icon.label,
+                            color: "#ffffff",
+                            fontSize: "12px",
+                        },
+                        // label: icon.label,
+                        // icon: {
+                        //     // path: google.maps.SymbolPath.CIRCLE,
+                        //     scale: 8.5,
+                        //     fillColor: "#F00",
+                        //     fillOpacity: 0.4,
+                        //     strokeWeight: 0.4
+                        // },
+                        // icon:  image,
+                        // animation: google.maps.Animation.,
+                        infowincontent: infowincontent
+                    });
+
+                    marker.addListener('click', function() {
+                        infoWindow.setContent(this.infowincontent);
+                        infoWindow.open(map, this);
+                    });
+                }
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQHrPThkndn-kfySgCUgkZxEbdTU8rrNg&callback=initMap"></script>
+    {{end}}
+
     <script src="/static/modules/{{.ctrl}}/ipas_log.js"></script>
     <script src="/static/modules/{{.ctrl}}/formatter.js"></script>
     <script>

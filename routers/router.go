@@ -9,8 +9,7 @@ func init() {
 
 	// 대시보드
 	beego.Router(`/dashboard`, &controllers.DashboardController{}, "get:Display")
-	beego.Router(`/detailboard`, &controllers.DashboardController{}, "get:DisplayDetailboard")
-	beego.Router(`/darkboard`, &controllers.DashboardController{}, "get:DisplayDarkboard")
+	beego.Router(`/mapboard`, &controllers.DashboardController{}, "get:DisplayMapboard")
 
 	// IPAS 로그
 	beego.Router(`/ipaslogs`, &controllers.IpaslogController{})
@@ -57,6 +56,8 @@ func init() {
 	beego.Router("/ipasorg/:orgId:int", &controllers.IpaslistController{}, "Get:GetIpasInOrg")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Get:GetIpasInGroup")
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
+	
+	// 기간통계
 
 	// 통계
 	//beego.Router(`/stats/:statsType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStats")

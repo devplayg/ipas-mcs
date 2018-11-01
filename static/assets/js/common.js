@@ -2,17 +2,6 @@
  *
  */
 
-// Event types
-var StartupEvent = 1,
-    ShockEvent = 2,
-    SpeedingEvent = 3,
-    ProximityEvent = 4;
-
-// Equipment types
-var PedestrianTag = 1, // Pedestrian tag
-    ZoneTag = 2, // Zone tag
-    VehicleTag = 4; // Vehicle tag
-
 var StartupColor = "#e1e5ec", // blue-chambray
     ShockColor = "#3598DC", // blue
     SpeedingColor = "#f4902f", // warning(yellow) // #f4902f
@@ -284,6 +273,7 @@ function beautifyMessage( obj ) {
 
 function updateNews() {
     $( "#pgb" ).css( "width", 11 );
+
     $.ajax({
         type: "GET",
         async: true,
@@ -342,6 +332,6 @@ function updateNews() {
         $( ".total-disk" ).text( diskTotal.toFixed(1) + " GB" );
 
         // Clock
-        $( ".system-clock" ).text( moment( news.time ).format( "LLL" ) );
+        $( ".system-clock" ).text( moment( news.time ).format( "lll (Z)" ) );
     });
 }

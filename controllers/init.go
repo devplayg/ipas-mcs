@@ -259,7 +259,8 @@ func GetGroupName(groupId int) string {
 	if v, ok := assetMap.Load(groupId); ok {
 		return v.(objs.Asset).Name
 	} else {
-		return "N/A (" + strconv.Itoa(groupId) + ")"
+		//return "N/A (" + strconv.Itoa(groupId) + ")"
+		return "unknown"
 	}
 }
 

@@ -66,8 +66,8 @@
                     <span></span>
                 </a>
                 <div class="top-menu">
-                    <ul class="nav navbar-nav pull-right">
-                        <li class="dropdown dropdown-quick-sidebar-toggler hidden-xs mr10">
+                    <ul class="nav navbar-nav pull-right hidden-xs">
+                        <li class="dropdown dropdown-quick-sidebar-toggler  mr10">
                             <div class="system-clock"></div>
                         </li>
                         <li class="hidden dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
@@ -255,9 +255,6 @@
                                 </li>
                                 <li class="nav-item hide">
                                     <a href="/ipaslogsWithChart" class="nav-link"><span class="title">{{i18n .Lang "event trend"}}</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/maplog" class="nav-link"><span class="title">{{i18n .Lang "event map"}}</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/log/ipasstatus" class="nav-link"><span class="title">{{i18n .Lang "status"}}</span></a>
@@ -646,6 +643,17 @@
             var PedestrianTag = {{.PedestrianTag}},
                 ZoneTag = {{.ZoneTag}},
                 VehicleTag = {{.VehicleTag}};
+
+            // Event types
+            var StartupEvent = {{.StartupEvent}},
+                ShockEvent = {{.ShockEvent}},
+                SpeedingEvent = {{.SpeedingEvent}},
+                ProximityEvent = {{.ProximityEvent}};
+
+            // // Equipment types
+            // var PedestrianTag = 1, // Pedestrian tag
+            //     ZoneTag = 2, // Zone tag
+            //     VehicleTag = 4; // Vehicle tag
 
         </script>
 

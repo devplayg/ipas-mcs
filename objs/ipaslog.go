@@ -30,14 +30,15 @@ type IpasMapLog struct {
 	GroupId   int       `json:"group_id"`
 	EquipType int       `json:"equip_type"`
 	Speed     int       `json:"speed"`
-	Latitude  float32   `json:"latitude"`
-	Longitude float32   `json:"longitude"`
+	Latitude  string   `json:"latitude"`
+	Longitude string   `json:"longitude"`
 	OrgName   string    `json:"org_name"`
 	GroupName string    `json:"group_name"`
 	Date      time.Time `json:"date"`
 	EventType int       `json:"event_type"`
 	Targets   string    `json:"targets"`
 	Distance  int       `json:"distance"`
+	Label     string    `json:"text"`
 }
 
 type LocTrack struct {
@@ -74,6 +75,7 @@ type IpasFilter struct {
 	EquipId    string `form:"equip_id"`
 	TagPattern string `form:"tag_pattern"`
 	StatsMode  bool   `form:"stats_mode"` // 통계모드
+	EventMap   string `form:"event_map"`
 }
 
 //

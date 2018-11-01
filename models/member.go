@@ -109,7 +109,7 @@ func AddMember(m *objs.Member) (sql.Result, error) {
 
 	// 비밀번호 등록
 	lastInsertId, _ := rs.LastInsertId()
-	query = "insert into mbr_password(member_id, password) values(?, ?)"
+	query = "insert into mbr_password(member_id, password, salt) values(?, ?, '')"
 	rs, err = o.Raw(query, lastInsertId, m.PasswordConfirm).Exec()
 	if err != nil {
 		o.Rollback()

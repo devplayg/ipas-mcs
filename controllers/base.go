@@ -107,8 +107,9 @@ func (c *baseController) setTemplateVars() {
 	c.Data["act"] = c.actName   // 액션 이름
 	c.Data["reqVars"] = c.Input()
 
-	// 태그
 	c.Data["Administrator"] = objs.Administrator
+
+	// 태그
 	c.Data["PedestrianTag"] = objs.PedestrianTag
 	c.Data["ZoneTag"] = objs.ZoneTag
 	c.Data["VehicleTag"] = objs.VehicleTag
