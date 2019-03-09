@@ -17,6 +17,7 @@ start)
             exit
         fi
     fi
+    cd $APP_PATH
     ${APP_PATH}/${APP_NAME} $OPT&
     sleep 1
     echo $! > ${APP_PID}
