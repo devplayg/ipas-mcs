@@ -58,6 +58,7 @@ func init() {
 	beego.Router("/ipasgroup/:groupId:int", &controllers.IpaslistController{}, "Patch:UpdateIpasGroup")
 	
 	// 기간통계
+	//beego.Router(`/periodstats/summary/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.PeriodStatsController{}, "Get:GetSummary")
 
 	// 통계
 	//beego.Router(`/stats/:statsType/org/:orgId(-?[\d]+)/group/:groupId(-?[\d]+)`, &controllers.StatsController{}, "Get:GetStats")

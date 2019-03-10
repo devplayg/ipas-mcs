@@ -196,6 +196,9 @@
             var map = null;
             // infoWIndow = null;
             var customLabel = {
+                startup: {
+                    label: 'ST'
+                },
                 shock: {
                     label: 'SH'
                 },
@@ -233,7 +236,7 @@
 
                 for (var i = 0; i < events.length; i++) {
                     var eventType;
-                    if ( events[i].event_type === 2 ) {
+                    if ( events[i].event_type === 1 ) {
                         eventType = "startup";
                     } else if ( events[i].event_type === 2 ) {
                         eventType = "shock";
@@ -254,6 +257,7 @@
                     infowincontent += '</div>';
 
                     var icon = customLabel[ eventType ] || {};
+                    console.log(eventType);
 
                     var latLng = new google.maps.LatLng( events[i].latitude, events[i].longitude );
                     var marker = new google.maps.Marker({

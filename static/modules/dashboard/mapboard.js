@@ -6,6 +6,7 @@ $(function() {
      */
     // 자산 (기관 / 그룹)
     var assets = { },
+        statsPeriod = 0,
         interval = 10 * 1000,
         timer = null;
 
@@ -18,22 +19,33 @@ $(function() {
     //     maxView:        4,
     //     autoclose:      true
     // });
+    //
+    // // Chart - 이벤트 유형
+    // var eventTypeChart = Morris.Donut({
+    //     element: 'chart-eventType',
+    //     resize: true,
+    //     data: [
+    //         { label: "N/A", value: 0 }
+    //     ],
+    //     formatter: function (x) { return x + "" }
+    // }).on('click', function( i, row ){
+    //     console.log(i, row);
+    // });
+    //
+    // // 조회기간 서정
+    // $( ".btn-stats-period" ).each(function( i, b ) {
+    //     var period = $( b ).data( "period" );
+    //     if ( period === statsPeriod ) {
+    //         $( b ).removeClass( "default" ).addClass( "blue" );
+    //         return;
+    //     }
+    // });
 
-    // Chart - 이벤트 유형
-    var eventTypeChart = Morris.Donut({
-        element: 'chart-eventType',
-        resize: true,
-        data: [
-            { label: "N/A", value: 0 }
-        ],
-        formatter: function (x) { return x + "" }
-    }).on('click', function( i, row ){
-        console.log(i, row);
-    });
 
-    initializeAssets();
-    updateStats();
-    startTimer();
+
+    // initializeAssets();
+    // updateStats();
+    // startTimer();
 
 
     /**
@@ -42,11 +54,11 @@ $(function() {
      */
 
     // 자산 선택
-    $( "#select-assets" ).on( "change", function() {
-        stopTimer();
-        updateStats();
-        startTimer();
-    });
+    // $( "#select-assets" ).on( "change", function() {
+    //     stopTimer();
+    //     updateStats();
+    //     startTimer();
+    // });
 
 
     // $( ".btn-start" ).click(function(e) {
@@ -74,123 +86,122 @@ $(function() {
      */
 
     // 자산 초기화
-    function initializeAssets() {
-        $.ajax({
-            type  : "GET",
-            async : true,
-            url   : "/userassetclass/1/children"
-        }).done( function( result ) {
-            // 기관
-            $.each( result, function( idx, org ) {
-                $( "#select-assets" ).append(
-                    $( "<option>", {
-                        value: org.asset_id + "/-1",
-                        text: org.name
-                    })
-                );
+    // function initializeAssets() {
+    //     $.ajax({
+    //         type  : "GET",
+    //         async : true,
+    //         url   : "/userassetclass/1/children"
+    //     }).done( function( result ) {
+    //         // 기관
+    //         $.each( result, function( idx, org ) {
+    //             $( "#select-assets" ).append(
+    //                 $( "<option>", {
+    //                     value: org.asset_id + "/-1",
+    //                     text: org.name
+    //                 })
+    //             );
+    //
+    //             // 그룹
+    //             $.each( org.children, function( i, group ) {
+    //                 $( "#select-assets" ).append(
+    //                     $( "<option>", {
+    //                         value: org.asset_id + "/" + group.asset_id,
+    //                         text: "- " + group.name,
+    //                         class: "ml20"
+    //                     })
+    //                 );
+    //             });
+    //         });
+    //
+    //     }).always( function() {
+    //         $( "#select-assets" ).selectpicker( "refresh" );
+    //     });
+    // }
 
-                // 그룹
-                $.each( org.children, function( i, group ) {
-                    $( "#select-assets" ).append(
-                        $( "<option>", {
-                            value: org.asset_id + "/" + group.asset_id,
-                            text: "- " + group.name,
-                            class: "ml20"
-                        })
-                    );
-                });
-            });
-
-        }).always( function() {
-            $( "#select-assets" ).selectpicker( "refresh" );
-        });
-    }
-
-    function startTimer() {  // use a one-off timer
-        $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
-        $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
-        timer = setInterval(updateStats, interval);
-    }
-
-    function stopTimer() {
-        $( ".btn-start" ).removeClass( "blue" ).addClass( "default" );
-        $( ".btn-start .text" ).html( "<i class='fa fa-play'></i>" );
-        clearTimeout( timer );
-        timer = null;
-    }
-
-
-    function updateStats() {
-        var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
-            orgId = asset[0],
-            groupId = asset[1];
-
-        updateSummary( orgId, groupId );
-        // updateRankings( orgId, groupId );
-        // updateLogs( orgId, groupId );
-
-        $( ".text-updated" ).removeClass( "hide" );
-        setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
-    }
+    // function startTimer() {  // use a one-off timer
+    //     $( ".btn-start" ).removeClass( "default" ).addClass( "blue" );
+    //     $( ".btn-start .text" ).html( "<i class='fa fa-circle-o-notch fa-spin'></i>" );
+    //     timer = setInterval(updateStats, interval);
+    // }
+    //
+    // function stopTimer() {
+    //     $( ".btn-start" ).removeClass( "blue" ).addClass( "default" );
+    //     $( ".btn-start .text" ).html( "<i class='fa fa-play'></i>" );
+    //     clearTimeout( timer );
+    //     timer = null;
+    // }
+    //
+    //
+    // function updateStats() {
+    //     var asset = $( "#select-assets :selected" ).val().split( "/", 2 ),
+    //         orgId = asset[0],
+    //         groupId = asset[1];
+    //
+    //     updateSummary( orgId, groupId );
+    //     // updateRankings( orgId, groupId );
+    //     // updateLogs( orgId, groupId );
+    //
+    //     $( ".text-updated" ).removeClass( "hide" );
+    //     setTimeout(function(){ $( ".text-updated" ).addClass( "hide" ); }, 500);
+    // }
 
 
     function updateSummary( orgId, groupId ) {
-        var url = "/stats/summary/org/" + orgId + "/group/" + groupId;
+        var url = "/periodstats/summary/org/" + orgId + "/group/" + groupId;
         $.ajax({
             type  : "GET",
             async : true,
             url   : url
         }).done( function( r ) {
-            // console.log(r.operatingTime);
-            // $( ".count-startup" ).text( r.eventTypes[StartupEvent] );
-            $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
-            $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
-            $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
-
-            // 비율
-            var totalEvents = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
-            var total = totalEvents;
-            if ( totalEvents === 0 ) {
-                total = 1;
-            }
-            var shockRate = (r.eventTypes[ShockEvent] / total * 100).toFixed(1),
-                speedingRate = (r.eventTypes[SpeedingEvent] / total * 100).toFixed(1),
-                proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
-
-            $( ".count-events" ).text( totalEvents );
-            $( ".count-optime" ).text( sec2humanReadable( r.operatingTime ) );
-
-            $( ".rate-shock" ).text( shockRate + "%" );
-            $( ".rate-speeding" ).text( speedingRate + "%" );
-            $( ".rate-proximity" ).text( proximityRate + "%" );
-
-            $( "#pgb-shock" ).css( "width",shockRate + "%" );
-            $( "#pgb-speeding" ).css( "width",speedingRate + "%" );
-            $( "#pgb-proximity" ).css( "width",proximityRate + "%" );
-
-            $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
-            $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
-            $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
-            $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
-
-            var  data = [
-                // {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
-                {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
-                {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
-                {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
-            ];
-
-            var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
-            if ( total > 0 ) {
-                eventTypeChart.setData( data );
-            } else {
-                eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
-            }
-
-            // time
-            var time = moment(r.time);
-            $( ".what-time" ).text( time.format("HH:mm") );
-            $( ".what-date" ).text( time.format("ll") );
+            console.log(r);
+            // $( ".count-shock" ).text( r.eventTypes[ShockEvent] );
+            // $( ".count-speeding" ).text( r.eventTypes[SpeedingEvent] );
+            // $( ".count-proximity" ).text( r.eventTypes[ProximityEvent] );
+            //
+            // // 비율
+            // var totalEvents = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+            // var total = totalEvents;
+            // if ( totalEvents === 0 ) {
+            //     total = 1;
+            // }
+            // var shockRate = (r.eventTypes[ShockEvent] / total * 100).toFixed(1),
+            //     speedingRate = (r.eventTypes[SpeedingEvent] / total * 100).toFixed(1),
+            //     proximityRate = (r.eventTypes[ProximityEvent] / total * 100).toFixed(1);
+            //
+            // $( ".count-events" ).text( totalEvents );
+            // $( ".count-optime" ).text( sec2humanReadable( r.operatingTime ) );
+            //
+            // $( ".rate-shock" ).text( shockRate + "%" );
+            // $( ".rate-speeding" ).text( speedingRate + "%" );
+            // $( ".rate-proximity" ).text( proximityRate + "%" );
+            //
+            // $( "#pgb-shock" ).css( "width",shockRate + "%" );
+            // $( "#pgb-speeding" ).css( "width",speedingRate + "%" );
+            // $( "#pgb-proximity" ).css( "width",proximityRate + "%" );
+            //
+            // $( ".count-pt" ).text( r.equipCountByType[PedestrianTag] );
+            // $( ".count-zt" ).text( r.equipCountByType[ZoneTag] );
+            // $( ".count-vt" ).text( r.equipCountByType[VehicleTag] );
+            // $( ".count-total-tags" ).text( r.equipCountByType[PedestrianTag] + r.equipCountByType[ZoneTag] + r.equipCountByType[VehicleTag] );
+            //
+            // var  data = [
+            //     // {value:  r.eventTypes[StartupEvent], label: 'STARTUP'},
+            //     {value:  r.eventTypes[ShockEvent], label: 'SHOCK'},
+            //     {value:  r.eventTypes[SpeedingEvent], label: 'SPEEDING'},
+            //     {value:  r.eventTypes[ProximityEvent], label: 'PROXIMITY'},
+            // ];
+            //
+            // var total = r.eventTypes[ShockEvent] + r.eventTypes[SpeedingEvent] + r.eventTypes[ProximityEvent];
+            // if ( total > 0 ) {
+            //     eventTypeChart.setData( data );
+            // } else {
+            //     eventTypeChart.setData( [ { value: 0, label: 'N/A' } ] );
+            // }
+            //
+            // // time
+            // var time = moment(r.time);
+            // $( ".what-time" ).text( time.format("HH:mm") );
+            // $( ".what-date" ).text( time.format("ll") );
 
         }).always( function() {
         });
